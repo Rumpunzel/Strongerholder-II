@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=7 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
 [ext_resource type="PackedScene" uid="uid://dyhahthciwxpq" path="res://engine/characters/character.tscn" id="2_gxfp0"]
+[ext_resource type="Script" path="res://levels/player/player.gd" id="2_ltji4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
+size = Vector3(64, 16, 64)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_bkb5w"]
 size = Vector2(64, 64)
@@ -12,14 +16,24 @@ uv1_scale = Vector3(16, 16, 16)
 
 [node name="Test" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_bkb5w")
-surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.93807, 0.346445, 0, -0.346445, 0.93807, 0, 3.00116, 5.75989)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.444104, 0.895975, 0, -0.895975, 0.444104, 0, 10.6623, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
+shape = SubResource("BoxShape3D_2lmav")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_bkb5w")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
+
+[node name="Player" type="Camera3D" parent="." node_paths=PackedStringArray("_node_to_follow")]
+script = ExtResource("2_ltji4")
+_node_to_follow = NodePath("../Character")
 
 [node name="Character" parent="." instance=ExtResource("2_gxfp0")]

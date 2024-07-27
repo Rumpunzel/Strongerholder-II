@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://nnd03rtjc67u"]
+
+[ext_resource type="Script" path="res://menu/Join.gd" id="1_dh8gq"]
+
+[node name="JoinGame" type="HBoxContainer"]
+script = ExtResource("1_dh8gq")
+
+[node name="JoinGame" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Join Game"
+alignment = 0
+
+[node name="IPAddress" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "127.0.0.1"
+expand_to_text_length = true
+
+[connection signal="pressed" from="JoinGame" to="." method="_on_game_joined"]

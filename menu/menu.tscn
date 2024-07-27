@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://cewf4gfrc0nwb"]
+
+[ext_resource type="Script" path="res://menu/menu.gd" id="1_e2sev"]
+[ext_resource type="Theme" uid="uid://bto7cdoy3deto" path="res://menu/menu_theme.tres" id="2_2ehdf"]
+[ext_resource type="Script" path="res://menu/continue_button.gd" id="3_etlvm"]
+[ext_resource type="PackedScene" uid="uid://nnd03rtjc67u" path="res://menu/join_game.tscn" id="3_xfddd"]
+[ext_resource type="PackedScene" uid="uid://5v8h21jtik14" path="res://menu/host_game.tscn" id="4_a7u2g"]
+[ext_resource type="Script" path="res://menu/quit_button.gd" id="5_fel4d"]
+
+[sub_resource type="Gradient" id="Gradient_yga3q"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_y1b5d"]
+gradient = SubResource("Gradient_yga3q")
+width = 2048
+
+[node name="Menu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_e2sev")
+
+[node name="MainMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_2ehdf")
+
+[node name="Gradient" type="TextureRect" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_y1b5d")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 180
+theme_override_constants/margin_top = 240
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 64
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 64
+text = "Strongerholder"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+alignment = 0
+script = ExtResource("3_etlvm")
+
+[node name="JoinGame" parent="MainMenu/MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_xfddd")]
+layout_mode = 2
+
+[node name="HostGame" parent="MainMenu/MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_a7u2g")]
+layout_mode = 2
+
+[node name="Quit" type="Button" parent="MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit
+"
+alignment = 0
+script = ExtResource("5_fel4d")

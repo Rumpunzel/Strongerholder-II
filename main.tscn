@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b21vqn0hp25eu"]
+
+[ext_resource type="Script" path="res://levels/world.gd" id="1_gljwp"]
+
+[node name="Main" type="Node"]
+
+[node name="World" type="Node3D" parent="."]
+script = ExtResource("1_gljwp")
+
+[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://levels/test_level.tscn")
+spawn_path = NodePath("../World")
+spawn_limit = 1

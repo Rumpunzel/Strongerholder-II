@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://5v8h21jtik14"]
+
+[ext_resource type="Script" path="res://menu/host.gd" id="1_efu7t"]
+
+[node name="HostGame" type="VBoxContainer"]
+script = ExtResource("1_efu7t")
+
+[node name="HostGame" type="CheckButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Host Game"
+
+[node name="IPAddress" type="Button" parent="."]
+visible = false
+layout_mode = 2
+text = "127.0.0.1"
+alignment = 0
+
+[connection signal="toggled" from="HostGame" to="." method="_on_game_hosted"]

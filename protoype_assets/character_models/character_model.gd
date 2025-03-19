@@ -1,11 +1,13 @@
 class_name CharacterModel
 extends Node3D
 
-@export var animation_player: AnimationPlayer
 @export var animation_tree: AnimationTree
+@onready var state_machine: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
 
-func play_animation(velocity: Vector3, is_on_floor: bool) -> void:
+func play_animation(velocity: Vector3, move_speed: float) -> void:
 	if velocity:
-		animation_player.play("Run")
+		state_machine.travel("Walk")
+		var normalized_velocity := velocity / move_speed
+		animation_tree.set("parameters/Walk/blend_position", normalized_velocity.length_squared())
 	else:
-		animation_player.play("Idle")
+		state_machine.travel("Idle")

@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var character_model: CharacterModel
 
 var direction_input := Vector3.ZERO
-var look_direction := Vector3.ZERO
+var look_direction := Vector3.BACK
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -14,7 +14,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor(): apply_gravity(delta)
 	move_and_slide()
 	if velocity: look_forward(delta)
-	if character_model: character_model.play_animation(velocity, is_on_floor())
+	if character_model: character_model.play_animation(velocity, movement_attributes.move_speed)
 
 func apply_direction_input() -> void:
 	var move_speed := movement_attributes.move_speed	

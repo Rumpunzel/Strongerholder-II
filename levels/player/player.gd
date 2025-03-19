@@ -3,15 +3,22 @@ extends TopDownCamera
 
 const _ray_length := 1000.0
 
+@export var player: CharacterController
+
+func _process(_delta: float) -> void:
+	if not player: return
+	
+	var input_vector := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	player.direction_input = get_adjusted_movement(input_vector)
+	frame_node(player)
+
 
 func get_adjusted_movement(input_vector: Vector2) -> Vector3:
-	var ajusted_movement: Vector3
-	var camera_forward: Vector3 = transform.basis.z
+	var camera_forward := transform.basis.z
 	camera_forward.y = 0.0
-	var camera_right: Vector3 = transform.basis.x
+	var camera_right := transform.basis.x
 	camera_right.y = 0.0
-	ajusted_movement = camera_right.normalized() * input_vector.x + camera_forward.normalized() * input_vector.y
-	return ajusted_movement
+	return camera_forward.normalized() * input_vector.y + camera_right.normalized() * input_vector.x
 
 func mouse_as_world_point() -> CameraRay:
 	var mouse_position := get_viewport().get_mouse_position()

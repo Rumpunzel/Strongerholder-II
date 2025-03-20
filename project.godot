@@ -17,7 +17,8 @@ config/icon="res://helmet.png"
 
 [autoload]
 
-Game="*res://game_manager.gd"
+Game="*res://game.gd"
+Multiplayer="*res://multiplayer.gd"
 UI="res://ui/ui.tscn"
 
 [debug]

@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var character_model: CharacterModel
 
 var direction_input := Vector3.ZERO
-var look_direction := Vector3.BACK
+var look_target := Vector3.BACK
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -28,7 +28,7 @@ func apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta
 
 func look_forward(delta: float) -> void:
-	look_direction = position + velocity
-	look_direction.y = position.y
-	var transform_looking_into_direction := transform.looking_at(look_direction, Vector3.UP, true)
+	look_target = position + velocity
+	look_target.y = position.y
+	var transform_looking_into_direction := transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, movement_attributes.turn_rate * delta)

@@ -20,6 +20,7 @@ config/icon="res://helmet.png"
 Game="*res://game.gd"
 Multiplayer="*res://multiplayer.gd"
 UI="res://ui/ui.tscn"
+ToastParty="*res://addons/toastparty/toast-autoload.gd"
 
 [debug]
 
@@ -40,7 +41,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/toastparty/plugin.cfg")
 
 [input]
 

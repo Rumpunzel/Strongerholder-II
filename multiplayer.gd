@@ -1,7 +1,9 @@
 extends Node
 
-signal game_hosted
-signal game_joined
+signal game_hosted(ip_address: String, port: int)
+signal game_joined(ip_address: String, port: int)
+signal stopped_hosting_game
+signal left_game
 
 signal player_connected(peer_id: int)
 signal player_disconnected(peer_id: int)
@@ -38,7 +40,7 @@ func host_game() -> Error:
 	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
-	game_hosted.emit()
+	game_hosted.emit(DEFAULT_SERVER_IP, PORT)
 	
 	players[host_id] = host_info
 	assert(host_id == host_info)
@@ -52,13 +54,20 @@ func join_game(ip_address: String) -> Error:
 	var error := client_peer.create_client(ip_address, PORT)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
-	game_joined.emit()
-	print_debug("Joined multiplayer game!")
+	game_joined.emit(ip_address, PORT)
+	print_debug("Joined multiplayer game @ %s:%d!" % [ ip_address, PORT ])
 	return Error.OK
 
-func leave_multiplayer() -> void:
+func stop_hosting_game() -> void:
 	multiplayer.multiplayer_peer = null
 	players.clear()
+	stopped_hosting_game.emit()
+	print_debug("Stopped hosting multiplayer game!")
+
+func leave_game() -> void:
+	multiplayer.multiplayer_peer = null
+	players.clear()
+	left_game.emit()
 	print_debug("Left multiplayer game!")
 
 # When the server decides to start the game from a UI scene, do Multiplayer.load_game.rpc(filepath)

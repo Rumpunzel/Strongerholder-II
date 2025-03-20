@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://5sd2jgms4uso"]
+[gd_scene load_steps=6 format=3 uid="uid://5sd2jgms4uso"]
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://ui/menu.gd" id="1_bwjgb"]
+[ext_resource type="Script" uid="uid://cpyey1rgiu5s0" path="res://ui/toggle_button.gd" id="2_udkah"]
+[ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://ui/clipboard_button.gd" id="3_4c782"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
@@ -9,7 +11,7 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 gradient = SubResource("Gradient_ofb81")
 width = 1024
 
-[node name="Menu" type="Control" node_paths=PackedStringArray("join_button", "disconnect_button", "ip_address", "host_button", "stop_hosting_button", "host_ip_address")]
+[node name="Menu" type="Control" node_paths=PackedStringArray("join_button", "ip_address", "host_button", "host_ip_address_button")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -19,11 +21,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bwjgb")
 join_button = NodePath("MarginContainer/Options/GridContainer/Join")
-disconnect_button = NodePath("MarginContainer/Options/GridContainer/Disconnect")
 ip_address = NodePath("MarginContainer/Options/GridContainer/IpAddress")
 host_button = NodePath("MarginContainer/Options/GridContainer/Host")
-stop_hosting_button = NodePath("MarginContainer/Options/GridContainer/StopHosting")
-host_ip_address = NodePath("MarginContainer/Options/GridContainer/HostIpAddress")
+host_ip_address_button = NodePath("MarginContainer/Options/GridContainer/HostIpAddress")
+metadata/_edit_lock_ = true
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -33,6 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_nb4k0")
+metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -63,12 +65,10 @@ columns = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+toggle_mode = true
 text = "Join"
-
-[node name="Disconnect" type="Button" parent="MarginContainer/Options/GridContainer"]
-visible = false
-layout_mode = 2
-text = "Disconnect"
+script = ExtResource("2_udkah")
+toggled_text = "Disconnect"
 
 [node name="IpAddress" type="LineEdit" parent="MarginContainer/Options/GridContainer"]
 layout_mode = 2
@@ -81,20 +81,17 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+toggle_mode = true
 text = "Host"
-
-[node name="StopHosting" type="Button" parent="MarginContainer/Options/GridContainer"]
-visible = false
-layout_mode = 2
-text = "Stop Hosting"
+script = ExtResource("2_udkah")
+toggled_text = "Stop Hosting"
 
 [node name="HostIpAddress" type="Button" parent="MarginContainer/Options/GridContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "127.0.0.1"
-flat = true
+script = ExtResource("3_4c782")
+message = "IP address copied to clipboard!"
 
 [node name="Quit" type="Button" parent="MarginContainer/Options"]
 layout_mode = 2
@@ -104,11 +101,9 @@ text = "Quit"
 auto_translate_mode = 1
 
 [connection signal="pressed" from="MarginContainer/Options/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="MarginContainer/Options/GridContainer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="MarginContainer/Options/GridContainer/Disconnect" to="." method="_on_disconnect_pressed"]
+[connection signal="toggled" from="MarginContainer/Options/GridContainer/Join" to="." method="_on_join_toggled"]
 [connection signal="text_changed" from="MarginContainer/Options/GridContainer/IpAddress" to="." method="_on_ip_address_text_changed"]
 [connection signal="text_submitted" from="MarginContainer/Options/GridContainer/IpAddress" to="." method="_on_ip_address_text_submitted"]
-[connection signal="pressed" from="MarginContainer/Options/GridContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="MarginContainer/Options/GridContainer/StopHosting" to="." method="_on_stop_hosting_pressed"]
+[connection signal="toggled" from="MarginContainer/Options/GridContainer/Host" to="." method="_on_host_toggled"]
 [connection signal="pressed" from="MarginContainer/Options/Quit" to="QuitConfirmationDialog" method="popup_centered"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

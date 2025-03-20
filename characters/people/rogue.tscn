@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://cj8l7a7cmiob1"]
+
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_2lwjv"]
+[ext_resource type="Script" uid="uid://bek1p0v1mqg8b" path="res://characters/movement_attributes.gd" id="2_xgv0t"]
+[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/character_models/rogue.tscn" id="3_tbu1o"]
+
+[sub_resource type="Resource" id="Resource_2uuda"]
+script = ExtResource("2_xgv0t")
+move_speed = 8.0
+turn_rate = 12.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hy1ao"]
+
+[node name="Rogue" type="CharacterBody3D" node_paths=PackedStringArray("character_model")]
+script = ExtResource("1_2lwjv")
+movement_attributes = SubResource("Resource_2uuda")
+character_model = NodePath("Rogue")
+metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hy1ao")
+
+[node name="Rogue" parent="." instance=ExtResource("3_tbu1o")]

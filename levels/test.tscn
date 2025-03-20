@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=8 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
-[ext_resource type="PackedScene" uid="uid://dyhahthciwxpq" path="res://engine/characters/character.tscn" id="2_gxfp0"]
-[ext_resource type="Script" uid="uid://bek1p0v1mqg8b" path="res://engine/characters/movement_attributes.gd" id="3_smmfd"]
-[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/character_models/rogue.tscn" id="6_6g8e2"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://levels/ghost_spawner.gd" id="1_lkjt4"]
+[ext_resource type="PackedScene" uid="uid://cj8l7a7cmiob1" path="res://characters/people/rogue.tscn" id="2_ny0t1"]
+[ext_resource type="PackedScene" uid="uid://turb41ayisd2" path="res://characters/people/king.tscn" id="3_r4e4k"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -15,14 +15,14 @@ size = Vector2(64, 64)
 albedo_texture = ExtResource("1_k5dx8")
 uv1_scale = Vector3(16, 16, 16)
 
-[sub_resource type="Resource" id="Resource_2uuda"]
-script = ExtResource("3_smmfd")
-move_speed = 8.0
-turn_rate = 12.0
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hy1ao"]
-
 [node name="Test" type="Node3D"]
+
+[node name="GhostSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cj8l7a7cmiob1", "uid://turb41ayisd2")
+spawn_path = NodePath("../Ghosts")
+script = ExtResource("1_lkjt4")
+king_scene = ExtResource("3_r4e4k")
+rogue_scene = ExtResource("2_ny0t1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
@@ -40,12 +40,5 @@ mesh = SubResource("PlaneMesh_bkb5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
-[node name="Character" parent="." node_paths=PackedStringArray("character_model") instance=ExtResource("2_gxfp0")]
-movement_attributes = SubResource("Resource_2uuda")
-character_model = NodePath("Rogue")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_hy1ao")
-
-[node name="Rogue" parent="Character" instance=ExtResource("6_6g8e2")]
+[node name="Ghosts" type="Node3D" parent="."]
+unique_name_in_owner = true

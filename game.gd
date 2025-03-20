@@ -8,11 +8,10 @@ signal game_joined(ip_address: String, port: int)
 signal stopped_hosting_game
 signal left_game
 
-@onready var _singleplayer := _initialize_singleplayer()
-@onready var _multiplayer := _initialize_multiplayer()
+@onready var singleplayer_node := _initialize_singleplayer()
+@onready var multiplayer_node := _initialize_multiplayer()
 
 func _ready() -> void:
-	# Preconfigure game.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	pause_game()
 
@@ -36,28 +35,28 @@ func quit_game() -> void:
 	get_tree().quit()
 
 func host_game() -> void:
-	_singleplayer.stop()
-	_multiplayer.host_game()
+	singleplayer_node.stop()
+	multiplayer_node.host_game()
 	game_hosted.emit(Multiplayer.DEFAULT_SERVER_IP, Multiplayer.PORT)
 	print_debug("Started hosting multiplayer game!")
 
 func join_game(ip_address: String) -> void:
 	assert(ip_address.is_valid_ip_address())
-	_singleplayer.stop()
-	_multiplayer.join_game(ip_address)
+	singleplayer_node.stop()
+	multiplayer_node.join_game(ip_address)
 	game_joined.emit(ip_address, Multiplayer.PORT)
 	print_debug("Joined multiplayer game @ %s:%d!" % [ ip_address, Multiplayer.PORT ])
 
 func stop_hosting_game() -> void:
-	_multiplayer.stop_hosting_game()
+	multiplayer_node.stop_hosting_game()
 	stopped_hosting_game.emit()
-	_singleplayer.start()
+	singleplayer_node.start()
 	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:
-	_multiplayer.leave_game()
+	multiplayer_node.leave_game()
 	left_game.emit()
-	_singleplayer.start()
+	singleplayer_node.start()
 	print_debug("Left multiplayer game!")
 
 func _initialize_singleplayer() -> Singleplayer:

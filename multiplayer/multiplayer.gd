@@ -1,7 +1,7 @@
 class_name Multiplayer
 extends MultiplayerSpawner
 
-signal player_connected(peer_id: int, player_info: Dictionary)
+signal player_connected(peer_id: int, player_info: Dictionary, player: SynchronizedPlayer)
 signal player_disconnected(peer_id: int)
 signal server_disconnected
 
@@ -42,8 +42,8 @@ func host_game() -> Error:
 	
 	players[HOST_ID] = host_info
 	assert(host_info.player_id == HOST_ID)
-	_create_player(HOST_ID, host_info)
-	player_connected.emit(HOST_ID, host_info)
+	var new_player := _create_player(HOST_ID, host_info)
+	player_connected.emit(HOST_ID, host_info, new_player)
 	return Error.OK
 
 func join_game(ip_address: String) -> Error:
@@ -68,7 +68,7 @@ func _register_player(new_player_info: Dictionary) -> void:
 	if player_id == HOST_ID: return
 	var new_player := _create_player(player_id, new_player_info)
 	assert(new_player.player_id == player_id)
-	player_connected.emit(player_id, new_player_info)
+	player_connected.emit(player_id, new_player_info, new_player)
 	print_debug("Player %s registered to multiplayer game!" % new_player_info)
 
 func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
@@ -96,7 +96,7 @@ func _on_player_disconnected(id: int) -> void:
 func _on_connected_to_server() -> void:
 	var peer_id := multiplayer.get_unique_id()
 	players[peer_id] = host_info
-	player_connected.emit(peer_id, host_info)
+	player_connected.emit(peer_id, host_info, null)
 	print_debug("Connected to multiplayer server!")
 
 func _on_connection_failed() -> void:

@@ -10,6 +10,7 @@ var look_target := Vector3.BACK
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server(): return
 	apply_direction_input()
 	if not is_on_floor(): apply_gravity(delta)
 	move_and_slide()

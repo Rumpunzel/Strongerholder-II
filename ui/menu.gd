@@ -10,9 +10,8 @@ extends Control
 func _ready() -> void:
 	Game.game_paused.connect(_on_game_paused)
 	Game.game_continued.connect(_on_game_continued)
-	
-	Multiplayer.game_hosted.connect(_on_game_hosted)
-	Multiplayer.stopped_hosting_game.connect(_on_stopped_hosting_game)
+	Game.game_hosted.connect(_on_game_hosted)
+	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
 
 
 func _on_continue_pressed() -> void:
@@ -22,9 +21,9 @@ func _on_join_toggled(joining: bool) -> void:
 	if joining:
 		var ip_address_to_join := ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
-		Multiplayer.join_game(ip_address_to_join)
+		Game.join_game(ip_address_to_join)
 	else:
-		Multiplayer.leave_game()
+		Game.leave_game()
 	ip_address.editable = not joining
 	host_button.disabled = joining
 
@@ -38,9 +37,9 @@ func _on_ip_address_text_submitted(new_ip_address: String) -> void:
 
 func _on_host_toggled(hosting: bool) -> void:
 	if hosting:
-		Multiplayer.host_game()
+		Game.host_game()
 	else:
-		Multiplayer.stop_hosting_game()
+		Game.stop_hosting_game()
 	join_button.disabled = hosting
 	ip_address.editable = not hosting
 

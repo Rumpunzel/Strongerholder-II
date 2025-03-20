@@ -1,9 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=10 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
 [ext_resource type="PackedScene" uid="uid://dyhahthciwxpq" path="res://engine/characters/character.tscn" id="2_gxfp0"]
-[ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://levels/player/player.gd" id="2_ltji4"]
-[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://levels/camera/top_down_camera.gd" id="2_r4e4k"]
 [ext_resource type="Script" uid="uid://bek1p0v1mqg8b" path="res://engine/characters/movement_attributes.gd" id="3_smmfd"]
 [ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/character_models/rogue.tscn" id="6_6g8e2"]
 
@@ -41,19 +39,6 @@ shape = SubResource("BoxShape3D_2lmav")
 mesh = SubResource("PlaneMesh_bkb5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
-
-[node name="Player" type="Node" parent="." node_paths=PackedStringArray("character", "camera")]
-process_mode = 3
-script = ExtResource("2_ltji4")
-character = NodePath("../Character")
-camera = NodePath("../TopDownCamera")
-metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
-
-[node name="TopDownCamera" type="Camera3D" parent="."]
-fov = 30.0
-script = ExtResource("2_r4e4k")
-distance_off_ground = 20.0
-distance_from_follow = 20.0
 
 [node name="Character" parent="." node_paths=PackedStringArray("character_model") instance=ExtResource("2_gxfp0")]
 movement_attributes = SubResource("Resource_2uuda")

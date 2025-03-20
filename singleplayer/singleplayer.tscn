@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cleyndjgmibpv"]
+
+[ext_resource type="Script" uid="uid://7ar5hadplpkr" path="res://singleplayer/singleplayer.gd" id="1_f8rh1"]
+[ext_resource type="PackedScene" uid="uid://ckcrpkujohkql" path="res://singleplayer/player.tscn" id="2_ycoxv"]
+
+[node name="Singleplayer" type="Node"]
+script = ExtResource("1_f8rh1")
+player_scene = ExtResource("2_ycoxv")
+metadata/_custom_type_script = "uid://7ar5hadplpkr"

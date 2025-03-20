@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://citi18cutmbiw"]
+
+[ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://multiplayer/multiplayer.gd" id="1_jpmbv"]
+[ext_resource type="PackedScene" uid="uid://cuclrr5bep4gn" path="res://multiplayer/synchronized_player.tscn" id="2_0ooqr"]
+
+[node name="Multiplayer" type="MultiplayerSpawner"]
+_spawnable_scenes = PackedStringArray("uid://cuclrr5bep4gn")
+spawn_path = NodePath("SynchronizedPlayers")
+script = ExtResource("1_jpmbv")
+player_scene = ExtResource("2_0ooqr")
+metadata/_custom_type_script = "uid://dxd0m5wbpm1q5"
+
+[node name="SynchronizedPlayers" type="Node" parent="."]
+unique_name_in_owner = true

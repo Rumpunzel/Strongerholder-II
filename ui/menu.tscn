@@ -24,6 +24,7 @@ join_button = NodePath("MarginContainer/Options/GridContainer/Join")
 ip_address = NodePath("MarginContainer/Options/GridContainer/IpAddress")
 host_button = NodePath("MarginContainer/Options/GridContainer/Host")
 host_ip_address_button = NodePath("MarginContainer/Options/GridContainer/HostIpAddress")
+metadata/_custom_type_script = "uid://yu3m6ywkwlvf"
 metadata/_edit_lock_ = true
 
 [node name="Background" type="TextureRect" parent="."]
@@ -69,6 +70,7 @@ toggle_mode = true
 text = "Join"
 script = ExtResource("2_udkah")
 toggled_text = "Disconnect"
+metadata/_custom_type_script = "uid://cpyey1rgiu5s0"
 
 [node name="IpAddress" type="LineEdit" parent="MarginContainer/Options/GridContainer"]
 layout_mode = 2
@@ -85,13 +87,16 @@ toggle_mode = true
 text = "Host"
 script = ExtResource("2_udkah")
 toggled_text = "Stop Hosting"
+metadata/_custom_type_script = "uid://cpyey1rgiu5s0"
 
 [node name="HostIpAddress" type="Button" parent="MarginContainer/Options/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+disabled = true
 script = ExtResource("3_4c782")
 message = "IP address copied to clipboard!"
+metadata/_custom_type_script = "uid://cpw5mv8f3f0o2"
 
 [node name="Quit" type="Button" parent="MarginContainer/Options"]
 layout_mode = 2

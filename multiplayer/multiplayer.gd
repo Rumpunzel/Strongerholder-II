@@ -1,31 +1,31 @@
-extends Node
+class_name Multiplayer
+extends MultiplayerSpawner
 
-signal game_hosted(ip_address: String, port: int)
-signal game_joined(ip_address: String, port: int)
-signal stopped_hosting_game
-signal left_game
-
-signal player_connected(peer_id: int)
+signal player_connected(peer_id: int, player_info: Dictionary)
 signal player_disconnected(peer_id: int)
 signal server_disconnected
 
 const PORT := 7000
 const DEFAULT_SERVER_IP := "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS := 4
+const HOST_ID := 1
+
+@export var player_scene: PackedScene
 
 # This will contain player info for every player,
 # with the keys being each player's unique IDs.
-var players: Dictionary[int, int] = { }
+var players: Dictionary[int, Dictionary] = { }
 
 # This is the local player info. This should be modified locally
 # before the connection is made. It will be passed to every other peer.
 # For example, the value of "name" can be set to something the player
 # entered in a UI scene.
-var host_id := 1
-var host_info := host_id
+var host_info := {
+	"name": "Name",
+	"player_id": 1,
+}
 
-var players_loaded := 0
-
+@onready var _players: Node = %SynchronizedPlayers
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -34,18 +34,16 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
-
 func host_game() -> Error:
 	var server_peer := ENetMultiplayerPeer.new()
 	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
-	game_hosted.emit(DEFAULT_SERVER_IP, PORT)
 	
-	players[host_id] = host_info
-	assert(host_id == host_info)
-	player_connected.emit(host_id, host_info)
-	print_debug("Started hosting multiplayer game!")
+	players[HOST_ID] = host_info
+	assert(host_info.player_id == HOST_ID)
+	_create_player(HOST_ID, host_info)
+	player_connected.emit(HOST_ID, host_info)
 	return Error.OK
 
 func join_game(ip_address: String) -> Error:
@@ -54,45 +52,33 @@ func join_game(ip_address: String) -> Error:
 	var error := client_peer.create_client(ip_address, PORT)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
-	game_joined.emit(ip_address, PORT)
-	print_debug("Joined multiplayer game @ %s:%d!" % [ ip_address, PORT ])
 	return Error.OK
 
 func stop_hosting_game() -> void:
 	multiplayer.multiplayer_peer = null
 	players.clear()
-	stopped_hosting_game.emit()
-	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:
 	multiplayer.multiplayer_peer = null
 	players.clear()
-	left_game.emit()
-	print_debug("Left multiplayer game!")
-
-# When the server decides to start the game from a UI scene, do Multiplayer.load_game.rpc(filepath)
-@rpc("call_local", "reliable")
-func load_game(game_scene_path: String):
-	get_tree().change_scene_to_file(game_scene_path)
-
-# Every peer will call this when they have loaded the game scene.
-@rpc("any_peer", "call_local", "reliable")
-func player_loaded():
-	if not multiplayer.is_server(): return
-	players_loaded += 1
-	if players_loaded == players.size():
-		#Game.start_game()
-		players_loaded = 0
-
 
 @rpc("any_peer", "reliable")
-func _register_player(player_info: int) -> void:
+func _register_player(new_player_info: Dictionary) -> void:
 	var player_id := multiplayer.get_remote_sender_id()
-	player_info = player_id
-	players[player_id] = player_info
-	assert(player_id == player_info)
-	player_connected.emit(player_id, player_info)
-	print_debug("Player %s registered to multiplayer game!" % player_info)
+	if player_id == HOST_ID: return
+	var new_player := _create_player(player_id, new_player_info)
+	assert(new_player.player_id == player_id)
+	player_connected.emit(player_id, new_player_info)
+	print_debug("Player %s registered to multiplayer game!" % new_player_info)
+
+func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
+	player_info.player_id = id
+	players[id] = player_info
+	assert(player_info.player_id == id)
+	var new_player: SynchronizedPlayer = player_scene.instantiate()
+	new_player.player_id = id
+	_players.add_child(new_player)
+	return new_player
 
 # When a peer connects, send them the host info.
 # This allows transfer of all desired data for each player, not only the unique ID.
@@ -100,6 +86,9 @@ func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, host_info)
 
 func _on_player_disconnected(id: int) -> void:
+	var disconnected_player := _players.get_node("%d" % id)
+	_players.remove_child(disconnected_player)
+	disconnected_player.queue_free()
 	players.erase(id)
 	player_disconnected.emit(id)
 	print_debug("Player with id %d disconnected from the multiplayer game!" % id)

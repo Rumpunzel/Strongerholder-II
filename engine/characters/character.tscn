@@ -4,3 +4,4 @@
 
 [node name="Character" type="CharacterBody3D"]
 script = ExtResource("1_rg722")
+metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"

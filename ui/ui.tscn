@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://5t3cy8xd6fa2"]
+
+[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://ui/menu.gd" id="1_nb4k0"]
+
+[sub_resource type="Gradient" id="Gradient_ofb81"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nb4k0"]
+gradient = SubResource("Gradient_ofb81")
+width = 1024
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu" type="Control" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nb4k0")
+
+[node name="Background" type="TextureRect" parent="Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_nb4k0")
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_right = 79.0
+offset_bottom = 33.0
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+
+[node name="Options" type="VBoxContainer" parent="Menu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 16
+
+[node name="Continue" type="Button" parent="Menu/MarginContainer/Options"]
+layout_mode = 2
+text = "Continue"
+
+[node name="Quit" type="Button" parent="Menu/MarginContainer/Options"]
+layout_mode = 2
+text = "Quit"
+
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="Menu"]
+
+[connection signal="pressed" from="Menu/MarginContainer/Options/Continue" to="Menu" method="_on_continue_pressed"]
+[connection signal="pressed" from="Menu/MarginContainer/Options/Quit" to="Menu/QuitConfirmationDialog" method="popup_centered"]
+[connection signal="confirmed" from="Menu/QuitConfirmationDialog" to="Menu" method="_on_quit_confirmation_dialog_confirmed"]

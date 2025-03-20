@@ -43,6 +43,7 @@ skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
 [node name="Player" type="Node" parent="." node_paths=PackedStringArray("character", "camera")]
+process_mode = 3
 script = ExtResource("2_ltji4")
 character = NodePath("../Character")
 camera = NodePath("../TopDownCamera")

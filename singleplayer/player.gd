@@ -21,6 +21,14 @@ func _process(_delta: float) -> void:
 	character_controller.direction_input = _camera.get_adjusted_movement(input_direction)
 	_camera.frame_node(character_controller)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("pause_game") and not get_tree().paused:
+		Game.pause_game()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_released("unpause_game") and get_tree().paused:
+		Game.continue_game()
+		get_viewport().set_input_as_handled()
+
 func to_synchronized_player() -> SynchronizedPlayer:
 	var new_player: SynchronizedPlayer = _synchronized_player_scene.instantiate()
 	new_player.player_id = Multiplayer.HOST_ID

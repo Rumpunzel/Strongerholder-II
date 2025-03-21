@@ -18,14 +18,6 @@ func _ready() -> void:
 	pause_game()
 	singleplayer_node.start.call_deferred()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_released("pause_game") and not get_tree().paused:
-		pause_game()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_released("unpause_game") and get_tree().paused:
-		continue_game()
-		get_viewport().set_input_as_handled()
-
 func pause_game() -> void:
 	get_tree().paused = true
 	game_paused.emit()

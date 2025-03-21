@@ -18,7 +18,7 @@ config/icon="res://helmet.png"
 [autoload]
 
 Game="*res://game.gd"
-UI="res://ui/ui.tscn"
+UserInterface="*res://user_interface/user_interface.gd"
 ToastParty="*res://addons/toastparty/toast-autoload.gd"
 
 [debug]

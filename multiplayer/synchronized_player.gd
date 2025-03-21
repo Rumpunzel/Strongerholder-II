@@ -43,6 +43,14 @@ func _process(_delta: float) -> void:
 	character_controller.direction_input = _camera.get_adjusted_movement(_input_synchronizer.input_direction)
 	_camera.frame_node(character_controller)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("pause_game") and not get_tree().paused:
+		UserInterface.menu.show_menu()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_released("unpause_game") and get_tree().paused:
+		UserInterface.menu.hide_menu()
+		get_viewport().set_input_as_handled()
+
 static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 	var synchronized_player_scene: PackedScene = load("uid://cuclrr5bep4gn")
 	var new_player: SynchronizedPlayer = synchronized_player_scene.instantiate()

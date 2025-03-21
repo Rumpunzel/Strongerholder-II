@@ -37,7 +37,6 @@ func host_game(host_from_singleplayer: SynchronizedPlayer) -> Error:
 		host_player = host_from_singleplayer
 	else:
 		host_player = _create_player(HOST_ID, get_host_info())
-	assert(host_player.player_id == HOST_ID)
 	return Error.OK
 
 func join_game(ip_address: String) -> Error:

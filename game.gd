@@ -8,11 +8,13 @@ signal game_joined(ip_address: String, port: int)
 signal stopped_hosting_game
 signal left_game
 
-@onready var singleplayer_node := _initialize_singleplayer()
-@onready var multiplayer_node := _initialize_multiplayer()
+var singleplayer_node: Singleplayer
+var multiplayer_node: Multiplayer
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_initialize_singleplayer()
+	_initialize_multiplayer()
 	pause_game()
 	singleplayer_node.start.call_deferred()
 
@@ -60,12 +62,17 @@ func leave_game() -> void:
 	singleplayer_node.start()
 	print_debug("Left multiplayer game!")
 
-func _initialize_singleplayer() -> Singleplayer:
-	var new_singleplayer: Singleplayer = preload("uid://cleyndjgmibpv").instantiate()
-	add_child(new_singleplayer)
-	return new_singleplayer
+func _initialize_singleplayer() -> void:
+	assert(not singleplayer_node)
+	singleplayer_node = preload("uid://cleyndjgmibpv").instantiate()
+	add_child(singleplayer_node)
 
-func _initialize_multiplayer() -> Multiplayer:
-	var new_multiplayer: Multiplayer = preload("uid://citi18cutmbiw").instantiate()
-	add_child(new_multiplayer)
-	return new_multiplayer
+func _initialize_multiplayer() -> void:
+	assert(not multiplayer_node)
+	multiplayer_node = preload("uid://citi18cutmbiw").instantiate()
+	add_child(multiplayer_node)
+	multiplayer_node.server_disconnected.connect(_on_server_disconnected)
+
+func _on_server_disconnected() -> void:
+	print_debug("Server disconnected!")
+	leave_game()

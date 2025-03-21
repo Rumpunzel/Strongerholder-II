@@ -16,6 +16,7 @@ extends Node
 @onready var _camera: TopDownCamera = %TopDownCamera
 
 func _ready() -> void:
+	_camera.current = multiplayer.get_unique_id() == player_id
 	if not character:
 		_camera.frame_point(Vector3.ZERO)
 		printerr("No character supplied for player %s!" % self.name)

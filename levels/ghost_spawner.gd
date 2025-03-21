@@ -13,7 +13,7 @@ func _on_player_connected(peer_id: int, _player_info: Dictionary, player: Synchr
 		return
 	var new_ghost: CharacterController = king_scene.instantiate() if peer_id == Multiplayer.HOST_ID else rogue_scene.instantiate()
 	new_ghost.name = "%d" % peer_id
-	%Ghosts.add_child(new_ghost)
+	%Ghosts.add_child(new_ghost, true)
 	player.character = new_ghost
 
 func _on_player_disconnected(peer_id: int) -> void:

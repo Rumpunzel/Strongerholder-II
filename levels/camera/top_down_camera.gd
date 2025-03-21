@@ -30,12 +30,13 @@ func frame_point(point_to_frame: Vector3) -> void:
 	position = point_to_frame + offset
 	look_at(point_to_frame, Vector3.UP)
 
-func get_adjusted_movement(input_vector: Vector2) -> Vector3:
+func get_adjusted_movement(input_vector: Vector2) -> Vector2:
 	var camera_forward := transform.basis.z
 	camera_forward.y = 0.0
 	var camera_right := transform.basis.x
 	camera_right.y = 0.0
-	return camera_forward.normalized() * input_vector.y + camera_right.normalized() * input_vector.x
+	var adjusted_input_vector := camera_forward.normalized() * input_vector.y + camera_right.normalized() * input_vector.x
+	return Vector2(adjusted_input_vector.x, adjusted_input_vector.z)
 
 func mouse_as_world_point() -> CameraRay:
 	var mouse_position := get_viewport().get_mouse_position()

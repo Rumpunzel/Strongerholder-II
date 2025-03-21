@@ -42,8 +42,7 @@ func host_game() -> Error:
 	
 	players[HOST_ID] = host_info
 	assert(host_info.player_id == HOST_ID)
-	var new_player := _create_player(HOST_ID, host_info)
-	player_connected.emit(HOST_ID, host_info, new_player)
+	_create_player(HOST_ID, host_info)
 	return Error.OK
 
 func join_game(ip_address: String) -> Error:
@@ -66,9 +65,7 @@ func leave_game() -> void:
 func _register_player(new_player_info: Dictionary) -> void:
 	var player_id := multiplayer.get_remote_sender_id()
 	if player_id == HOST_ID: return
-	var new_player := _create_player(player_id, new_player_info)
-	assert(new_player.player_id == player_id)
-	player_connected.emit(player_id, new_player_info, new_player)
+	_create_player(player_id, new_player_info)
 	print_debug("Player %s registered to multiplayer game!" % new_player_info)
 
 func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
@@ -77,7 +74,10 @@ func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	assert(player_info.player_id == id)
 	var new_player: SynchronizedPlayer = player_scene.instantiate()
 	new_player.player_id = id
-	_players.add_child(new_player)
+	assert(new_player.player_id == id)
+	_players.add_child(new_player, true)
+	player_connected.emit(id, player_info, new_player)
+	print_debug("Player %s created for multiplayer game!" % new_player.name)
 	return new_player
 
 # When a peer connects, send them the host info.

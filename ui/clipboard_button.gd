@@ -40,7 +40,7 @@ func _set(property: StringName, value: Variant) -> bool:
 			@warning_ignore("unsafe_cast")
 			var new_text := value as String
 			text = new_text
-			disabled = new_text.is_empty()
-			text_changed.emit(new_text)
+			disabled = text.is_empty()
+			text_changed.emit(text)
 			return true
 	return false

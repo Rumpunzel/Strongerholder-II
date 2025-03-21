@@ -1,5 +1,5 @@
 class_name Multiplayer
-extends MultiplayerSpawner
+extends Node
 
 signal player_connected(peer_id: int, player_info: Dictionary, player: SynchronizedPlayer)
 signal player_disconnected(peer_id: int)

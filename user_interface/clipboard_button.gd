@@ -22,7 +22,9 @@ func _on_pressed() -> void:
 	_show_toast()
 
 func _show_toast() -> void:
-	if message.is_empty(): return
+	if message.is_empty():
+		printerr("No message, not showing ClipboardButton toast!")
+		return
 	ToastParty.show({
 		"text": message,
 		"bgcolor": background_color,

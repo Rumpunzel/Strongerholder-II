@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
 [ext_resource type="Script" uid="uid://witnma4yody0" path="res://levels/ghost_spawner.gd" id="1_lkjt4"]
@@ -6,6 +6,8 @@
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://characters/people/king.tres" id="2_r4e4k"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://characters/people/rogue.tres" id="3_pnvjf"]
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://levels/character_spawner.gd" id="4_pnvjf"]
+[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="7_2grjb"]
+[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/world_characters/character_models/rogue.tscn" id="8_qhvcx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -54,3 +56,9 @@ unique_name_in_owner = true
 [node name="VisiterGhosts" type="Node3D" parent="."]
 
 [node name="Characters" type="Node3D" parent="."]
+
+[node name="King" parent="Characters" instance=ExtResource("7_2grjb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+
+[node name="Rogue" parent="Characters" instance=ExtResource("8_qhvcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)

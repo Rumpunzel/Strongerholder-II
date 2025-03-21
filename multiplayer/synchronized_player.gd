@@ -44,11 +44,8 @@ func _process(_delta: float) -> void:
 	_camera.frame_node(character_controller)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_released("pause_game") and not get_tree().paused:
+	if event.is_action_released("toggle_menu"):
 		UserInterface.menu.show_menu()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_released("unpause_game") and get_tree().paused:
-		UserInterface.menu.hide_menu()
 		get_viewport().set_input_as_handled()
 
 static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:

@@ -66,5 +66,5 @@ func _initialize_multiplayer() -> void:
 	multiplayer_node.server_disconnected.connect(_on_server_disconnected)
 
 func _on_server_disconnected() -> void:
+	left_game.emit()
 	print_debug("Server disconnected!")
-	leave_game()

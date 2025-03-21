@@ -55,11 +55,11 @@ func join_game(ip_address: String) -> Error:
 
 func stop_hosting_game() -> void:
 	multiplayer.multiplayer_peer = null
-	players.clear()
+	_remove_all_players()
 
 func leave_game() -> void:
 	multiplayer.multiplayer_peer = null
-	players.clear()
+	_remove_all_players()
 
 @rpc("any_peer", "reliable")
 func _register_player(new_player_info: Dictionary) -> void:
@@ -80,16 +80,24 @@ func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	print_debug("Player %s created for multiplayer game!" % new_player.name)
 	return new_player
 
+func _remove_player(player: SynchronizedPlayer) -> void:
+	players.erase(player.player_id)
+	_players.remove_child(player)
+	player.queue_free()
+	print_debug("Removed player with id %d from the multiplayer game!" % player.player_id)
+
+func _remove_all_players() -> void:
+	for player: SynchronizedPlayer in _players.get_children():
+		_remove_player(player)
+
 # When a peer connects, send them the host info.
 # This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, host_info)
 
 func _on_player_disconnected(id: int) -> void:
-	var disconnected_player := _players.get_node("%d" % id)
-	_players.remove_child(disconnected_player)
-	disconnected_player.queue_free()
-	players.erase(id)
+	var disconnected_player: SynchronizedPlayer = _players.get_node("%d" % id)
+	_remove_player(disconnected_player)
 	player_disconnected.emit(id)
 	print_debug("Player with id %d disconnected from the multiplayer game!" % id)
 

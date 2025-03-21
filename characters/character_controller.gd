@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 	if character_model: character_model.play_animation(_normalized_velocity)
 
 func _apply_direction_input(delta: float) -> void:
-	if not multiplayer.is_server(): return
+	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server(): return
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
 	var move_speed := character.movement_attributes.move_speed

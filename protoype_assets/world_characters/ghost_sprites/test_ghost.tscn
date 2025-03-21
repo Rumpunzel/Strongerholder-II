@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=27 format=3 uid="uid://bf4cxhr3kab7j"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://protoype_assets/world_characters/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
 [ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_faw76"]
@@ -21,6 +21,11 @@
 [ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="19_mnelq"]
 [ext_resource type="Texture2D" uid="uid://bvuy0s8b8ywrw" path="res://protoype_assets/dont_starve_ghosts/wortox.webp" id="20_3mkyr"]
 [ext_resource type="Texture2D" uid="uid://rku3rl1yv06c" path="res://protoype_assets/dont_starve_ghosts/wurt.webp" id="21_3eeba"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_faw76"]
+properties/0/path = NodePath(".:_random_frame")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g5i5u"]
 animations = [{
@@ -172,6 +177,9 @@ _data = {
 
 [node name="TestGhost" type="Node3D"]
 script = ExtResource("1_2ku6h")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_faw76")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 unique_name_in_owner = true

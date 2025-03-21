@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=26 format=3 uid="uid://bf4cxhr3kab7j"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://protoype_assets/world_characters/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
 [ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_faw76"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="5_yw3xk"]
 [ext_resource type="Texture2D" uid="uid://dttbm8uiw4atv" path="res://protoype_assets/dont_starve_ghosts/webber.webp" id="6_ialbb"]
 [ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.webp" id="7_x1f5i"]
-[ext_resource type="Texture2D" uid="uid://dmvw6blvqe5op" path="res://protoype_assets/dont_starve_ghosts/werebeaver.webp" id="8_5yf2r"]
 [ext_resource type="Texture2D" uid="uid://c2wvnh8ic30hw" path="res://protoype_assets/dont_starve_ghosts/weregoose.webp" id="9_kli6d"]
 [ext_resource type="Texture2D" uid="uid://cdxowlqn1k3p" path="res://protoype_assets/dont_starve_ghosts/wes.webp" id="11_iuxal"]
 [ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.webp" id="12_sp1ny"]
@@ -47,9 +46,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_x1f5i")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_5yf2r")
 }, {
 "duration": 1.0,
 "texture": ExtResource("9_kli6d")
@@ -184,7 +180,7 @@ replication_config = SubResource("SceneReplicationConfig_faw76")
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 unique_name_in_owner = true
 offset = Vector2(0, 273)
-pixel_size = 0.005
+pixel_size = 0.003
 billboard = 1
 sprite_frames = SubResource("SpriteFrames_g5i5u")
 speed_scale = 0.0

@@ -9,7 +9,7 @@ extends WorldCharacter
 		_animated_sprite.frame = _random_frame
 
 func _ready() -> void:
-	if _random_frame < 0: _random_frame = randi() % 20
+	if _random_frame < 0: _random_frame = randi() % 19
 
 func play_animation(_normalized_velocity: Vector3) -> void:
 	pass

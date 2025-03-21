@@ -2,7 +2,7 @@ class_name Singleplayer
 extends Node
 
 signal started(player: Player)
-signal stopped
+signal stopped(host_from_singleplayer: SynchronizedPlayer)
 
 var player: Player
 
@@ -16,6 +16,7 @@ func start(host_as_singleplayer: Player = null) -> Player:
 		player = _player_scene.instantiate()
 	add_child(player)
 	started.emit(player)
+	print_debug("Starting singleplayer!")
 	return player
 
 func stop() -> SynchronizedPlayer:
@@ -24,5 +25,6 @@ func stop() -> SynchronizedPlayer:
 	remove_child(player)
 	player.queue_free()
 	player = null
-	stopped.emit()
+	stopped.emit(host_from_singleplayer)
+	print_debug("Stopping singleplayer!")
 	return host_from_singleplayer

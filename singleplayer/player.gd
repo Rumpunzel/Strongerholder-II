@@ -23,6 +23,7 @@ func _process(_delta: float) -> void:
 
 func to_synchronized_player() -> SynchronizedPlayer:
 	var new_player: SynchronizedPlayer = _synchronized_player_scene.instantiate()
+	new_player.player_id = Multiplayer.HOST_ID
 	new_player.player_name = Game.multiplayer_node.player_name
 	new_player.character_controller = character_controller
 	return new_player

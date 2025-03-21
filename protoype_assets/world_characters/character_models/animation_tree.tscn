@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3j5yg7q75qbo"]
-
-[ext_resource type="AnimationNodeStateMachine" uid="uid://dq7kyxeehjpe0" path="res://protoype_assets/world_characters/character_models/quaternius_animation_tree.tres" id="1_fa5fw"]
-
-[node name="AnimationTree" type="AnimationTree"]
-tree_root = ExtResource("1_fa5fw")
-anim_player = NodePath("../AnimationPlayer")
-parameters/Walk/blend_position = 0.0

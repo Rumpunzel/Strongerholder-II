@@ -1,7 +1,7 @@
 class_name GhostSprite
 extends WorldCharacter
 
-@export var animated_sprite: AnimatedSprite3D
+@onready var animated_sprite: AnimatedSprite3D = %AnimatedSprite3D
 
 func _ready() -> void:
 	animated_sprite.frame = randi() % 20

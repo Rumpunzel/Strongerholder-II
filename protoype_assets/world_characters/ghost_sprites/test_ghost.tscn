@@ -170,11 +170,11 @@ _data = {
 &"float": SubResource("Animation_88aim")
 }
 
-[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("animated_sprite")]
+[node name="TestGhost" type="Node3D"]
 script = ExtResource("1_2ku6h")
-animated_sprite = NodePath("AnimatedSprite3D")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+unique_name_in_owner = true
 offset = Vector2(0, 273)
 pixel_size = 0.005
 billboard = 1

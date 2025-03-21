@@ -36,8 +36,8 @@ func quit_game() -> void:
 	get_tree().quit()
 
 func host_game() -> void:
-	singleplayer_node.stop()
-	multiplayer_node.host_game()
+	var host_from_singleplayer := singleplayer_node.stop()
+	multiplayer_node.host_game(host_from_singleplayer)
 	game_hosted.emit(Multiplayer.DEFAULT_SERVER_IP, Multiplayer.PORT)
 	print_debug("Started hosting multiplayer game!")
 
@@ -49,9 +49,9 @@ func join_game(ip_address: String) -> void:
 	print_debug("Joined multiplayer game @ %s:%d!" % [ ip_address, Multiplayer.PORT ])
 
 func stop_hosting_game() -> void:
-	multiplayer_node.stop_hosting_game()
+	var host_as_singleplayer := multiplayer_node.stop_hosting_game()
 	stopped_hosting_game.emit()
-	singleplayer_node.start()
+	singleplayer_node.start(host_as_singleplayer)
 	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:

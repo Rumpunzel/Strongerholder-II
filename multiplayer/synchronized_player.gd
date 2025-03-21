@@ -27,6 +27,8 @@ var _character_controller_path: NodePath:
 		await get_tree().process_frame
 		character_controller = get_node(_character_controller_path)
 
+var _player_scene: PackedScene = load("uid://ckcrpkujohkql")
+
 @onready var _input_synchronizer: InputSynchronizer = %InputSynchronizer
 @onready var _camera: TopDownCamera = %TopDownCamera
 
@@ -42,7 +44,8 @@ func _process(_delta: float) -> void:
 	_camera.frame_node(character_controller)
 
 static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
-	var new_player: SynchronizedPlayer = preload("uid://cuclrr5bep4gn").instantiate()
+	var synchronized_player_scene: PackedScene = load("uid://cuclrr5bep4gn")
+	var new_player: SynchronizedPlayer = synchronized_player_scene.instantiate()
 	new_player.player_name = player_info.name
 	assert(new_player.player_name == player_info.name)
 	new_player.player_id = player_info.id
@@ -51,3 +54,8 @@ static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 
 func to_player_info() -> Dictionary:
 	return { "id": player_id, "name": player_name, }
+
+func to_player() -> Player:
+	var new_player: Player = _player_scene.instantiate()
+	new_player.character_controller = character_controller
+	return new_player

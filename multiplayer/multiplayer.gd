@@ -11,7 +11,6 @@ const MAX_CONNECTIONS := 4
 const HOST_ID := 1
 
 @export var player_name: String
-@export var player_scene: PackedScene
 
 # This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
 var players: Dictionary[int, SynchronizedPlayer] = { }
@@ -27,13 +26,17 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
-func host_game() -> Error:
+func host_game(host_from_singleplayer: SynchronizedPlayer) -> Error:
 	var server_peer := ENetMultiplayerPeer.new()
 	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
 	
-	host_player = _create_player(HOST_ID, get_host_info())
+	if host_from_singleplayer:
+		_add_player(host_from_singleplayer)
+		host_player = host_from_singleplayer
+	else:
+		host_player = _create_player(HOST_ID, get_host_info())
 	assert(host_player.player_id == HOST_ID)
 	return Error.OK
 
@@ -45,9 +48,13 @@ func join_game(ip_address: String) -> Error:
 	multiplayer.multiplayer_peer = client_peer
 	return Error.OK
 
-func stop_hosting_game() -> void:
+# Stops hosting the multiplayer game
+# Returns the host player converted to singleplayer
+func stop_hosting_game() -> Player:
 	multiplayer.multiplayer_peer = null
+	var host_as_singleplayer := host_player.to_player()
 	_remove_all_players()
+	return host_as_singleplayer
 
 func leave_game() -> void:
 	multiplayer.multiplayer_peer = null
@@ -67,11 +74,15 @@ func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	player_info.id = id
 	assert(player_info.id == id)
 	var new_player := SynchronizedPlayer.from_player_info(player_info)
-	_players.add_child(new_player, true)
-	players[id] = new_player
-	player_connected.emit(id, new_player)
 	print_debug("Player %s created for multiplayer game!" % player_info)
+	_add_player(new_player)
 	return new_player
+
+func _add_player(new_player: SynchronizedPlayer) -> void:
+	_players.add_child(new_player, true)
+	players[new_player.player_id] = new_player
+	player_connected.emit(new_player.player_id, new_player)
+	print_debug("Player %s added to multiplayer game!" % new_player.to_player_info())
 
 func _remove_player(player: SynchronizedPlayer) -> void:
 	players.erase(player.player_id)

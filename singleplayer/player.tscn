@@ -12,6 +12,4 @@ unique_name_in_owner = true
 current = true
 fov = 30.0
 script = ExtResource("2_wu7mp")
-distance_off_ground = 20.0
-distance_from_follow = 20.0
 metadata/_custom_type_script = "uid://ckbhvwumadh3b"

@@ -3,8 +3,8 @@ extends Camera3D
 
 const _ray_length := 1000.0
 
-@export var distance_off_ground := 60.0
-@export var distance_from_follow := 60.0
+@export var distance_off_ground := 20.0
+@export var distance_from_follow := 20.0
 @export var camera_angle_offset := 45.0
 @export var camera_turn_angle := 90.0
 @export var zoom := 1.0

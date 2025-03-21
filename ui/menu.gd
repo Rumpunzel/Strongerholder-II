@@ -6,13 +6,11 @@ extends Control
 @export var host_button: Button
 @export var host_ip_address_button: Button
 
-
 func _ready() -> void:
 	Game.game_paused.connect(_on_game_paused)
 	Game.game_continued.connect(_on_game_continued)
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
-
 
 func _on_continue_pressed() -> void:
 	Game.continue_game()
@@ -36,10 +34,8 @@ func _on_ip_address_text_submitted(new_ip_address: String) -> void:
 	join_button.button_pressed = true
 
 func _on_host_toggled(hosting: bool) -> void:
-	if hosting:
-		Game.host_game()
-	else:
-		Game.stop_hosting_game()
+	if hosting: Game.host_game()
+	else: Game.stop_hosting_game()
 	join_button.disabled = hosting
 	ip_address.editable = not hosting
 

@@ -14,6 +14,8 @@ signal left_game
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	pause_game()
+	await get_tree().process_frame
+	singleplayer_node.start()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("pause_game") and not get_tree().paused:

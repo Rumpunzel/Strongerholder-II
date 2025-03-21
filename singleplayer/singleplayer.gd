@@ -6,18 +6,18 @@ signal stopped
 
 @export var player_scene: PackedScene
 
-@onready var _player: Player = start()
+var player: Player
 
 func start() -> Player:
-	assert(_player == null)
-	_player = player_scene.instantiate()
-	add_child(_player)
-	started.emit(_player)
-	return _player
+	assert(player == null)
+	player = player_scene.instantiate()
+	add_child(player)
+	started.emit(player)
+	return player
 
 func stop() -> void:
-	assert(_player != null)
-	remove_child(_player)
-	_player.queue_free()
-	_player = null
+	if not player: return
+	remove_child(player)
+	player.queue_free()
+	player = null
 	stopped.emit()

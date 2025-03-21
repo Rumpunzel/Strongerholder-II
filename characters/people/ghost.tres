@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Character" load_steps=5 format=3 uid="uid://dy6kyxtiog1ac"]
+
+[ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://protoype_assets/world_characters/ghost_sprites/test_ghost.tscn" id="1_b8jju"]
+[ext_resource type="PackedScene" uid="uid://b262a6ebbwsbl" path="res://characters/ghost.tscn" id="2_6mhvl"]
+[ext_resource type="Resource" uid="uid://dy1fytac5padi" path="res://characters/default_movement_attributes.tres" id="2_b8jju"]
+[ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://characters/character.gd" id="3_6mhvl"]
+
+[resource]
+script = ExtResource("3_6mhvl")
+name = "Ghost"
+color = Color(0, 0, 0, 1)
+movement_attributes = ExtResource("2_b8jju")
+character_scene = ExtResource("2_6mhvl")
+_random_world_characters = Array[PackedScene]([ExtResource("1_b8jju")])
+metadata/_custom_type_script = "uid://ddefcwtx6jfym"

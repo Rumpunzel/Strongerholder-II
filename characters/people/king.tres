@@ -1,13 +1,14 @@
 [gd_resource type="Resource" script_class="Character" load_steps=4 format=3 uid="uid://ro6wvnf88xbo"]
 
-[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/character_models/king.tscn" id="1_0kn5r"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://characters/character.gd" id="1_hac1t"]
 [ext_resource type="Resource" uid="uid://dy1fytac5padi" path="res://characters/default_movement_attributes.tres" id="2_6h5id"]
+[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="3_0kn5r"]
 
 [resource]
 script = ExtResource("1_hac1t")
 name = "King"
 color = Color(0, 0, 0, 1)
 movement_attributes = ExtResource("2_6h5id")
-character_model = ExtResource("1_0kn5r")
+_world_character = ExtResource("3_0kn5r")
+_random_world_characters = Array[PackedScene]([])
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

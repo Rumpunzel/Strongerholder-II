@@ -1,13 +1,14 @@
 [gd_resource type="Resource" script_class="Character" load_steps=4 format=3 uid="uid://d18sc738vkuku"]
 
-[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/character_models/rogue.tscn" id="1_kcow0"]
 [ext_resource type="Resource" uid="uid://dy1fytac5padi" path="res://characters/default_movement_attributes.tres" id="2_pvd8u"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://characters/character.gd" id="3_7rwy5"]
+[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/world_characters/character_models/rogue.tscn" id="3_kcow0"]
 
 [resource]
 script = ExtResource("3_7rwy5")
 name = "Rogue"
 color = Color(0, 0, 0, 1)
 movement_attributes = ExtResource("2_pvd8u")
-character_model = ExtResource("1_kcow0")
+_world_character = ExtResource("3_kcow0")
+_random_world_characters = Array[PackedScene]([])
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

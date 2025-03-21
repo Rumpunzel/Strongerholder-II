@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://5sd2jgms4uso"]
 
-[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://ui/menu.gd" id="1_bwjgb"]
-[ext_resource type="Script" uid="uid://cpyey1rgiu5s0" path="res://ui/toggle_button.gd" id="2_udkah"]
-[ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://ui/clipboard_button.gd" id="3_4c782"]
+[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/menu.gd" id="1_bwjgb"]
+[ext_resource type="Script" uid="uid://cpyey1rgiu5s0" path="res://user_interface/toggle_button.gd" id="2_udkah"]
+[ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://user_interface/clipboard_button.gd" id="3_4c782"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)

@@ -12,6 +12,12 @@ func _ready() -> void:
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
 
+func show_menu() -> void:
+	show()
+
+func hide_menu() -> void:
+	hide()
+
 func _on_continue_pressed() -> void:
 	Game.continue_game()
 
@@ -43,10 +49,10 @@ func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()
 
 func _on_game_paused() -> void:
-	show()
+	show_menu()
 
 func _on_game_continued() -> void:
-	hide()
+	hide_menu()
 
 func _on_game_hosted(host_ip_address: String, _port: int) -> void:
 	host_ip_address_button.text = host_ip_address

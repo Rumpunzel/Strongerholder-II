@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1y1c3gomyjk6"]
 
 [ext_resource type="PackedScene" uid="uid://coxn7n5500mo2" path="res://protoype_assets/quaternius/women/Medieval.blend" id="1_hjupo"]
-[ext_resource type="Script" uid="uid://bpkm2ws12sljg" path="res://protoype_assets/character_models/character_model.gd" id="2_yh02w"]
-[ext_resource type="PackedScene" uid="uid://b3j5yg7q75qbo" path="res://protoype_assets/character_models/animation_tree.tscn" id="3_yh02w"]
+[ext_resource type="Script" uid="uid://bpkm2ws12sljg" path="res://protoype_assets/world_characters/character_models/character_model.gd" id="2_yh02w"]
+[ext_resource type="PackedScene" uid="uid://b3j5yg7q75qbo" path="res://protoype_assets/world_characters/character_models/animation_tree.tscn" id="3_yh02w"]
 
 [node name="Rogue" node_paths=PackedStringArray("animation_tree") instance=ExtResource("1_hjupo")]
 script = ExtResource("2_yh02w")

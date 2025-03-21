@@ -1,5 +1,5 @@
 class_name CharacterModel
-extends Node3D
+extends WorldCharacter
 
 @export var animation_tree: AnimationTree
 

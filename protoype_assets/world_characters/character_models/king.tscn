@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://b55tt1yijxn7r"]
 
 [ext_resource type="PackedScene" uid="uid://ikaw0dqn1dvh" path="res://protoype_assets/quaternius/men/King.blend" id="1_loedp"]
-[ext_resource type="Script" uid="uid://bpkm2ws12sljg" path="res://protoype_assets/character_models/character_model.gd" id="2_k3r55"]
-[ext_resource type="PackedScene" uid="uid://b3j5yg7q75qbo" path="res://protoype_assets/character_models/animation_tree.tscn" id="3_sr0ka"]
+[ext_resource type="Script" uid="uid://bpkm2ws12sljg" path="res://protoype_assets/world_characters/character_models/character_model.gd" id="2_k3r55"]
+[ext_resource type="PackedScene" uid="uid://b3j5yg7q75qbo" path="res://protoype_assets/world_characters/character_models/animation_tree.tscn" id="3_sr0ka"]
 
 [node name="King" node_paths=PackedStringArray("animation_tree") instance=ExtResource("1_loedp")]
 script = ExtResource("2_k3r55")

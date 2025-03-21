@@ -4,28 +4,36 @@ extends CharacterBody3D
 @export var character: Character:
 	set(new_character):
 		character = new_character
-		if character_model:
-			remove_child(character_model)
-			character_model.queue_free()
 		if not character:
+			world_character = null
 			_character_resource_path = ""
 			return
 		name = character.name
-		character_model = character.character_model.instantiate()
-		add_child.call_deferred(character_model, true)
+		world_character = character.get_world_character()
 		_character_resource_path = character.resource_path
+
+var world_character: WorldCharacter:
+	set(new_world_character):
+		if world_character:
+			remove_child(world_character)
+			world_character.queue_free()
+		world_character = new_world_character
+		if not world_character:
+			_world_character_scene_path = ""
+			return
+		add_child.call_deferred(world_character, true)
+		_world_character_scene_path = new_world_character.scene_file_path
 
 var direction_input := Vector2.ZERO
 var look_target := Vector3.BACK
-
-var character_model: CharacterModel
 
 var _is_on_floor := true
 var _normalized_velocity := Vector3.ZERO
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+
 # This is used for multiplayer purposes to synchronize over network
-#  serves otherwise not purpose 
+#  serves otherwise no purpose 
 var _character_resource_path: String:
 	set(new_character_resource_path):
 		_character_resource_path = new_character_resource_path
@@ -33,9 +41,17 @@ var _character_resource_path: String:
 		assert(_character_resource_path.is_absolute_path())
 		character = load(_character_resource_path)
 
+var _world_character_scene_path: String:
+	set(new_world_character_scene_path):
+		_world_character_scene_path = new_world_character_scene_path
+		if world_character or _world_character_scene_path.is_empty(): return
+		assert(_world_character_scene_path.is_absolute_path())
+		var world_character_scene: PackedScene = load(_world_character_scene_path)
+		world_character = world_character_scene.instantiate()
+
 func _physics_process(delta: float) -> void:
 	_apply_direction_input(delta)
-	if character_model: character_model.play_animation(_normalized_velocity)
+	if world_character: world_character.play_animation(_normalized_velocity)
 
 func _apply_direction_input(delta: float) -> void:
 	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server(): return

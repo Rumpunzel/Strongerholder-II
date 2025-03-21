@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyhahthciwxpq"]
+[gd_scene load_steps=4 format=3 uid="uid://b262a6ebbwsbl"]
 
-[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_rg722"]
-[ext_resource type="Shape3D" uid="uid://ch1ytu2ay73d3" path="res://characters/character_collision_shape.tres" id="2_qqr4u"]
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_yxnnu"]
+[ext_resource type="Shape3D" uid="uid://ch1ytu2ay73d3" path="res://characters/character_collision_shape.tres" id="2_v6ax1"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -26,10 +26,9 @@ properties/6/path = NodePath(".:_world_character_scene_path")
 properties/6/spawn = true
 properties/6/replication_mode = 1
 
-[node name="Character" type="CharacterBody3D"]
-collision_layer = 2
-collision_mask = 3
-script = ExtResource("1_rg722")
+[node name="Ghost" type="CharacterBody3D"]
+collision_layer = 128
+script = ExtResource("1_yxnnu")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -37,4 +36,4 @@ replication_config = SubResource("SceneReplicationConfig_3fwhk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = ExtResource("2_qqr4u")
+shape = ExtResource("2_v6ax1")

@@ -11,7 +11,6 @@ extends Node
 func _ready() -> void:
 	if not character_controller:
 		_camera.frame_point(Vector3.ZERO)
-		printerr("No character supplied for player %s!" % self.name)
 		set_process(false)
 
 func _process(_delta: float) -> void:

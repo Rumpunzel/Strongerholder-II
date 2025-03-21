@@ -14,8 +14,7 @@ signal left_game
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	pause_game()
-	await get_tree().process_frame
-	singleplayer_node.start()
+	singleplayer_node.start.call_deferred()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("pause_game") and not get_tree().paused:
@@ -62,11 +61,11 @@ func leave_game() -> void:
 	print_debug("Left multiplayer game!")
 
 func _initialize_singleplayer() -> Singleplayer:
-	var new_singleplayer: Singleplayer = preload("res://singleplayer/singleplayer.tscn").instantiate()
+	var new_singleplayer: Singleplayer = preload("uid://cleyndjgmibpv").instantiate()
 	add_child(new_singleplayer)
 	return new_singleplayer
 
 func _initialize_multiplayer() -> Multiplayer:
-	var new_multiplayer: Multiplayer = preload("res://multiplayer/multiplayer.tscn").instantiate()
+	var new_multiplayer: Multiplayer = preload("uid://citi18cutmbiw").instantiate()
 	add_child(new_multiplayer)
 	return new_multiplayer

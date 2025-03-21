@@ -1,16 +1,37 @@
 class_name CharacterController
 extends CharacterBody3D
 
-@export var movement_attributes: MovementAttributes
-@export var character_model: CharacterModel
+@export var character: Character:
+	set(new_character):
+		character = new_character
+		if character_model:
+			remove_child(character_model)
+			character_model.queue_free()
+		if not character:
+			_character_resource_path = ""
+			return
+		name = character.name
+		character_model = character.character_model.instantiate()
+		add_child.call_deferred(character_model, true)
+		_character_resource_path = character.resource_path
 
 var direction_input := Vector2.ZERO
 var look_target := Vector3.BACK
+
+var character_model: CharacterModel
 
 var _is_on_floor := true
 var _normalized_velocity := Vector3.ZERO
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+# This is used for multiplayer purposes to synchronize over network
+#  serves otherwise not purpose 
+var _character_resource_path: String:
+	set(new_character_resource_path):
+		_character_resource_path = new_character_resource_path
+		if character or _character_resource_path.is_empty(): return
+		assert(_character_resource_path.is_absolute_path())
+		character = load(_character_resource_path)
 
 func _physics_process(delta: float) -> void:
 	_apply_direction_input(delta)
@@ -20,7 +41,7 @@ func _apply_direction_input(delta: float) -> void:
 	if not multiplayer.is_server(): return
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
-	var move_speed := movement_attributes.move_speed
+	var move_speed := character.movement_attributes.move_speed
 	if direction_input:
 		velocity.x = direction_input.x * move_speed
 		velocity.z = direction_input.y * move_speed
@@ -38,4 +59,4 @@ func _look_forward(delta: float) -> void:
 	look_target = position + velocity
 	look_target.y = position.y
 	var transform_looking_into_direction := transform.looking_at(look_target, Vector3.UP, true)
-	transform = transform.interpolate_with(transform_looking_into_direction, movement_attributes.turn_rate * delta)
+	transform = transform.interpolate_with(transform_looking_into_direction, character.movement_attributes.turn_rate * delta)

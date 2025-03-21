@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="MovementAttributes" load_steps=2 format=3 uid="uid://dy1fytac5padi"]
+
+[ext_resource type="Script" uid="uid://bek1p0v1mqg8b" path="res://characters/movement_attributes.gd" id="1_rh03o"]
+
+[resource]
+script = ExtResource("1_rh03o")
+move_speed = 8.0
+turn_rate = 12.0

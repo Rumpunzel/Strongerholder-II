@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
 [ext_resource type="Script" uid="uid://witnma4yody0" path="res://levels/ghost_spawner.gd" id="1_lkjt4"]
-[ext_resource type="PackedScene" uid="uid://cj8l7a7cmiob1" path="res://characters/people/rogue.tscn" id="2_ny0t1"]
-[ext_resource type="PackedScene" uid="uid://turb41ayisd2" path="res://characters/people/king.tscn" id="3_r4e4k"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://characters/people/king.tres" id="2_r4e4k"]
+[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://characters/people/rogue.tres" id="3_pnvjf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -18,11 +18,11 @@ uv1_scale = Vector3(16, 16, 16)
 [node name="Test" type="Node3D"]
 
 [node name="GhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://cj8l7a7cmiob1", "uid://turb41ayisd2")
+_spawnable_scenes = PackedStringArray("uid://dyhahthciwxpq")
 spawn_path = NodePath("../Ghosts")
 script = ExtResource("1_lkjt4")
-king_scene = ExtResource("3_r4e4k")
-rogue_scene = ExtResource("2_ny0t1")
+king = ExtResource("2_r4e4k")
+rogue = ExtResource("3_pnvjf")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 

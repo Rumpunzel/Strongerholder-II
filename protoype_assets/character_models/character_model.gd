@@ -2,6 +2,7 @@ class_name CharacterModel
 extends Node3D
 
 @export var animation_tree: AnimationTree
+
 @onready var state_machine: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
 
 func play_animation(normalized_velocity: Vector3) -> void:

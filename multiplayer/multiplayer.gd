@@ -12,6 +12,16 @@ const HOST_ID := 1
 
 @export var player_name: String
 
+@export_category("Toast")
+@export var text_color: Color = Color(1, 1, 1, 1)
+@export var background_color: Color = Color(0, 0, 0, 0.7)
+@export var success_background_color: Color = Color(0, 1, 0, 0.7)
+@export var error_background_color: Color = Color(1, 0, 0, 0.7)
+@export_enum("top", "bottom") var gravity: String = "top"
+@export_enum("left", "center", "right") var direction: String = "center"
+@export var text_size := 18
+@export var custom_toast_font := false
+
 # This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
 var players: Dictionary[int, SynchronizedPlayer] = { }
 
@@ -37,6 +47,7 @@ func host_game(host_from_singleplayer: SynchronizedPlayer) -> Error:
 		host_player = host_from_singleplayer
 	else:
 		host_player = _create_player(HOST_ID, get_host_info())
+	_show_toast("Hosted game!", success_background_color)
 	return Error.OK
 
 func join_game(ip_address: String) -> Error:
@@ -45,6 +56,7 @@ func join_game(ip_address: String) -> Error:
 	var error := client_peer.create_client(ip_address, PORT)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
+	_show_toast("Joined game!", success_background_color)
 	return Error.OK
 
 # Stops hosting the multiplayer game
@@ -53,11 +65,13 @@ func stop_hosting_game() -> Player:
 	multiplayer.multiplayer_peer = null
 	var host_as_singleplayer := host_player.to_player()
 	_remove_all_players()
+	_show_toast("Stopped hosting game!")
 	return host_as_singleplayer
 
 func leave_game() -> void:
 	multiplayer.multiplayer_peer = null
 	_remove_all_players()
+	_show_toast("Left game!")
 
 func get_host_info(id: int = HOST_ID) -> Dictionary:
 	return { "id": id, "name": player_name, }
@@ -84,35 +98,60 @@ func _add_player(new_player: SynchronizedPlayer) -> void:
 	print_debug("Player %s added to multiplayer game!" % new_player.to_player_info())
 
 func _remove_player(player: SynchronizedPlayer) -> void:
+	assert(player)
 	players.erase(player.player_id)
 	_players.remove_child(player)
 	player.queue_free()
 	print_debug("Removed player %s from the multiplayer game!" % player.to_player_info())
 
-func _remove_all_players() -> void:
+func _remove_all_players(lost_connection := false) -> void:
 	for player: SynchronizedPlayer in _players.get_children():
+		if not player:
+			printerr("Lost connection to host!")
+			assert(lost_connection)
+			continue
 		_remove_player(player)
+
+func _show_toast(message: String, toast_background: Color = background_color) -> void:
+	assert(not message.is_empty())
+	ToastParty.show({
+		"text": message,
+		"bgcolor": toast_background,
+		"color": text_color,
+		"gravity": gravity,
+		"direction": direction,
+		"text_size": text_size,
+		"use_font": custom_toast_font,
+	})
 
 # When a peer connects, send them the host info.
 # This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, get_host_info())
+	_show_toast("Player joined!", success_background_color)
 
 func _on_player_disconnected(id: int) -> void:
-	var disconnected_player: SynchronizedPlayer = _players.get_node("%d" % id)
-	_remove_player(disconnected_player)
+	var disconnected_player: SynchronizedPlayer = _players.get_node_or_null("%d" % id)
+	if disconnected_player:
+		_remove_player(disconnected_player)
+	else:
+		printerr("Host disconnected!")
 	player_disconnected.emit(id)
+	_show_toast("Played left!")
 	print_debug("Player with id %d disconnected from the multiplayer game!" % id)
 
 func _on_connected_to_server() -> void:
+	_show_toast("Online!", success_background_color)
 	print_debug("Connected to multiplayer server!")
 
 func _on_connection_failed() -> void:
 	multiplayer.multiplayer_peer = null
+	_show_toast("Connection failed!", error_background_color)
 	print_debug("Connection failed!")
 
 func _on_server_disconnected() -> void:
 	multiplayer.multiplayer_peer = null
-	_remove_all_players()
+	_remove_all_players(true)
 	server_disconnected.emit()
+	_show_toast("Server disconnected!", error_background_color)
 	print_debug("Server disconnected!")

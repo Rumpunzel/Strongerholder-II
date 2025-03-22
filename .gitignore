@@ -19,7 +19,7 @@ build/
 *.pck
 
 # Git plugin
-addonts/godot-git-plugin/
+addons/godot-git-plugin/
 
 # Visual Studio Code cache directory
 .vscode/

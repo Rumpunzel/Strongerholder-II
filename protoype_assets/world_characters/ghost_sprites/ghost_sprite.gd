@@ -10,7 +10,11 @@ extends WorldCharacter
 		_animated_sprite.frame = _random_frame
 
 func _ready() -> void:
-	if _random_frame < 0: _random_frame = randi() % 19
+	if _random_frame < 0: _random_ghost()
+	Events.random_ghost_requested.connect(_random_ghost)
 
 func play_animation(_normalized_velocity: Vector3) -> void:
 	pass
+
+func _random_ghost() -> void:
+	_random_frame = randi() % 19

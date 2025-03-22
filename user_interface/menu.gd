@@ -59,6 +59,12 @@ func _on_host_toggled(hosting: bool) -> void:
 func _on_save_pressed() -> void:
 	Game.save_game()
 
+func _on_load_pressed() -> void:
+	Game.load_game()
+
+func _on_randomize_ghost_pressed() -> void:
+	Events.random_ghost_requested.emit()
+
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()
 

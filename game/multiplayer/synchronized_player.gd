@@ -1,4 +1,4 @@
-@icon("uid://tflsh0on02bx")
+@icon("uid://blrejsngag72k")
 class_name SynchronizedPlayer
 extends Player
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvj6b1m2b65hd"]
+
+[ext_resource type="PackedScene" uid="uid://c0773kloxolan" path="res://characters/_character_controller.tscn" id="1_ddb2m"]
+[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="2_qvid5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c6qmn"]
+
+[node name="CharacterController" instance=ExtResource("1_ddb2m")]
+_debug_world_character = ExtResource("2_qvid5")
+
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_c6qmn")

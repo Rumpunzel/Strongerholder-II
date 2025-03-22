@@ -22,13 +22,13 @@ uv1_scale = Vector3(16, 16, 16)
 [node name="Test" type="Node3D"]
 
 [node name="GhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://b262a6ebbwsbl")
+_spawnable_scenes = PackedStringArray("uid://cjm56m0vvukl")
 spawn_path = NodePath("../VisitorGhosts")
 script = ExtResource("1_lkjt4")
 ghost = ExtResource("2_6g8e2")
 
 [node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dyhahthciwxpq")
+_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../Characters")
 script = ExtResource("4_pnvjf")
 king = ExtResource("2_r4e4k")

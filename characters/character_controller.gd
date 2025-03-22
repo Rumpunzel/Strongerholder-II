@@ -31,8 +31,8 @@ var world_character: WorldCharacter:
 var direction_input := Vector2.ZERO
 var look_target := Vector3.BACK
 
-var _is_on_floor := true
 var _normalized_velocity := Vector3.ZERO
+var _is_on_floor := true
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 

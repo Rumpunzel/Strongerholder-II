@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b262a6ebbwsbl"]
+[gd_scene load_steps=3 format=3 uid="uid://c0773kloxolan"]
 
-[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_yxnnu"]
-[ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://protoype_assets/world_characters/ghost_sprites/test_ghost.tscn" id="2_mliuo"]
-[ext_resource type="Shape3D" uid="uid://qnp5d5vln115" path="res://characters/ghost_collision_shape.tres" id="2_v6ax1"]
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_wcy78"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -27,15 +25,14 @@ properties/6/path = NodePath(".:_world_character_scene_path")
 properties/6/spawn = true
 properties/6/replication_mode = 1
 
-[node name="Ghost" type="CharacterBody3D"]
-collision_layer = 128
-script = ExtResource("1_yxnnu")
-_debug_world_character = ExtResource("2_mliuo")
+[node name="CharacterController" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
+velocity = Vector3(0, -957.116, 0)
+script = ExtResource("1_wcy78")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-shape = ExtResource("2_v6ax1")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=27 format=3 uid="uid://bf4cxhr3kab7j"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://protoype_assets/world_characters/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
 [ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_faw76"]
 [ext_resource type="Texture2D" uid="uid://ccvkhvasoi8ux" path="res://protoype_assets/dont_starve_ghosts/weremoose.webp" id="2_ffjyy"]
+[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_xqo7j"]
 [ext_resource type="Texture2D" uid="uid://c2olc2cnhywxg" path="res://protoype_assets/dont_starve_ghosts/walter.webp" id="3_xqo7j"]
 [ext_resource type="Texture2D" uid="uid://b4cu6lky6yink" path="res://protoype_assets/dont_starve_ghosts/wanda.webp" id="4_6hprk"]
 [ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="5_yw3xk"]
@@ -174,8 +175,13 @@ _data = {
 [node name="TestGhost" type="Node3D"]
 script = ExtResource("1_2ku6h")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_faw76")
+
+[node name="PropertiesSerializer" type="Node" parent="." node_paths=PackedStringArray("_multiplayer_synchronizer")]
+script = ExtResource("2_xqo7j")
+_multiplayer_synchronizer = NodePath("../SpriteSynchronizer")
+metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 unique_name_in_owner = true

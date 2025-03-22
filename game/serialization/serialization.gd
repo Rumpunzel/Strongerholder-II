@@ -4,6 +4,16 @@ extends Node
 const NODES := "nodes"
 const PROPERTIES := "properties"
 
+@export_category("Toast")
+@export var text_color: Color = Color(1, 1, 1, 1)
+@export var background_color: Color = Color(0, 0, 0, 0.7)
+@export var success_background_color: Color = Color(0, 1, 0, 0.7)
+@export var error_background_color: Color = Color(1, 0, 0, 0.7)
+@export_enum("top", "bottom") var gravity: String = "top"
+@export_enum("left", "center", "right") var direction: String = "center"
+@export var text_size := 18
+@export var custom_toast_font := false
+
 static func encode_data(value: Variant, full_objects := false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))
 
@@ -40,7 +50,7 @@ func collect_data() -> Dictionary[String, Dictionary]:
 
 func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 	assert(collected_data.has_all([NODES, PROPERTIES]))
-	assert(collected_data.keys().size() == 3)
+	assert(collected_data.keys().size() == 2)
 	var node_data: Dictionary[NodePath, Dictionary] = collected_data[NODES]
 	assert(node_data is Dictionary[NodePath, Dictionary])
 	for node_serializer_path: NodePath in node_data:
@@ -48,6 +58,8 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 		var collected_nodes: Dictionary[String, Array] = node_data[node_serializer_path]
 		assert(collected_nodes is Dictionary[String, Array])
 		node_serializer.parse_nodes(collected_nodes)
+	
+	await get_tree().process_frame
 	
 	var properties_data: Dictionary[NodePath, Dictionary] = collected_data[PROPERTIES]
 	assert(properties_data is Dictionary[NodePath, Dictionary])
@@ -58,9 +70,24 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 		properties_serializer.parse_properties(collected_properties)
 
 func serialize() -> String:
-	return encode_data(collect_data())
+	var collected_data := collect_data()
+	_show_toast("Game saved!", success_background_color)
+	return encode_data(collected_data)
 
 func deserialize(serialized_dict: String) -> void:
 	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_dict)
 	assert(collected_data is Dictionary[String, Dictionary])
 	parse_data(collected_data)
+	_show_toast("Game loaded!", success_background_color)
+
+func _show_toast(message: String, toast_background: Color = background_color) -> void:
+	assert(not message.is_empty())
+	ToastParty.show({
+		"text": message,
+		"bgcolor": toast_background,
+		"color": text_color,
+		"gravity": gravity,
+		"direction": direction,
+		"text_size": text_size,
+		"use_font": custom_toast_font,
+	})

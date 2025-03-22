@@ -38,6 +38,14 @@ func parse_nodes(collected_nodes: Dictionary[String, Array]) -> void:
 		print(spawnable_scene_path)
 		spawnable_scene_paths.append(spawnable_scene_path)
 	
+	# Clean state
+	var spawn_node := get_node(_multiplayer_spawner.spawn_path)
+	for node: Node in spawn_node.get_children():
+		var node_scene_path := node.scene_file_path
+		if not spawnable_scene_paths.has(node_scene_path): continue
+		spawn_node.remove_child(node)
+		node.queue_free()
+	
 	for node_scene_path: String in collected_nodes.keys():
 		var node_paths: Array[NodePath] = collected_nodes[node_scene_path]
 		var scene_to_spawn: PackedScene = load(node_scene_path)

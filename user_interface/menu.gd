@@ -55,6 +55,9 @@ func _on_host_toggled(hosting: bool) -> void:
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 
+func _on_save_pressed() -> void:
+	Game.save_game()
+
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()
 

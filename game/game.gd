@@ -1,9 +1,14 @@
 extends Node
 
-signal session_changed(new_session: Session)
-
 signal game_paused
 signal game_unpaused
+
+signal game_save_started
+signal game_save_finished
+signal game_load_started
+signal game_load_finished
+
+signal session_changed(new_session: Session)
 
 signal game_hosted(ip_address: String, port: int)
 signal game_joined(ip_address: String, port: int)
@@ -11,6 +16,7 @@ signal stopped_hosting_game
 signal left_game
 
 const HOST_ID := 1
+const SAVE_FILE_PATH := "res://test.save" # "user://savegame.save"
 
 var session: Session:
 	set(new_session):
@@ -31,7 +37,25 @@ func request_pause() -> void:
 func request_unpause() -> void:
 	if get_tree().paused: _unpause_game()
 
-func quit_game() -> void:
+func save_game() -> void:
+	game_save_started.emit()
+	var save_file := FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+	var serialized_game_state := _serialization.serialize()
+	save_file.store_line(serialized_game_state)
+	game_save_finished.emit()
+
+func load_game() -> void:
+	assert(FileAccess.file_exists(SAVE_FILE_PATH))
+	game_load_started.emit()
+	var save_file := FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+	var serialized_game_state := save_file.get_as_text()
+	_serialization.deserialize(serialized_game_state)
+	game_load_finished.emit()
+
+func quit_game(save_before := true) -> void:
+	if save_before:
+		save_game()
+		await game_save_finished
 	get_tree().quit()
 
 func host_game() -> void:
@@ -74,6 +98,9 @@ func _start_singleplayer_session(existing_player: Player = null) -> Singleplayer
 	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
 	new_singleplayer_session.start(existing_player)
+	if FileAccess.file_exists(SAVE_FILE_PATH):
+		load_game()
+		await game_load_finished
 	return new_singleplayer_session
 
 func _initialize_multiplayer_session() -> MultiplayerSession:

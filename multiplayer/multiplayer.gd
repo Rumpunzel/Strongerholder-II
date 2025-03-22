@@ -77,11 +77,13 @@ func get_host_info(id: int = HOST_ID) -> Dictionary:
 	return { "id": id, "name": player_name, }
 
 @rpc("any_peer", "reliable")
-func _register_player(new_player_info: Dictionary) -> void:
+func _register_player(player_info: Dictionary) -> void:
+	SynchronizedPlayer.validate_player_info(player_info)
 	var player_id := multiplayer.get_remote_sender_id()
+	print("registering player: %s" % player_info)
 	if player_id == HOST_ID: return
-	_create_player(player_id, new_player_info)
-	print_debug("Player %s registered to multiplayer game!" % new_player_info)
+	_create_player(player_id, player_info)
+	print_debug("Player %s registered to multiplayer game!" % player_info)
 
 func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	player_info.id = id

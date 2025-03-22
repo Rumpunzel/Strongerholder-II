@@ -13,10 +13,12 @@ var _turnIndex := 0
 
 func frame_node(node_to_frame: Node3D) -> void:
 	assert(node_to_frame)
+	print("framing node: %s" % node_to_frame.name)
 	frame_point(node_to_frame.position)
 
 func frame_point(point_to_frame: Vector3) -> void:
 	assert(point_to_frame != null)
+	print("framing point: %s" % point_to_frame)
 	var angle := deg_to_rad(_turnIndex * camera_turn_angle + camera_angle_offset)
 	var inverse_zoom := 1.0 / zoom
 	var inverse_zoom_root := sqrt(inverse_zoom)

@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cuclrr5bep4gn"]
+[gd_scene load_steps=4 format=3 uid="uid://cuclrr5bep4gn"]
 
+[ext_resource type="PackedScene" uid="uid://ckcrpkujohkql" path="res://singleplayer/player.tscn" id="1_t45s6"]
 [ext_resource type="Script" uid="uid://c2d8voqrlqxwq" path="res://multiplayer/synchronized_player.gd" id="1_xfqom"]
-[ext_resource type="Script" uid="uid://qlga1xwfgacs" path="res://multiplayer/input_synchronizer.gd" id="2_nrshl"]
-[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://levels/camera/top_down_camera.gd" id="3_go6wt"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wu7mp"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_6w161"]
 properties/0/path = NodePath(".:name")
 properties/0/spawn = true
 properties/0/replication_mode = 1
@@ -17,27 +16,14 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath(".:_character_controller_path")
 properties/3/spawn = true
 properties/3/replication_mode = 1
+properties/4/path = NodePath(".:input_direction")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g8xtg"]
-properties/0/path = NodePath("InputSynchronizer:input_direction")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-
-[node name="SynchronizedPlayer" type="Node"]
+[node name="SynchronizedPlayer" instance=ExtResource("1_t45s6")]
 script = ExtResource("1_xfqom")
-metadata/_custom_type_script = "uid://c2d8voqrlqxwq"
+player_id = 1
+player_name = ""
 
-[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_wu7mp")
-
-[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
-unique_name_in_owner = true
-replication_config = SubResource("SceneReplicationConfig_g8xtg")
-script = ExtResource("2_nrshl")
-metadata/_custom_type_script = "uid://qlga1xwfgacs"
-
-[node name="TopDownCamera" type="Camera3D" parent="."]
-unique_name_in_owner = true
-fov = 30.0
-script = ExtResource("3_go6wt")
-metadata/_custom_type_script = "uid://ckbhvwumadh3b"
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="0"]
+replication_config = SubResource("SceneReplicationConfig_6w161")

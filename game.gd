@@ -40,7 +40,7 @@ func join_game(ip_address: String) -> void:
 	singleplayer_node.stop()
 	multiplayer_node.join_game(ip_address)
 	game_joined.emit(ip_address, Multiplayer.PORT)
-	print_debug("Joined multiplayer game @ %s:%d!" % [ ip_address, Multiplayer.PORT ])
+	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, Multiplayer.PORT])
 
 func stop_hosting_game() -> void:
 	var host_as_singleplayer := multiplayer_node.stop_hosting_game()

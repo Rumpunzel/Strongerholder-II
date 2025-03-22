@@ -43,7 +43,6 @@ func _process(_delta: float) -> void:
 	assert(character_controller)
 	_collect_input()
 	_send_input_to_character_controller()
-	print("framing character: %s" % character_controller.get_path())
 	_camera.frame_node(character_controller)
 
 static func read_movement_input() -> Vector2:
@@ -51,8 +50,8 @@ static func read_movement_input() -> Vector2:
 
 func to_synchronized_player() -> SynchronizedPlayer:
 	var new_player: SynchronizedPlayer = _synchronized_player_scene.instantiate()
-	new_player.player_id = Multiplayer.HOST_ID
-	new_player.player_name = Game.multiplayer_node.player_name
+	new_player.player_id = Game.HOST_ID
+	new_player.player_name = Game.session.player_name
 	new_player.character_controller = character_controller
 	return new_player
 

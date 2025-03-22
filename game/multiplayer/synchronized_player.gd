@@ -1,23 +1,17 @@
 class_name SynchronizedPlayer
 extends Player
 
-@export var player_id := 1:
+@export var player_id := Game.HOST_ID:
 	set(new_player_id):
 		player_id = new_player_id
 		name = "%d" % player_id
-		set_multiplayer_authority.call_deferred(player_id)
 
 @export var player_name: String
 
 var _player_scene: PackedScene = load("uid://ckcrpkujohkql")
 
 func _ready() -> void:
-	var is_local_player := player_id == multiplayer.get_unique_id()
-	_camera.current = is_local_player
-	var is_authorized := get_multiplayer_authority() == multiplayer.get_unique_id()
-	if not is_authorized:
-		does_process = false
-		return
+	_configure_processing()
 
 func _process(_delta: float) -> void:
 	assert(player_id == multiplayer.get_unique_id(), "Expected player_id %d to be equal to multiplayer.get_unique_id() but was %d!" % [player_id, multiplayer.get_unique_id()])
@@ -44,3 +38,12 @@ func to_player() -> Player:
 	var new_player: Player = _player_scene.instantiate()
 	new_player.character_controller = character_controller
 	return new_player
+
+func _configure_processing() -> void:
+	if not is_inside_tree():
+		printerr("Trying to configure SynchronizedPlayer while outside tree, aborting!")
+		return
+	var is_local_player := player_id == multiplayer.get_unique_id()
+	_camera.current = is_local_player
+	does_process = is_local_player
+	set_multiplayer_authority.call_deferred(player_id)

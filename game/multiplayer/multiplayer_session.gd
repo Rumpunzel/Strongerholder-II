@@ -8,9 +8,8 @@ signal server_disconnected
 const PORT := 7000
 const DEFAULT_SERVER_IP := "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS := 4
-const HOST_ID := 1
 
-@export var player_name: String
+const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 
 @export_category("Toast")
 @export var text_color: Color = Color(1, 1, 1, 1)
@@ -36,19 +35,38 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
-func host_game(host_from_singleplayer: SynchronizedPlayer) -> Error:
+static func create() -> MultiplayerSession:
+	return SESSION_SCENE.instantiate()
+
+# Starts the multiplayer session by hosting a game
+func start(existing_player: Player) -> Error:
 	var server_peer := ENetMultiplayerPeer.new()
 	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
 	
-	if host_from_singleplayer:
+	if existing_player:
+		var host_from_singleplayer := existing_player.to_synchronized_player()
 		_add_player(host_from_singleplayer)
 		host_player = host_from_singleplayer
+		existing_player.queue_free()
 	else:
-		host_player = _create_player(HOST_ID, get_host_info())
+		host_player = _create_player(Game.HOST_ID, get_host_info())
+	started.emit(host_player)
 	_show_toast("Hosted game!", success_background_color)
+	print_debug("Started hosting multiplayer game @ %s:%d!" % [MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT])
 	return Error.OK
+
+# Stops the multiplayer session
+# Returns the host player converted to singleplayer, if session was hosted
+# Retruns null if leaving a hosted game
+func stop() -> Player:
+	multiplayer.multiplayer_peer = null
+	var host_as_singleplayer := host_player.to_player() if host_player else null
+	_remove_all_players()
+	stopped.emit(host_as_singleplayer)
+	_show_toast("Left multiplayer!")
+	return host_as_singleplayer
 
 func join_game(ip_address: String) -> Error:
 	assert(ip_address.is_valid_ip_address())
@@ -57,31 +75,17 @@ func join_game(ip_address: String) -> Error:
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
 	_show_toast("Joined game!", success_background_color)
+	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, MultiplayerSession.PORT])
 	return Error.OK
 
-# Stops hosting the multiplayer game
-# Returns the host player converted to singleplayer
-func stop_hosting_game() -> Player:
-	multiplayer.multiplayer_peer = null
-	var host_as_singleplayer := host_player.to_player()
-	_remove_all_players()
-	_show_toast("Stopped hosting game!")
-	return host_as_singleplayer
-
-func leave_game() -> void:
-	multiplayer.multiplayer_peer = null
-	_remove_all_players()
-	_show_toast("Left game!")
-
-func get_host_info(id: int = HOST_ID) -> Dictionary:
+func get_host_info(id: int = Game.HOST_ID) -> Dictionary:
 	return { "id": id, "name": player_name, }
 
 @rpc("any_peer", "reliable")
 func _register_player(player_info: Dictionary) -> void:
 	SynchronizedPlayer.validate_player_info(player_info)
 	var player_id := multiplayer.get_remote_sender_id()
-	print("registering player: %s" % player_info)
-	if player_id == HOST_ID: return
+	if player_id == Game.HOST_ID: return
 	_create_player(player_id, player_info)
 	print_debug("Player %s registered to multiplayer game!" % player_info)
 
@@ -130,7 +134,7 @@ func _show_toast(message: String, toast_background: Color = background_color) ->
 # This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, get_host_info())
-	_show_toast("Player joined!", success_background_color)
+	if not id == Game.HOST_ID: _show_toast("Player joined!", success_background_color)
 
 func _on_player_disconnected(id: int) -> void:
 	var disconnected_player: SynchronizedPlayer = _players.get_node_or_null("%d" % id)
@@ -143,7 +147,6 @@ func _on_player_disconnected(id: int) -> void:
 	print_debug("Player with id %d disconnected from the multiplayer game!" % id)
 
 func _on_connected_to_server() -> void:
-	_show_toast("Online!", success_background_color)
 	print_debug("Connected to multiplayer server!")
 
 func _on_connection_failed() -> void:

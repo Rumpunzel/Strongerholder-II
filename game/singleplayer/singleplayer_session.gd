@@ -1,27 +1,28 @@
 class_name SingleplayerSession
 extends Session
 
+const SESSION_SCENE: PackedScene = preload("uid://cleyndjgmibpv")
+
 var player: Player
 
-var _player_scene: PackedScene = load("uid://ckcrpkujohkql")
+static func create() -> SingleplayerSession:
+	return SESSION_SCENE.instantiate()
 
-func start(host_as_singleplayer: Player = null) -> Player:
+func start(host_as_singleplayer: Player) -> Error:
 	assert(player == null)
 	if host_as_singleplayer:
 		player = host_as_singleplayer
 	else:
-		player = _player_scene.instantiate()
+		player = PLAYER_SCENE.instantiate()
 	add_child(player)
 	started.emit(player)
-	print_debug("Starting singleplayer!")
-	return player
+	print_debug("Started singleplayer session!")
+	return Error.OK
 
-func stop() -> SynchronizedPlayer:
+func stop() -> Player:
 	assert(player)
-	var host_from_singleplayer := player.to_synchronized_player()
 	remove_child(player)
-	player.queue_free()
 	player = null
-	stopped.emit(host_from_singleplayer)
-	print_debug("Stopping singleplayer!")
-	return host_from_singleplayer
+	stopped.emit(player)
+	print_debug("Stopped singleplayer session!")
+	return player

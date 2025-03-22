@@ -1,5 +1,7 @@
 extends Node
 
+signal session_changed(new_session: Session)
+
 signal game_continued
 signal game_paused
 
@@ -8,49 +10,50 @@ signal game_joined(ip_address: String, port: int)
 signal stopped_hosting_game
 signal left_game
 
-var singleplayer_node: Singleplayer
-var multiplayer_node: Multiplayer
+const HOST_ID := 1
+
+var session: Session:
+	set(new_session):
+		session = new_session
+		session_changed.emit(session)
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_initialize_singleplayer()
-	_initialize_multiplayer()
-	singleplayer_node.start.call_deferred()
 	request_pause()
+	session_changed.connect(_on_session_changed)
+	_start_singleplayer_session.call_deferred()
 
 func request_pause() -> void:
-	pass
+	if not session is MultiplayerSession and not get_tree().paused: get_tree().paused = true
 
 func request_unpause() -> void:
-	pass
+	if get_tree().paused: get_tree().paused = false
 
 func quit_game() -> void:
 	get_tree().quit()
 
 func host_game() -> void:
-	var host_from_singleplayer := singleplayer_node.stop()
-	multiplayer_node.host_game(host_from_singleplayer)
-	game_hosted.emit(Multiplayer.DEFAULT_SERVER_IP, Multiplayer.PORT)
-	print_debug("Started hosting multiplayer game!")
+	var host_from_singleplayer := _end_session()
+	var multiplayer_session := _initialize_multiplayer_session()
+	multiplayer_session.start(host_from_singleplayer)
+	game_hosted.emit(MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT)
 
 func join_game(ip_address: String) -> void:
 	assert(ip_address.is_valid_ip_address())
-	singleplayer_node.stop()
-	multiplayer_node.join_game(ip_address)
-	game_joined.emit(ip_address, Multiplayer.PORT)
-	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, Multiplayer.PORT])
+	_end_session()
+	var multiplayer_session := _initialize_multiplayer_session()
+	multiplayer_session.join_game(ip_address)
+	game_joined.emit(ip_address, MultiplayerSession.PORT)
 
 func stop_hosting_game() -> void:
-	var host_as_singleplayer := multiplayer_node.stop_hosting_game()
+	assert(session is MultiplayerSession)
+	_end_session()
 	stopped_hosting_game.emit()
-	singleplayer_node.start(host_as_singleplayer)
-	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:
-	multiplayer_node.leave_game()
+	assert(session is MultiplayerSession)
+	_end_session()
 	left_game.emit()
-	singleplayer_node.start()
-	print_debug("Left multiplayer game!")
 
 func _pause_game() -> void:
 	get_tree().paused = true
@@ -60,17 +63,36 @@ func _continue_game() -> void:
 	get_tree().paused = false
 	game_continued.emit()
 
-func _initialize_singleplayer() -> void:
-	assert(not singleplayer_node)
-	singleplayer_node = preload("uid://cleyndjgmibpv").instantiate()
-	add_child(singleplayer_node)
+func _start_singleplayer_session(existing_player: Player = null) -> SingleplayerSession:
+	assert(not session)
+	assert(not existing_player is SynchronizedPlayer)
+	var new_singleplayer_session := SingleplayerSession.create()
+	session = new_singleplayer_session
+	add_child(new_singleplayer_session)
+	new_singleplayer_session.start(existing_player)
+	return new_singleplayer_session
 
-func _initialize_multiplayer() -> void:
-	assert(not multiplayer_node)
-	multiplayer_node = preload("uid://citi18cutmbiw").instantiate()
-	add_child(multiplayer_node)
-	multiplayer_node.server_disconnected.connect(_on_server_disconnected)
+func _initialize_multiplayer_session() -> MultiplayerSession:
+	assert(not session)
+	var new_multiplayer_session := MultiplayerSession.create()
+	session = new_multiplayer_session
+	add_child(new_multiplayer_session)
+	new_multiplayer_session.stopped.connect(_start_singleplayer_session)
+	new_multiplayer_session.server_disconnected.connect(_on_server_disconnected)
+	return new_multiplayer_session
+
+func _end_session() -> Player:
+	assert(session)
+	var old_session := session
+	session = null
+	var existing_player := old_session.stop()
+	remove_child(old_session)
+	old_session.queue_free()
+	return existing_player
+
+func _on_session_changed(new_session: Session) -> void:
+	assert(new_session == session)
+	if new_session is MultiplayerSession: request_unpause()
 
 func _on_server_disconnected() -> void:
 	left_game.emit()
-	print_debug("Server disconnected!")

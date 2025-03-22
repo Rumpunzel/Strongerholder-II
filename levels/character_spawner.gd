@@ -26,7 +26,7 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	if player == null:
 		printerr("no player")
 		return
-	var new_character: CharacterController = king.create() if peer_id == Multiplayer.HOST_ID else rogue.create()
+	var new_character: CharacterController = king.create() if peer_id == Game.HOST_ID else rogue.create()
 	new_character.name = "%d" % peer_id
 	spawn_node.add_child(new_character, true)
 	player.character_controller = new_character

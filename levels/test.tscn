@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://characters/people/king.tres" id="2_r4e4k"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://characters/people/rogue.tres" id="3_pnvjf"]
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://levels/character_spawner.gd" id="4_pnvjf"]
-[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/node_serializer.gd" id="6_qhvcx"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="6_qhvcx"]
 [ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="7_2grjb"]
 [ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/world_characters/character_models/rogue.tscn" id="8_qhvcx"]
 

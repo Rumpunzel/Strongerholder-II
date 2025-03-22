@@ -1,4 +1,5 @@
 class_name Serialization
+extends Node
 
 static func encode_data(value: Variant, full_objects := false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))

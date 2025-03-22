@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0773kloxolan"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_wcy78"]
-[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/properties_serializer.gd" id="2_gihow"]
+[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_gihow"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")

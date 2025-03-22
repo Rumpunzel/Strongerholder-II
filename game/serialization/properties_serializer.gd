@@ -29,11 +29,12 @@ func collect_properties() -> Dictionary[NodePath, Dictionary]:
 func parse_properties(collected_properties: Dictionary[NodePath, Dictionary]) -> void:
 	assert(_multiplayer_synchronizer)
 	var root_node := get_node(_multiplayer_synchronizer.root_path)
-	
 	for property_path: NodePath in collected_properties.keys():
+		var node_path := NodePath(property_path.get_concatenated_names())
+		var node := root_node.get_node(node_path)
 		var property_node_path := NodePath(property_path.get_concatenated_subnames())
 		var property_value: Variant = collected_properties[property_path]
-		root_node.set_indexed(property_node_path, property_value)
+		node.set_indexed(property_node_path, property_value)
 
 func serialize() -> String:
 	return Serialization.encode_data(collect_properties())

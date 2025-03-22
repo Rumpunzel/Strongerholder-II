@@ -1,2 +1,2 @@
-@icon("uid://uhpjpmmyeper")
+@icon("uid://k8xnriynpwgn")
 extends Control

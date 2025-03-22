@@ -98,10 +98,9 @@ func _start_singleplayer_session(existing_player: Player = null) -> Singleplayer
 	var new_singleplayer_session := SingleplayerSession.create()
 	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
+	if FileAccess.file_exists(SAVE_FILE_PATH): load_game()
+	#await get_tree().create_timer(3.0).timeout
 	new_singleplayer_session.start(existing_player)
-	if FileAccess.file_exists(SAVE_FILE_PATH):
-		load_game()
-		await game_load_finished
 	return new_singleplayer_session
 
 func _initialize_multiplayer_session() -> MultiplayerSession:

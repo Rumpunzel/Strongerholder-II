@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1ptb2poils3t"]
+
+[ext_resource type="Script" uid="uid://cb5qy5hm4esjl" path="res://user_interface/info.gd" id="1_7c4c0"]
+[ext_resource type="Script" uid="uid://cm7ublv6tq6oc" path="res://user_interface/fps.gd" id="3_x3cl1"]
+
+[node name="Info" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7c4c0")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Tech" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="FPS" type="Label" parent="MarginContainer/Tech"]
+layout_mode = 2
+script = ExtResource("3_x3cl1")

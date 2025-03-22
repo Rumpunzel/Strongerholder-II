@@ -18,9 +18,11 @@ func collect_properties() -> Dictionary[NodePath, Dictionary]:
 	
 	var properties_dict: Dictionary[NodePath, Variant] = { }
 	for property_path: NodePath in properties_to_serialize:
+		var node_path := NodePath(property_path.get_concatenated_names())
+		var node := root_node.get_node(node_path)
 		var property_node_path := NodePath(property_path.get_concatenated_subnames())
-		var property_value: Variant = root_node.get_indexed(property_node_path)
-		properties_dict[property_node_path] = property_value
+		var property_value: Variant = node.get_indexed(property_node_path)
+		properties_dict[property_path] = property_value
 	
 	return { root_node_path: properties_dict }
 

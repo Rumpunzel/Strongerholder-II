@@ -18,10 +18,12 @@ build/
 *.exe
 *.pck
 
+# Git plugin
+addonts/godot-git-plugin/
+
 # Visual Studio Code cache directory
 .vscode/
 *.save
-
 
 # Blender
 *.blend1

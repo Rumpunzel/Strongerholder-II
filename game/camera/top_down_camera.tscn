@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cnh75c8plrhf1"]
 
-[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://game/player/camera/top_down_camera.gd" id="1_67rod"]
+[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://game/camera/top_down_camera.gd" id="1_67rod"]
 
 [node name="TopDownCamera" type="Camera3D"]
 current = true

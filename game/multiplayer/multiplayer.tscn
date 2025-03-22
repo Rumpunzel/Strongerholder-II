@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://citi18cutmbiw"]
 
-[ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://multiplayer/multiplayer.gd" id="1_jpmbv"]
+[ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://game/multiplayer/multiplayer.gd" id="1_jpmbv"]
 
 [node name="Multiplayer" type="Node"]
 script = ExtResource("1_jpmbv")

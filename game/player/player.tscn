@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ckcrpkujohkql"]
 
-[ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://singleplayer/player.gd" id="1_i6aj8"]
-[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://levels/camera/top_down_camera.gd" id="2_wu7mp"]
+[ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://game/player/player.gd" id="1_i6aj8"]
+[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://game/player/camera/top_down_camera.gd" id="2_wu7mp"]
 
 [node name="Player" type="Node"]
 script = ExtResource("1_i6aj8")

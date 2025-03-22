@@ -180,6 +180,7 @@ replication_config = SubResource("SceneReplicationConfig_faw76")
 
 [node name="PropertiesSerializer" type="Node" parent="." node_paths=PackedStringArray("_multiplayer_synchronizer")]
 script = ExtResource("2_xqo7j")
+intangible = true
 _multiplayer_synchronizer = NodePath("../SpriteSynchronizer")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 

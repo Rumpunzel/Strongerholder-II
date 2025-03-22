@@ -3,13 +3,17 @@
 class_name PropertiesSerializer
 extends Node
 
+## Marks the root of this serliazier as unreliable, such as nodes created by multiplayer; are serialized asynchronously
+@export var intangible := false
+
 ## Optional MultiplayerSynchronizer; serializes synced propertes if supplied
 @export var _multiplayer_synchronizer: MultiplayerSynchronizer
 ## Properties to seralize if no MultiplayerSynchronizer is supplied
 #@export var _properties_to_serialize: Array[NodePath]
 
 func _ready() -> void:
-	add_to_group("PropertiesSerializers")
+	if intangible: add_to_group("IntangibleSerializers")
+	else: add_to_group("PropertiesSerializers")
 
 func collect_properties() -> Dictionary[NodePath, Variant]:
 	assert(_multiplayer_synchronizer)
@@ -35,6 +39,7 @@ func parse_properties(collected_properties: Dictionary[NodePath, Variant]) -> vo
 		var property_node_path := NodePath(property_path.get_concatenated_subnames())
 		var property_value: Variant = collected_properties[property_path]
 		node.set_indexed(property_node_path, property_value)
+	print_debug("Parsed serialized properties for: %s" % get_path())
 
 func serialize() -> String:
 	return Serialization.encode_data(collect_properties())

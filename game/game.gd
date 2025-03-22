@@ -124,7 +124,7 @@ func _end_session() -> Player:
 
 func _initialize_serialization() -> Serialization:
 	assert(not _serialization)
-	_serialization = Serialization.new()
+	_serialization = Serialization.create()
 	add_child(_serialization)
 	return _serialization
 

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://kquuu3wv8puv"]
+
+[ext_resource type="Script" uid="uid://d12oj323k2wmw" path="res://game/serialization/serialization.gd" id="1_btebj"]
+
+[node name="Serialization" type="Node"]
+script = ExtResource("1_btebj")
+metadata/_custom_type_script = "uid://d12oj323k2wmw"

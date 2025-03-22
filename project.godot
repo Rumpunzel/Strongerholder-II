@@ -45,7 +45,8 @@ enabled=PackedStringArray("res://addons/toastparty/plugin.cfg")
 [global_group]
 
 PropertiesSerializers="All nodes responsible for serializing persistent property data"
-NodeSerializers="All nodes responsible for serialized persistent, dynamically spawned nodes"
+NodeSerializers="All nodes responsible for serializing persistent, dynamically spawned nodes"
+IntangibleSerializers="All nodes responsible for serializing persistent, unrealiable property data; e.g. concerning multiplayer"
 
 [input]
 

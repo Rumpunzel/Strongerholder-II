@@ -24,9 +24,8 @@ func collect_nodes() -> Dictionary[String, Array]:
 		var node_scene_path := node.scene_file_path
 		print(node_scene_path)
 		if not spawnable_scene_paths.has(node_scene_path): continue
-		var node_paths: Array[NodePath] = nodes_to_serialize.get(node_scene_path, [ ])
+		var node_paths: Array[NodePath] = nodes_to_serialize.get_or_add(node_scene_path, [ ])
 		node_paths.append(node.get_path())
-		nodes_to_serialize[node_scene_path] = node_paths
 	
 	return nodes_to_serialize
 

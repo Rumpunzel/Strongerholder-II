@@ -17,6 +17,8 @@ var session: Session:
 		session = new_session
 		session_changed.emit(session)
 
+@onready var _serialization := _initialize_serialization()
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	request_pause()
@@ -91,6 +93,12 @@ func _end_session() -> Player:
 	remove_child(old_session)
 	old_session.queue_free()
 	return existing_player
+
+func _initialize_serialization() -> Serialization:
+	assert(not _serialization)
+	_serialization = Serialization.new()
+	add_child(_serialization)
+	return _serialization
 
 func _on_session_changed(new_session: Session) -> void:
 	assert(new_session == session)

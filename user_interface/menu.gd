@@ -7,24 +7,29 @@ extends Control
 @onready var _host_ip_address_button: Button = %HostIpAddress
 
 func _ready() -> void:
-	Game.game_paused.connect(_on_game_paused)
-	Game.game_continued.connect(_on_game_continued)
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
 	Game.left_game.connect(_on_left_game)
 
-func show_menu() -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("open_menu") and not visible:
+		open_menu()
+		Game.request_pause()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_released("close_menu") and visible:
+		close_menu()
+		Game.request_unpause()
+		get_viewport().set_input_as_handled()
+
+func open_menu() -> void:
 	show()
 
-func hide_menu() -> void:
+func close_menu() -> void:
 	hide()
 
-func toggle_menu() -> void:
-	if not visible: show_menu()
-	else: hide_menu()
-
 func _on_continue_pressed() -> void:
-	Game.continue_game()
+	Game.request_unpause()
+	close_menu()
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
@@ -52,12 +57,6 @@ func _on_host_toggled(hosting: bool) -> void:
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()
-
-func _on_game_paused() -> void:
-	show_menu()
-
-func _on_game_continued() -> void:
-	hide_menu()
 
 func _on_game_hosted(host_ip_address: String, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address

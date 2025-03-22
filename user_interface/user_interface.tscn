@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://rmev082m4bw0"]
+
+[ext_resource type="Script" uid="uid://cy4skffv6sbru" path="res://user_interface/user_interface.gd" id="1_dbod7"]
+[ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://user_interface/menu.tscn" id="1_ratyj"]
+
+[node name="UserInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dbod7")
+
+[node name="Menu" parent="." instance=ExtResource("1_ratyj")]
+layout_mode = 1

@@ -23,11 +23,6 @@ func _process(_delta: float) -> void:
 	assert(player_id == multiplayer.get_unique_id(), "Expected player_id %d to be equal to multiplayer.get_unique_id() but was %d!" % [player_id, multiplayer.get_unique_id()])
 	assert(player_id == get_multiplayer_authority(), "Cannot process on SynchronizedPlayer without multiplayer authority!")
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_released("toggle_menu"):
-		UserInterface.menu.show_menu()
-		get_viewport().set_input_as_handled()
-
 static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 	validate_player_info(player_info)
 	var synchronized_player_scene: PackedScene = load("uid://cuclrr5bep4gn")

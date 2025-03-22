@@ -15,16 +15,14 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_initialize_singleplayer()
 	_initialize_multiplayer()
-	pause_game()
 	singleplayer_node.start.call_deferred()
+	request_pause()
 
-func pause_game() -> void:
-	get_tree().paused = true
-	game_paused.emit()
+func request_pause() -> void:
+	pass
 
-func continue_game() -> void:
-	get_tree().paused = false
-	game_continued.emit()
+func request_unpause() -> void:
+	pass
 
 func quit_game() -> void:
 	get_tree().quit()
@@ -53,6 +51,14 @@ func leave_game() -> void:
 	left_game.emit()
 	singleplayer_node.start()
 	print_debug("Left multiplayer game!")
+
+func _pause_game() -> void:
+	get_tree().paused = true
+	game_paused.emit()
+
+func _continue_game() -> void:
+	get_tree().paused = false
+	game_continued.emit()
 
 func _initialize_singleplayer() -> void:
 	assert(not singleplayer_node)

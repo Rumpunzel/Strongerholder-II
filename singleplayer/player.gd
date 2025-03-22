@@ -46,14 +46,6 @@ func _process(_delta: float) -> void:
 	print("framing character: %s" % character_controller.get_path())
 	_camera.frame_node(character_controller)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_released("pause_game") and not get_tree().paused:
-		Game.pause_game()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_released("unpause_game") and get_tree().paused:
-		Game.continue_game()
-		get_viewport().set_input_as_handled()
-
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 

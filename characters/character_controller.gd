@@ -1,3 +1,4 @@
+@tool
 class_name CharacterController
 extends CharacterBody3D
 
@@ -11,6 +12,9 @@ extends CharacterBody3D
 		name = character.name
 		world_character = character.get_world_character()
 		_character_resource_path = character.resource_path
+
+@export_group("Debug")
+@export var _debug_world_character: PackedScene
 
 var world_character: WorldCharacter:
 	set(new_world_character):
@@ -49,9 +53,21 @@ var _world_character_scene_path: String:
 		var world_character_scene: PackedScene = load(_world_character_scene_path)
 		world_character = world_character_scene.instantiate()
 
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		if _debug_world_character: _show_debug_world_character()
+
 func _physics_process(delta: float) -> void:
-	_apply_direction_input(delta)
-	if world_character: world_character.play_animation(_normalized_velocity)
+	if Engine.is_editor_hint():
+		pass
+	else:
+		_apply_direction_input(delta)
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		pass
+	else:
+		if world_character: world_character.play_animation(_normalized_velocity)
 
 func _apply_direction_input(delta: float) -> void:
 	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server(): return
@@ -76,3 +92,8 @@ func _look_forward(delta: float) -> void:
 	look_target.y = position.y
 	var transform_looking_into_direction := transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, character.movement_attributes.turn_rate * delta)
+
+func _show_debug_world_character() -> void:
+	assert(Engine.is_editor_hint())
+	assert(_debug_world_character)
+	world_character = _debug_world_character.instantiate()

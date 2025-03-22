@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyhahthciwxpq"]
+[gd_scene load_steps=5 format=3 uid="uid://dyhahthciwxpq"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_rg722"]
+[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="2_3fwhk"]
 [ext_resource type="Shape3D" uid="uid://ch1ytu2ay73d3" path="res://characters/character_collision_shape.tres" id="2_qqr4u"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
@@ -29,7 +30,9 @@ properties/6/replication_mode = 1
 [node name="Character" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 3
+velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_rg722")
+_debug_world_character = ExtResource("2_3fwhk")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

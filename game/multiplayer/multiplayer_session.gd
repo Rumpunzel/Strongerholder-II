@@ -21,7 +21,7 @@ const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 @export var text_size := 18
 @export var custom_toast_font := false
 
-# This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
+## This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
 var players: Dictionary[int, SynchronizedPlayer] = { }
 
 var host_player: SynchronizedPlayer
@@ -38,7 +38,7 @@ func _ready() -> void:
 static func create() -> MultiplayerSession:
 	return SESSION_SCENE.instantiate()
 
-# Starts the multiplayer session by hosting a game
+## Starts the multiplayer session by hosting a game
 func start(existing_player: Player) -> Error:
 	var server_peer := ENetMultiplayerPeer.new()
 	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
@@ -59,9 +59,9 @@ func start(existing_player: Player) -> Error:
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT])
 	return Error.OK
 
-# Stops the multiplayer session
-# Returns the host player converted to singleplayer, if session was hosted
-# Retruns null if leaving a hosted game
+## Stops the multiplayer session
+## @returns the host player converted to singleplayer, if session was hosted
+## @returns null if leaving a hosted game
 func stop() -> Player:
 	multiplayer.multiplayer_peer = null
 	var host_as_singleplayer := host_player.to_player() if host_player else null
@@ -132,8 +132,8 @@ func _show_toast(message: String, toast_background: Color = background_color) ->
 		"use_font": custom_toast_font,
 	})
 
-# When a peer connects, send them the host info.
-# This allows transfer of all desired data for each player, not only the unique ID.
+## When a peer connects, send them the host info.
+## This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, get_host_info())
 	if not id == Game.HOST_ID: _show_toast("Player joined!", success_background_color)

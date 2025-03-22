@@ -28,7 +28,7 @@ var is_disabled := false:
 
 var input_direction := Vector2.ZERO
 
-# This is used for serialization purposes; serves otherwise no purpose 
+## This is used for serialization purposes; serves otherwise no purpose 
 var _character_controller_path: NodePath:
 	set(new_character_controller_path):
 		_character_controller_path = new_character_controller_path

@@ -42,6 +42,11 @@ version_control/autoload_on_startup=true
 
 enabled=PackedStringArray("res://addons/toastparty/plugin.cfg")
 
+[global_group]
+
+PropertiesSerializers="All nodes responsible for serializing persistent property data"
+NodeSerializers="All nodes responsible for serialized persistent, dynamically spawned nodes"
+
 [input]
 
 move_left={

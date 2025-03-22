@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0773kloxolan"]
+[gd_scene load_steps=4 format=3 uid="uid://c0773kloxolan"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://characters/character_controller.gd" id="1_wcy78"]
+[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/properties_serializer.gd" id="2_gihow"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -34,5 +35,10 @@ metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
+
+[node name="PropertiesSerializer" type="Node" parent="." node_paths=PackedStringArray("_multiplayer_synchronizer")]
+script = ExtResource("2_gihow")
+_multiplayer_synchronizer = NodePath("../CharacterSynchronizer")
+metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

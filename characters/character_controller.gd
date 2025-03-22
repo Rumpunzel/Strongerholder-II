@@ -36,8 +36,7 @@ var _is_on_floor := true
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-# This is used for multiplayer purposes to synchronize over network
-#  serves otherwise no purpose 
+## This is used for multiplayer purposes to synchronize over network; serves otherwise no purpose 
 var _character_resource_path: String:
 	set(new_character_resource_path):
 		_character_resource_path = new_character_resource_path

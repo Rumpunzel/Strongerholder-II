@@ -1,5 +1,5 @@
-class_name Multiplayer
-extends Node
+class_name MultiplayerSession
+extends Session
 
 signal player_connected(peer_id: int, player: SynchronizedPlayer)
 signal player_disconnected(peer_id: int)

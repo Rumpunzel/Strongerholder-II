@@ -1,8 +1,5 @@
-class_name Singleplayer
-extends Node
-
-signal started(player: Player)
-signal stopped(host_from_singleplayer: SynchronizedPlayer)
+class_name SingleplayerSession
+extends Session
 
 var player: Player
 

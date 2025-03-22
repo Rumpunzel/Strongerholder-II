@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cleyndjgmibpv"]
 
-[ext_resource type="Script" uid="uid://7ar5hadplpkr" path="res://game/singleplayer/singleplayer.gd" id="1_f8rh1"]
+[ext_resource type="Script" uid="uid://7ar5hadplpkr" path="res://game/singleplayer/singleplayer_session.gd" id="1_f8rh1"]
 
 [node name="Singleplayer" type="Node"]
 script = ExtResource("1_f8rh1")

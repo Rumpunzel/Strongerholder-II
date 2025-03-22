@@ -13,21 +13,9 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 			return
 		_character_controller_path = character_controller.get_path()
 
-var does_process := true:
-	set(enabled):
-		does_process = enabled
-		_set_process(does_process and not is_disabled)
-		if does_process: print_debug("Added processing for player: %s" % name)
-		else: print_debug("Removed processing for player: %s" % name)
-
-var is_disabled := false:
-	set(disabled):
-		is_disabled = disabled
-		_set_process(does_process and not is_disabled)
-		if is_disabled: print_debug("Disabled player: %s" % name)
-		else: print_debug("Enabled player: %s" % name)
-
 var input_direction := Vector2.ZERO
+var does_process := true
+var is_disabled := false
 
 ## This is used for serialization purposes; serves otherwise no purpose 
 var _character_controller_path: NodePath:
@@ -45,16 +33,21 @@ func _ready() -> void:
 	_collect_input()
 
 func _process(_delta: float) -> void:
-	assert(does_process and not is_disabled)
-	assert(character_controller)
 	_collect_input()
+	if is_disabled: return
+	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
+	if not does_process: return
+	assert(does_process and not is_disabled)
+	# Other code
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 func _collect_input() -> void:
+	if not does_process: return
+	# Only collect input if this Player processes
 	input_direction = read_movement_input()
 
 func _send_input_to_character_controller() -> void:
@@ -63,13 +56,3 @@ func _send_input_to_character_controller() -> void:
 
 func _check_disabled() -> void:
 	is_disabled = not character_controller
-
-func _set_process(enabled: bool) -> void:
-	set_process(enabled)
-	set_process_input(enabled)
-	set_process_shortcut_input(enabled)
-	set_process_unhandled_input(enabled)
-	set_process_unhandled_key_input(enabled)
-	set_physics_process(enabled)
-	if enabled: print_debug("Enabled processing for player: %s" % name)
-	else: print_debug("Disabled processing for player: %s" % name)

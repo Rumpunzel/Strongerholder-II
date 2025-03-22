@@ -17,6 +17,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	if is_disabled: return
+	assert(character_controller)
+	if not does_process: return
+	assert(does_process and not is_disabled)
 	assert(player_id == multiplayer.get_unique_id(), "Expected player_id %d to be equal to multiplayer.get_unique_id() but was %d!" % [player_id, multiplayer.get_unique_id()])
 	assert(player_id == get_multiplayer_authority(), "Cannot process on SynchronizedPlayer without multiplayer authority!")
 

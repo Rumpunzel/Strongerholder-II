@@ -63,10 +63,10 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 	
 	var properties_data: Dictionary[NodePath, Dictionary] = collected_data[PROPERTIES]
 	assert(properties_data is Dictionary[NodePath, Dictionary])
-	for properties_serializer_path: NodePath in properties_data:
+	for properties_serializer_path: NodePath in properties_data.keys():
 		var properties_serializer: PropertiesSerializer = get_node(properties_serializer_path)
-		var collected_properties: Dictionary[NodePath, Dictionary] = properties_data[properties_serializer_path]
-		assert(collected_properties is Dictionary[NodePath, Dictionary])
+		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
+		assert(collected_properties is Dictionary[NodePath, Variant])
 		properties_serializer.parse_properties(collected_properties)
 
 func serialize() -> String:

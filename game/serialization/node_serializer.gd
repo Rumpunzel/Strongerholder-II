@@ -1,4 +1,5 @@
 @tool
+@icon("uid://dppclq1ett8bx")
 class_name NodeSerializer
 extends Node
 
@@ -49,6 +50,7 @@ func parse_nodes(collected_nodes: Dictionary[String, Array]) -> void:
 			var parent_node := get_node(parent_node_path)
 			node_to_spawn.name = node_path.get_name(node_path.get_name_count() - 1)
 			parent_node.add_child(node_to_spawn)
+	print_debug("Parsed serialized nodes for: %s" % get_path())
 
 func serialize() -> String:
 	return Serialization.encode_data(collect_nodes())

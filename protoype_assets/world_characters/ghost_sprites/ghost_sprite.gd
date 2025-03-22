@@ -1,3 +1,4 @@
+@icon("uid://c8lah4qxw5f0v")
 class_name GhostSprite
 extends WorldCharacter
 

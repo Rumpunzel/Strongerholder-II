@@ -1,3 +1,4 @@
+@icon("uid://lafgp3e7lvc3")
 class_name Serialization
 extends Node
 

@@ -1,3 +1,4 @@
+@icon("uid://bkxn2uupbbt34")
 class_name SingleplayerSession
 extends Session
 

@@ -1,3 +1,4 @@
+@icon("uid://br0wwafeqokfw")
 class_name Menu
 extends Control
 

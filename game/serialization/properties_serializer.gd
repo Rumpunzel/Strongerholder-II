@@ -1,4 +1,5 @@
 @tool
+@icon("uid://drw5rl4ut3rge")
 class_name PropertiesSerializer
 extends Node
 

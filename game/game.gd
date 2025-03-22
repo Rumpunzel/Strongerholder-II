@@ -1,3 +1,4 @@
+@icon("uid://bes0anop2dh5u")
 extends Node
 
 signal game_paused

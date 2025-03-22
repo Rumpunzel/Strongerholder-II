@@ -13,7 +13,7 @@ func start(host_as_singleplayer: Player) -> Error:
 	if host_as_singleplayer:
 		player = host_as_singleplayer
 	else:
-		player = PLAYER_SCENE.instantiate()
+		player = Player.PLAYER_SCENE.instantiate()
 	add_child(player)
 	started.emit(player)
 	print_debug("Started singleplayer session!")
@@ -22,7 +22,6 @@ func start(host_as_singleplayer: Player) -> Error:
 func stop() -> Player:
 	assert(player)
 	remove_child(player)
-	player = null
 	stopped.emit(player)
 	print_debug("Stopped singleplayer session!")
 	return player

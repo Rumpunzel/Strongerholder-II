@@ -23,7 +23,7 @@ uv1_scale = Vector3(16, 16, 16)
 
 [node name="GhostSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://b262a6ebbwsbl")
-spawn_path = NodePath("../VisiterGhosts")
+spawn_path = NodePath("../VisitorGhosts")
 script = ExtResource("1_lkjt4")
 ghost = ExtResource("2_6g8e2")
 
@@ -53,7 +53,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 [node name="LocalGhosts" type="Node3D" parent="."]
 unique_name_in_owner = true
 
-[node name="VisiterGhosts" type="Node3D" parent="."]
+[node name="VisitorGhosts" type="Node3D" parent="."]
 
 [node name="Characters" type="Node3D" parent="."]
 

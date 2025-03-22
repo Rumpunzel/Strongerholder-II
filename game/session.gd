@@ -4,8 +4,6 @@ extends Node
 signal started(player: Player)
 signal stopped(existing_player: Player)
 
-const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
-
 @export var player_name: String
 
 static func create() -> Session:

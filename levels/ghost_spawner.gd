@@ -4,7 +4,7 @@ extends MultiplayerSpawner
 
 var _host_ghost: CharacterController
 
-@onready var _host_ghosts: Node3D = %LocalGhosts
+@onready var _local_ghosts: Node3D = %LocalGhosts
 @onready var _spawn_node := get_node(spawn_path)
 
 func _ready() -> void:
@@ -14,12 +14,12 @@ func _configre_host_ghost(player: Player) -> void:
 	if _host_ghost:
 		# Everything is as it should be
 		if _host_ghost == player.character_controller: return
-		_host_ghosts.remove_child(_host_ghost)
+		_local_ghosts.remove_child(_host_ghost)
 		_host_ghost.queue_free()
 	
 	_host_ghost = ghost.create()
 	_host_ghost.name = "%d" % Game.HOST_ID
-	_host_ghosts.add_child(_host_ghost, true)
+	_local_ghosts.add_child(_host_ghost, true)
 	player.character_controller = _host_ghost
 
 func _remove_all_visitor_ghosts() -> void:

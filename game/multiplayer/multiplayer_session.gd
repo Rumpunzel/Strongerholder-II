@@ -46,12 +46,14 @@ func start(existing_player: Player) -> Error:
 	multiplayer.multiplayer_peer = server_peer
 	
 	if existing_player:
-		var host_from_singleplayer := existing_player.to_synchronized_player()
+		var host_from_singleplayer := SynchronizedPlayer.from_player(existing_player)
 		_add_player(host_from_singleplayer)
 		host_player = host_from_singleplayer
 		existing_player.queue_free()
+		print_debug("Using existing player as host!")
 	else:
 		host_player = _create_player(Game.HOST_ID, get_host_info())
+		print_debug("Creating new player to serve as host!")
 	started.emit(host_player)
 	_show_toast("Hosted game!", success_background_color)
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT])

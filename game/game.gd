@@ -2,8 +2,8 @@ extends Node
 
 signal session_changed(new_session: Session)
 
-signal game_continued
 signal game_paused
+signal game_unpaused
 
 signal game_hosted(ip_address: String, port: int)
 signal game_joined(ip_address: String, port: int)
@@ -24,10 +24,10 @@ func _ready() -> void:
 	_start_singleplayer_session.call_deferred()
 
 func request_pause() -> void:
-	if not session is MultiplayerSession and not get_tree().paused: get_tree().paused = true
+	if not session is MultiplayerSession and not get_tree().paused: _pause_game()
 
 func request_unpause() -> void:
-	if get_tree().paused: get_tree().paused = false
+	if get_tree().paused: _unpause_game()
 
 func quit_game() -> void:
 	get_tree().quit()
@@ -58,10 +58,12 @@ func leave_game() -> void:
 func _pause_game() -> void:
 	get_tree().paused = true
 	game_paused.emit()
+	print_debug("Game paused...")
 
-func _continue_game() -> void:
+func _unpause_game() -> void:
 	get_tree().paused = false
-	game_continued.emit()
+	game_unpaused.emit()
+	print_debug("Game unpaused!")
 
 func _start_singleplayer_session(existing_player: Player = null) -> SingleplayerSession:
 	assert(not session)

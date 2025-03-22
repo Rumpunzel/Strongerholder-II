@@ -1,15 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://game/player/player.gd" id="1_i6aj8"]
-[ext_resource type="Script" uid="uid://ckbhvwumadh3b" path="res://game/player/camera/top_down_camera.gd" id="2_wu7mp"]
+[ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://game/player/camera/top_down_camera.tscn" id="2_b2mth"]
 
 [node name="Player" type="Node"]
 script = ExtResource("1_i6aj8")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
-[node name="TopDownCamera" type="Camera3D" parent="."]
+[node name="TopDownCamera" parent="." instance=ExtResource("2_b2mth")]
 unique_name_in_owner = true
-current = true
-fov = 30.0
-script = ExtResource("2_wu7mp")
-metadata/_custom_type_script = "uid://ckbhvwumadh3b"

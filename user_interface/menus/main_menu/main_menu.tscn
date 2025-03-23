@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
 
-[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/main_menu/main_menu.gd" id="1_bwjgb"]
-[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/main_menu/game_info.tscn" id="2_hnapd"]
-[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_ru3py"]
-[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://user_interface/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
+[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/menus/main_menu/main_menu.gd" id="1_bwjgb"]
+[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/menus/main_menu/game_info.tscn" id="2_hnapd"]
+[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/menus/info/title_label.gd" id="3_ru3py"]
+[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://user_interface/menus/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hb773"]
 

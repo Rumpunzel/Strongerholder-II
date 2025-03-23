@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://citi18cutmbiw"]
+[gd_scene load_steps=3 format=3 uid="uid://citi18cutmbiw"]
 
 [ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://game/multiplayer/multiplayer_session.gd" id="1_mg27w"]
+[ext_resource type="Script" uid="uid://b68u3p1bd6gb" path="res://user_interface/toaster.gd" id="2_c0aee"]
 
 [node name="MultiplayerSession" type="Node"]
 script = ExtResource("1_mg27w")
@@ -12,3 +13,8 @@ spawn_path = NodePath("../SynchronizedPlayers")
 
 [node name="SynchronizedPlayers" type="Node" parent="."]
 unique_name_in_owner = true
+
+[node name="Toaster" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_c0aee")
+metadata/_custom_type_script = "uid://b68u3p1bd6gb"

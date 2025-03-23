@@ -4,11 +4,12 @@ extends Button
 
 signal text_changed(new_text: String)
 
-@export_category("Toast")
 @export_multiline var message: String = ""
-@export var type: Toasts.Type = Toasts.Type.INFO
-@export var gravity: Toasts.Gravity = Toasts.Gravity.TOP
-@export var direction: Toasts.Direction = Toasts.Direction.CENTER
+
+@export_category("Toast")
+@export var type: Toaster.Type = Toaster.Type.INFO
+@export var gravity: Toaster.Gravity = Toaster.Gravity.TOP
+@export var direction: Toaster.Direction = Toaster.Direction.CENTER
 @export var text_size: int = 18
 @export var custom_toast_font: bool = false
 
@@ -21,7 +22,7 @@ func _on_pressed() -> void:
 	if message.is_empty():
 		printerr("No message, not showing ClipboardButton toast!")
 		return
-	Toasts.show_toast(message, type, gravity, direction, text_size, custom_toast_font)
+	Toaster.show_toast(message, type, gravity, direction, text_size, custom_toast_font)
 
 func _set(property: StringName, value: Variant) -> bool:
 	match property:

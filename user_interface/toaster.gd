@@ -1,4 +1,5 @@
-class_name Toasts
+@icon("uid://m54bkmd348w1")
+class_name Toaster
 extends Node
 
 enum Type {
@@ -33,13 +34,18 @@ const background_colors: Dictionary[Type, Color] = {
 	Type.ERROR: Color(1, 0.47, 0.42),
 }
 
+@export var _gravity: Gravity = Gravity.TOP
+@export var _direction: Direction = Direction.CENTER
+@export var _text_size: int = 18
+@export var _custom_toast_font: bool = false
+
 static func show_toast(
 	message: String,
-	type: Type = Type.INFO,
-	gravity: Gravity = Gravity.TOP,
-	direction: Direction = Direction.CENTER,
-	text_size: int = 18, 
-	custom_toast_font: bool = false,
+	type: Type,
+	gravity: Gravity,
+	direction: Direction,
+	text_size: int, 
+	custom_toast_font: bool,
 ) -> void:
 	assert(not message.is_empty())
 	ToastParty.show({
@@ -51,6 +57,18 @@ static func show_toast(
 		"text_size": text_size,
 		"use_font": custom_toast_font,
 	})
+
+func toast_info(message: String) -> void:
+	show_toast(message, Type.INFO, _gravity, _direction, _text_size, _custom_toast_font)
+
+func toast_success(message: String) -> void:
+	show_toast(message, Type.SUCCESS, _gravity, _direction, _text_size, _custom_toast_font)
+
+func toast_warning(message: String) -> void:
+	show_toast(message, Type.WARNING, _gravity, _direction, _text_size, _custom_toast_font)
+
+func toast_error(message: String) -> void:
+	show_toast(message, Type.ERROR, _gravity, _direction, _text_size, _custom_toast_font)
 
 static func _parse_gravity(gravity: Gravity) -> String:
 	match(gravity):

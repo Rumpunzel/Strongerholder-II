@@ -10,6 +10,8 @@ const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
+@onready var _toaster: Toaster = %Toaster
+
 func _ready() -> void:
 	get_tree().node_added.connect(_on_node_added)
 
@@ -100,14 +102,14 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 
 func serialize() -> String:
 	var collected_data: Dictionary[String, Dictionary] = collect_data()
-	Toasts.show_toast("Game saved!", Toasts.Type.SUCCESS)
+	_toaster.toast_success("Game saved!")
 	return encode_data(collected_data)
 
 func deserialize(serialized_dict: String) -> void:
 	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_dict)
 	assert(collected_data is Dictionary[String, Dictionary])
 	parse_data(collected_data)
-	Toasts.show_toast("Game loaded!", Toasts.Type.SUCCESS)
+	_toaster.toast_info("Game loaded!")
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return

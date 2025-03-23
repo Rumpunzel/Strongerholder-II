@@ -1,3 +1,4 @@
+@icon("uid://cpbv0myc0qfxb")
 class_name WorldCharacter
 extends Node3D
 

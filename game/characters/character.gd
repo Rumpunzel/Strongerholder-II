@@ -1,4 +1,5 @@
-@icon("uid://cxasgwulwayvu")
+@tool
+@icon("uid://s227t8fljxxv")
 class_name Character
 extends Resource
 

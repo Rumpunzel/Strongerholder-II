@@ -1,4 +1,3 @@
-@icon("uid://bnaoddhf8gssj")
 class_name CharacterModel
 extends WorldCharacter
 

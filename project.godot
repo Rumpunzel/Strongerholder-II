@@ -44,7 +44,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/event-bus/addons/event_bus_plugin/plugin.cfg", "res://addons/event_bus_plugin/plugin.cfg", "res://addons/toastparty/plugin.cfg")
+enabled=PackedStringArray("res://addons/event_bus_plugin/plugin.cfg", "res://addons/toastparty/plugin.cfg")
 
 [global_group]
 

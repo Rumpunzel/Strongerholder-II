@@ -34,82 +34,73 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
+func serialize(save_file_path: String) -> Error:
+	assert(save_file_path.is_absolute_path())
+	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
+	var collected_data: Dictionary[String, Dictionary] = collect_data()
+	var serialized_game_state: String = encode_data(collected_data)
+	save_file.store_line(serialized_game_state)
+	_toaster.toast_success("Game saved!")
+	return Error.OK
+
+func deserialize(save_file_path: String) -> Error:
+	assert(FileAccess.file_exists(save_file_path))
+	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
+	var serialized_game_state: String = save_file.get_as_text()
+	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_game_state)
+	assert(collected_data is Dictionary[String, Dictionary])
+	restore_state(collected_data)
+	_toaster.toast_info("Game loaded!")
+	return Error.OK
+
 func collect_data() -> Dictionary[String, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("NodeSerializers")
-	var node_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
-	for node_serializer: NodeSerializer in node_serializers:
-		var collected_nodes: Dictionary[String, Array] = node_serializer.collect_nodes()
-		node_data_to_serialize[node_serializer.get_path()] = collected_nodes
-	
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("PropertiesSerializers")
-	var properties_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
-	for properties_serializer: PropertiesSerializer in properties_serializers:
-		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
-		properties_data_to_serialize[properties_serializer.get_path()] = collected_properties
-	
 	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("IntangibleSerializers")
-	var intangible_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
-	for properties_serializer: PropertiesSerializer in intangible_serializers:
-		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
-		intangible_data_to_serialize[properties_serializer.get_path()] = collected_properties
-	
 	return {
-		NODES: node_data_to_serialize,
-		PROPERTIES: properties_data_to_serialize,
-		INTANGIBLE: intangible_data_to_serialize,
+		NODES: NodeSerializer.collect_node_data(node_serializers),
+		PROPERTIES: PropertiesSerializer.collect_properties_data(properties_serializers),
+		INTANGIBLE: PropertiesSerializer.collect_properties_data(intangible_serializers),
 	}
 
-func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
+func restore_state(collected_data: Dictionary[String, Dictionary]) -> void:
 	assert(collected_data.has_all([NODES, PROPERTIES, INTANGIBLE]))
 	assert(collected_data.keys().size() == 3)
+	
 	var node_data: Dictionary[NodePath, Dictionary] = collected_data[NODES]
 	assert(node_data is Dictionary[NodePath, Dictionary])
-	for node_serializer_path: NodePath in node_data:
-		var collected_nodes: Dictionary[String, Array] = node_data[node_serializer_path]
-		assert(collected_nodes is Dictionary[String, Array])
-		var node_serializer: NodeSerializer = get_node(node_serializer_path)
-		assert(node_serializer)
-		node_serializer.parse_nodes(collected_nodes)
-	print_debug("Parsed serialized node data of size: %d" % node_data.size())
+	restore_nodes(node_data)
 	
 	await get_tree().process_frame
 	
 	var properties_data: Dictionary[NodePath, Dictionary] = collected_data[PROPERTIES]
 	assert(properties_data is Dictionary[NodePath, Dictionary])
-	for properties_serializer_path: NodePath in properties_data.keys():
-		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
-		assert(collected_properties is Dictionary[NodePath, Variant])
-		var properties_serializer: PropertiesSerializer = get_node(properties_serializer_path)
-		assert(properties_serializer)
-		properties_serializer.parse_properties(collected_properties)
-	print_debug("Parsed serialized properties data of size: %d" % properties_data.size())
+	restore_properties(properties_data)
 	
 	var intangible_data: Dictionary[NodePath, Dictionary] = collected_data[INTANGIBLE]
 	assert(intangible_data is Dictionary[NodePath, Dictionary])
-	for properties_serializer_path: NodePath in intangible_data.keys():
-		var collected_properties: Dictionary[NodePath, Variant] = intangible_data[properties_serializer_path]
+	restore_properties(intangible_data, true)
+
+func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
+	for node_serializer_path: NodePath in node_data:
+		var collected_nodes: Dictionary[String, Array] = node_data[node_serializer_path]
+		assert(collected_nodes is Dictionary[String, Array])
+		var node_serializer: NodeSerializer = get_node(node_serializer_path)
+		assert(node_serializer)
+		node_serializer.restore_state(collected_nodes)
+
+func restore_properties(properties_data: Dictionary[NodePath, Dictionary], allow_async: bool = false) -> void:
+	for properties_serializer_path: NodePath in properties_data.keys():
+		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
 		assert(collected_properties is Dictionary[NodePath, Variant])
 		var properties_serializer: PropertiesSerializer = get_node_or_null(properties_serializer_path)
-		if properties_serializer:
-			# Deserialize normally
-			properties_serializer.parse_properties(collected_properties)
-			# print_debug("Found INTANGIBLE PropertiesSerializer at %s; deserialization as normal!" % properties_serializer_path)
+		if properties_serializer: properties_serializer.restore_state(collected_properties)
+		elif not allow_async: printerr("Could not find PropertiesSerializer at %s; skipped!" % properties_serializer_path)
 		else:
 			# Queue for later deserialization
 			_queued_intangible_data[properties_serializer_path] = collected_properties
 			print_debug("Could not find INTANGIBLE PropertiesSerializer at %s; queuing deserialization for later..." % properties_serializer_path)
-	print_debug("Parsed serialized intangible data. of size: %d" % intangible_data.size())
-
-func serialize() -> String:
-	var collected_data: Dictionary[String, Dictionary] = collect_data()
-	_toaster.toast_success("Game saved!")
-	return encode_data(collected_data)
-
-func deserialize(serialized_dict: String) -> void:
-	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_dict)
-	assert(collected_data is Dictionary[String, Dictionary])
-	parse_data(collected_data)
-	_toaster.toast_info("Game loaded!")
+	if allow_async: print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return
@@ -121,5 +112,5 @@ func _on_node_added(node: Node) -> void:
 	await get_tree().process_frame
 	
 	var properties_serializer: PropertiesSerializer = node
-	properties_serializer.parse_properties(collected_properties)
+	properties_serializer.restore_state(collected_properties)
 	_queued_intangible_data.erase(node_path)

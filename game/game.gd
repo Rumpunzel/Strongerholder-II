@@ -40,17 +40,12 @@ func request_unpause() -> void:
 
 func save_game() -> void:
 	game_save_started.emit()
-	var save_file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
-	var serialized_game_state: String = _serialization.serialize()
-	save_file.store_line(serialized_game_state)
+	_serialization.serialize(SAVE_FILE_PATH)
 	game_save_finished.emit()
 
 func load_game() -> void:
-	assert(FileAccess.file_exists(SAVE_FILE_PATH))
 	game_load_started.emit()
-	var save_file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
-	var serialized_game_state: String = save_file.get_as_text()
-	_serialization.deserialize(serialized_game_state)
+	_serialization.deserialize(SAVE_FILE_PATH)
 	game_load_finished.emit()
 
 func quit_game(save_before: bool = true) -> void:

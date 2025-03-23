@@ -7,11 +7,17 @@ extends Resource
 @export_color_no_alpha var color: Color
 @export var movement_attributes: MovementAttributes
 
-@export var character_controller_scene: PackedScene = preload("uid://cvj6b1m2b65hd")
-
 @export_category("World Character")
 @export var _world_character: PackedScene
 @export var _random_world_characters: Array[PackedScene]
+
+@export_group("Collision", "collision")
+@export_flags_3d_physics var collision_layer: int = 2
+@export_flags_3d_physics var collision_mask: int = 3
+
+@export_category("")
+@export_group("Character Controller")
+@export var character_controller_scene: PackedScene = preload("uid://cvj6b1m2b65hd")
 
 func create() -> CharacterController:
 	assert(movement_attributes)

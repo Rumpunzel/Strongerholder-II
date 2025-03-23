@@ -44,12 +44,11 @@ func start(existing_player: Player) -> Error:
 		var host_from_singleplayer: SynchronizedPlayer = SynchronizedPlayer.from_player(existing_player)
 		_add_player(host_from_singleplayer)
 		host_player = host_from_singleplayer
-		existing_player.queue_free()
 		print_debug("Using existing player as host!")
 	else:
 		host_player = _create_player(Game.HOST_ID, get_host_info())
 		print_debug("Creating new player to serve as host!")
-	started.emit(host_player)
+	started.emit(host_player.player)
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT])
 	return Error.OK
 
@@ -58,7 +57,8 @@ func start(existing_player: Player) -> Error:
 ## @returns null if leaving a hosted game
 func stop() -> Player:
 	multiplayer.multiplayer_peer = null
-	var host_as_singleplayer: Player = host_player.to_player() if host_player else null
+	var host_as_singleplayer: Player = host_player.player if host_player else null
+	if host_as_singleplayer: host_player.remove_child(host_as_singleplayer)
 	_remove_all_players()
 	stopped.emit(host_as_singleplayer)
 	return host_as_singleplayer

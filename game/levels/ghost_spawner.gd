@@ -44,11 +44,11 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	assert(player)
 	for ghost_controller: CharacterController in _spawn_node.get_children():
 		# CharacterController already exists, does not need to be created
-		if ghost_controller == player.character_controller: return
+		if ghost_controller == player.player.character_controller: return
 	var new_ghost: CharacterController = ghost.create()
 	new_ghost.name = "%d" % peer_id
 	_spawn_node.add_child(new_ghost, true)
-	player.character_controller = new_ghost
+	player.player.character_controller = new_ghost
 
 func _on_player_disconnected(peer_id: int, _player: SynchronizedPlayer) -> void:
 	if peer_id == Game.HOST_ID: return

@@ -13,14 +13,17 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 			return
 		_character_controller_path = character_controller.get_path()
 
-@export var _camera_scene: PackedScene = preload("uid://cnh75c8plrhf1")
+var is_disabled: bool = false:
+	set(new_is_disabled):
+		is_disabled = new_is_disabled
+		_interaction_area.visible = not is_disabled
 
-var input_direction: Vector2 = Vector2.ZERO
-var is_disabled: bool = false
 var is_local_player: bool = true:
 	set(new_is_local_player):
 		is_local_player = new_is_local_player
 		if _camera: _camera.current = is_local_player
+
+var input_direction: Vector2 = Vector2.ZERO
 
 ## This is used for serialization purposes; serves otherwise no purpose 
 var _character_controller_path: NodePath:
@@ -30,17 +33,10 @@ var _character_controller_path: NodePath:
 		await get_tree().process_frame
 		character_controller = get_node(_character_controller_path)
 
-var _camera: TopDownCamera:
-	set(new_camera):
-		if _camera:
-			if get_children().has(_camera) :remove_child(_camera)
-			_camera.queue_free()
-		_camera = new_camera
-		if not _camera: return
-		add_child.call_deferred(_camera, true)
+@onready var _camera: TopDownCamera = %TopDownCamera
+@onready var _interaction_area: InteractionArea = %InteractionArea
 
 func _ready() -> void:
-	_camera = _camera_scene.instantiate()
 	_check_disabled()
 	_collect_input()
 
@@ -50,8 +46,12 @@ func _process(_delta: float) -> void:
 	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
+	_interaction_area.follow_character(character_controller)
 	if not is_local_player: return
 	# Other code
+
+static func create() -> Player:
+	return PLAYER_SCENE.instantiate()
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")

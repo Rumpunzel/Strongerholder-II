@@ -107,7 +107,9 @@ toggle_event_overview={
 
 3d_physics/layer_1="World"
 3d_physics/layer_2="Characters"
+3d_physics/layer_3="Items"
 3d_physics/layer_5="WorldAreas"
-3d_physics/layer_6="CharacterAreas"
+3d_physics/layer_6="HitBoxes"
+3d_physics/layer_7="HurtBoxes"
 3d_physics/layer_17="Ghosts"
 3d_physics/layer_21="GhostAreas"

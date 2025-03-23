@@ -29,7 +29,7 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	var new_character: CharacterController = king.create() if peer_id == Game.HOST_ID else rogue.create()
 	new_character.name = "%d" % peer_id
 	spawn_node.add_child(new_character, true)
-	player.character_controller = new_character
+	player.player.character_controller = new_character
 
 func _on_player_disconnected(peer_id: int) -> void:
 	var old_character: CharacterController = spawn_node.get_node("%d" % peer_id)

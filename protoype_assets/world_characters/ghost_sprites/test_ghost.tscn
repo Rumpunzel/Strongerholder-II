@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=28 format=3 uid="uid://bf4cxhr3kab7j"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://protoype_assets/world_characters/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
 [ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_faw76"]
@@ -21,6 +21,10 @@
 [ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="19_mnelq"]
 [ext_resource type="Texture2D" uid="uid://bvuy0s8b8ywrw" path="res://protoype_assets/dont_starve_ghosts/wortox.webp" id="20_3mkyr"]
 [ext_resource type="Texture2D" uid="uid://rku3rl1yv06c" path="res://protoype_assets/dont_starve_ghosts/wurt.webp" id="21_3eeba"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_faw76"]
+radius = 0.25
+height = 1.5
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_faw76"]
 properties/0/path = NodePath(".:_random_frame")
@@ -113,7 +117,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 tracks/2/type = "bezier"
@@ -151,7 +155,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.1, -0.25, 0, 0.25, 0, 0.2, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1.1, -0.25, 0, 0.25, 0, 1.2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 1, 2, 3, 4)
 }
 tracks/2/type = "bezier"
@@ -174,6 +178,8 @@ _data = {
 
 [node name="TestGhost" type="Node3D"]
 script = ExtResource("1_2ku6h")
+collision_shape = SubResource("CapsuleShape3D_faw76")
+metadata/_custom_type_script = "uid://f7j5ijitqy25"
 
 [node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_faw76")
@@ -186,10 +192,11 @@ metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 unique_name_in_owner = true
-offset = Vector2(0, 273)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 pixel_size = 0.003
 billboard = 1
 sprite_frames = SubResource("SpriteFrames_g5i5u")
+frame = 8
 speed_scale = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

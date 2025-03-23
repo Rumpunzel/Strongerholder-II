@@ -11,8 +11,13 @@ extends CharacterBody3D
 			_character_resource_path = ""
 			return
 		name = character.name
+		collision_layer = character.collision_layer
+		collision_mask = character.collision_mask
 		world_character = character.get_world_character()
 		_character_resource_path = character.resource_path
+
+@export_group("Configuration")
+@export var _character_collision_shape: CharacterCollisionShape
 
 @export_group("Debug")
 @export var _debug_world_character: PackedScene = preload("uid://b55tt1yijxn7r")
@@ -20,12 +25,14 @@ extends CharacterBody3D
 var world_character: WorldCharacter:
 	set(new_world_character):
 		if world_character:
-			if get_children().has(world_character) :remove_child(world_character)
+			if get_children().has(world_character): remove_child(world_character)
 			world_character.queue_free()
 		world_character = new_world_character
 		if not world_character:
+			_character_collision_shape.shape = null
 			_world_character_scene_path = ""
 			return
+		_character_collision_shape.shape = world_character.collision_shape
 		add_child.call_deferred(world_character, true)
 		_world_character_scene_path = new_world_character.scene_file_path
 

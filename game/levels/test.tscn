@@ -22,7 +22,7 @@ uv1_scale = Vector3(16, 16, 16)
 [node name="Test" type="Node3D"]
 
 [node name="GhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://cjm56m0vvukl")
+_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../VisitorGhosts")
 script = ExtResource("1_lkjt4")
 ghost = ExtResource("2_6g8e2")
@@ -55,12 +55,12 @@ mesh = SubResource("PlaneMesh_bkb5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
-[node name="LocalGhosts" type="Node3D" parent="."]
+[node name="LocalGhosts" type="Marker3D" parent="."]
 unique_name_in_owner = true
 
-[node name="VisitorGhosts" type="Node3D" parent="."]
+[node name="VisitorGhosts" type="Marker3D" parent="."]
 
-[node name="Characters" type="Node3D" parent="."]
+[node name="Characters" type="Marker3D" parent="."]
 
 [node name="King" parent="Characters" instance=ExtResource("8_k83lp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)

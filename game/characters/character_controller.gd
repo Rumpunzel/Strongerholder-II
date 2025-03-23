@@ -8,12 +8,14 @@ extends CharacterBody3D
 		character = new_character
 		if not character:
 			world_character = null
+			_character_collision_shape.shape = null
 			_character_resource_path = ""
 			return
 		name = character.name
 		collision_layer = character.collision_layer
 		collision_mask = character.collision_mask
 		world_character = character.get_world_character()
+		_character_collision_shape.shape = character.collision_shape
 		_character_resource_path = character.resource_path
 
 @export_group("Configuration")
@@ -29,10 +31,8 @@ var world_character: WorldCharacter:
 			world_character.queue_free()
 		world_character = new_world_character
 		if not world_character:
-			_character_collision_shape.shape = null
 			_world_character_scene_path = ""
 			return
-		_character_collision_shape.shape = world_character.collision_shape
 		add_child.call_deferred(world_character, true)
 		_world_character_scene_path = new_world_character.scene_file_path
 
@@ -60,21 +60,17 @@ var _world_character_scene_path: String:
 		var world_character_scene: PackedScene = load(_world_character_scene_path)
 		world_character = world_character_scene.instantiate()
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	if Engine.is_editor_hint():
 		if _debug_world_character: _show_debug_world_character()
 
 func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		pass
-	else:
-		_apply_direction_input(delta)
+	if Engine.is_editor_hint(): return
+	_apply_direction_input(delta)
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		pass
-	else:
-		if world_character: world_character.play_animation(_normalized_velocity)
+	if Engine.is_editor_hint(): return
+	if world_character: world_character.play_animation(_normalized_velocity)
 
 func _apply_direction_input(delta: float) -> void:
 	_is_on_floor = is_on_floor()
@@ -104,3 +100,8 @@ func _show_debug_world_character() -> void:
 	if world_character: return
 	assert(_debug_world_character)
 	world_character = _debug_world_character.instantiate()
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not _character_collision_shape: warnings.append("Missing CharacterCollisionShape reference.")
+	return warnings

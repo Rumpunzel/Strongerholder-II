@@ -1,3 +1,4 @@
+@tool
 @icon("uid://c73t2rg8wrdt3")
 class_name Player
 extends Node
@@ -9,13 +10,27 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		character_controller = new_character_controller
 		_check_disabled()
 		if not character_controller:
+			character = null
 			_character_controller_path = NodePath()
 			return
+		character = character_controller.character
 		_character_controller_path = character_controller.get_path()
+
+@export_group("Configuration")
+@export var _camera: TopDownCamera
+@export var _hit_box: HitBox
+@export var _interaction_area: InteractionArea
+
+var character: Character:
+	set(new_character):
+		character = new_character
+		_hit_box.character = character
+		_interaction_area.character = character
 
 var is_disabled: bool = false:
 	set(new_is_disabled):
 		is_disabled = new_is_disabled
+		_hit_box.visible = not is_disabled
 		_interaction_area.visible = not is_disabled
 
 var is_local_player: bool = true:
@@ -33,20 +48,20 @@ var _character_controller_path: NodePath:
 		await get_tree().process_frame
 		character_controller = get_node(_character_controller_path)
 
-@onready var _camera: TopDownCamera = %TopDownCamera
-@onready var _interaction_area: InteractionArea = %InteractionArea
-
 func _ready() -> void:
 	_check_disabled()
+	if Engine.is_editor_hint(): return
 	_collect_input()
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
 	_collect_input()
 	if is_disabled: return
 	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
-	_interaction_area.follow_character(character_controller)
+	_hit_box.follow_node(character_controller)
+	_interaction_area.follow_node(character_controller)
 	if not is_local_player: return
 	# Other code
 
@@ -67,3 +82,10 @@ func _send_input_to_character_controller() -> void:
 
 func _check_disabled() -> void:
 	is_disabled = not character_controller
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not _camera: warnings.append("Missing Camera reference.")
+	if not _hit_box: warnings.append("Missing HitBox reference.")
+	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
+	return warnings

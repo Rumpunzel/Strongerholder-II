@@ -1,43 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=5 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://game/player.gd" id="1_i6aj8"]
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://game/camera/top_down_camera.tscn" id="2_du4nq"]
 [ext_resource type="Script" uid="uid://brt4an7lsoudo" path="res://game/characters/interaction_area.gd" id="2_w5y0b"]
 [ext_resource type="Script" uid="uid://beyuv6a8ge7y6" path="res://game/characters/hit_box.gd" id="4_p0vpi"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_du4nq"]
-size = Vector3(2, 2, 3)
-
-[node name="Player" type="Node"]
+[node name="Player" type="Node" node_paths=PackedStringArray("_camera", "_hit_box", "_interaction_area")]
 script = ExtResource("1_i6aj8")
+_camera = NodePath("TopDownCamera")
+_hit_box = NodePath("HitBox")
+_interaction_area = NodePath("InteractionArea")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
 [node name="TopDownCamera" parent="." instance=ExtResource("2_du4nq")]
-unique_name_in_owner = true
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 14.1421, 20, 14.1421)
 
-[node name="InteractionArea" type="Area3D" parent="."]
-unique_name_in_owner = true
+[node name="HitBox" type="Area3D" parent="." node_paths=PackedStringArray("_collision_shape")]
+collision_layer = 32
+collision_mask = 64
+script = ExtResource("4_p0vpi")
+_collision_shape = NodePath("CollisionShape3D")
+_collision_shape_offset = null
+metadata/_custom_type_script = "uid://beyuv6a8ge7y6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+debug_color = Color(0.993185, 0, 0.245715, 0.419608)
+
+[node name="InteractionArea" type="Area3D" parent="." node_paths=PackedStringArray("_collision_shape")]
 collision_layer = 64
 collision_mask = 32
 script = ExtResource("2_w5y0b")
+_collision_shape = NodePath("CollisionShape3D")
+_collision_shape_offset = null
 metadata/_custom_type_script = "uid://brt4an7lsoudo"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.5)
-shape = SubResource("BoxShape3D_du4nq")
 debug_color = Color(0.849502, 0.373732, 0, 0.42)
-
-[node name="HitBox" type="Area3D" parent="."]
-collision_layer = 32
-collision_mask = 64
-script = ExtResource("4_p0vpi")
-metadata/_custom_type_script = "uid://beyuv6a8ge7y6"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
-debug_color = Color(0.87451, 0, 0.839216, 1)
-
-[connection signal="area_entered" from="InteractionArea" to="InteractionArea" method="_on_area_entered"]
-[connection signal="area_exited" from="InteractionArea" to="InteractionArea" method="_on_area_exited"]
-[connection signal="area_entered" from="HitBox" to="HitBox" method="_on_area_entered"]
-[connection signal="area_exited" from="HitBox" to="HitBox" method="_on_area_exited"]

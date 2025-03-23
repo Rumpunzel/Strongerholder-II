@@ -11,7 +11,6 @@ extends WorldCharacter
 		_animated_sprite.frame = _random_frame
 
 func _ready() -> void:
-	super._ready()
 	if _random_frame < 0: _random_ghost()
 	if Engine.is_editor_hint(): return
 	EventBus.subscribe("random_ghost_requested", _random_ghost)

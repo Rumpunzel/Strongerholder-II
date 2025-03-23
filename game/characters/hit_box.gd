@@ -1,11 +1,8 @@
+@tool
 @icon("uid://bv63hb5gynt8d")
 class_name HitBox
-extends Area3D
+extends CharacterArea
 
-@export var character_controller: CharacterController
-
-func _on_area_entered(_area: Area3D) -> void:
-	pass # Replace with function body.
-
-func _on_area_exited(_area: Area3D) -> void:
-	pass # Replace with function body.
+func _setup_collision_shape() -> void:
+	_collision_shape.shape = character.hit_box_shape
+	_collision_shape_offset = Vector3(0.0, Character.y_offset_from_shape(_collision_shape.shape), 0.0)

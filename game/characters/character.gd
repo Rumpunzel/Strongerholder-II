@@ -8,6 +8,10 @@ extends Resource
 @export var movement_attributes: MovementAttributes
 
 @export_category("World Character")
+@export var collision_shape: Shape3D = preload("uid://c7hifnsy5vabh")
+@export var hit_box_shape: Shape3D = preload("uid://h8f1hi4aoc40")
+@export var interaction_area_shape: Shape3D = preload("uid://bn0pwy8h3w0s1")
+
 @export var _world_character: PackedScene
 @export var _random_world_characters: Array[PackedScene]
 
@@ -33,3 +37,26 @@ func get_world_character() -> WorldCharacter:
 	if _world_character: return _world_character.instantiate()
 	var random_world_character: PackedScene = _random_world_characters.pick_random()
 	return random_world_character.instantiate()
+
+static func y_offset_from_shape(shape: Shape3D) -> float:
+	if not shape: return 0.0
+	var y_offset: float
+	match shape.get_class():
+		"BoxShape3D":
+			var box_shape: BoxShape3D = shape
+			y_offset = box_shape.size.y / 2.0
+		"CapsuleShape3D":
+			var capsule_shape: CapsuleShape3D = shape
+			y_offset = capsule_shape.height / 2.0
+		"ConcavePolygonShape3D": printerr("ConcavePolygonShape3D is not yet implemented!")
+		"ConvexPolygonShape3D": printerr("ConvexPolygonShape3D is not yet implemented!")
+		"CylinderShape3D":
+			var cylinder_shape: CylinderShape3D = shape
+			y_offset = cylinder_shape.height / 2.0
+		"HeightMapShape3D": printerr("HeightMapShape3D is not yet implemented!")
+		"SeparationRayShape3D": printerr("SeparationRayShape3D is not yet implemented!")
+		"SphereShape3D":
+			var sphere_shape: CylinderShape3D = shape
+			y_offset = sphere_shape.radius
+		"WorldBoundaryShape3D": printerr("WorldBoundaryShape3D is not yet implemented!")
+	return y_offset

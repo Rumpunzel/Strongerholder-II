@@ -57,10 +57,13 @@ func collect_data() -> Dictionary[String, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("NodeSerializers")
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("PropertiesSerializers")
 	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("IntangibleSerializers")
+	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
+	var properties_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
+	var intangible_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(intangible_serializers)
 	return {
-		NODES: NodeSerializer.collect_node_data(node_serializers),
-		PROPERTIES: PropertiesSerializer.collect_properties_data(properties_serializers),
-		INTANGIBLE: PropertiesSerializer.collect_properties_data(intangible_serializers),
+		NODES: node_data,
+		PROPERTIES: properties_data,
+		INTANGIBLE: intangible_data,
 	}
 
 func restore_state(collected_data: Dictionary[String, Dictionary]) -> void:
@@ -97,9 +100,9 @@ func restore_properties(properties_data: Dictionary[NodePath, Dictionary], allow
 		if properties_serializer: properties_serializer.restore_state(collected_properties)
 		elif not allow_async: printerr("Could not find PropertiesSerializer at %s; skipped!" % properties_serializer_path)
 		else:
-			# Queue for later deserialization
+			# Queue for later restoration
 			_queued_intangible_data[properties_serializer_path] = collected_properties
-			print_debug("Could not find INTANGIBLE PropertiesSerializer at %s; queuing deserialization for later..." % properties_serializer_path)
+			print_debug("Could not find INTANGIBLE PropertiesSerializer at %s; queuing restoration for later..." % properties_serializer_path)
 	if allow_async: print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
 func _on_node_added(node: Node) -> void:

@@ -6,9 +6,9 @@ extends Node
 ## Marks the root of this serliazier as unreliable, such as nodes created by multiplayer; are serialized asynchronously
 @export var intangible: bool = false
 
-## Optional MultiplayerSynchronizer; serializes synced propertes if supplied
+## Optional [MultiplayerSynchronizer]; serializes synced propertes if supplied
 @export var _multiplayer_synchronizer: MultiplayerSynchronizer
-## Properties to seralize if no MultiplayerSynchronizer is supplied
+## Properties to seralize if no [MultiplayerSynchronizer] is supplied
 #@export var _properties_to_serialize: Array[NodePath]
 
 func _ready() -> void:
@@ -16,16 +16,16 @@ func _ready() -> void:
 	else: add_to_group("PropertiesSerializers")
 
 ## Collects all properties data
-## @returns a Dictionary with NodePaths of the responsible PropertiesSerializer to the properties data
+## @returns a [Dictionary] with [NodePath]s of the responsible [PropertiesSerializer] to the properties data
 static func collect_properties_data(properties_serializers: Array[Node]) -> Dictionary[NodePath, Dictionary]:
 	var properties_data: Dictionary[NodePath, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in properties_serializers:
-		# Properties are collected in a Dictionary with the parameter as NodePath to the value as a Variant
+		# Properties are collected in a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
 		properties_data[properties_serializer.get_path()] = collected_properties
 	return properties_data
 
-## @returns a Dictionary with the parameter as NodePath to the value as a Variant
+## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 func collect_properties() -> Dictionary[NodePath, Variant]:
 	assert(_multiplayer_synchronizer)
 	var properties_to_serialize: Array[NodePath] = _multiplayer_synchronizer.replication_config.get_properties()

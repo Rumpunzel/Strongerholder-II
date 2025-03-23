@@ -6,7 +6,7 @@ signal game_joined(host_player_info: Dictionary)
 signal player_joined(player: SynchronizedPlayer)
 
 signal player_connected(peer_id: int, player: SynchronizedPlayer)
-## @param player may be null if the host disconnected
+## [param player] may be null if the host disconnected
 signal player_disconnected(peer_id: int, player: SynchronizedPlayer)
 signal server_disconnected
 
@@ -16,7 +16,7 @@ const MAX_CONNECTIONS: int = 4
 
 const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 
-## This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
+## This contains [SynchronizedPlayer]s for every player, with the keys being each player's unique IDs.
 var players: Dictionary[int, SynchronizedPlayer] = { }
 
 var host_player: SynchronizedPlayer

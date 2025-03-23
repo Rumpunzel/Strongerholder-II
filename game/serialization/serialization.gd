@@ -13,9 +13,6 @@ const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-func _ready() -> void:
-	get_tree().node_added.connect(_on_node_added)
-
 static func create() -> Serialization:
 	return SERIALIZATION_SCENE.instantiate()
 
@@ -103,7 +100,10 @@ func restore_properties(properties_data: Dictionary[NodePath, Dictionary], allow
 		else:
 			# Queue for later restoration
 			_queued_intangible_data[properties_serializer_path] = collected_properties
-			print_debug("Could not find INTANGIBLE PropertiesSerializer at %s; queuing restoration for later..." % properties_serializer_path)
+			if not get_tree().node_added.is_connected(_on_node_added):
+				get_tree().node_added.connect(_on_node_added)
+				print_debug("Started listening to nodes being added...")
+			print_debug("Could not find PropertiesSerializer at %s; queuing restoration for later..." % properties_serializer_path)
 	if allow_async: print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
 func _on_node_added(node: Node) -> void:
@@ -118,3 +118,6 @@ func _on_node_added(node: Node) -> void:
 	var properties_serializer: PropertiesSerializer = node
 	properties_serializer.restore_state(collected_properties)
 	_queued_intangible_data.erase(node_path)
+	if _queued_intangible_data.is_empty():
+		get_tree().node_added.disconnect(_on_node_added)
+		print_debug("Stopped listening to nodes being added!")

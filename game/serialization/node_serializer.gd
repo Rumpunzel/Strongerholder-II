@@ -3,11 +3,11 @@
 class_name NodeSerializer
 extends Node
 
-## Optional MultiplayerSpawner; serializes spawned nodes if supplied
+## Optional [MultiplayerSpawner]; serializes spawned nodes if supplied
 @export var _multiplayer_spawner: MultiplayerSpawner
 
 ## Collects all data for dynamically spawned nodes
-## @returns a Dictionary with NodePaths of the responsible NodeSerializers to the node data
+## @returns a [Dictionary] with [NodePath]s of the responsible [NodeSerializer]s to the node data
 static func collect_node_data(node_serializers: Array[Node]) -> Dictionary[NodePath, Dictionary]:
 	var node_data: Dictionary[NodePath, Dictionary] = { }
 	for node_serializer: NodeSerializer in node_serializers:
@@ -16,7 +16,7 @@ static func collect_node_data(node_serializers: Array[Node]) -> Dictionary[NodeP
 		node_data[node_serializer.get_path()] = collected_nodes
 	return node_data
 
-## @returns a Dictionary with scene paths to NodePaths
+## @returns a [Dictionary] with scene paths to [NodePath]s
 func collect_nodes() -> Dictionary[String, Array]:
 	assert(_multiplayer_spawner)
 	var spawnable_scene_count: int = _multiplayer_spawner.get_spawnable_scene_count()

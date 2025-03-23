@@ -9,6 +9,7 @@ extends Container
 @onready var _host_ip_address_button: Button = %HostIpAddress
 
 func _ready() -> void:
+	_on_player_name_changed(Game.player_name)
 	Game.player_name_changed.connect(_on_player_name_changed)
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)

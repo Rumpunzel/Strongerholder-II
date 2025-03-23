@@ -19,6 +19,9 @@ signal left_game
 
 const HOST_ID: int = 1
 const SAVE_FILE_PATH: String = "res://test.save" # "user://savegame.save"
+const CONFIG_FILE_PATH: String = "res://config.cfg" # "user://config.cfg"
+
+const _PLAYER_SECTION: String = "player"
 
 @export var player_name: String:
 	get:
@@ -44,6 +47,7 @@ var session: Session:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	request_pause()
+	_load_config()
 	session_changed.connect(_on_session_changed)
 	_start_singleplayer_session.call_deferred()
 
@@ -66,6 +70,7 @@ func load_game() -> void:
 func quit_game(save_before: bool = true) -> void:
 	if save_before:
 		save_game()
+	_update_config_file()
 	get_tree().quit()
 
 func host_game() -> void:
@@ -135,6 +140,27 @@ func _initialize_serialization() -> Serialization:
 	_serialization = Serialization.create()
 	add_child(_serialization)
 	return _serialization
+
+func _update_config_file() -> Error:
+	var config: ConfigFile = ConfigFile.new()
+	config.set_value(_PLAYER_SECTION, "player_name", player_name)
+	# Save it to a file (overwrite if already exists).
+	config.save(CONFIG_FILE_PATH)
+	print_debug("Saved config!")
+	return Error.OK
+
+func _load_config() -> Error:
+	var config: ConfigFile = ConfigFile.new()
+	# Load data from a file.
+	var error: Error = config.load(CONFIG_FILE_PATH)
+	# If the file didn't load, ignore it.
+	if error != OK:
+		printerr("Could not load config file due to Error %s" % error)
+		return error
+	
+	player_name = config.get_value(_PLAYER_SECTION, "player_name")
+	print_debug("Loaded config!")
+	return Error.OK
 
 func _on_session_changed(new_session: Session) -> void:
 	assert(new_session == session)

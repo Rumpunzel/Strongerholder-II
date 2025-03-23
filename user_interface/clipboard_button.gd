@@ -31,7 +31,6 @@ func _set(property: StringName, value: Variant) -> bool:
 			var new_text: String = value
 			text = new_text
 			disabled = text.is_empty()
-			visible = not text.is_empty()
 			text_changed.emit(text)
 			return true
 	return false

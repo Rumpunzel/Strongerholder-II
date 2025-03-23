@@ -11,6 +11,10 @@ export_presets.cfg
 .mono/
 data_*/
 
+# User data ignores
+config.cfg
+*.save
+
 # Test build ignores
 bin/
 lib/
@@ -23,7 +27,6 @@ addons/godot-git-plugin/
 
 # Visual Studio Code cache directory
 .vscode/
-*.save
 
 # Blender
 *.blend1

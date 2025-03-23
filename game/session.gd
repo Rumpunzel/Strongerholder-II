@@ -1,3 +1,4 @@
+@icon("uid://cawf6uult17mx")
 class_name Session
 extends Node
 

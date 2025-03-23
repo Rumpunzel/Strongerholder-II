@@ -6,10 +6,9 @@ signal text_changed(new_text: String)
 
 @export_category("Toast")
 @export_multiline var message: String = ""
-@export var text_color: Color = Color(1, 1, 1, 1)
-@export var background_color: Color = Color(0, 0, 0, 0.7)
-@export_enum("top", "bottom") var gravity: String = "top"
-@export_enum("left", "center", "right") var direction: String = "center"
+@export var type: Toasts.Type = Toasts.Type.INFO
+@export var gravity: Toasts.Gravity = Toasts.Gravity.TOP
+@export var direction: Toasts.Direction = Toasts.Direction.CENTER
 @export var text_size: int = 18
 @export var custom_toast_font: bool = false
 
@@ -19,21 +18,10 @@ func _ready() -> void:
 
 func _on_pressed() -> void:
 	DisplayServer.clipboard_set(text)
-	_show_toast()
-
-func _show_toast() -> void:
 	if message.is_empty():
 		printerr("No message, not showing ClipboardButton toast!")
 		return
-	ToastParty.show({
-		"text": message,
-		"bgcolor": background_color,
-		"color": text_color,
-		"gravity": gravity,
-		"direction": direction,
-		"text_size": text_size,
-		"use_font": custom_toast_font,
-	})
+	Toasts.show_toast(message, type, gravity, direction, text_size, custom_toast_font)
 
 func _set(property: StringName, value: Variant) -> bool:
 	match property:

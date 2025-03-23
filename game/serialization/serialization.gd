@@ -8,16 +8,6 @@ const INTANGIBLE: String = "intangible"
 
 const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
-@export_category("Toast")
-@export var text_color: Color = Color(1, 1, 1, 1)
-@export var background_color: Color = Color(0, 0, 0, 0.7)
-@export var success_background_color: Color = Color(0, 1, 0, 0.7)
-@export var error_background_color: Color = Color(1, 0, 0, 0.7)
-@export_enum("top", "bottom") var gravity: String = "top"
-@export_enum("left", "center", "right") var direction: String = "center"
-@export var text_size: int = 18
-@export var custom_toast_font: bool = false
-
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
 func _ready() -> void:
@@ -110,26 +100,14 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 
 func serialize() -> String:
 	var collected_data: Dictionary[String, Dictionary] = collect_data()
-	_show_toast("Game saved!", success_background_color)
+	Toasts.show_toast("Game saved!", Toasts.Type.SUCCESS)
 	return encode_data(collected_data)
 
 func deserialize(serialized_dict: String) -> void:
 	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_dict)
 	assert(collected_data is Dictionary[String, Dictionary])
 	parse_data(collected_data)
-	_show_toast("Game loaded!", success_background_color)
-
-func _show_toast(message: String, toast_background: Color = background_color) -> void:
-	assert(not message.is_empty())
-	ToastParty.show({
-		"text": message,
-		"bgcolor": toast_background,
-		"color": text_color,
-		"gravity": gravity,
-		"direction": direction,
-		"text_size": text_size,
-		"use_font": custom_toast_font,
-	})
+	Toasts.show_toast("Game loaded!", Toasts.Type.SUCCESS)
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return

@@ -16,15 +16,15 @@ signal game_joined(ip_address: String, port: int)
 signal stopped_hosting_game
 signal left_game
 
-const HOST_ID := 1
-const SAVE_FILE_PATH := "res://test.save" # "user://savegame.save"
+const HOST_ID: int = 1
+const SAVE_FILE_PATH: String = "res://test.save" # "user://savegame.save"
 
 var session: Session:
 	set(new_session):
 		session = new_session
 		session_changed.emit(session)
 
-@onready var _serialization := _initialize_serialization()
+@onready var _serialization: Serialization = _initialize_serialization()
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -40,35 +40,34 @@ func request_unpause() -> void:
 
 func save_game() -> void:
 	game_save_started.emit()
-	var save_file := FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
-	var serialized_game_state := _serialization.serialize()
+	var save_file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+	var serialized_game_state: String = _serialization.serialize()
 	save_file.store_line(serialized_game_state)
 	game_save_finished.emit()
 
 func load_game() -> void:
 	assert(FileAccess.file_exists(SAVE_FILE_PATH))
 	game_load_started.emit()
-	var save_file := FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
-	var serialized_game_state := save_file.get_as_text()
+	var save_file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+	var serialized_game_state: String = save_file.get_as_text()
 	_serialization.deserialize(serialized_game_state)
 	game_load_finished.emit()
 
-func quit_game(save_before := true) -> void:
+func quit_game(save_before: bool = true) -> void:
 	if save_before:
 		save_game()
-		await game_save_finished
 	get_tree().quit()
 
 func host_game() -> void:
-	var host_from_singleplayer := _end_session()
-	var multiplayer_session := _initialize_multiplayer_session()
+	var host_from_singleplayer: Player = _end_session()
+	var multiplayer_session: MultiplayerSession = _initialize_multiplayer_session()
 	multiplayer_session.start(host_from_singleplayer)
 	game_hosted.emit(MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT)
 
 func join_game(ip_address: String) -> void:
 	assert(ip_address.is_valid_ip_address())
 	_end_session()
-	var multiplayer_session := _initialize_multiplayer_session()
+	var multiplayer_session: MultiplayerSession = _initialize_multiplayer_session()
 	multiplayer_session.join_game(ip_address)
 	game_joined.emit(ip_address, MultiplayerSession.PORT)
 
@@ -95,7 +94,7 @@ func _unpause_game() -> void:
 func _start_singleplayer_session(existing_player: Player = null) -> SingleplayerSession:
 	assert(not session)
 	assert(not existing_player is SynchronizedPlayer)
-	var new_singleplayer_session := SingleplayerSession.create()
+	var new_singleplayer_session: SingleplayerSession = SingleplayerSession.create()
 	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
 	if FileAccess.file_exists(SAVE_FILE_PATH): load_game()
@@ -105,7 +104,7 @@ func _start_singleplayer_session(existing_player: Player = null) -> Singleplayer
 
 func _initialize_multiplayer_session() -> MultiplayerSession:
 	assert(not session)
-	var new_multiplayer_session := MultiplayerSession.create()
+	var new_multiplayer_session: MultiplayerSession = MultiplayerSession.create()
 	session = new_multiplayer_session
 	add_child(new_multiplayer_session)
 	new_multiplayer_session.stopped.connect(_start_singleplayer_session)
@@ -114,9 +113,9 @@ func _initialize_multiplayer_session() -> MultiplayerSession:
 
 func _end_session() -> Player:
 	assert(session)
-	var old_session := session
+	var old_session: Session = session
 	session = null
-	var existing_player := old_session.stop()
+	var existing_player: Player = old_session.stop()
 	remove_child(old_session)
 	old_session.queue_free()
 	return existing_player

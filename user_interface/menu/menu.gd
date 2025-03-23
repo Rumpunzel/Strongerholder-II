@@ -34,7 +34,7 @@ func _on_continue_pressed() -> void:
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
-		var ip_address_to_join := _ip_address.text
+		var ip_address_to_join: String = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = MultiplayerSession.DEFAULT_SERVER_IP
 		Game.join_game(ip_address_to_join)
 	else:

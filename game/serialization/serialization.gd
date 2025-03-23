@@ -2,9 +2,9 @@
 class_name Serialization
 extends Node
 
-const NODES := "nodes"
-const PROPERTIES := "properties"
-const INTANGIBLE := "intangible"
+const NODES: String = "nodes"
+const PROPERTIES: String = "properties"
+const INTANGIBLE: String = "intangible"
 
 const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
@@ -15,8 +15,8 @@ const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 @export var error_background_color: Color = Color(1, 0, 0, 0.7)
 @export_enum("top", "bottom") var gravity: String = "top"
 @export_enum("left", "center", "right") var direction: String = "center"
-@export var text_size := 18
-@export var custom_toast_font := false
+@export var text_size: int = 18
+@export var custom_toast_font: bool = false
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
@@ -26,39 +26,39 @@ func _ready() -> void:
 static func create() -> Serialization:
 	return SERIALIZATION_SCENE.instantiate()
 
-static func encode_data(value: Variant, full_objects := false) -> String:
+static func encode_data(value: Variant, full_objects: bool = false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))
 
-static func decode_data(string: String, allow_objects := false) -> Variant:
+static func decode_data(string: String, allow_objects: bool = false) -> Variant:
 	return JSON.to_native(JSON.parse_string(string), allow_objects)
 
 static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Dictionary[Variant, Array]:
 	var merged_dictionary: Dictionary[Variant, Array] = { }
 	for dictionary: Dictionary[Variant, Array] in dictionaries:
 		assert(dictionary is Dictionary[Variant, Array])
-		for key in dictionary.keys():
+		for key: Variant in dictionary.keys():
 			var merged_arrays: Array = merged_dictionary.get_or_add(key, [ ])
-			var array_to_merge := dictionary[key]
+			var array_to_merge: Array = dictionary[key]
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
 func collect_data() -> Dictionary[String, Dictionary]:
-	var node_serializers := get_tree().get_nodes_in_group("NodeSerializers")
+	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("NodeSerializers")
 	var node_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
 	for node_serializer: NodeSerializer in node_serializers:
-		var collected_nodes := node_serializer.collect_nodes()
+		var collected_nodes: Dictionary[String, Array] = node_serializer.collect_nodes()
 		node_data_to_serialize[node_serializer.get_path()] = collected_nodes
 	
-	var properties_serializers := get_tree().get_nodes_in_group("PropertiesSerializers")
+	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("PropertiesSerializers")
 	var properties_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in properties_serializers:
-		var collected_properties := properties_serializer.collect_properties()
+		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
 		properties_data_to_serialize[properties_serializer.get_path()] = collected_properties
 	
-	var intangible_serializers := get_tree().get_nodes_in_group("IntangibleSerializers")
+	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("IntangibleSerializers")
 	var intangible_data_to_serialize: Dictionary[NodePath, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in intangible_serializers:
-		var collected_properties := properties_serializer.collect_properties()
+		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
 		intangible_data_to_serialize[properties_serializer.get_path()] = collected_properties
 	
 	return {
@@ -109,7 +109,7 @@ func parse_data(collected_data: Dictionary[String, Dictionary]) -> void:
 	print_debug("Parsed serialized intangible data. of size: %d" % intangible_data.size())
 
 func serialize() -> String:
-	var collected_data := collect_data()
+	var collected_data: Dictionary[String, Dictionary] = collect_data()
 	_show_toast("Game saved!", success_background_color)
 	return encode_data(collected_data)
 
@@ -133,7 +133,7 @@ func _show_toast(message: String, toast_background: Color = background_color) ->
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return
-	var node_path := node.get_path()
+	var node_path: NodePath = node.get_path()
 	if not _queued_intangible_data.has(node_path): return
 	var collected_properties: Dictionary[NodePath, Variant] = _queued_intangible_data[node_path]
 	assert(collected_properties is Dictionary[NodePath, Variant])

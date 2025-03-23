@@ -5,7 +5,7 @@ extends MultiplayerSpawner
 var _host_ghost: CharacterController
 
 @onready var _local_ghosts: Node3D = %LocalGhosts
-@onready var _spawn_node := get_node(spawn_path)
+@onready var _spawn_node: Node = get_node(spawn_path)
 
 func _ready() -> void:
 	Game.session_changed.connect(_on_session_changed)
@@ -31,7 +31,7 @@ func _on_session_changed(new_session: Session) -> void:
 	if new_session is SingleplayerSession:
 		new_session.started.connect(_on_singleplayer_session_started)
 	elif new_session is MultiplayerSession:
-		var new_multiplayer_session := new_session as MultiplayerSession
+		var new_multiplayer_session: MultiplayerSession = new_session
 		new_multiplayer_session.player_connected.connect(_on_player_connected)
 		new_multiplayer_session.player_disconnected.connect(_on_player_disconnected)
 
@@ -52,6 +52,6 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 
 func _on_player_disconnected(peer_id: int) -> void:
 	if peer_id == Game.HOST_ID: return
-	var old_ghost := _spawn_node.get_node("%d" % peer_id)
+	var old_ghost: CharacterController = _spawn_node.get_node("%d" % peer_id)
 	_spawn_node.remove_child(old_ghost)
 	old_ghost.queue_free()

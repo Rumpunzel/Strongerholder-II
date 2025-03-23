@@ -10,8 +10,8 @@ signal text_changed(new_text: String)
 @export var background_color: Color = Color(0, 0, 0, 0.7)
 @export_enum("top", "bottom") var gravity: String = "top"
 @export_enum("left", "center", "right") var direction: String = "center"
-@export var text_size := 18
-@export var custom_toast_font := false
+@export var text_size: int = 18
+@export var custom_toast_font: bool = false
 
 func _ready() -> void:
 	_set("text", text)
@@ -39,8 +39,7 @@ func _set(property: StringName, value: Variant) -> bool:
 	match property:
 		"text":
 			assert(value is String)
-			@warning_ignore("unsafe_cast")
-			var new_text := value as String
+			var new_text: String = value
 			text = new_text
 			disabled = text.is_empty()
 			text_changed.emit(text)

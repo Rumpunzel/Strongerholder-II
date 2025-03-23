@@ -5,8 +5,8 @@ extends Button
 @export_multiline var toggled_text: String
 @export var toggled_icon: Texture
 
-@onready var _untoggled_text := text
-@onready var _untoggled_icon := icon
+@onready var _untoggled_text: String = text
+@onready var _untoggled_icon: Texture = icon
 
 func _ready() -> void:
 	toggle_mode = true

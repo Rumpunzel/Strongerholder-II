@@ -4,7 +4,7 @@ extends Player
 
 const SYNCHRONIZED_PLAYER_SCENE: PackedScene = preload("uid://cuclrr5bep4gn")
 
-@export var player_id := Game.HOST_ID:
+@export var player_id: int = Game.HOST_ID:
 	set(new_player_id):
 		player_id = new_player_id
 		name = "%d" % player_id
@@ -58,7 +58,7 @@ func _configure_processing() -> void:
 	if not is_inside_tree():
 		printerr("Trying to configure SynchronizedPlayer while outside tree, aborting!")
 		return
-	var is_local_player := player_id == multiplayer.get_unique_id()
+	var is_local_player: bool = player_id == multiplayer.get_unique_id()
 	if _camera: _camera.current = is_local_player
 	does_process = is_local_player
 	set_multiplayer_authority.call_deferred(player_id)

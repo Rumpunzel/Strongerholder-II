@@ -13,9 +13,9 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 			return
 		_character_controller_path = character_controller.get_path()
 
-var input_direction := Vector2.ZERO
-var does_process := true
-var is_disabled := false
+var input_direction: Vector2 = Vector2.ZERO
+var does_process: bool = true
+var is_disabled: bool = false
 
 ## This is used for serialization purposes; serves otherwise no purpose 
 var _character_controller_path: NodePath:

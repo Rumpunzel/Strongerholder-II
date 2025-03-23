@@ -1,15 +1,15 @@
 class_name TopDownCamera
 extends Camera3D
 
-const _ray_length := 1000.0
+const _ray_length: float = 1000.0
 
-@export var distance_off_ground := 20.0
-@export var distance_from_follow := 20.0
-@export var camera_angle_offset := 45.0
-@export var camera_turn_angle := 90.0
-@export var zoom := 1.0
+@export var distance_off_ground: float = 20.0
+@export var distance_from_follow: float = 20.0
+@export var camera_angle_offset: float = 45.0
+@export var camera_turn_angle: float = 90.0
+@export var zoom: float = 1.0
 
-var _turnIndex := 0
+var _turnIndex: int = 0
 
 func frame_node(node_to_frame: Node3D) -> void:
 	assert(node_to_frame)
@@ -17,11 +17,11 @@ func frame_node(node_to_frame: Node3D) -> void:
 
 func frame_point(point_to_frame: Vector3) -> void:
 	assert(point_to_frame != null)
-	var angle := deg_to_rad(_turnIndex * camera_turn_angle + camera_angle_offset)
-	var inverse_zoom := 1.0 / zoom
-	var inverse_zoom_root := sqrt(inverse_zoom)
+	var angle: float = deg_to_rad(_turnIndex * camera_turn_angle + camera_angle_offset)
+	var inverse_zoom: float = 1.0 / zoom
+	var inverse_zoom_root: float = sqrt(inverse_zoom)
 	
-	var offset := Vector3(
+	var offset: Vector3 = Vector3(
 		distance_from_follow * cos(angle) * inverse_zoom_root,
 		distance_off_ground * inverse_zoom - point_to_frame.y,
 		distance_from_follow * sin(angle) * inverse_zoom_root,
@@ -31,17 +31,17 @@ func frame_point(point_to_frame: Vector3) -> void:
 	look_at(point_to_frame, Vector3.UP)
 
 func get_adjusted_movement(input_vector: Vector2) -> Vector2:
-	var camera_forward := transform.basis.z
+	var camera_forward: Vector3 = transform.basis.z
 	camera_forward.y = 0.0
-	var camera_right := transform.basis.x
+	var camera_right: Vector3 = transform.basis.x
 	camera_right.y = 0.0
-	var adjusted_input_vector := camera_forward.normalized() * input_vector.y + camera_right.normalized() * input_vector.x
+	var adjusted_input_vector: Vector3 = camera_forward.normalized() * input_vector.y + camera_right.normalized() * input_vector.x
 	return Vector2(adjusted_input_vector.x, adjusted_input_vector.z)
 
 func mouse_as_world_point() -> CameraRay:
-	var mouse_position := get_viewport().get_mouse_position()
-	var from := project_ray_origin(mouse_position)
-	var to := from + project_ray_normal(mouse_position) * _ray_length
+	var mouse_position: Vector2 = get_viewport().get_mouse_position()
+	var from: Vector3 = project_ray_origin(mouse_position)
+	var to: Vector3 = from + project_ray_normal(mouse_position) * _ray_length
 	return CameraRay.new(from, to)
 
 

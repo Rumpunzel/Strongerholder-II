@@ -6,9 +6,9 @@ signal player_connected(peer_id: int, player: SynchronizedPlayer)
 signal player_disconnected(peer_id: int)
 signal server_disconnected
 
-const PORT := 7000
-const DEFAULT_SERVER_IP := "127.0.0.1" # IPv4 localhost
-const MAX_CONNECTIONS := 4
+const PORT: int = 7000
+const DEFAULT_SERVER_IP: String = "127.0.0.1" # IPv4 localhost
+const MAX_CONNECTIONS: int = 4
 
 const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 
@@ -19,8 +19,8 @@ const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 @export var error_background_color: Color = Color(1, 0, 0, 0.7)
 @export_enum("top", "bottom") var gravity: String = "top"
 @export_enum("left", "center", "right") var direction: String = "center"
-@export var text_size := 18
-@export var custom_toast_font := false
+@export var text_size: int = 18
+@export var custom_toast_font: bool = false
 
 ## This contains SynchronizedPlayers for every player, with the keys being each player's unique IDs.
 var players: Dictionary[int, SynchronizedPlayer] = { }
@@ -41,13 +41,13 @@ static func create() -> MultiplayerSession:
 
 ## Starts the multiplayer session by hosting a game
 func start(existing_player: Player) -> Error:
-	var server_peer := ENetMultiplayerPeer.new()
-	var error := server_peer.create_server(PORT, MAX_CONNECTIONS)
+	var server_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
+	var error: Error = server_peer.create_server(PORT, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
 	
 	if existing_player:
-		var host_from_singleplayer := SynchronizedPlayer.from_player(existing_player)
+		var host_from_singleplayer: SynchronizedPlayer = SynchronizedPlayer.from_player(existing_player)
 		_add_player(host_from_singleplayer)
 		host_player = host_from_singleplayer
 		existing_player.queue_free()
@@ -65,7 +65,7 @@ func start(existing_player: Player) -> Error:
 ## @returns null if leaving a hosted game
 func stop() -> Player:
 	multiplayer.multiplayer_peer = null
-	var host_as_singleplayer := host_player.to_player() if host_player else null
+	var host_as_singleplayer: Player = host_player.to_player() if host_player else null
 	_remove_all_players()
 	stopped.emit(host_as_singleplayer)
 	_show_toast("Left multiplayer!")
@@ -73,8 +73,8 @@ func stop() -> Player:
 
 func join_game(ip_address: String) -> Error:
 	assert(ip_address.is_valid_ip_address())
-	var client_peer := ENetMultiplayerPeer.new()
-	var error := client_peer.create_client(ip_address, PORT)
+	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
+	var error: Error = client_peer.create_client(ip_address, PORT)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
 	_show_toast("Joined game!", success_background_color)
@@ -87,7 +87,7 @@ func get_host_info(id: int = Game.HOST_ID) -> Dictionary:
 @rpc("any_peer", "reliable")
 func _register_player(player_info: Dictionary) -> void:
 	SynchronizedPlayer.validate_player_info(player_info)
-	var player_id := multiplayer.get_remote_sender_id()
+	var player_id: int = multiplayer.get_remote_sender_id()
 	if player_id == Game.HOST_ID: return
 	_create_player(player_id, player_info)
 	print_debug("Player %s registered to multiplayer game!" % player_info)
@@ -95,7 +95,7 @@ func _register_player(player_info: Dictionary) -> void:
 func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	player_info.id = id
 	assert(player_info.id == id)
-	var new_player := SynchronizedPlayer.from_player_info(player_info)
+	var new_player: SynchronizedPlayer = SynchronizedPlayer.from_player_info(player_info)
 	print_debug("Player %s created for multiplayer game!" % player_info)
 	_add_player(new_player)
 	return new_player
@@ -113,7 +113,7 @@ func _remove_player(player: SynchronizedPlayer) -> void:
 	player.queue_free()
 	print_debug("Removed player %s from the multiplayer game!" % player.to_player_info())
 
-func _remove_all_players(lost_connection := false) -> void:
+func _remove_all_players(lost_connection: bool = false) -> void:
 	for player: SynchronizedPlayer in _players.get_children():
 		if not player:
 			printerr("Lost connection to host!")

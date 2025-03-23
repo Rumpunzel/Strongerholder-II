@@ -3,7 +3,7 @@ extends MultiplayerSpawner
 @export var king: Character
 @export var rogue: Character
 
-@onready var spawn_node := get_node(spawn_path)
+@onready var spawn_node: Node = get_node(spawn_path)
 
 func _ready() -> void:
 	pass
@@ -32,6 +32,6 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	player.character_controller = new_character
 
 func _on_player_disconnected(peer_id: int) -> void:
-	var old_ghost := spawn_node.get_node("%d" % peer_id)
-	spawn_node.remove_child(old_ghost)
-	old_ghost.queue_free()
+	var old_character: CharacterController = spawn_node.get_node("%d" % peer_id)
+	spawn_node.remove_child(old_character)
+	old_character.queue_free()

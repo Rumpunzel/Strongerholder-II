@@ -29,11 +29,11 @@ var world_character: WorldCharacter:
 		add_child.call_deferred(world_character, true)
 		_world_character_scene_path = new_world_character.scene_file_path
 
-var direction_input := Vector2.ZERO
-var look_target := Vector3.BACK
+var direction_input: Vector2 = Vector2.ZERO
+var look_target: Vector3 = Vector3.BACK
 
-var _normalized_velocity := Vector3.ZERO
-var _is_on_floor := true
+var _normalized_velocity: Vector3 = Vector3.ZERO
+var _is_on_floor: bool = true
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -72,7 +72,7 @@ func _process(_delta: float) -> void:
 func _apply_direction_input(delta: float) -> void:
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
-	var move_speed := character.movement_attributes.move_speed
+	var move_speed: float = character.movement_attributes.move_speed
 	if direction_input:
 		velocity.x = direction_input.x * move_speed
 		velocity.z = direction_input.y * move_speed
@@ -89,7 +89,7 @@ func _apply_gravity(delta: float) -> void:
 func _look_forward(delta: float) -> void:
 	look_target = position + velocity
 	look_target.y = position.y
-	var transform_looking_into_direction := transform.looking_at(look_target, Vector3.UP, true)
+	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, character.movement_attributes.turn_rate * delta)
 
 func _show_debug_world_character() -> void:

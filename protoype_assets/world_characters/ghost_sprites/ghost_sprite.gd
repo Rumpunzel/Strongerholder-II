@@ -3,7 +3,7 @@ class_name GhostSprite
 extends WorldCharacter
 
 @onready var _animated_sprite: AnimatedSprite3D = %AnimatedSprite3D
-@onready var _random_frame := -1:
+@onready var _random_frame: int = -1:
 	set(new_random_frame):
 		if new_random_frame < 0: return
 		_random_frame = new_random_frame

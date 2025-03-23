@@ -15,7 +15,6 @@ signal hit_box_exited(hit_box: HitBox)
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
-@export var _collision_shape_offset: Vector3 = Vector3.ZERO
 
 var hit_boxes_in_area: Array[HitBox] = [ ]
 
@@ -24,7 +23,7 @@ func _ready() -> void:
 	area_exited.connect(_on_area_exited)
 
 func follow_node(node: Node3D) -> void:
-	transform = node.transform.translated(_collision_shape_offset)
+	transform = node.transform
 
 func _setup_collision_shape() -> void:
 	assert(false, "CharacterArea._setup_collision_shape is 'abstract' and needs to be overriden!")

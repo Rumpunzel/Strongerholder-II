@@ -21,6 +21,7 @@ movement_attributes = ExtResource("2_b8jju")
 collision_shape = SubResource("CapsuleShape3D_pj10w")
 hit_box_shape = SubResource("CapsuleShape3D_ofrg4")
 interaction_area_shape = ExtResource("3_3w57q")
+heads_up_display_height = 2.25
 _world_character = ExtResource("1_b8jju")
 _random_world_characters = Array[PackedScene]([])
 collision_layer = 65536

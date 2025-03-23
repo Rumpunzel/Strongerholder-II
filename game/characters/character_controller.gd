@@ -7,6 +7,9 @@ extends CharacterBody3D
 	set(new_character):
 		character = new_character
 		if not character:
+			name = "CharacterController"
+			collision_layer = 2
+			collision_mask = 3
 			world_character = null
 			_character_collision_shape.shape = null
 			_character_resource_path = ""
@@ -16,13 +19,15 @@ extends CharacterBody3D
 		collision_mask = character.collision_mask
 		world_character = character.get_world_character()
 		_character_collision_shape.shape = character.collision_shape
+		_heads_up_anchor.position.y = character.heads_up_display_height
 		_character_resource_path = character.resource_path
 
 @export_group("Configuration")
 @export var _character_collision_shape: CharacterCollisionShape
+@export var _heads_up_anchor: HeadsUpAnchor
 
 @export_group("Debug")
-@export var _debug_world_character: PackedScene = preload("uid://b55tt1yijxn7r")
+@export var _debug_character: Character# = load("uid://ro6wvnf88xbo")
 
 var world_character: WorldCharacter:
 	set(new_world_character):
@@ -62,7 +67,7 @@ var _world_character_scene_path: String:
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint():
-		if _debug_world_character: _show_debug_world_character()
+		if _debug_character: _show_debug_character()
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -95,13 +100,14 @@ func _look_forward(delta: float) -> void:
 	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, character.movement_attributes.turn_rate * delta)
 
-func _show_debug_world_character() -> void:
+func _show_debug_character() -> void:
 	assert(Engine.is_editor_hint())
-	if world_character: return
-	assert(_debug_world_character)
-	world_character = _debug_world_character.instantiate()
+	if character: return
+	assert(_debug_character)
+	character = _debug_character
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
 	if not _character_collision_shape: warnings.append("Missing CharacterCollisionShape reference.")
+	if not _heads_up_anchor: warnings.append("Missing HeadsUpAnchor reference.")
 	return warnings

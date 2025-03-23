@@ -12,6 +12,8 @@ extends Resource
 @export var hit_box_shape: Shape3D = preload("uid://h8f1hi4aoc40")
 @export var interaction_area_shape: Shape3D = preload("uid://bn0pwy8h3w0s1")
 
+@export var heads_up_display_height: float = 2.25
+
 @export var _world_character: PackedScene
 @export var _random_world_characters: Array[PackedScene]
 

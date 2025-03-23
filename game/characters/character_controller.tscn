@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvj6b1m2b65hd"]
+[gd_scene load_steps=7 format=3 uid="uid://cvj6b1m2b65hd"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://game/characters/character_controller.gd" id="1_pp6cs"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_1pdhw"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://game/characters/people/king.tres" id="2_l1gct"]
 [ext_resource type="Script" uid="uid://dtrstvqfh20q3" path="res://game/characters/character_collision_shape.gd" id="3_1pdhw"]
 [ext_resource type="Script" uid="uid://b8gk75wu11vc4" path="res://game/characters/heads_up_anchor.gd" id="3_krmuo"]
 
@@ -28,12 +29,14 @@ properties/6/path = NodePath(".:_world_character_scene_path")
 properties/6/spawn = true
 properties/6/replication_mode = 1
 
-[node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_character_collision_shape")]
+[node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_character_collision_shape", "_heads_up_anchor")]
 collision_layer = 2
 collision_mask = 3
 velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_pp6cs")
 _character_collision_shape = NodePath("CharacterCollisionShape")
+_heads_up_anchor = NodePath("HeadsUpAnchor")
+_debug_character = ExtResource("2_l1gct")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -45,6 +48,7 @@ _multiplayer_synchronizer = NodePath("../CharacterSynchronizer")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="CharacterCollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_1pdhw")
 metadata/_custom_type_script = "uid://dtrstvqfh20q3"
 

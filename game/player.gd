@@ -81,6 +81,7 @@ func _send_input_to_character_controller() -> void:
 	character_controller.direction_input = _camera.get_adjusted_movement(input_direction)
 
 func _check_disabled() -> void:
+	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
 
 func _get_configuration_warnings() -> PackedStringArray:

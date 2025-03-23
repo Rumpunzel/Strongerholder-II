@@ -1,3 +1,5 @@
+@icon("uid://rqyv2f6m66oi")
+class_name FPSLabel
 extends Label
 
 func _process(_delta: float) -> void:

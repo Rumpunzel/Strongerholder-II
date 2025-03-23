@@ -11,6 +11,7 @@ signal game_load_finished
 
 signal session_changed(new_session: Session)
 
+signal player_name_changed(player_name: String)
 signal game_hosted(ip_address: String, port: int)
 signal game_joined(ip_address: String, port: int)
 signal stopped_hosting_game
@@ -18,6 +19,20 @@ signal left_game
 
 const HOST_ID: int = 1
 const SAVE_FILE_PATH: String = "res://test.save" # "user://savegame.save"
+
+@export var player_name: String:
+	get:
+		if session is MultiplayerSession:
+			var multiplayer_session: MultiplayerSession = session
+			if multiplayer_session.host_player:
+				return multiplayer_session.host_player.player_name
+		return player_name
+	set(new_player_name):
+		player_name = new_player_name
+		if session is MultiplayerSession:
+			var multiplayer_session: MultiplayerSession = session
+			multiplayer_session.host_player.player_name = player_name
+		player_name_changed.emit(player_name)
 
 var session: Session:
 	set(new_session):

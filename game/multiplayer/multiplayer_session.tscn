@@ -18,9 +18,9 @@ unique_name_in_owner = true
 script = ExtResource("2_c0aee")
 metadata/_custom_type_script = "uid://b68u3p1bd6gb"
 
-[connection signal="joined_game" from="." to="Toaster" method="toast_success" binds= ["Joined game!"]]
+[connection signal="game_joined" from="." to="Toaster" method="_on_game_joined"]
 [connection signal="player_disconnected" from="." to="Toaster" method="_on_player_disconnected"]
 [connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]
-[connection signal="server_disconnected" from="." to="Toaster" method="toast_error" binds= ["Connection to server lost!", ""]]
+[connection signal="server_disconnected" from="." to="Toaster" method="toast_error" binds= ["Connection to server lost!"]]
 [connection signal="started" from="." to="Toaster" method="_on_multiplayer_session_started"]
 [connection signal="stopped" from="." to="Toaster" method="_on_multiplayer_session_stopped"]

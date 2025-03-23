@@ -1,4 +1,5 @@
 @tool
+@icon("uid://ongd2v8c4cpf")
 extends Label
 
 func _ready() -> void:

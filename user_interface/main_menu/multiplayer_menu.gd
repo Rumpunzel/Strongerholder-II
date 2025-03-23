@@ -1,36 +1,21 @@
-@icon("uid://br0wwafeqokfw")
-class_name Menu
-extends Control
+@icon("uid://uid://r4re5w2nnw4h")
+class_name MultiplayerMenu
+extends Container
 
+@onready var _player_name: LineEdit = %PlayerName
 @onready var _join_button: Button = %Join
 @onready var _ip_address: LineEdit = %IpAddress
 @onready var _host_button: Button = %Host
 @onready var _host_ip_address_button: Button = %HostIpAddress
 
 func _ready() -> void:
+	Game.player_name_changed.connect(_on_player_name_changed)
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
 	Game.left_game.connect(_on_left_game)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_released("open_menu") and not visible:
-		open_menu()
-		Game.request_pause()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_released("close_menu") and visible:
-		close_menu()
-		Game.request_unpause()
-		get_viewport().set_input_as_handled()
-
-func open_menu() -> void:
-	show()
-
-func close_menu() -> void:
-	hide()
-
-func _on_continue_pressed() -> void:
-	Game.request_unpause()
-	close_menu()
+func _on_player_name_text_changed(new_player_name: String) -> void:
+	Game.player_name = new_player_name
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
@@ -56,17 +41,10 @@ func _on_host_toggled(hosting: bool) -> void:
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 
-func _on_save_pressed() -> void:
-	Game.save_game()
-
-func _on_load_pressed() -> void:
-	Game.load_game()
-
-func _on_randomize_ghost_pressed() -> void:
-	EventBus.emit("random_ghost_requested")
-
-func _on_quit_confirmation_dialog_confirmed() -> void:
-	Game.quit_game()
+# Game callbacks
+func _on_player_name_changed(player_name: String) -> void:
+	if _player_name.text == player_name: return
+	_player_name.text = player_name
 
 func _on_game_hosted(host_ip_address: String, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address

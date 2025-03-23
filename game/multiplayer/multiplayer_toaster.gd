@@ -1,5 +1,9 @@
 extends Toaster
 
+func _on_game_joined(host_player_info: Dictionary) -> void:
+	SynchronizedPlayer.validate_player_info(host_player_info)
+	toast_success("Joined %s's game!" % host_player_info.name)
+
 func _on_multiplayer_session_started(_player: Player) -> void:
 	toast_success("Hosted game!")
 

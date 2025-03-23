@@ -28,7 +28,7 @@ static func from_player(player: Player) -> SynchronizedPlayer:
 	assert(not player is  SynchronizedPlayer)
 	var new_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_player.player_id = Game.HOST_ID
-	new_player.player_name = Game.session.player_name
+	new_player.player_name = Game.player_name
 	new_player.character_controller = player.character_controller
 	return new_player
 

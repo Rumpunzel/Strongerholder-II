@@ -5,8 +5,6 @@ extends Node
 signal started(player: Player)
 signal stopped(existing_player: Player)
 
-@export var player_name: String
-
 static func create() -> Session:
 	assert(false, "Session.create is 'abstract' and needs to be overriden!")
 	return null

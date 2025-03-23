@@ -13,6 +13,8 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 			return
 		_character_controller_path = character_controller.get_path()
 
+@export var _camera_scene: PackedScene = preload("uid://cnh75c8plrhf1")
+
 var input_direction: Vector2 = Vector2.ZERO
 var is_disabled: bool = false
 var is_local_player: bool = true:
@@ -28,11 +30,18 @@ var _character_controller_path: NodePath:
 		await get_tree().process_frame
 		character_controller = get_node(_character_controller_path)
 
-@onready var _camera: TopDownCamera = %TopDownCamera
+var _camera: TopDownCamera:
+	set(new_camera):
+		if _camera:
+			if get_children().has(_camera) :remove_child(_camera)
+			_camera.queue_free()
+		_camera = new_camera
+		if not _camera: return
+		add_child.call_deferred(_camera, true)
 
 func _ready() -> void:
+	_camera = _camera_scene.instantiate()
 	_check_disabled()
-	_camera.frame_point(Vector3.ZERO)
 	_collect_input()
 
 func _process(_delta: float) -> void:

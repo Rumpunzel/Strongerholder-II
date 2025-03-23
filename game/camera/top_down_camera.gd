@@ -1,3 +1,4 @@
+@tool
 class_name TopDownCamera
 extends Camera3D
 
@@ -10,6 +11,9 @@ const _ray_length: float = 1000.0
 @export var zoom: float = 1.0
 
 var _turnIndex: int = 0
+
+func _ready() -> void:
+	frame_point(Vector3.ZERO)
 
 func frame_node(node_to_frame: Node3D) -> void:
 	assert(node_to_frame)

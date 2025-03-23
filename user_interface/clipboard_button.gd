@@ -28,8 +28,7 @@ func _set(property: StringName, value: Variant) -> bool:
 	match property:
 		"text":
 			assert(value is String)
-			var new_text: String = value
-			text = new_text
+			text = value
 			disabled = text.is_empty()
 			text_changed.emit(text)
 			return true

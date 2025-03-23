@@ -57,13 +57,6 @@ horizontal_alignment = 1
 script = ExtResource("3_ru3py")
 metadata/_custom_type_script = "uid://lt4t275g8dsp"
 
-[node name="MultiplayerMenu" parent="Menu/VBoxContainer" instance=ExtResource("4_hnapd")]
-layout_mode = 2
-
-[node name="RandomizeGhost" type="Button" parent="Menu/VBoxContainer"]
-layout_mode = 2
-text = "Randomize Ghost"
-
 [node name="Options" type="VBoxContainer" parent="Menu/VBoxContainer"]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -81,16 +74,23 @@ text = "Save
 layout_mode = 2
 text = "Load"
 
-[node name="Quit" type="Button" parent="Menu/VBoxContainer/Options"]
+[node name="MultiplayerMenu" parent="Menu/VBoxContainer" instance=ExtResource("4_hnapd")]
+layout_mode = 2
+
+[node name="RandomizeGhost" type="Button" parent="Menu/VBoxContainer"]
+layout_mode = 2
+text = "Randomize Ghost"
+
+[node name="Quit" type="Button" parent="Menu/VBoxContainer"]
 layout_mode = 2
 text = "Quit"
 
 [node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 
-[connection signal="pressed" from="Menu/VBoxContainer/RandomizeGhost" to="." method="_on_randomize_ghost_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Options/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Options/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Options/Load" to="." method="_on_load_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/Options/Quit" to="QuitConfirmationDialog" method="popup_centered"]
+[connection signal="pressed" from="Menu/VBoxContainer/RandomizeGhost" to="." method="_on_randomize_ghost_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/Quit" to="QuitConfirmationDialog" method="popup_centered"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

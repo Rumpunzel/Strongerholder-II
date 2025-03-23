@@ -1,6 +1,6 @@
 @icon("uid://br0wwafeqokfw")
 class_name MainMenu
-extends Container
+extends PanelContainer
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("open_menu") and not visible:

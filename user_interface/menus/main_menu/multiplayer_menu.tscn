@@ -9,7 +9,10 @@ font_size = 24
 
 [node name="MultiplayerMenu" type="VBoxContainer"]
 custom_minimum_size = Vector2(256, 0)
+offset_right = 256.0
+offset_bottom = 101.0
 script = ExtResource("1_k1c65")
+metadata/_custom_type_script = "uid://dvlr2wvgpeyqn"
 
 [node name="Label" type="Label" parent="."]
 visible = false

@@ -1,6 +1,6 @@
-@icon("uid://uid://r4re5w2nnw4h")
+@icon("uid://r4re5w2nnw4h")
 class_name MultiplayerMenu
-extends Container
+extends VBoxContainer
 
 @onready var _player_name: LineEdit = %PlayerName
 @onready var _join_button: Button = %Join

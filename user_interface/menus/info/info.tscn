@@ -35,3 +35,4 @@ size_flags_vertical = 0
 layout_mode = 2
 text = "999 FPS"
 script = ExtResource("3_x3cl1")
+metadata/_custom_type_script = "uid://cm7ublv6tq6oc"

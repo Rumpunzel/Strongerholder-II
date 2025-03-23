@@ -14,8 +14,11 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		_character_controller_path = character_controller.get_path()
 
 var input_direction: Vector2 = Vector2.ZERO
-var does_process: bool = true
 var is_disabled: bool = false
+var is_local_player: bool = true:
+	set(new_is_local_player):
+		is_local_player = new_is_local_player
+		if _camera: _camera.current = is_local_player
 
 ## This is used for serialization purposes; serves otherwise no purpose 
 var _character_controller_path: NodePath:
@@ -38,16 +41,15 @@ func _process(_delta: float) -> void:
 	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
-	if not does_process: return
-	assert(does_process and not is_disabled)
+	if not is_local_player: return
 	# Other code
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 func _collect_input() -> void:
-	if not does_process: return
-	# Only collect input if this Player processes
+	if not is_local_player: return
+	# Only collect input if this is the local Player
 	input_direction = read_movement_input()
 
 func _send_input_to_character_controller() -> void:

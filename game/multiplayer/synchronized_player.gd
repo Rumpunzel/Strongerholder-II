@@ -19,8 +19,7 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if is_disabled: return
 	assert(character_controller)
-	if not does_process: return
-	assert(does_process and not is_disabled)
+	if not is_local_player: return
 	assert(player_id == multiplayer.get_unique_id(), "Expected player_id %d to be equal to multiplayer.get_unique_id() but was %d!" % [player_id, multiplayer.get_unique_id()])
 	assert(player_id == get_multiplayer_authority(), "Cannot process on SynchronizedPlayer without multiplayer authority!")
 
@@ -58,7 +57,5 @@ func _configure_processing() -> void:
 	if not is_inside_tree():
 		printerr("Trying to configure SynchronizedPlayer while outside tree, aborting!")
 		return
-	var is_local_player: bool = player_id == multiplayer.get_unique_id()
-	if _camera: _camera.current = is_local_player
-	does_process = is_local_player
+	is_local_player = player_id == multiplayer.get_unique_id()
 	set_multiplayer_authority.call_deferred(player_id)

@@ -2,6 +2,8 @@
 class_name Menu
 extends Control
 
+signal random_ghost_requested
+
 @onready var _join_button: Button = %Join
 @onready var _ip_address: LineEdit = %IpAddress
 @onready var _host_button: Button = %Host
@@ -63,7 +65,7 @@ func _on_load_pressed() -> void:
 	Game.load_game()
 
 func _on_randomize_ghost_pressed() -> void:
-	Events.random_ghost_requested.emit()
+	EventBus.emit(random_ghost_requested)
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()

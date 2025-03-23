@@ -45,6 +45,7 @@ theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
+metadata/_edit_lock_ = true
 
 [node name="Tech" type="HBoxContainer" parent="InfoContainer"]
 layout_mode = 2
@@ -81,6 +82,7 @@ offset_right = 79.0
 offset_bottom = 33.0
 grow_vertical = 2
 theme_override_constants/margin_left = 64
+metadata/_edit_lock_ = true
 
 [node name="Options" type="VBoxContainer" parent="Buttons"]
 custom_minimum_size = Vector2(256, 0)

@@ -11,7 +11,7 @@ extends WorldCharacter
 
 func _ready() -> void:
 	if _random_frame < 0: _random_ghost()
-	Events.random_ghost_requested.connect(_random_ghost)
+	EventBus.subscribe("random_ghost_requested", _random_ghost)
 
 func play_animation(_normalized_velocity: Vector3) -> void:
 	pass

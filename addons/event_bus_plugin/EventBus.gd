@@ -68,9 +68,8 @@ func unsubscribe(event_name: String, listener: Callable) -> void:
 		if data_handler.listeners_data[event_name].is_empty():
 			data_handler.listeners_data.erase(event_name)
 
-func emit(event_signal: Signal, args: Array = []) -> void:
+func emit(event_name: String, args: Array = []) -> void:
 	# Emit an event with the given arguments to all registered listeners
-	var event_name: String = event_signal.get_name()
 	if _listeners.has(event_name):
 		var event_listeners = _listeners[event_name]
 		# Duplicate the list to avoid modification during iteration

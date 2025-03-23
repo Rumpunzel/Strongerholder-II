@@ -6,7 +6,7 @@ func _ready():
 	
 	# Emit the event after a short delay
 	await get_tree().create_timer(1.0).timeout
-	EventBus.emit("test_event", "Hello, EventBus!")
+	EventBus.emit("test_event", ["Hello, EventBus!"])
 
 func _on_test_event(message):
 	print("Received message:", message)

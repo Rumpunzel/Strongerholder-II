@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://syxlvavfomd"
-path="res://.godot/imported/in-game.png-f5e19d0a15e09c219fe353aab57c60f7.ctex"
+path="res://.godot/imported/in-game.png-22c39f92d162b349f3fc238cb20ad928.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://in-game.png"
-dest_files=["res://.godot/imported/in-game.png-f5e19d0a15e09c219fe353aab57c60f7.ctex"]
+source_file="res://addons/event_bus_plugin/in-game.png"
+dest_files=["res://.godot/imported/in-game.png-22c39f92d162b349f3fc238cb20ad928.ctex"]
 
 [params]
 

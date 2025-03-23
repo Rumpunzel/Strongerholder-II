@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://citi18cutmbiw"]
 
 [ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://game/multiplayer/multiplayer_session.gd" id="1_mg27w"]
-[ext_resource type="Script" uid="uid://b68u3p1bd6gb" path="res://user_interface/toaster.gd" id="2_c0aee"]
+[ext_resource type="Script" uid="uid://b2l2cxx5y325t" path="res://game/multiplayer/multiplayer_toaster.gd" id="2_c0aee"]
 
 [node name="MultiplayerSession" type="Node"]
 script = ExtResource("1_mg27w")
@@ -15,6 +15,12 @@ spawn_path = NodePath("../SynchronizedPlayers")
 unique_name_in_owner = true
 
 [node name="Toaster" type="Node" parent="."]
-unique_name_in_owner = true
 script = ExtResource("2_c0aee")
 metadata/_custom_type_script = "uid://b68u3p1bd6gb"
+
+[connection signal="joined_game" from="." to="Toaster" method="toast_success" binds= ["Joined game!"]]
+[connection signal="player_disconnected" from="." to="Toaster" method="_on_player_disconnected"]
+[connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]
+[connection signal="server_disconnected" from="." to="Toaster" method="toast_error" binds= ["Connection to server lost!", ""]]
+[connection signal="started" from="." to="Toaster" method="_on_multiplayer_session_started"]
+[connection signal="stopped" from="." to="Toaster" method="_on_multiplayer_session_stopped"]

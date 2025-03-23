@@ -8,6 +8,7 @@ const SYNCHRONIZED_PLAYER_SCENE: PackedScene = preload("uid://cuclrr5bep4gn")
 	set(new_player_id):
 		player_id = new_player_id
 		name = "%d" % player_id
+		if player_name.is_empty(): player_name = "Player %d" % player_id
 
 @export var player_name: String
 

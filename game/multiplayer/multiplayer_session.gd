@@ -2,8 +2,12 @@
 class_name MultiplayerSession
 extends Session
 
+signal joined_game
+signal player_joined(player: SynchronizedPlayer)
+
 signal player_connected(peer_id: int, player: SynchronizedPlayer)
-signal player_disconnected(peer_id: int)
+## @param player may be null if the host disconnected
+signal player_disconnected(peer_id: int, player: SynchronizedPlayer)
 signal server_disconnected
 
 const PORT: int = 7000
@@ -18,7 +22,6 @@ var players: Dictionary[int, SynchronizedPlayer] = { }
 var host_player: SynchronizedPlayer
 
 @onready var _players: Node = %SynchronizedPlayers
-@onready var _toaster: Toaster = %Toaster
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -47,7 +50,6 @@ func start(existing_player: Player) -> Error:
 		host_player = _create_player(Game.HOST_ID, get_host_info())
 		print_debug("Creating new player to serve as host!")
 	started.emit(host_player)
-	_toaster.toast_success("Hosted game!")
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [MultiplayerSession.DEFAULT_SERVER_IP, MultiplayerSession.PORT])
 	return Error.OK
 
@@ -59,7 +61,6 @@ func stop() -> Player:
 	var host_as_singleplayer: Player = host_player.to_player() if host_player else null
 	_remove_all_players()
 	stopped.emit(host_as_singleplayer)
-	_toaster.toast_info("Left multiplayer!")
 	return host_as_singleplayer
 
 func join_game(ip_address: String) -> Error:
@@ -68,7 +69,7 @@ func join_game(ip_address: String) -> Error:
 	var error: Error = client_peer.create_client(ip_address, PORT)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
-	_toaster.toast_success("Joined game!")
+	joined_game.emit()
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, MultiplayerSession.PORT])
 	return Error.OK
 
@@ -80,14 +81,14 @@ func _register_player(player_info: Dictionary) -> void:
 	SynchronizedPlayer.validate_player_info(player_info)
 	var player_id: int = multiplayer.get_remote_sender_id()
 	if player_id == Game.HOST_ID: return
-	_create_player(player_id, player_info)
-	print_debug("Player %s registered to multiplayer game!" % player_info)
+	var new_player: SynchronizedPlayer = _create_player(player_id, player_info)
+	player_joined.emit(new_player)
+	print_debug("Player %s joined multiplayer game!" % player_info)
 
 func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
 	player_info.id = id
 	assert(player_info.id == id)
 	var new_player: SynchronizedPlayer = SynchronizedPlayer.from_player_info(player_info)
-	print_debug("Player %s created for multiplayer game!" % player_info)
 	_add_player(new_player)
 	return new_player
 
@@ -102,7 +103,7 @@ func _remove_player(player: SynchronizedPlayer) -> void:
 	players.erase(player.player_id)
 	_players.remove_child(player)
 	player.queue_free()
-	print_debug("Removed player %s from the multiplayer game!" % player.to_player_info())
+	print_debug("Removed %s from the multiplayer game!" % player)
 
 func _remove_all_players(lost_connection: bool = false) -> void:
 	for player: SynchronizedPlayer in _players.get_children():
@@ -116,7 +117,6 @@ func _remove_all_players(lost_connection: bool = false) -> void:
 ## This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id, get_host_info())
-	if not id == Game.HOST_ID: _toaster.toast_success("Player joined!")
 
 func _on_player_disconnected(id: int) -> void:
 	var disconnected_player: SynchronizedPlayer = _players.get_node_or_null("%d" % id)
@@ -124,8 +124,7 @@ func _on_player_disconnected(id: int) -> void:
 		_remove_player(disconnected_player)
 	else:
 		printerr("Host disconnected!")
-	player_disconnected.emit(id)
-	_toaster.toast_info("Played left!")
+	player_disconnected.emit(id, disconnected_player)
 	print_debug("Player with id %d disconnected from the multiplayer game!" % id)
 
 func _on_connected_to_server() -> void:
@@ -133,12 +132,10 @@ func _on_connected_to_server() -> void:
 
 func _on_connection_failed() -> void:
 	multiplayer.multiplayer_peer = null
-	_toaster.toast_error("Connection failed!")
 	print_debug("Connection failed!")
 
 func _on_server_disconnected() -> void:
 	multiplayer.multiplayer_peer = null
 	_remove_all_players(true)
 	server_disconnected.emit()
-	_toaster.toast_error("Server disconnected!")
 	print_debug("Server disconnected!")

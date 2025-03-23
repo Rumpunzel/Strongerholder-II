@@ -2,6 +2,9 @@
 class_name Serialization
 extends Node
 
+signal serialized
+signal deserialized
+
 const NODES: String = "nodes"
 const PROPERTIES: String = "properties"
 const INTANGIBLE: String = "intangible"
@@ -9,8 +12,6 @@ const INTANGIBLE: String = "intangible"
 const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
-
-@onready var _toaster: Toaster = %Toaster
 
 func _ready() -> void:
 	get_tree().node_added.connect(_on_node_added)
@@ -40,7 +41,7 @@ func serialize(save_file_path: String) -> Error:
 	var collected_data: Dictionary[String, Dictionary] = collect_data()
 	var serialized_game_state: String = encode_data(collected_data)
 	save_file.store_line(serialized_game_state)
-	_toaster.toast_success("Game saved!")
+	serialized.emit()
 	return Error.OK
 
 func deserialize(save_file_path: String) -> Error:
@@ -50,7 +51,7 @@ func deserialize(save_file_path: String) -> Error:
 	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_game_state)
 	assert(collected_data is Dictionary[String, Dictionary])
 	restore_state(collected_data)
-	_toaster.toast_info("Game loaded!")
+	deserialized.emit()
 	return Error.OK
 
 func collect_data() -> Dictionary[String, Dictionary]:

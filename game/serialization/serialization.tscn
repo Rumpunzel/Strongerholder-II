@@ -8,7 +8,9 @@ script = ExtResource("1_btebj")
 metadata/_custom_type_script = "uid://d12oj323k2wmw"
 
 [node name="Toaster" type="Node" parent="."]
-unique_name_in_owner = true
 script = ExtResource("2_fs0e3")
 _gravity = 1
 metadata/_custom_type_script = "uid://b68u3p1bd6gb"
+
+[connection signal="deserialized" from="." to="Toaster" method="toast_info" binds= ["Game loaded!"]]
+[connection signal="serialized" from="." to="Toaster" method="toast_success" binds= ["Game saved!"]]

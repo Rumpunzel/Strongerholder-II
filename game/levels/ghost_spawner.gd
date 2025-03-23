@@ -50,7 +50,7 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	_spawn_node.add_child(new_ghost, true)
 	player.character_controller = new_ghost
 
-func _on_player_disconnected(peer_id: int) -> void:
+func _on_player_disconnected(peer_id: int, _player: SynchronizedPlayer) -> void:
 	if peer_id == Game.HOST_ID: return
 	var old_ghost: CharacterController = _spawn_node.get_node("%d" % peer_id)
 	_spawn_node.remove_child(old_ghost)

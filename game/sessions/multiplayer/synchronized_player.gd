@@ -34,7 +34,7 @@ static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 	var new_synchronized_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_synchronized_player.player_id = player_info.id
 	new_synchronized_player.player_name = player_info.name
-	var new_player: Player = Player.create()
+	var new_player: Player = Player.create(null)
 	new_synchronized_player.player = new_player
 	return new_synchronized_player
 

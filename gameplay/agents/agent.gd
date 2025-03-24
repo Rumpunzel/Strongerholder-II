@@ -19,7 +19,7 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 var character: Character:
 	set(new_character):
 		character = new_character
-		_hit_box.character = character
+		_setup_character()
 
 var is_disabled: bool = false:
 	set(new_is_disabled):
@@ -54,6 +54,9 @@ static func create(existing_character_controller: CharacterController) -> Agent:
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
+
+func _setup_character() -> void:
+	_hit_box.character = character
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

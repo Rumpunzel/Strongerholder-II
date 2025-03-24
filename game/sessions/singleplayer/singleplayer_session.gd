@@ -14,7 +14,7 @@ func start(host_as_singleplayer: Player) -> Error:
 	if host_as_singleplayer:
 		player = host_as_singleplayer
 	else:
-		player = Player.PLAYER_SCENE.instantiate()
+		player = Player.create(null)
 	add_child(player)
 	started.emit(player)
 	print_debug("Started singleplayer session!")

@@ -3,8 +3,6 @@
 class_name CharacterController
 extends CharacterBody3D
 
-signal spawned(character_controller: CharacterController)
-
 @export var character: Character:
 	set(new_character):
 		if character:
@@ -53,7 +51,6 @@ var heads_up_anchor: HeadsUpAnchor:
 		if not heads_up_anchor: return
 		add_child.call_deferred(heads_up_anchor, true)
 
-var direction_input: Vector2 = Vector2.ZERO
 var look_target: Vector3 = Vector3.BACK
 
 var _normalized_velocity: Vector3 = Vector3.ZERO
@@ -70,29 +67,20 @@ var _character_path: StringName:
 		character = load(_character_path)
 
 func _ready() -> void:
-	spawned.emit(self)
+	if Engine.is_editor_hint(): return
+	GameWorld.character_contoller_spawned.emit(self)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	_apply_direction_input(delta)
+	_is_on_floor = is_on_floor()
+	if not _is_on_floor: _apply_gravity(delta)
+	move_and_slide()
+	if velocity: _look_forward(delta)
+	_normalized_velocity = Vector3(velocity.x / character.move_speed, velocity.y / _gravity, velocity.z / character.move_speed)
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if world_character: world_character.play_animation(_normalized_velocity)
-
-func _apply_direction_input(delta: float) -> void:
-	_is_on_floor = is_on_floor()
-	if not _is_on_floor: _apply_gravity(delta)
-	var move_speed: float = character.move_speed
-	if direction_input:
-		velocity.x = direction_input.x * move_speed
-		velocity.z = direction_input.y * move_speed
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, move_speed)
-		velocity.z = move_toward(velocity.z, 0.0, move_speed)
-	move_and_slide()
-	if velocity: _look_forward(delta)
-	_normalized_velocity = Vector3(velocity.x / move_speed, velocity.y / _gravity, velocity.z / move_speed)
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta

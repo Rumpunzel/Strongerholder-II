@@ -14,6 +14,7 @@ enum Groups {
 
 @export_category("Attributes")
 @export var move_speed: float = 8.0
+@export var acceleration: float = 32.0
 @export var turn_rate: float = 12.0
 
 @export_category("World Character")

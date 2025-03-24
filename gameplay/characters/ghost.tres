@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="Character" load_steps=9 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="Character" load_steps=11 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://protoype_assets/world_characters/ghost_sprites/test_ghost.tscn" id="1_b8jju"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="1_s4khq"]
+[ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://gameplay/character_controllers/heads_up_anchor.tscn" id="2_m7bob"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://gameplay/characters/character.gd" id="3_6mhvl"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/character_controllers/character_area_shape.gd" id="3_pj10w"]
 [ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://gameplay/characters/defaults/default_interaction_area_shape.tres" id="5_s4khq"]
@@ -31,7 +33,8 @@ script = ExtResource("3_6mhvl")
 name = "Ghost"
 color = Color(0, 0, 0, 1)
 group = 1
-move_speed = 8.0
+move_speed = 6.0
+acceleration = 64.0
 turn_rate = 12.0
 collision_shape = SubResource("Resource_aj5ki")
 hit_box_shape = SubResource("Resource_mcvja")
@@ -41,4 +44,6 @@ _world_character = ExtResource("1_b8jju")
 _random_world_characters = Array[PackedScene]([])
 collision_layer = 65536
 collision_mask = 1
+_character_controller_scene = ExtResource("1_s4khq")
+_heads_up_anchor_scene = ExtResource("2_m7bob")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

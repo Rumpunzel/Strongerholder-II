@@ -57,14 +57,14 @@ func _process(_delta: float) -> void:
 	_collect_input()
 	if is_disabled: return
 	assert(character_controller)
-	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
 	if not is_local_player: return
 	# Other code
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if is_disabled: return
+	_apply_input_direction_to_character_controller(delta)
 	_interaction_area.follow_node(character_controller)
 
 static func create() -> Player:
@@ -78,9 +78,19 @@ func _collect_input() -> void:
 	# Only collect input if this is the local Player
 	input_direction = read_movement_input()
 
-func _send_input_to_character_controller() -> void:
+func _apply_input_direction_to_character_controller(delta: float) -> void:
 	assert(character_controller)
-	character_controller.direction_input = _camera.get_adjusted_movement(input_direction)
+	var move_speed: float = character.move_speed
+	var acceleration: float = character.acceleration * delta
+	var velocity: Vector3 = character_controller.velocity
+	if input_direction:
+		var adjusted_input_direction: Vector2 = _camera.get_adjusted_movement(input_direction)
+		velocity.x = move_toward(velocity.x, adjusted_input_direction.x * move_speed, acceleration)
+		velocity.z = move_toward(velocity.z, adjusted_input_direction.y * move_speed, acceleration)
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, acceleration)
+		velocity.z = move_toward(velocity.z, 0.0, acceleration)
+	character_controller.velocity = velocity
 
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return

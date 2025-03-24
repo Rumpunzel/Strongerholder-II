@@ -18,10 +18,13 @@ func spawn_character_controller(spawn_parent: Node) -> CharacterController:
 	if spawn_limit > 0 and _character_controllers_spawned >= spawn_limit:
 		push_warning("Trying to spawn a CharacterController but reached spawn limit already!")
 		return
-	var new_character_controller: CharacterController = character.create(transform) if spawn_with_agent else character.create_dummy(transform)
-	spawn_parent.add_child(new_character_controller, true)
+	var character_controller: CharacterController
+	if spawn_with_agent and not Engine.is_editor_hint():
+		character_controller = character.create(transform)
+	else: character_controller= character.create_dummy(transform)
+	spawn_parent.add_child(character_controller, true)
 	if Engine.is_editor_hint():
-		if _editor_material: new_character_controller.world_character.apply_material_override(_editor_material)
-		return new_character_controller
+		if _editor_material: character_controller.world_character.apply_material_override(_editor_material)
+		return character_controller
 	_character_controllers_spawned += 1
-	return new_character_controller
+	return character_controller

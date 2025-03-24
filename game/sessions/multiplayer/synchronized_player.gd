@@ -37,8 +37,7 @@ static func from_player(existing_player: Player) -> SynchronizedPlayer:
 
 static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 	validate_player_info(player_info)
-	var synchronized_player_scene: PackedScene = load("uid://cuclrr5bep4gn")
-	var new_synchronized_player: SynchronizedPlayer = synchronized_player_scene.instantiate()
+	var new_synchronized_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_synchronized_player.player_id = player_info.id
 	new_synchronized_player.player_name = player_info.name
 	var new_player: Player = Player.create()

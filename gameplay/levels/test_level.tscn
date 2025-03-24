@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=14 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://gameplay/levels/level.gd" id="1_ywn5t"]
-[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="2_bpeee"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/spawn_points/ghost_spawner.gd" id="2_bpeee"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="3_sli0y"]
-[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/character_spawner.gd" id="4_fbqqs"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/spawn_points/character_spawner.gd" id="4_fbqqs"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/characters/king.tres" id="5_kudci"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://gameplay/characters/rogue.tres" id="6_ck0y7"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="7_ah70l"]
+[ext_resource type="Script" uid="uid://bav5t732bt84v" path="res://gameplay/levels/spawn_points/character_spawn_points.gd" id="7_sli0y"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="9_14if3"]
+[ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://gameplay/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -24,20 +25,20 @@ uv1_scale = Vector3(16, 16, 16)
 script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
 
-[node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_local_ghosts")]
+[node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("ghost_spawn_point", "_local_ghosts")]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../VisitorGhosts")
 script = ExtResource("2_bpeee")
-ghost = ExtResource("3_sli0y")
+ghost_spawn_point = NodePath("../GhostSpawnPoint")
 _local_ghosts = NodePath("../LocalGhosts")
 metadata/_custom_type_script = "uid://witnma4yody0"
 
-[node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
+[node name="CharacterSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_character_spawn_points")]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../Characters")
 script = ExtResource("4_fbqqs")
-king = ExtResource("5_kudci")
-rogue = ExtResource("6_ck0y7")
+_character_spawn_points = NodePath("../CharacterSpawnPoints")
+metadata/_custom_type_script = "uid://cnqgk717dgofh"
 
 [node name="NodeSerializer" type="Node" parent="CharacterSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
 script = ExtResource("7_ah70l")
@@ -60,16 +61,32 @@ mesh = SubResource("PlaneMesh_bkb5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
-[node name="LocalGhosts" type="Marker3D" parent="."]
+[node name="GhostSpawnPoint" type="Marker3D" parent="."]
+script = ExtResource("10_bpeee")
+character = ExtResource("3_sli0y")
+_editor_material = null
+metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 
-[node name="VisitorGhosts" type="Marker3D" parent="."]
+[node name="CharacterSpawnPoints" type="Node3D" parent="."]
+script = ExtResource("7_sli0y")
+metadata/_custom_type_script = "uid://bav5t732bt84v"
 
-[node name="Characters" type="Marker3D" parent="."]
-
-[node name="King" parent="Characters" instance=ExtResource("9_14if3")]
+[node name="KingSpawnPoint" type="Marker3D" parent="CharacterSpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+script = ExtResource("10_bpeee")
 character = ExtResource("5_kudci")
+spawn_limit = 1
+metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 
-[node name="Rogue" parent="Characters" instance=ExtResource("9_14if3")]
+[node name="RogueSpawnPoint" type="Marker3D" parent="CharacterSpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
+script = ExtResource("10_bpeee")
 character = ExtResource("6_ck0y7")
+spawn_limit = 1
+metadata/_custom_type_script = "uid://da7xwt7wct3ms"
+
+[node name="LocalGhosts" type="Node3D" parent="."]
+
+[node name="VisitorGhosts" type="Node3D" parent="."]
+
+[node name="Characters" type="Node3D" parent="."]

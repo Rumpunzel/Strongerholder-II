@@ -2,6 +2,8 @@
 class_name Agent
 extends Node
 
+const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
+
 @export var character_controller: CharacterController:
 	set(new_character_controller):
 		character_controller = new_character_controller
@@ -43,6 +45,11 @@ func _physics_process(_delta: float) -> void:
 	if is_disabled: return
 	assert(character_controller)
 	_hit_box.follow_node(character_controller)
+
+static func create(existing_character_controller: CharacterController) -> Agent:
+	var new_agent: Agent = AGENT_SCENE.instantiate()
+	new_agent.character_controller = existing_character_controller
+	return new_agent
 
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return

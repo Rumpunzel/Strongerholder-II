@@ -4,8 +4,9 @@
 [ext_resource type="Script" uid="uid://bpkm2ws12sljg" path="res://protoype_assets/world_characters/character_models/character_model.gd" id="2_yh02w"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://dq7kyxeehjpe0" path="res://protoype_assets/world_characters/character_models/quaternius_animation_tree.tres" id="3_wx7d7"]
 
-[node name="Rogue" node_paths=PackedStringArray("_animation_tree") instance=ExtResource("1_hjupo")]
+[node name="Rogue" node_paths=PackedStringArray("_meshes", "_animation_tree") instance=ExtResource("1_hjupo")]
 script = ExtResource("2_yh02w")
+_meshes = [NodePath("CharacterArmature/Skeleton3D/Medieval_Body"), NodePath("CharacterArmature/Skeleton3D/Medieval_Feet"), NodePath("CharacterArmature/Skeleton3D/Medieval_Head"), NodePath("CharacterArmature/Skeleton3D/Medieval_Legs")]
 _animation_tree = NodePath("AnimationTree")
 
 [node name="Skeleton3D" parent="CharacterArmature" index="0"]

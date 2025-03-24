@@ -115,3 +115,8 @@ toggle_event_overview={
 3d_physics/layer_7="HurtBoxes"
 3d_physics/layer_17="Ghosts"
 3d_physics/layer_21="GhostAreas"
+
+[physics]
+
+common/physics_jitter_fix=0.0
+common/physics_interpolation=true

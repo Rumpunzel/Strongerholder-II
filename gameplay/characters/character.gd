@@ -36,11 +36,12 @@ enum Groups {
 @export var _character_controller_scene: PackedScene = preload("uid://cvj6b1m2b65hd")
 @export var _heads_up_anchor_scene: PackedScene = preload("uid://cpmcbnpcemt61")
 
-func create() -> CharacterController:
+func create(spawn_transform: Transform3D) -> CharacterController:
 	# XOR operator; either specific character XOR a random character
 	assert(_world_character != null != not _random_world_characters.is_empty())
 	var character_controller: CharacterController = _character_controller_scene.instantiate()
 	character_controller.character = self
+	character_controller.transform = spawn_transform
 	return character_controller
 
 func create_world_character() -> WorldCharacter:

@@ -3,7 +3,7 @@
 class_name GhostSpawner
 extends MultiplayerSpawner
 
-@export var ghost: Character
+@export var ghost_spawn_point: CharacterSpawnPoint
 
 @export_group("Configuration")
 @export var _local_ghosts: Node
@@ -23,9 +23,8 @@ func _configre_host_ghost(player: Player) -> void:
 		_local_ghosts.remove_child(_host_ghost)
 		_host_ghost.queue_free()
 	
-	_host_ghost = ghost.create()
+	_host_ghost = ghost_spawn_point.spawn_character_controller(_local_ghosts)
 	_host_ghost.name = "%d" % Game.HOST_ID
-	_local_ghosts.add_child(_host_ghost, true)
 	player.character_controller = _host_ghost
 
 func _remove_all_visitor_ghosts() -> void:
@@ -51,9 +50,8 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	for ghost_controller: CharacterController in _spawn_node.get_children():
 		# CharacterController already exists, does not need to be created
 		if ghost_controller == player.player.character_controller: return
-	var new_ghost: CharacterController = ghost.create()
+	var new_ghost: CharacterController = ghost_spawn_point.spawn_character_controller(_local_ghosts)
 	new_ghost.name = "%d" % peer_id
-	_spawn_node.add_child(new_ghost, true)
 	player.player.character_controller = new_ghost
 
 func _on_player_disconnected(peer_id: int, _player: SynchronizedPlayer) -> void:

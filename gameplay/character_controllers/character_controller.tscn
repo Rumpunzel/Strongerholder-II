@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cvj6b1m2b65hd"]
 
-[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/characters/character_controller.gd" id="1_pp6cs"]
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/character_controllers/character_controller.gd" id="1_pp6cs"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_1pdhw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]

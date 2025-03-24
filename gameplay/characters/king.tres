@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Character" load_steps=7 format=3 uid="uid://ro6wvnf88xbo"]
 
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://gameplay/characters/character.gd" id="1_hac1t"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_controller.tscn" id="2_y43ko"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="2_y43ko"]
 [ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="3_0kn5r"]
-[ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://gameplay/people/default_collision_shape.tres" id="3_c8byr"]
-[ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://gameplay/people/default_hit_box_shape.tres" id="4_4iqrm"]
-[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://gameplay/people/default_interaction_area_shape.tres" id="5_0k1p4"]
+[ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://gameplay/characters/defaults/default_collision_shape.tres" id="3_c8byr"]
+[ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://gameplay/characters/defaults/default_hit_box_shape.tres" id="4_4iqrm"]
+[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://gameplay/characters/defaults/default_interaction_area_shape.tres" id="5_0k1p4"]
 
 [resource]
 script = ExtResource("1_hac1t")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterAreaShape" load_steps=3 format=3 uid="uid://718wpxdsx3bo"]
 
-[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/characters/character_area_shape.gd" id="1_s7fgh"]
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/character_controllers/character_area_shape.gd" id="1_s7fgh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ci2td"]
 

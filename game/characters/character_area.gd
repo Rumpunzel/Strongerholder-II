@@ -9,12 +9,18 @@ signal hit_box_exited(hit_box: HitBox)
 	set(new_character):
 		character = new_character
 		if not character:
-			_collision_shape.shape = null
+			collision_shape = null
 			return
 		_setup_collision_shape()
 
-@export_group("Configuration")
-@export var _collision_shape: CollisionShape3D
+var collision_shape: CollisionShape3D:
+	set(new_collision_shape):
+		if collision_shape:
+			if get_children().has(collision_shape): remove_child(collision_shape)
+			collision_shape.queue_free()
+		collision_shape = new_collision_shape
+		if not collision_shape: return
+		add_child.call_deferred(collision_shape, true)
 
 var hit_boxes_in_area: Array[HitBox] = [ ]
 
@@ -37,8 +43,3 @@ func _on_area_exited(area: Area3D) -> void:
 	if not area is HitBox: return
 	hit_boxes_in_area.erase(area)
 	hit_box_exited.emit(area)
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	if not _collision_shape: warnings.append("Missing CollisionShape reference.")
-	return warnings

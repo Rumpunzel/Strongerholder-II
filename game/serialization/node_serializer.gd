@@ -1,10 +1,14 @@
 @tool
-@icon("uid://dppclq1ett8bx")
+@icon("uid://drw5rl4ut3rge")
 class_name NodeSerializer
 extends Node
 
-## Optional [MultiplayerSpawner]; serializes spawned nodes if supplied
 @export var _multiplayer_spawner: MultiplayerSpawner
+
+func _enter_tree() -> void:
+	var parent: Node = get_parent()
+	if not _multiplayer_spawner and parent is MultiplayerSpawner:
+		_multiplayer_spawner = parent
 
 ## Collects all data for dynamically spawned nodes
 ## @returns a [Dictionary] with [NodePath]s of the responsible [NodeSerializer]s to the node data
@@ -87,6 +91,5 @@ func deserialize(save_file_path: String) -> Error:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	#if not _multiplayer_synchronizer and _properties_to_serialize.is_empty(): warnings.append("Nothing will be serialized!")
-	#if _multiplayer_synchronizer and not _properties_to_serialize.is_empty(): warnings.append("Only MultiplayerSynchronizer OR property list is allowed!")
+	if not _multiplayer_spawner: warnings.append("Missing MultiplayerSpawner reference.")
 	return warnings

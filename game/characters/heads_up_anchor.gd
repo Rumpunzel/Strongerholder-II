@@ -11,8 +11,17 @@ const HUD_PLACEHOLDER_SCENE: PackedScene = preload("uid://c3ggesrya61ic")
 
 var _hud_placeholder: Sprite3D
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	var parent: Node = get_parent()
+	if not root_node and parent is Node3D:
+		root_node = parent
+	
 	if not Engine.is_editor_hint(): return
 	if not global_placeholder and EditorInterface.get_edited_scene_root() != root_node: return
 	_hud_placeholder = HUD_PLACEHOLDER_SCENE.instantiate()
 	add_child(_hud_placeholder, false, Node.INTERNAL_MODE_FRONT)
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not root_node: warnings.append("Missing root node reference.")
+	return warnings

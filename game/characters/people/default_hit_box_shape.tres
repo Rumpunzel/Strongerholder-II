@@ -1,3 +1,12 @@
-[gd_resource type="CapsuleShape3D" format=3 uid="uid://h8f1hi4aoc40"]
+[gd_resource type="Resource" script_class="CharacterAreaShape" load_steps=3 format=3 uid="uid://718wpxdsx3bo"]
+
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://game/characters/character_area_shape.gd" id="1_s7fgh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ci2td"]
 
 [resource]
+script = ExtResource("1_s7fgh")
+_shape = SubResource("CapsuleShape3D_ci2td")
+_offset = Vector3(0, 0, 0)
+_automatic_ground_offset = true
+metadata/_custom_type_script = "uid://cfq64v34pot8s"

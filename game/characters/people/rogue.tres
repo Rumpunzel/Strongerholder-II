@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="Character" load_steps=8 format=3 uid="uid://d18sc738vkuku"]
+[gd_resource type="Resource" script_class="Character" load_steps=7 format=3 uid="uid://d18sc738vkuku"]
 
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://game/characters/character_controller.tscn" id="2_i3juj"]
-[ext_resource type="Resource" uid="uid://dy1fytac5padi" path="res://game/characters/people/default_movement_attributes.tres" id="2_pvd8u"]
-[ext_resource type="Shape3D" uid="uid://c7hifnsy5vabh" path="res://game/characters/people/default_collision_shape.tres" id="3_0y2lj"]
+[ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://game/characters/people/default_collision_shape.tres" id="3_0y2lj"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/characters/character.gd" id="3_7rwy5"]
 [ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/world_characters/character_models/rogue.tscn" id="3_kcow0"]
-[ext_resource type="Shape3D" uid="uid://h8f1hi4aoc40" path="res://game/characters/people/default_hit_box_shape.tres" id="4_ithgo"]
-[ext_resource type="Shape3D" uid="uid://bn0pwy8h3w0s1" path="res://game/characters/people/default_interaction_area_shape.tres" id="5_ys22x"]
+[ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://game/characters/people/default_hit_box_shape.tres" id="4_ithgo"]
+[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://game/characters/people/default_interaction_area_shape.tres" id="5_ys22x"]
 
 [resource]
 script = ExtResource("3_7rwy5")
 name = "Rogue"
 color = Color(0, 0, 0, 1)
-movement_attributes = ExtResource("2_pvd8u")
+move_speed = 8.0
+turn_rate = 12.0
 collision_shape = ExtResource("3_0y2lj")
 hit_box_shape = ExtResource("4_ithgo")
 interaction_area_shape = ExtResource("5_ys22x")
-heads_up_display_height = 2.25
+heads_up_display_offset = Vector3(0, 2.25, 0)
 _world_character = ExtResource("3_kcow0")
 _random_world_characters = Array[PackedScene]([])
 collision_layer = 2

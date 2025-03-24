@@ -1,4 +1,13 @@
-[gd_resource type="CapsuleShape3D" format=3 uid="uid://c7hifnsy5vabh"]
+[gd_resource type="Resource" script_class="CharacterAreaShape" load_steps=3 format=3 uid="uid://d27l7tjgj4lrb"]
+
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://game/characters/character_area_shape.gd" id="1_yaxum"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yaxum"]
+radius = 0.25
 
 [resource]
-radius = 0.25
+script = ExtResource("1_yaxum")
+_shape = SubResource("CapsuleShape3D_yaxum")
+_automatic_ground_offset = true
+_offset = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://cfq64v34pot8s"

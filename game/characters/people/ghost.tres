@@ -1,30 +1,47 @@
-[gd_resource type="Resource" script_class="Character" load_steps=8 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="Character" load_steps=11 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://protoype_assets/world_characters/ghost_sprites/test_ghost.tscn" id="1_b8jju"]
-[ext_resource type="Resource" uid="uid://dy1fytac5padi" path="res://game/characters/people/default_movement_attributes.tres" id="2_b8jju"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://game/characters/character_controller.tscn" id="2_v46ac"]
-[ext_resource type="Shape3D" uid="uid://bn0pwy8h3w0s1" path="res://game/characters/people/default_interaction_area_shape.tres" id="3_3w57q"]
+[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://game/characters/people/default_interaction_area_shape.tres" id="3_3w57q"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/characters/character.gd" id="3_6mhvl"]
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://game/characters/character_area_shape.gd" id="3_pj10w"]
+[ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://game/characters/heads_up_anchor.tscn" id="4_pj10w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pj10w"]
 radius = 0.25
 height = 1.5
 
+[sub_resource type="Resource" id="Resource_aj5ki"]
+script = ExtResource("3_pj10w")
+_shape = SubResource("CapsuleShape3D_pj10w")
+_offset = Vector3(0, 0, 0)
+_automatic_ground_offset = true
+metadata/_custom_type_script = "uid://cfq64v34pot8s"
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ofrg4"]
 height = 1.5
+
+[sub_resource type="Resource" id="Resource_mcvja"]
+script = ExtResource("3_pj10w")
+_shape = SubResource("CapsuleShape3D_ofrg4")
+_offset = Vector3(0, 0, 0)
+_automatic_ground_offset = null
+metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
 [resource]
 script = ExtResource("3_6mhvl")
 name = "Ghost"
 color = Color(0, 0, 0, 1)
-movement_attributes = ExtResource("2_b8jju")
-collision_shape = SubResource("CapsuleShape3D_pj10w")
-hit_box_shape = SubResource("CapsuleShape3D_ofrg4")
+move_speed = 8.0
+turn_rate = 12.0
+collision_shape = SubResource("Resource_aj5ki")
+hit_box_shape = SubResource("Resource_mcvja")
 interaction_area_shape = ExtResource("3_3w57q")
-heads_up_display_height = 2.25
+heads_up_display_offset = Vector3(0, 2.25, 0)
 _world_character = ExtResource("1_b8jju")
 _random_world_characters = Array[PackedScene]([])
 collision_layer = 65536
 collision_mask = 1
 character_controller_scene = ExtResource("2_v46ac")
+heads_up_anchor_scene = ExtResource("4_pj10w")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

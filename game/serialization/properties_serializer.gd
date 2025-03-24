@@ -1,15 +1,12 @@
 @tool
-@icon("uid://drw5rl4ut3rge")
+@icon("uid://bwsawlgvt1651")
 class_name PropertiesSerializer
 extends Node
 
 ## Marks the root of this serliazier as unreliable, such as nodes created by multiplayer; are serialized asynchronously
 @export var intangible: bool = false
 
-## Optional [MultiplayerSynchronizer]; serializes synced propertes if supplied
 @export var _multiplayer_synchronizer: MultiplayerSynchronizer
-## Properties to seralize if no [MultiplayerSynchronizer] is supplied
-#@export var _properties_to_serialize: Array[NodePath]
 
 func _ready() -> void:
 	if intangible: add_to_group("IntangibleSerializers")
@@ -72,6 +69,5 @@ func deserialize(save_file_path: String) -> Error:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	#if not _multiplayer_synchronizer and _properties_to_serialize.is_empty(): warnings.append("Nothing will be serialized!")
-	#if _multiplayer_synchronizer and not _properties_to_serialize.is_empty(): warnings.append("Only MultiplayerSynchronizer OR property list is allowed!")
+	if not _multiplayer_synchronizer: warnings.append("Missing MultiplayerSynchronizer reference.")
 	return warnings

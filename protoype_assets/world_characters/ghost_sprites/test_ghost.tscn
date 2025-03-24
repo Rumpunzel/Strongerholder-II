@@ -179,10 +179,10 @@ metadata/_custom_type_script = "uid://f7j5ijitqy25"
 [node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_faw76")
 
-[node name="PropertiesSerializer" type="Node" parent="." node_paths=PackedStringArray("_multiplayer_synchronizer")]
+[node name="PropertiesSerializer" type="Node" parent="SpriteSynchronizer" node_paths=PackedStringArray("_multiplayer_synchronizer")]
 script = ExtResource("2_xqo7j")
 intangible = true
-_multiplayer_synchronizer = NodePath("../SpriteSynchronizer")
+_multiplayer_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]

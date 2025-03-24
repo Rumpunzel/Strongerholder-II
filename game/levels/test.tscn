@@ -34,9 +34,9 @@ script = ExtResource("4_pnvjf")
 king = ExtResource("2_r4e4k")
 rogue = ExtResource("3_pnvjf")
 
-[node name="NodeSerializer" type="Node" parent="." node_paths=PackedStringArray("_multiplayer_spawner")]
+[node name="NodeSerializer" type="Node" parent="CharacterSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
 script = ExtResource("6_qhvcx")
-_multiplayer_spawner = NodePath("../CharacterSpawner")
+_multiplayer_spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

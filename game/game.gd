@@ -4,11 +4,6 @@ extends Node
 signal game_paused
 signal game_unpaused
 
-signal game_save_started
-signal game_save_finished
-signal game_load_started
-signal game_load_finished
-
 signal session_changed(new_session: Session)
 
 signal player_name_changed(player_name: String)
@@ -42,8 +37,6 @@ var session: Session:
 		session = new_session
 		session_changed.emit(session)
 
-@onready var _serialization: Serialization = _initialize_serialization()
-
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	request_pause()
@@ -57,19 +50,9 @@ func request_pause() -> void:
 func request_unpause() -> void:
 	if get_tree().paused: _unpause_game()
 
-func save_game() -> void:
-	game_save_started.emit()
-	_serialization.serialize(SAVE_FILE_PATH)
-	game_save_finished.emit()
-
-func load_game() -> void:
-	game_load_started.emit()
-	_serialization.deserialize(SAVE_FILE_PATH)
-	game_load_finished.emit()
-
 func quit_game(save_before: bool = true) -> void:
 	if save_before:
-		save_game()
+		GameWorld.save_world_state()
 	_update_config_file()
 	get_tree().quit()
 
@@ -111,7 +94,7 @@ func _start_singleplayer_session(existing_player: Player = null) -> Singleplayer
 	var new_singleplayer_session: SingleplayerSession = SingleplayerSession.create()
 	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
-	if FileAccess.file_exists(SAVE_FILE_PATH): load_game()
+	GameWorld.load_world_state()
 	new_singleplayer_session.start(existing_player)
 	return new_singleplayer_session
 
@@ -132,12 +115,6 @@ func _end_session() -> Player:
 	remove_child(old_session)
 	old_session.queue_free()
 	return existing_player
-
-func _initialize_serialization() -> Serialization:
-	assert(not _serialization)
-	_serialization = Serialization.create()
-	add_child(_serialization)
-	return _serialization
 
 func _update_config_file() -> Error:
 	var config: ConfigFile = ConfigFile.new()

@@ -1,5 +1,5 @@
 @icon("uid://lafgp3e7lvc3")
-class_name Serialization
+class_name Serializer
 extends Node
 
 signal serialized
@@ -9,12 +9,12 @@ const NODES: StringName = "nodes"
 const PROPERTIES: StringName = "properties"
 const INTANGIBLE: StringName = "intangible"
 
-const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
+const SERIALIZER_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-static func create() -> Serialization:
-	return SERIALIZATION_SCENE.instantiate()
+static func create() -> Serializer:
+	return SERIALIZER_SCENE.instantiate()
 
 static func encode_data(value: Variant, full_objects: bool = false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))

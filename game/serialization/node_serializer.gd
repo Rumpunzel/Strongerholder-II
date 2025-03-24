@@ -76,7 +76,7 @@ func serialize(save_file_path: StringName) -> Error:
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
 	var collected_nodes: Dictionary[StringName, Array] = collect_nodes()
 	assert(collected_nodes is Dictionary[StringName, Array])
-	var serialized_nodes: String = Serialization.encode_data(collected_nodes)
+	var serialized_nodes: String = Serializer.encode_data(collected_nodes)
 	save_file.store_line(serialized_nodes)
 	return Error.OK
 
@@ -84,7 +84,7 @@ func deserialize(save_file_path: StringName) -> Error:
 	assert(FileAccess.file_exists(save_file_path))
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
 	var serialized_nodes: String = save_file.get_as_text()
-	var collected_nodes: Dictionary[StringName, Array] = Serialization.decode_data(serialized_nodes)
+	var collected_nodes: Dictionary[StringName, Array] = Serializer.decode_data(serialized_nodes)
 	assert(collected_nodes is Dictionary[StringName, Array])
 	restore_state(collected_nodes)
 	return Error.OK

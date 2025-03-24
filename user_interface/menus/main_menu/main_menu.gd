@@ -23,10 +23,10 @@ func _on_continue_pressed() -> void:
 	close_menu()
 
 func _on_save_pressed() -> void:
-	Game.save_game()
+	GameWorld.save_world_state()
 
 func _on_load_pressed() -> void:
-	Game.load_game()
+	GameWorld.load_world_state()
 
 func _on_randomize_ghost_pressed() -> void:
 	EventBus.emit("random_ghost_requested")

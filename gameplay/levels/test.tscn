@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://gameplay/levels/level.gd" id="1_5usd3"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="2_5usd3"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/characters/king.tres" id="2_r4e4k"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="3_c2je4"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://gameplay/characters/rogue.tres" id="3_pnvjf"]
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/character_spawner.gd" id="4_pnvjf"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="6_qhvcx"]
@@ -21,6 +23,14 @@ uv1_scale = Vector3(16, 16, 16)
 [node name="Test" type="Node3D"]
 script = ExtResource("1_5usd3")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
+
+[node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_local_ghosts")]
+_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
+spawn_path = NodePath("../VisitorGhosts")
+script = ExtResource("2_5usd3")
+ghost = ExtResource("3_c2je4")
+_local_ghosts = NodePath("../LocalGhosts")
+metadata/_custom_type_script = "uid://witnma4yody0"
 
 [node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
@@ -49,6 +59,10 @@ shape = SubResource("BoxShape3D_2lmav")
 mesh = SubResource("PlaneMesh_bkb5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
+
+[node name="LocalGhosts" type="Marker3D" parent="."]
+
+[node name="VisitorGhosts" type="Marker3D" parent="."]
 
 [node name="Characters" type="Marker3D" parent="."]
 

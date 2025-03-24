@@ -39,6 +39,15 @@ enum Groups {
 func create(spawn_transform: Transform3D) -> CharacterController:
 	# XOR operator; either specific character XOR a random character
 	assert(_world_character != null != not _random_world_characters.is_empty())
+	var character_controller: CharacterController = create_dummy(spawn_transform)
+	character_controller.character = self
+	character_controller.transform = spawn_transform
+	GameWorld.create_agent(character_controller)
+	return character_controller
+
+func create_dummy(spawn_transform: Transform3D) -> CharacterController:
+	# XOR operator; either specific character XOR a random character
+	assert(_world_character != null != not _random_world_characters.is_empty())
 	var character_controller: CharacterController = _character_controller_scene.instantiate()
 	character_controller.character = self
 	character_controller.transform = spawn_transform

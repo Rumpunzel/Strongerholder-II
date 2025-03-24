@@ -10,10 +10,8 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 		_check_disabled()
 		if not character_controller:
 			character = null
-			_character_controller_path = NodePath()
 			return
 		character = character_controller.character
-		_character_controller_path = character_controller.get_path()
 
 @export_group("Configuration")
 @export var _hit_box: HitBox
@@ -28,8 +26,9 @@ var is_disabled: bool = false:
 		is_disabled = new_is_disabled
 		_hit_box.visible = not is_disabled
 
-## This is used for serialization purposes; serves otherwise no purpose 
+## This is used for serialization purposes; serves otherwise no purpose
 var _character_controller_path: NodePath:
+	get: return character_controller.get_path() if character_controller else NodePath()
 	set(new_character_controller_path):
 		_character_controller_path = new_character_controller_path
 		if character_controller or _character_controller_path.is_empty(): return
@@ -49,6 +48,7 @@ func _physics_process(_delta: float) -> void:
 static func create(existing_character_controller: CharacterController) -> Agent:
 	var new_agent: Agent = AGENT_SCENE.instantiate()
 	new_agent.character_controller = existing_character_controller
+	new_agent.name = existing_character_controller.character.name
 	return new_agent
 
 func _check_disabled() -> void:

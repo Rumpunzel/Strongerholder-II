@@ -58,17 +58,14 @@ var _is_on_floor: bool = true
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-## This is used for multiplayer purposes to synchronize over network; serves otherwise no purpose 
-var _character_path: StringName:
+## This is used for serialization purposes; serves otherwise no purpose
+var _character_path: String:
+	get: return character.resource_path if character else ""
 	set(new_character_path):
 		_character_path = new_character_path
 		if character or _character_path.is_empty(): return
 		assert(_character_path.is_absolute_path())
 		character = load(_character_path)
-
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
-	GameWorld.character_contoller_spawned.emit(self)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return

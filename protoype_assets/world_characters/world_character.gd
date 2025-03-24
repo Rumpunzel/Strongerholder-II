@@ -21,5 +21,5 @@ extends Node3D
 func play_animation(_normalized_velocity: Vector3) -> void:
 	assert(false, "WorldCharacter.play_animation is 'abstract' and needs to be overriden!")
 
-func apply_material_override(material: Material) -> void:
+func apply_material_override(_material: Material) -> void:
 	assert(false, "WorldCharacter.apply_material_override is 'abstract' and needs to be overriden!")

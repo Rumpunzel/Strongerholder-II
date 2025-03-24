@@ -12,10 +12,8 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		_check_disabled()
 		if not character_controller:
 			character = null
-			_character_controller_path = NodePath()
 			return
 		character = character_controller.character
-		_character_controller_path = character_controller.get_path()
 
 @export_group("Configuration")
 @export var _camera: TopDownCamera
@@ -39,8 +37,9 @@ var is_local_player: bool = true:
 
 var input_direction: Vector2 = Vector2.ZERO
 
-## This is used for serialization purposes; serves otherwise no purpose 
+## This is used for serialization purposes; serves otherwise no purpose
 var _character_controller_path: NodePath:
+	get: return character_controller.get_path() if character_controller else NodePath()
 	set(new_character_controller_path):
 		_character_controller_path = new_character_controller_path
 		if character_controller or _character_controller_path.is_empty(): return
@@ -52,20 +51,15 @@ func _ready() -> void:
 	_check_disabled()
 	_collect_input()
 
-func _process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_collect_input()
 	if is_disabled: return
-	assert(character_controller)
+	_apply_input_direction_to_character_controller(delta)
 	_camera.frame_node(character_controller)
+	_interaction_area.follow_node(character_controller)
 	if not is_local_player: return
 	# Other code
-
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if is_disabled: return
-	_apply_input_direction_to_character_controller(delta)
-	_interaction_area.follow_node(character_controller)
 
 static func create() -> Player:
 	return PLAYER_SCENE.instantiate()

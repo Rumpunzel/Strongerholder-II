@@ -22,12 +22,6 @@ const SYNCHRONIZED_PLAYER_SCENE: PackedScene = preload("uid://cuclrr5bep4gn")
 func _ready() -> void:
 	_configure_processing()
 
-func _process(_delta: float) -> void:
-	if player.is_disabled: return
-	if not player.is_local_player: return
-	assert(player_id == multiplayer.get_unique_id(), "Expected player_id %d to be equal to multiplayer.get_unique_id() but was %d!" % [player_id, multiplayer.get_unique_id()])
-	assert(player_id == get_multiplayer_authority(), "Cannot process on SynchronizedPlayer without multiplayer authority!")
-
 static func from_player(existing_player: Player) -> SynchronizedPlayer:
 	var new_synchronized_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_synchronized_player.player_id = Game.HOST_ID

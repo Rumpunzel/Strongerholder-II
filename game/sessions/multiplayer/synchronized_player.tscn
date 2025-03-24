@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cuclrr5bep4gn"]
 
-[ext_resource type="Script" uid="uid://c2d8voqrlqxwq" path="res://game/multiplayer/synchronized_player.gd" id="1_xfqom"]
+[ext_resource type="Script" uid="uid://c2d8voqrlqxwq" path="res://game/sessions/multiplayer/synchronized_player.gd" id="1_xfqom"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k2fux"]
 properties/0/path = NodePath(".:name")

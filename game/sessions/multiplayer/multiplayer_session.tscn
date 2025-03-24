@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://citi18cutmbiw"]
 
-[ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://game/multiplayer/multiplayer_session.gd" id="1_mg27w"]
-[ext_resource type="Script" uid="uid://b2l2cxx5y325t" path="res://game/multiplayer/multiplayer_toaster.gd" id="2_c0aee"]
+[ext_resource type="Script" uid="uid://dxd0m5wbpm1q5" path="res://game/sessions/multiplayer/multiplayer_session.gd" id="1_mg27w"]
+[ext_resource type="Script" uid="uid://b2l2cxx5y325t" path="res://game/sessions/multiplayer/multiplayer_toaster.gd" id="2_c0aee"]
 
 [node name="MultiplayerSession" type="Node"]
 script = ExtResource("1_mg27w")

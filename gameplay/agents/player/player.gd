@@ -1,5 +1,5 @@
 @tool
-@icon("uid://c73t2rg8wrdt3")
+@icon("uid://nl71yast8tsi")
 class_name Player
 extends Node
 
@@ -8,6 +8,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 @export var character_controller: CharacterController:
 	set(new_character_controller):
 		character_controller = new_character_controller
+		_agent.character_controller = character_controller
 		_check_disabled()
 		if not character_controller:
 			character = null
@@ -18,19 +19,17 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 @export_group("Configuration")
 @export var _camera: TopDownCamera
-@export var _hit_box: HitBox
+@export var _agent: Agent
 @export var _interaction_area: InteractionArea
 
 var character: Character:
 	set(new_character):
 		character = new_character
-		_hit_box.character = character
 		_interaction_area.character = character
 
 var is_disabled: bool = false:
 	set(new_is_disabled):
 		is_disabled = new_is_disabled
-		_hit_box.visible = not is_disabled
 		_interaction_area.visible = not is_disabled
 
 var is_local_player: bool = true:
@@ -49,8 +48,8 @@ var _character_controller_path: NodePath:
 		character_controller = get_node(_character_controller_path)
 
 func _ready() -> void:
-	_check_disabled()
 	if Engine.is_editor_hint(): return
+	_check_disabled()
 	_collect_input()
 
 func _process(_delta: float) -> void:
@@ -60,7 +59,6 @@ func _process(_delta: float) -> void:
 	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
-	_hit_box.follow_node(character_controller)
 	_interaction_area.follow_node(character_controller)
 	if not is_local_player: return
 	# Other code
@@ -87,6 +85,6 @@ func _check_disabled() -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
 	if not _camera: warnings.append("Missing Camera reference.")
-	if not _hit_box: warnings.append("Missing HitBox reference.")
+	if not _agent: warnings.append("Missing Agent reference.")
 	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
 	return warnings

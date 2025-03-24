@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
-[ext_resource type="Script" uid="uid://witnma4yody0" path="res://game/levels/ghost_spawner.gd" id="1_lkjt4"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/characters/people/ghost.tres" id="2_6g8e2"]
-[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://game/characters/people/king.tres" id="2_r4e4k"]
-[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://game/characters/people/rogue.tres" id="3_pnvjf"]
-[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://game/levels/character_spawner.gd" id="4_pnvjf"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="1_lkjt4"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/people/ghost.tres" id="2_6g8e2"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/people/king.tres" id="2_r4e4k"]
+[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://gameplay/people/rogue.tres" id="3_pnvjf"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/character_spawner.gd" id="4_pnvjf"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="6_qhvcx"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://game/characters/character_controller.tscn" id="8_k83lp"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_controller.tscn" id="8_k83lp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)

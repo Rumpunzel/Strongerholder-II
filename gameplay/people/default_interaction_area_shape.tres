@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterAreaShape" load_steps=3 format=3 uid="uid://3vtg05cuw32e"]
 
-[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://game/characters/character_area_shape.gd" id="1_slbyd"]
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/characters/character_area_shape.gd" id="1_slbyd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_86x0r"]
 size = Vector3(2, 2, 3)
@@ -8,6 +8,6 @@ size = Vector3(2, 2, 3)
 [resource]
 script = ExtResource("1_slbyd")
 _shape = SubResource("BoxShape3D_86x0r")
-_automatic_ground_offset = true
 _offset = Vector3(0, 0, 0.5)
+_automatic_ground_offset = true
 metadata/_custom_type_script = "uid://cfq64v34pot8s"

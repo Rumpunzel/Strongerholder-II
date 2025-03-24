@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
 
-[ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://gameplay/levels/level.gd" id="1_5usd3"]
-[ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="1_k5dx8"]
-[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="2_5usd3"]
-[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/characters/king.tres" id="2_r4e4k"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="3_c2je4"]
-[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://gameplay/characters/rogue.tres" id="3_pnvjf"]
-[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/character_spawner.gd" id="4_pnvjf"]
-[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="6_qhvcx"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="8_k83lp"]
+[ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://gameplay/levels/level.gd" id="1_ywn5t"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="2_bpeee"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="3_sli0y"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/character_spawner.gd" id="4_fbqqs"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/characters/king.tres" id="5_kudci"]
+[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://gameplay/characters/rogue.tres" id="6_ck0y7"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="7_ah70l"]
+[ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="9_14if3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -17,30 +17,30 @@ size = Vector3(64, 16, 64)
 size = Vector2(64, 64)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5pvop"]
-albedo_texture = ExtResource("1_k5dx8")
+albedo_texture = ExtResource("8_s5f45")
 uv1_scale = Vector3(16, 16, 16)
 
-[node name="Test" type="Node3D"]
-script = ExtResource("1_5usd3")
+[node name="TestLevel" type="Node3D"]
+script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
 
 [node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_local_ghosts")]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../VisitorGhosts")
-script = ExtResource("2_5usd3")
-ghost = ExtResource("3_c2je4")
+script = ExtResource("2_bpeee")
+ghost = ExtResource("3_sli0y")
 _local_ghosts = NodePath("../LocalGhosts")
 metadata/_custom_type_script = "uid://witnma4yody0"
 
 [node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath("../Characters")
-script = ExtResource("4_pnvjf")
-king = ExtResource("2_r4e4k")
-rogue = ExtResource("3_pnvjf")
+script = ExtResource("4_fbqqs")
+king = ExtResource("5_kudci")
+rogue = ExtResource("6_ck0y7")
 
 [node name="NodeSerializer" type="Node" parent="CharacterSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
-script = ExtResource("6_qhvcx")
+script = ExtResource("7_ah70l")
 _multiplayer_spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
@@ -66,10 +66,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
 [node name="Characters" type="Marker3D" parent="."]
 
-[node name="King" parent="Characters" instance=ExtResource("8_k83lp")]
+[node name="King" parent="Characters" instance=ExtResource("9_14if3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
-character = ExtResource("2_r4e4k")
+character = ExtResource("5_kudci")
 
-[node name="Rogue" parent="Characters" instance=ExtResource("8_k83lp")]
+[node name="Rogue" parent="Characters" instance=ExtResource("9_14if3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
-character = ExtResource("3_pnvjf")
+character = ExtResource("6_ck0y7")

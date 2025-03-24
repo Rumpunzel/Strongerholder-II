@@ -11,7 +11,7 @@ signal player_disconnected(peer_id: int, player: SynchronizedPlayer)
 signal server_disconnected
 
 const PORT: int = 7000
-const DEFAULT_SERVER_IP: String = "127.0.0.1" # IPv4 localhost
+const DEFAULT_SERVER_IP: StringName = "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS: int = 4
 
 const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
@@ -63,7 +63,7 @@ func stop() -> Player:
 	stopped.emit(host_as_singleplayer)
 	return host_as_singleplayer
 
-func join_game(ip_address: String) -> Error:
+func join_game(ip_address: StringName) -> Error:
 	assert(ip_address.is_valid_ip_address())
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, PORT)

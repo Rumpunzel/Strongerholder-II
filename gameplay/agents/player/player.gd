@@ -59,9 +59,13 @@ func _process(_delta: float) -> void:
 	assert(character_controller)
 	_send_input_to_character_controller()
 	_camera.frame_node(character_controller)
-	_interaction_area.follow_node(character_controller)
 	if not is_local_player: return
 	# Other code
+
+func _physics_process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if is_disabled: return
+	_interaction_area.follow_node(character_controller)
 
 static func create() -> Player:
 	return PLAYER_SCENE.instantiate()

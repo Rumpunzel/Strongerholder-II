@@ -1,13 +1,19 @@
+@tool
+@icon("uid://2fcoorprkcjl")
+class_name GhostSpawner
 extends MultiplayerSpawner
 
 @export var ghost: Character
 
+@export_group("Configuration")
+@export var _local_ghosts: Node
+
 var _host_ghost: CharacterController
 
-@onready var _local_ghosts: Node3D = %LocalGhosts
 @onready var _spawn_node: Node = get_node(spawn_path)
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	Game.session_changed.connect(_on_session_changed)
 
 func _configre_host_ghost(player: Player) -> void:
@@ -55,3 +61,8 @@ func _on_player_disconnected(peer_id: int, _player: SynchronizedPlayer) -> void:
 	var old_ghost: CharacterController = _spawn_node.get_node("%d" % peer_id)
 	_spawn_node.remove_child(old_ghost)
 	old_ghost.queue_free()
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not _local_ghosts: warnings.append("Missing local ghosts Node reference.")
+	return warnings

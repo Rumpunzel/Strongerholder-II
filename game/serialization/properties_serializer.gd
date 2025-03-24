@@ -49,7 +49,7 @@ func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
 		node.set_indexed(property_node_path, property_value)
 	print_debug("Restored %d properties for %s" % [collected_properties.size(), get_path()])
 
-func serialize(save_file_path: String) -> Error:
+func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
 	var collected_properties: Dictionary[NodePath, Variant] = collect_properties()
@@ -58,7 +58,7 @@ func serialize(save_file_path: String) -> Error:
 	save_file.store_line(serialized_properties)
 	return Error.OK
 
-func deserialize(save_file_path: String) -> Error:
+func deserialize(save_file_path: StringName) -> Error:
 	assert(FileAccess.file_exists(save_file_path))
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
 	var serialized_properties: String = save_file.get_as_text()

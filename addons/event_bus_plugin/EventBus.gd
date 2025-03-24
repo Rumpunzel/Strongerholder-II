@@ -35,7 +35,7 @@ func _on_tree_exiting() -> void:
 	# Save event data when the scene tree is exiting
 	save_event_bus_data()
 
-func subscribe(event_name: String, listener: Callable) -> void:
+func subscribe(event_name: StringName, listener: Callable) -> void:
 	# Register a listener for a specific event
 	if not _listeners.has(event_name):
 		_listeners[event_name] = []
@@ -51,7 +51,7 @@ func subscribe(event_name: String, listener: Callable) -> void:
 		data_handler.listeners_data[event_name] = []
 	data_handler.listeners_data[event_name].append(listener_info)
 
-func unsubscribe(event_name: String, listener: Callable) -> void:
+func unsubscribe(event_name: StringName, listener: Callable) -> void:
 	# Unregister a listener from a specific event
 	if _listeners.has(event_name):
 		_listeners[event_name].erase(listener)
@@ -68,7 +68,7 @@ func unsubscribe(event_name: String, listener: Callable) -> void:
 		if data_handler.listeners_data[event_name].is_empty():
 			data_handler.listeners_data.erase(event_name)
 
-func emit(event_name: String, args: Array = []) -> void:
+func emit(event_name: StringName, args: Array = []) -> void:
 	# Emit an event with the given arguments to all registered listeners
 	if _listeners.has(event_name):
 		var event_listeners = _listeners[event_name]
@@ -102,7 +102,7 @@ func get_all_events() -> Array:
 	# Return a list of all event names that have registered listeners
 	return data_handler.listeners_data.keys()
 
-func get_listeners_for_event(event_name: String) -> Array:
+func get_listeners_for_event(event_name: StringName) -> Array:
 	# Return a list of listener information for a specific event
 	if data_handler.listeners_data.has(event_name):
 		return data_handler.listeners_data[event_name]

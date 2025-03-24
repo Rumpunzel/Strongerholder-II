@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="Character" load_steps=7 format=3 uid="uid://d18sc738vkuku"]
+[gd_resource type="Resource" script_class="Character" load_steps=6 format=3 uid="uid://d18sc738vkuku"]
 
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="2_i3juj"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://gameplay/characters/defaults/default_collision_shape.tres" id="3_0y2lj"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://gameplay/characters/character.gd" id="3_7rwy5"]
 [ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://protoype_assets/world_characters/character_models/rogue.tscn" id="3_kcow0"]
@@ -11,6 +10,7 @@
 script = ExtResource("3_7rwy5")
 name = "Rogue"
 color = Color(0, 0, 0, 1)
+group = 0
 move_speed = 8.0
 turn_rate = 12.0
 collision_shape = ExtResource("3_0y2lj")
@@ -21,5 +21,4 @@ _world_character = ExtResource("3_kcow0")
 _random_world_characters = Array[PackedScene]([])
 collision_layer = 2
 collision_mask = 3
-character_controller_scene = ExtResource("2_i3juj")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

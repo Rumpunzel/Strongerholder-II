@@ -3,8 +3,12 @@
 class_name CharacterController
 extends CharacterBody3D
 
+signal spawned(character_controller: CharacterController)
+
 @export var character: Character:
 	set(new_character):
+		if character:
+			remove_from_group(character.get_group_name())
 		character = new_character
 		if not character:
 			name = "CharacterController"
@@ -15,6 +19,7 @@ extends CharacterBody3D
 			heads_up_anchor = null
 			return
 		name = character.name
+		add_to_group(character.get_group_name())
 		collision_layer = character.collision_layer
 		collision_mask = character.collision_mask
 		collision_shape = character.collision_shape.create_collision_shape()
@@ -57,12 +62,15 @@ var _is_on_floor: bool = true
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ## This is used for multiplayer purposes to synchronize over network; serves otherwise no purpose 
-var _character_path: String:
+var _character_path: StringName:
 	set(new_character_path):
 		_character_path = new_character_path
 		if character or _character_path.is_empty(): return
 		assert(_character_path.is_absolute_path())
 		character = load(_character_path)
+
+func _ready() -> void:
+	spawned.emit(self)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return

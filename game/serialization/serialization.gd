@@ -5,9 +5,9 @@ extends Node
 signal serialized
 signal deserialized
 
-const NODES: String = "nodes"
-const PROPERTIES: String = "properties"
-const INTANGIBLE: String = "intangible"
+const NODES: StringName = "nodes"
+const PROPERTIES: StringName = "properties"
+const INTANGIBLE: StringName = "intangible"
 
 const SERIALIZATION_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
 
@@ -32,26 +32,26 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
-func serialize(save_file_path: String) -> Error:
+func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
-	var collected_data: Dictionary[String, Dictionary] = collect_data()
+	var collected_data: Dictionary[StringName, Dictionary] = collect_data()
 	var serialized_game_state: String = encode_data(collected_data)
 	save_file.store_line(serialized_game_state)
 	serialized.emit()
 	return Error.OK
 
-func deserialize(save_file_path: String) -> Error:
+func deserialize(save_file_path: StringName) -> Error:
 	assert(FileAccess.file_exists(save_file_path))
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
 	var serialized_game_state: String = save_file.get_as_text()
-	var collected_data: Dictionary[String, Dictionary] = decode_data(serialized_game_state)
-	assert(collected_data is Dictionary[String, Dictionary])
+	var collected_data: Dictionary[StringName, Dictionary] = decode_data(serialized_game_state)
+	assert(collected_data is Dictionary[StringName, Dictionary])
 	restore_state(collected_data)
 	deserialized.emit()
 	return Error.OK
 
-func collect_data() -> Dictionary[String, Dictionary]:
+func collect_data() -> Dictionary[StringName, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("NodeSerializers")
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("PropertiesSerializers")
 	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("IntangibleSerializers")
@@ -64,7 +64,7 @@ func collect_data() -> Dictionary[String, Dictionary]:
 		INTANGIBLE: intangible_data,
 	}
 
-func restore_state(collected_data: Dictionary[String, Dictionary]) -> void:
+func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 	assert(collected_data.has_all([NODES, PROPERTIES, INTANGIBLE]))
 	assert(collected_data.keys().size() == 3)
 	
@@ -84,8 +84,8 @@ func restore_state(collected_data: Dictionary[String, Dictionary]) -> void:
 
 func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 	for node_serializer_path: NodePath in node_data:
-		var collected_nodes: Dictionary[String, Array] = node_data[node_serializer_path]
-		assert(collected_nodes is Dictionary[String, Array])
+		var collected_nodes: Dictionary[StringName, Array] = node_data[node_serializer_path]
+		assert(collected_nodes is Dictionary[StringName, Array])
 		var node_serializer: NodeSerializer = get_node(node_serializer_path)
 		assert(node_serializer)
 		node_serializer.restore_state(collected_nodes)

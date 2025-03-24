@@ -38,7 +38,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_check_disabled()
 
-func _process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if is_disabled: return
 	assert(character_controller)

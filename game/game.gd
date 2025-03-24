@@ -12,16 +12,16 @@ signal game_load_finished
 signal session_changed(new_session: Session)
 
 signal player_name_changed(player_name: String)
-signal game_hosted(ip_address: String, port: int)
-signal game_joined(ip_address: String, port: int)
+signal game_hosted(ip_address: StringName, port: int)
+signal game_joined(ip_address: StringName, port: int)
 signal stopped_hosting_game
 signal left_game
 
 const HOST_ID: int = 1
-const SAVE_FILE_PATH: String = "res://test.save" # "user://savegame.save"
-const CONFIG_FILE_PATH: String = "res://config.cfg" # "user://config.cfg"
+const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
+const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
-const _PLAYER_SECTION: String = "player"
+const _PLAYER_SECTION: StringName = "player"
 
 @export var player_name: String:
 	get:

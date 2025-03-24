@@ -20,7 +20,7 @@ func _on_player_name_text_changed(new_player_name: String) -> void:
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
-		var ip_address_to_join: String = _ip_address.text
+		var ip_address_to_join: StringName = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = MultiplayerSession.DEFAULT_SERVER_IP
 		Game.join_game(ip_address_to_join)
 	else:
@@ -28,10 +28,10 @@ func _on_join_toggled(joining: bool) -> void:
 	_ip_address.editable = not joining
 	_host_button.disabled = joining
 
-func _on_ip_address_text_changed(new_ip_address: String) -> void:
+func _on_ip_address_text_changed(new_ip_address: StringName) -> void:
 	_join_button.disabled = not new_ip_address.is_empty() and not new_ip_address.is_valid_ip_address()
 
-func _on_ip_address_text_submitted(new_ip_address: String) -> void:
+func _on_ip_address_text_submitted(new_ip_address: StringName) -> void:
 	_on_ip_address_text_changed(new_ip_address)
 	if _join_button.disabled: return
 	_join_button.button_pressed = true
@@ -47,7 +47,7 @@ func _on_player_name_changed(player_name: String) -> void:
 	if _player_name.text == player_name: return
 	_player_name.text = player_name
 
-func _on_game_hosted(host_ip_address: String, _port: int) -> void:
+func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
 
 func _on_stopped_hosting_game() -> void:

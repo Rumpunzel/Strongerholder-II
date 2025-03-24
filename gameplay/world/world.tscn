@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://d6c8jljou2i8"]
+
+[ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://gameplay/world/world.gd" id="1_icvvy"]
+[ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://gameplay/levels/test.tscn" id="2_2dptv"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="2_ad7ss"]
+[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/ghost_spawner.gd" id="3_c3nob"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="4_apvr2"]
+
+[node name="World" type="Node"]
+script = ExtResource("1_icvvy")
+metadata/_custom_type_script = "uid://bgi8dhegxjea2"
+
+[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Levels")
+
+[node name="NodeSerializer" type="Node" parent="LevelSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
+script = ExtResource("2_ad7ss")
+_multiplayer_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_local_ghosts")]
+_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
+spawn_path = NodePath("../VisitorGhosts")
+script = ExtResource("3_c3nob")
+ghost = ExtResource("4_apvr2")
+_local_ghosts = NodePath("../LocalGhosts")
+
+[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
+spawn_path = NodePath("../Agents")
+
+[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
+script = ExtResource("2_ad7ss")
+_multiplayer_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="Agents" type="Node" parent="."]
+
+[node name="Levels" type="Marker3D" parent="."]
+
+[node name="Test" parent="Levels" instance=ExtResource("2_2dptv")]
+
+[node name="LocalGhosts" type="Marker3D" parent="."]
+
+[node name="VisitorGhosts" type="Marker3D" parent="."]

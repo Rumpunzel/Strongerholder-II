@@ -101,10 +101,10 @@ func _unpause_game() -> void:
 func _start_singleplayer_session(existing_player: Player = null, save_file_path: StringName = SAVE_FILE_PATH) -> SingleplayerSession:
 	assert(not session)
 	var new_singleplayer_session: SingleplayerSession = SingleplayerSession.create()
-	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
-	request_load(save_file_path)
 	new_singleplayer_session.start(existing_player)
+	session = new_singleplayer_session
+	request_load(save_file_path)
 	return new_singleplayer_session
 
 func _initialize_multiplayer_session() -> MultiplayerSession:

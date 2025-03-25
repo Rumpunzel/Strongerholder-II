@@ -6,11 +6,11 @@ signal started(player: Player)
 signal stopped(existing_player: Player)
 
 signal game_joined(host_player_info: Dictionary)
-signal player_joined(player: SynchronizedPlayer)
+signal player_joined(player: PlayerSynchronizer)
 
-signal player_connected(peer_id: int, player: SynchronizedPlayer)
+signal player_connected(peer_id: int, player: PlayerSynchronizer)
 ## [param player] may be null if the host disconnected
-signal player_disconnected(peer_id: int, player: SynchronizedPlayer)
+signal player_disconnected(peer_id: int, player: PlayerSynchronizer)
 signal server_disconnected
 
 const PORT: int = 7000
@@ -19,12 +19,12 @@ const MAX_CONNECTIONS: int = 4
 
 const SESSION_SCENE: PackedScene = preload("uid://citi18cutmbiw")
 
-## This contains [SynchronizedPlayer]s for every player, with the keys being each player's unique IDs.
-var players: Dictionary[int, SynchronizedPlayer] = { }
+## This contains [PlayerSynchronizer]s for every player, with the keys being each player's unique IDs.
+var players: Dictionary[int, PlayerSynchronizer] = { }
 
-var host_player: SynchronizedPlayer
+var host_player: PlayerSynchronizer
 
-@onready var _players: Node = %SynchronizedPlayers
+@onready var _players: Node = %PlayerSynchronizers
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -44,7 +44,7 @@ func start(existing_player: Player) -> Error:
 	multiplayer.multiplayer_peer = server_peer
 	
 	if existing_player:
-		var host_from_singleplayer: SynchronizedPlayer = SynchronizedPlayer.from_player(existing_player)
+		var host_from_singleplayer: PlayerSynchronizer = PlayerSynchronizer.from_player(existing_player)
 		_add_player(host_from_singleplayer)
 		host_player = host_from_singleplayer
 		print_debug("Using existing player as host!")
@@ -80,30 +80,30 @@ func get_host_info(id: int = Game.HOST_ID) -> Dictionary:
 
 @rpc("any_peer", "reliable")
 func _register_player(player_info: Dictionary = get_host_info()) -> void:
-	SynchronizedPlayer.validate_player_info(player_info)
+	PlayerSynchronizer.validate_player_info(player_info)
 	var player_id: int = multiplayer.get_remote_sender_id()
 	if player_id == Game.HOST_ID:
 		game_joined.emit(player_info)
 		print_debug("Joined Player %s's multiplayer game!" % player_info)
 	else:
-		var new_player: SynchronizedPlayer = _create_player(player_id, player_info)
+		var new_player: PlayerSynchronizer = _create_player(player_id, player_info)
 		player_joined.emit(new_player)
 		print_debug("Player %s joined multiplayer game!" % player_info)
 
-func _create_player(id: int, player_info: Dictionary) -> SynchronizedPlayer:
+func _create_player(id: int, player_info: Dictionary) -> PlayerSynchronizer:
 	player_info.id = id
 	assert(player_info.id == id)
-	var new_player: SynchronizedPlayer = SynchronizedPlayer.from_player_info(player_info)
+	var new_player: PlayerSynchronizer = PlayerSynchronizer.from_player_info(player_info)
 	_add_player(new_player)
 	return new_player
 
-func _add_player(new_player: SynchronizedPlayer) -> void:
+func _add_player(new_player: PlayerSynchronizer) -> void:
 	_players.add_child(new_player, true)
 	players[new_player.player_id] = new_player
 	player_connected.emit(new_player.player_id, new_player)
 	print_debug("Player %s added to multiplayer game!" % new_player.to_player_info())
 
-func _remove_player(player: SynchronizedPlayer) -> void:
+func _remove_player(player: PlayerSynchronizer) -> void:
 	assert(player)
 	players.erase(player.player_id)
 	_players.remove_child(player)
@@ -111,7 +111,7 @@ func _remove_player(player: SynchronizedPlayer) -> void:
 	print_debug("Removed %s from the multiplayer game!" % player)
 
 func _remove_all_players(lost_connection: bool = false) -> void:
-	for player: SynchronizedPlayer in _players.get_children():
+	for player: PlayerSynchronizer in _players.get_children():
 		if not player:
 			printerr("Lost connection to host!")
 			assert(lost_connection)
@@ -124,7 +124,7 @@ func _on_player_connected(id: int) -> void:
 	_register_player.rpc_id(id)
 
 func _on_player_disconnected(id: int) -> void:
-	var disconnected_player: SynchronizedPlayer = _players.get_node_or_null("%d" % id)
+	var disconnected_player: PlayerSynchronizer = _players.get_node_or_null("%d" % id)
 	if disconnected_player:
 		_remove_player(disconnected_player)
 	else:

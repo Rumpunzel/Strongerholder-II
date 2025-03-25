@@ -1,5 +1,5 @@
 @icon("uid://blrejsngag72k")
-class_name SynchronizedPlayer
+class_name PlayerSynchronizer
 extends Node
 
 const SYNCHRONIZED_PLAYER_SCENE: PackedScene = preload("uid://cuclrr5bep4gn")
@@ -22,16 +22,16 @@ const SYNCHRONIZED_PLAYER_SCENE: PackedScene = preload("uid://cuclrr5bep4gn")
 func _ready() -> void:
 	_configure_processing()
 
-static func from_player(existing_player: Player) -> SynchronizedPlayer:
-	var new_synchronized_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
+static func from_player(existing_player: Player) -> PlayerSynchronizer:
+	var new_synchronized_player: PlayerSynchronizer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_synchronized_player.player_id = Game.HOST_ID
 	new_synchronized_player.player_name = Game.player_name
 	new_synchronized_player.player = existing_player
 	return new_synchronized_player
 
-static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
+static func from_player_info(player_info: Dictionary) -> PlayerSynchronizer:
 	validate_player_info(player_info)
-	var new_synchronized_player: SynchronizedPlayer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
+	var new_synchronized_player: PlayerSynchronizer = SYNCHRONIZED_PLAYER_SCENE.instantiate()
 	new_synchronized_player.player_id = player_info.id
 	new_synchronized_player.player_name = player_info.name
 	var new_player: Player = Player.create(null)
@@ -47,7 +47,7 @@ func to_player_info() -> Dictionary:
 
 func _configure_processing() -> void:
 	if not is_inside_tree():
-		printerr("Trying to configure SynchronizedPlayer while outside tree, aborting!")
+		printerr("Trying to configure PlayerSynchronizer while outside tree, aborting!")
 		return
 	player.is_local_player = player_id == multiplayer.get_unique_id()
 	set_multiplayer_authority.call_deferred(player_id)

@@ -43,7 +43,7 @@ func _on_session_changed(new_session: Session) -> void:
 		new_multiplayer_session.player_connected.connect(_on_player_connected)
 		new_multiplayer_session.player_disconnected.connect(_on_player_disconnected)
 
-func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
+func _on_player_connected(peer_id: int, player: PlayerSynchronizer) -> void:
 	if peer_id == multiplayer.get_unique_id(): return
 	assert(player)
 	for ghost_controller: CharacterController in _spawn_node.get_children():
@@ -53,7 +53,7 @@ func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	new_ghost.name = "%d" % peer_id
 	player.player.character_controller = new_ghost
 
-func _on_player_disconnected(peer_id: int, _player: SynchronizedPlayer) -> void:
+func _on_player_disconnected(peer_id: int, _player: PlayerSynchronizer) -> void:
 	if peer_id == Game.HOST_ID: return
 	var old_ghost: CharacterController = _spawn_node.get_node("%d" % peer_id)
 	_spawn_node.remove_child(old_ghost)

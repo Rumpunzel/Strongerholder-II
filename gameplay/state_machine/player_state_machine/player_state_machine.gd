@@ -1,7 +1,7 @@
 @tool
 @icon("uid://dlf5ckv713eok")
 class_name PlayerStateMachine
-extends Node
+extends StateMachine
 
 @export var _state: PlayerState
 

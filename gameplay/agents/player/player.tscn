@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://gameplay/agents/player/player.gd" id="1_i6aj8"]
-[ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://gameplay/state_machine/player_state_machine.gd" id="2_8ukje"]
+[ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://gameplay/state_machine/player_state_machine/player_state_machine.gd" id="2_8ukje"]
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://gameplay/cameras/top_down_camera.tscn" id="2_du4nq"]
-[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://gameplay/state_machine/default_player_state.gd" id="3_8ukje"]
+[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://gameplay/state_machine/player_state_machine/default_player_state.gd" id="3_8ukje"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://gameplay/agents/player/interaction_area.tscn" id="4_pfsv8"]
-[ext_resource type="Script" uid="uid://c3t43la47t8vq" path="res://gameplay/state_machine/haunting_player_state.gd" id="5_y2l5l"]
+[ext_resource type="Script" uid="uid://c3t43la47t8vq" path="res://gameplay/state_machine/player_state_machine/haunting_player_state.gd" id="5_y2l5l"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath(".:direction_input")

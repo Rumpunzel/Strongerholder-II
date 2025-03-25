@@ -1,7 +1,7 @@
 @tool
 @icon("uid://dlf5ckv713eok")
 class_name AgentStateMachine
-extends Node
+extends StateMachine
 
 @export var _state: AgentState
 

@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bbjgxgkshjet6"]
 
 [ext_resource type="Script" uid="uid://cs7if1mfalxq5" path="res://gameplay/agents/agent.gd" id="1_u7v0r"]
-[ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://gameplay/state_machine/agent_state_machine.gd" id="2_1lx21"]
-[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://gameplay/state_machine/default_agent_state.gd" id="3_1lx21"]
-[ext_resource type="Script" uid="uid://cnbe32kxn6l5l" path="res://gameplay/state_machine/haunted_agent_state.gd" id="4_1omu5"]
+[ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://gameplay/state_machine/player_state_machine/agent_state_machine.gd" id="2_1lx21"]
+[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://gameplay/state_machine/player_state_machine/default_agent_state.gd" id="3_1lx21"]
+[ext_resource type="Script" uid="uid://cnbe32kxn6l5l" path="res://gameplay/state_machine/player_state_machine/haunted_agent_state.gd" id="4_1omu5"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
 properties/0/path = NodePath(".:_character_controller_path")

@@ -3,32 +3,23 @@
 class_name StateMachine
 extends Node
 
-@export var _state: State
-
 @export_group("Configuration")
 
 func _ready() -> void:
 	for state: State in get_children():
 		state.finished.connect(_transition_to_next_state)
-	_state.enter("")
 
-func _process(delta: float) -> void:
-	_state.update(delta)
+func _process(_delta: float) -> void:
+	assert(false, "StateMachine._process needs to be overriden!")
 
-func _physics_process(delta: float) -> void:
-	_state.physics_update(delta)
+func _physics_process(_delta: float) -> void:
+	assert(false, "StateMachine._physics_process needs to be overriden!")
 
-func _unhandled_input(event: InputEvent) -> void:
-	_state.handle_input(event)
+func _unhandled_input(_event: InputEvent) -> void:
+	assert(false, "StateMachine._unhandled_input needs to be overriden!")
 
 func _transition_to_next_state(target_state_path: String, data: Dictionary = { }) -> void:
-	if not has_node(target_state_path):
-		printerr("%s: Trying to transition to state %s but it does not exist." % [owner.name, target_state_path])
-		return
-	var previous_state_path: String = _state.name
-	_state.exit()
-	_state = get_node(target_state_path)
-	_state.enter(previous_state_path, data)
+	assert(false, "StateMachine._transition_to_next_state is 'abstract' and needs to be overriden!")
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

@@ -18,7 +18,7 @@ var is_local_player: bool = true:
 		is_local_player = new_is_local_player
 		if _camera: _camera.current = is_local_player
 
-var input_direction: Vector2 = Vector2.ZERO
+var direction_input: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	_setup_player()
@@ -68,17 +68,18 @@ func _update_character_controller(delta: float) -> void:
 func _collect_input() -> void:
 	if not is_local_player: return
 	# Only collect input if this is the local [Player]
-	input_direction = read_movement_input()
+	direction_input = read_movement_input()
+	
 
 func _apply_input_direction_to_character_controller(delta: float) -> void:
 	assert(character_controller)
 	var move_speed: float = character.move_speed
 	var acceleration: float = character.acceleration * delta
 	var velocity: Vector3 = character_controller.velocity
-	if input_direction:
-		var adjusted_input_direction: Vector2 = _camera.get_adjusted_movement(input_direction)
-		velocity.x = move_toward(velocity.x, adjusted_input_direction.x * move_speed, acceleration)
-		velocity.z = move_toward(velocity.z, adjusted_input_direction.y * move_speed, acceleration)
+	if direction_input:
+		var adjusted_direction_input: Vector2 = _camera.get_adjusted_movement(direction_input)
+		velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
+		velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, acceleration)
 		velocity.z = move_toward(velocity.z, 0.0, acceleration)

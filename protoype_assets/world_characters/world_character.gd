@@ -23,3 +23,6 @@ func play_animation(_normalized_velocity: Vector3) -> void:
 
 func apply_material_override(_material: Material) -> void:
 	assert(false, "WorldCharacter.apply_material_override is 'abstract' and needs to be overriden!")
+
+func apply_material_overlay(_material: Material) -> void:
+	assert(false, "WorldCharacter.apply_material_overlay is 'abstract' and needs to be overriden!")

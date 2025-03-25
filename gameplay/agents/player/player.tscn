@@ -26,8 +26,8 @@ replication_config = SubResource("SceneReplicationConfig_p0vpi")
 [node name="TopDownCamera" parent="." instance=ExtResource("2_du4nq")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 14.1421, 20, 14.1421)
 
-[node name="HitBox" parent="." node_paths=PackedStringArray("_areas_to_ignore") instance=ExtResource("3_uwnea")]
-_areas_to_ignore = [NodePath("../InteractionArea")]
+[node name="HitBox" parent="." instance=ExtResource("3_uwnea")]
+_ignore_areas_for_same_character_controller = null
 
-[node name="InteractionArea" parent="." node_paths=PackedStringArray("_areas_to_ignore") instance=ExtResource("4_pfsv8")]
-_areas_to_ignore = [NodePath("../HitBox")]
+[node name="InteractionArea" parent="." instance=ExtResource("4_pfsv8")]
+_ignore_areas_for_same_character_controller = null

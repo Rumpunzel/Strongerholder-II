@@ -7,7 +7,7 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export var character_controller: CharacterController:
 	set(new_character_controller):
 		character_controller = new_character_controller
-		_check_disabled()
+		_setup_character_controller()
 		if not character_controller:
 			character = null
 			return
@@ -16,15 +16,9 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export_group("Configuration")
 @export var _hit_box: HitBox
 
-var character: Character:
-	set(new_character):
-		character = new_character
-		_setup_character()
+var character: Character
 
-var is_disabled: bool = false:
-	set(new_is_disabled):
-		is_disabled = new_is_disabled
-		_hit_box.visible = not is_disabled
+var is_disabled: bool = false
 
 ## This is used for serialization purposes; serves otherwise no purpose
 var _character_controller_path: NodePath:
@@ -39,11 +33,11 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_check_disabled()
 
-func _physics_process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if is_disabled: return
-	assert(character_controller)
-	_hit_box.follow_node(character_controller)
+func _process(delta: float) -> void:
+	_udpate_agent(delta)
+
+func _physics_process(delta: float) -> void:
+	_update_character_controller(delta)
 
 static func create(existing_character_controller: CharacterController) -> Agent:
 	var new_agent: Agent = AGENT_SCENE.instantiate()
@@ -51,12 +45,25 @@ static func create(existing_character_controller: CharacterController) -> Agent:
 	new_agent.name = existing_character_controller.character.name
 	return new_agent
 
+func _udpate_agent(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if is_disabled: return
+	assert(character_controller)
+	_hit_box.follow_node(character_controller)
+
+func _setup_character_controller() -> void:
+	_hit_box.character_controller = character_controller
+	_check_disabled()
+
+func _update_character_controller(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if is_disabled: return
+	assert(character_controller)
+	# TODO: Pathfinding
+
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
-
-func _setup_character() -> void:
-	_hit_box.character = character
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

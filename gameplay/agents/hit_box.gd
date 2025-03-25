@@ -4,5 +4,5 @@ class_name HitBox
 extends CharacterArea
 
 func _setup_collision_shape() -> void:
-	collision_shape = character.hit_box_shape.create_collision_shape()
+	_collision_shape = _character.hit_box_shape.create_collision_shape()
 	super._setup_collision_shape()

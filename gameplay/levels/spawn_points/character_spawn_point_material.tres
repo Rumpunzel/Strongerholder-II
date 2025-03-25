@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dilpjt8kd3s4d"]
 
-[ext_resource type="Shader" uid="uid://2cig846ux4bc" path="res://gameplay/levels/spawn_points/king.gdshader" id="1_7nxbl"]
+[ext_resource type="Shader" uid="uid://2cig846ux4bc" path="res://gameplay/levels/spawn_points/dissolve.gdshader" id="1_7nxbl"]
 
 [resource]
 render_priority = 0

@@ -6,6 +6,7 @@ extends Agent
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 @export_group("Configuration")
+@export var _possession_material: Material
 @export var _camera: TopDownCamera
 @export var _interaction_area: InteractionArea
 @export var _interaction_timer: Timer
@@ -25,7 +26,11 @@ var _available_action: CharacterInteraction:
 		if _available_action: available_actions.append(_available_action)
 		Gameplay.available_action_changed.emit(available_actions)
 
-var _ghost_character_controller: CharacterController
+var _ghost_character_controller: CharacterController:
+	set(new_ghost_character_controller):
+		if _ghost_character_controller: _ghost_character_controller.visible = true
+		_ghost_character_controller = new_ghost_character_controller
+		if _ghost_character_controller: _ghost_character_controller.visible = false
 
 func _ready() -> void:
 	_setup_player()
@@ -47,20 +52,20 @@ static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 func possess_character_controller(character_controller_to_possess: CharacterController) -> void:
-	if not _ghost_character_controller:
-		character_controller.visible = false
-		_ghost_character_controller = character_controller
+	if not _ghost_character_controller: _ghost_character_controller = character_controller
 	else:
+		character_controller.world_character.apply_material_overlay(null)
 		Gameplay.character_controller_unpossessed.emit(character_controller)
 	character_controller = character_controller_to_possess
+	character_controller.world_character.apply_material_overlay(_possession_material)
 	Gameplay.character_controller_possessed.emit(character_controller)
 
 func unpossess_character_controller() -> void:
 	if not _ghost_character_controller: return
+	character_controller.world_character.apply_material_overlay(null)
 	Gameplay.character_controller_unpossessed.emit(character_controller)
 	_ghost_character_controller.transform = character_controller.transform
 	character_controller = _ghost_character_controller
-	character_controller.visible = true
 	_ghost_character_controller = null
 
 func _setup_player() -> void:
@@ -145,6 +150,7 @@ func _on_interaction_timer_timeout() -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
+	if not _possession_material: warnings.append("Missing possession material.")
 	if not _camera: warnings.append("Missing Camera reference.")
 	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
 	if not _interaction_timer: warnings.append("Missing Timer reference.")

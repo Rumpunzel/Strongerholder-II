@@ -5,7 +5,7 @@ extends CharacterArea
 
 signal current_interactable_changed(current_interactable: HitBox)
 
-@export var selection_material: Material
+@export var _highlight_material: Material
 
 var current_interactable: HitBox:
 	set(new_current_interactable):
@@ -13,7 +13,7 @@ var current_interactable: HitBox:
 		current_interactable = new_current_interactable
 		current_interactable_changed.emit(current_interactable)
 		if not current_interactable: return
-		current_interactable.apply_material_overlay(selection_material)
+		current_interactable.apply_material_overlay(_highlight_material)
 
 func follow_node(node: Node3D) -> void:
 	transform = node.transform
@@ -37,3 +37,8 @@ func _on_hit_box_entered(hit_box: HitBox) -> void:
 func _on_hit_box_exited(hit_box: HitBox) -> void:
 	if hit_box != current_interactable: return
 	current_interactable = nearest_hit_box_in_area()
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not _highlight_material: warnings.append("Missing highlight material.")
+	return warnings

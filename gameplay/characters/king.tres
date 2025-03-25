@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Character" load_steps=8 format=3 uid="uid://ro6wvnf88xbo"]
+[gd_resource type="Resource" script_class="Character" load_steps=10 format=3 uid="uid://ro6wvnf88xbo"]
 
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://gameplay/characters/character.gd" id="1_hac1t"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="1_tyc7q"]
@@ -6,7 +6,17 @@
 [ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://protoype_assets/world_characters/character_models/king.tscn" id="3_0kn5r"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://gameplay/characters/defaults/default_collision_shape.tres" id="3_c8byr"]
 [ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://gameplay/characters/defaults/default_hit_box_shape.tres" id="4_4iqrm"]
-[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://gameplay/characters/defaults/default_interaction_area_shape.tres" id="5_0k1p4"]
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/character_controllers/character_area_shape.gd" id="6_tyc7q"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0vdr"]
+size = Vector3(3, 3, 4)
+
+[sub_resource type="Resource" id="Resource_4wmkl"]
+script = ExtResource("6_tyc7q")
+_shape = SubResource("BoxShape3D_d0vdr")
+_offset = Vector3(0, 0, 1)
+_automatic_ground_offset = true
+metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
 [resource]
 script = ExtResource("1_hac1t")
@@ -19,7 +29,7 @@ turn_rate = 12.0
 collision_shape = ExtResource("3_c8byr")
 hit_box_shape = ExtResource("4_4iqrm")
 hit_box_layer = 32
-interaction_area_shape = ExtResource("5_0k1p4")
+interaction_area_shape = SubResource("Resource_4wmkl")
 heads_up_display_offset = Vector3(0, 2.25, 0)
 _world_character = ExtResource("3_0kn5r")
 _random_world_characters = Array[PackedScene]([])

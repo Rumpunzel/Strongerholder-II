@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=7 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://gameplay/agents/player/player.gd" id="1_i6aj8"]
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://gameplay/cameras/top_down_camera.tscn" id="2_du4nq"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://gameplay/agents/player/possession_material.tres" id="2_uwnea"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://gameplay/agents/player/interaction_area.tscn" id="4_pfsv8"]
+[ext_resource type="Material" uid="uid://bm6tdnx32ndb4" path="res://gameplay/agents/player/selection_material.tres" id="5_pfsv8"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath(".:direction_input")
@@ -17,6 +19,7 @@ properties/2/replication_mode = 1
 
 [node name="Player" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "_interaction_timer")]
 script = ExtResource("1_i6aj8")
+_possession_material = ExtResource("2_uwnea")
 _camera = NodePath("TopDownCamera")
 _interaction_area = NodePath("InteractionArea")
 _interaction_timer = NodePath("InteractionTimer")
@@ -29,7 +32,7 @@ replication_config = SubResource("SceneReplicationConfig_p0vpi")
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 14.1421, 20, 14.1421)
 
 [node name="InteractionArea" parent="." instance=ExtResource("4_pfsv8")]
-_ignore_areas_from_same_character_controller = true
+_highlight_material = ExtResource("5_pfsv8")
 
 [node name="InteractionTimer" type="Timer" parent="."]
 one_shot = true

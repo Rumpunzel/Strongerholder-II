@@ -5,5 +5,4 @@
 [node name="HeadsUpAnchor" type="Marker3D"]
 gizmo_extents = 0.5
 script = ExtResource("1_achcd")
-_global_placeholder = null
 metadata/_custom_type_script = "uid://b8gk75wu11vc4"

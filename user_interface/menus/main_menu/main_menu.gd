@@ -1,7 +1,15 @@
-@icon("uid://bec8d0jsuhm7n")
-extends CanvasLayer
+@tool
+@icon("uid://r4re5w2nnw4h")
+extends PanelContainer
+
+func _ready() -> void:
+	if Engine.is_editor_hint(): return
+	visible = get_tree().paused
+	Game.game_paused.connect(open_menu)
+	Game.game_unpaused.connect(close_menu)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	if event.is_action_released("open_menu") and not visible:
 		open_menu()
 		Game.request_pause()

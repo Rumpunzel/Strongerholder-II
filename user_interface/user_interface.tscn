@@ -6,14 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://b1ptb2poils3t" path="res://user_interface/menus/info/info.tscn" id="2_ur1vw"]
 
 [node name="UserInterface" type="CanvasLayer"]
+layer = 10
 script = ExtResource("1_dbod7")
 metadata/_edit_lock_ = true
 
 [node name="Info" parent="." instance=ExtResource("2_ur1vw")]
-layer = 8
 
 [node name="HeadsUpDisplays" parent="." instance=ExtResource("2_og86u")]
-layer = 16
 
 [node name="MainMenu" parent="." instance=ExtResource("1_ratyj")]
-layer = 32

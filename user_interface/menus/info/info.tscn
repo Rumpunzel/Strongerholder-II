@@ -1,14 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1ptb2poils3t"]
+[gd_scene load_steps=2 format=3 uid="uid://b1ptb2poils3t"]
 
-[ext_resource type="Script" uid="uid://cb5qy5hm4esjl" path="res://user_interface/menus/info/info.gd" id="1_7c4c0"]
 [ext_resource type="Script" uid="uid://cm7ublv6tq6oc" path="res://user_interface/menus/info/fps_label.gd" id="3_x3cl1"]
 
-[node name="Info" type="CanvasLayer"]
-process_mode = 3
-script = ExtResource("1_7c4c0")
-metadata/_edit_lock_ = true
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,12 +14,12 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
 metadata/_edit_lock_ = true
 
-[node name="Tech" type="HBoxContainer" parent="MarginContainer"]
+[node name="Tech" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="FPS" type="Label" parent="MarginContainer/Tech"]
+[node name="FPS" type="Label" parent="Tech"]
 layout_mode = 2
 text = "999 FPS"
 script = ExtResource("3_x3cl1")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://5sd2jgms4uso"]
+[gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/menus/main_menu/main_menu.gd" id="1_bwjgb"]
 [ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/menus/main_menu/game_info.tscn" id="2_hnapd"]
@@ -12,29 +12,27 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 gradient = SubResource("Gradient_ofb81")
 width = 1024
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j0huj"]
+texture = SubResource("GradientTexture1D_nb4k0")
+
 [sub_resource type="LabelSettings" id="LabelSettings_ru3py"]
 font_size = 42
 
-[node name="MainMenu" type="CanvasLayer"]
+[node name="MainMenu" type="PanelContainer"]
 process_mode = 3
-script = ExtResource("1_bwjgb")
-metadata/_custom_type_script = "uid://yu3m6ywkwlvf"
-metadata/_edit_lock_ = true
-
-[node name="Background" type="TextureRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_nb4k0")
+theme_override_styles/panel = SubResource("StyleBoxTexture_j0huj")
+script = ExtResource("1_bwjgb")
 
 [node name="GameInfo" parent="." instance=ExtResource("2_hnapd")]
+layout_mode = 2
 
 [node name="Menu" type="MarginContainer" parent="."]
-offset_top = 219.0
-offset_right = 564.0
-offset_bottom = 861.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/margin_left = 128
@@ -85,9 +83,4 @@ text = "Quit"
 [node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 
-[connection signal="pressed" from="Menu/VBoxContainer/Options/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/Options/Save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/Options/Load" to="." method="_on_load_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/RandomizeGhost" to="." method="_on_randomize_ghost_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Quit" to="QuitConfirmationDialog" method="popup_centered"]
-[connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

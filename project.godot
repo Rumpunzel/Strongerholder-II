@@ -19,7 +19,6 @@ config/icon="res://helmet.png"
 [autoload]
 
 Game="*res://game/game.gd"
-EventBus="*res://addons/event_bus_plugin/EventBus.gd"
 UserInterface="res://user_interface/user_interface.tscn"
 ToastParty="*res://addons/toastparty/toast-autoload.gd"
 GameWorld="*res://gameplay/game_world.gd"
@@ -50,7 +49,6 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/event_bus_plugin/plugin.cfg", "res://addons/radial_progress/plugin.cfg", "res://addons/toastparty/plugin.cfg")
 
 [global_group]
 

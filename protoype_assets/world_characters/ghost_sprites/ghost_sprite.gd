@@ -13,14 +13,14 @@ var _random_frame: int = -1:
 		_animated_sprite.frame = _random_frame
 
 func _ready() -> void:
-	if _random_frame < 0: _random_ghost()
-	EventBus.subscribe("random_ghost_requested", _random_ghost)
+	_random_ghost()
+	Game.random_ghost_requested.connect(_random_ghost)
 
 func play_animation(_normalized_velocity: Vector3) -> void:
 	pass
 
 func _random_ghost() -> void:
-	_random_frame = randi() % 19
+	if _random_frame < 0: _random_frame = randi() % 19
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

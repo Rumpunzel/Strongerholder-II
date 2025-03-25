@@ -12,6 +12,14 @@ signal game_joined(ip_address: StringName, port: int)
 signal stopped_hosting_game
 signal left_game
 
+@warning_ignore("unused_signal")
+signal random_ghost_requested
+
+@warning_ignore("unused_signal")
+signal available_action_changed(available_action: StringName)
+@warning_ignore("unused_signal")
+signal available_action_none()
+
 const HOST_ID: int = 1
 const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"

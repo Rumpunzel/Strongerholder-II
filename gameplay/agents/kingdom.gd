@@ -6,6 +6,7 @@ extends Node
 @export var _agents: Node
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	Gameplay.request_agent_for_character_controller.connect(create_agent)
 
 func create_agent(character_controller: CharacterController) -> void:

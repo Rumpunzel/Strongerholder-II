@@ -1,3 +1,4 @@
+@tool
 @icon("uid://cpbv0myc0qfxb")
 class_name WorldCharacter
 extends Node3D
@@ -26,3 +27,7 @@ func apply_material_override(_material: Material) -> void:
 
 func apply_material_overlay(_material: Material) -> void:
 	assert(false, "WorldCharacter.apply_material_overlay is 'abstract' and needs to be overriden!")
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	return warnings

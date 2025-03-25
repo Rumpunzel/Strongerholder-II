@@ -27,4 +27,4 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
 	if _meshes.is_empty(): warnings.append("No meshes referenced.")
 	if not _animation_tree: warnings.append("Missing AnimationTree reference.")
-	return warnings
+	return warnings + super._get_configuration_warnings()

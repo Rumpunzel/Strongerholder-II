@@ -172,8 +172,9 @@ _data = {
 &"float": SubResource("Animation_88aim")
 }
 
-[node name="TestGhost" type="Node3D"]
+[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animated_sprite")]
 script = ExtResource("1_2ku6h")
+_animated_sprite = NodePath("AnimatedSprite3D")
 metadata/_custom_type_script = "uid://f7j5ijitqy25"
 
 [node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -186,7 +187,6 @@ _multiplayer_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 pixel_size = 0.003
 billboard = 1

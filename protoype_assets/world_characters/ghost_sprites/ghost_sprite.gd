@@ -14,6 +14,7 @@ var _random_frame: int = -1:
 
 func _ready() -> void:
 	_random_ghost()
+	if Engine.is_editor_hint(): return
 	Game.random_ghost_requested.connect(_random_ghost)
 
 func play_animation(_normalized_velocity: Vector3) -> void:

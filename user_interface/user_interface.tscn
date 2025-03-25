@@ -9,8 +9,11 @@
 script = ExtResource("1_dbod7")
 metadata/_edit_lock_ = true
 
-[node name="HeadsUpDisplays" parent="." instance=ExtResource("2_og86u")]
-
 [node name="Info" parent="." instance=ExtResource("2_ur1vw")]
+layer = 8
+
+[node name="HeadsUpDisplays" parent="." instance=ExtResource("2_og86u")]
+layer = 16
 
 [node name="MainMenu" parent="." instance=ExtResource("1_ratyj")]
+layer = 32

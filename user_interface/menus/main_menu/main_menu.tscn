@@ -1,11 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
+[gd_scene load_steps=8 format=3 uid="uid://5sd2jgms4uso"]
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/menus/main_menu/main_menu.gd" id="1_bwjgb"]
 [ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/menus/main_menu/game_info.tscn" id="2_hnapd"]
 [ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/menus/info/title_label.gd" id="3_ru3py"]
 [ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://user_interface/menus/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hb773"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
@@ -17,27 +15,26 @@ width = 1024
 [sub_resource type="LabelSettings" id="LabelSettings_ru3py"]
 font_size = 42
 
-[node name="MainMenu" type="PanelContainer"]
+[node name="MainMenu" type="CanvasLayer"]
 process_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_hb773")
 script = ExtResource("1_bwjgb")
 metadata/_custom_type_script = "uid://yu3m6ywkwlvf"
 metadata/_edit_lock_ = true
 
 [node name="Background" type="TextureRect" parent="."]
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = SubResource("GradientTexture1D_nb4k0")
 
 [node name="GameInfo" parent="." instance=ExtResource("2_hnapd")]
-layout_mode = 2
 
 [node name="Menu" type="MarginContainer" parent="."]
-layout_mode = 2
+offset_top = 219.0
+offset_right = 564.0
+offset_bottom = 861.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/margin_left = 128

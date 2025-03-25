@@ -1,5 +1,5 @@
-@icon("uid://r4re5w2nnw4h")
-extends PanelContainer
+@icon("uid://bec8d0jsuhm7n")
+extends CanvasLayer
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("open_menu") and not visible:

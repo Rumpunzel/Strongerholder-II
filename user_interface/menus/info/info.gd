@@ -1,2 +1,2 @@
-@icon("uid://uhpjpmmyeper")
-extends Control
+@icon("uid://37xug57yf3is")
+extends CanvasLayer

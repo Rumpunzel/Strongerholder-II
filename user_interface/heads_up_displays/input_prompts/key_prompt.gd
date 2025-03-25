@@ -1,19 +1,16 @@
 @tool
 @icon("uid://cime7w536lpdm")
 class_name KeyPrompt
-extends PanelContainer
+extends Button
 
 const KEY_PROMPT_SCENE: PackedScene = preload("uid://bgqwt7hjsgn3o")
-
-@export_group("Configuration")
-@export var _key_label: Label
 
 var input_event_key: InputEventKey:
 	set(new_input_event_key):
 		assert(new_input_event_key)
 		input_event_key = new_input_event_key
 		var localized_keycode: Key = DisplayServer.keyboard_get_label_from_physical(input_event_key.physical_keycode)
-		_key_label.text = OS.get_keycode_string(localized_keycode)
+		text = OS.get_keycode_string(localized_keycode)
 
 static func create(for_input_event_key: InputEventKey) -> KeyPrompt:
 	assert(for_input_event_key)
@@ -24,8 +21,3 @@ static func create(for_input_event_key: InputEventKey) -> KeyPrompt:
 func _on_resized() -> void:
 	var new_side: float = max(size.x, size.y)
 	size = Vector2(new_side, new_side)
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	if not _key_label: warnings.append("Missing key label reference.")
-	return warnings

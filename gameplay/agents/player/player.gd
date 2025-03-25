@@ -3,6 +3,10 @@
 class_name Player
 extends Agent
 
+enum Interaction {
+	POSSESS,
+}
+
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 @export_group("Configuration")
@@ -83,6 +87,14 @@ func _apply_input_direction_to_character_controller(delta: float) -> void:
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
+
+func _on_interaction_area_current_interactable_changed(current_interactable: HitBox) -> void:
+	var available_actions: Array[StringName] = [ ]
+	var heads_up_anchor: HeadsUpAnchor = null
+	if current_interactable:
+		available_actions.append("interact")
+		heads_up_anchor = current_interactable.character_controller.heads_up_anchor
+	Game.available_action_changed.emit(available_actions, heads_up_anchor)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

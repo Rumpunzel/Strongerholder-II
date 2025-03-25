@@ -40,7 +40,7 @@ static func from_player_info(player_info: Dictionary) -> SynchronizedPlayer:
 
 static func validate_player_info(player_info: Dictionary) -> void:
 	assert(player_info.has_all(["id", "name"]))
-	assert(player_info.keys().size() == 2)
+	assert(player_info.size() == 2)
 
 func to_player_info() -> Dictionary:
 	return { "id": player_id, "name": player_name, }

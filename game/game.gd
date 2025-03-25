@@ -16,9 +16,7 @@ signal left_game
 signal random_ghost_requested
 
 @warning_ignore("unused_signal")
-signal available_action_changed(available_action: StringName)
-@warning_ignore("unused_signal")
-signal available_action_none()
+signal available_action_changed(available_actions: Array[StringName], heads_up_anchor: HeadsUpAnchor)
 
 const HOST_ID: int = 1
 const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"

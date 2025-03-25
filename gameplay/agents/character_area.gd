@@ -56,7 +56,6 @@ func _check_enabled() -> void:
 	var is_enabled: bool = character_controller != null
 	monitoring = is_enabled
 	monitorable = is_enabled
-	print("setting enabled: %s" % is_enabled)
 
 func _setup_collision_shape() -> void:
 	_collision_shape.debug_color = _debub_color

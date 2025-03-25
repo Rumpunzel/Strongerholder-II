@@ -26,7 +26,7 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 	var merged_dictionary: Dictionary[Variant, Array] = { }
 	for dictionary: Dictionary[Variant, Array] in dictionaries:
 		assert(dictionary is Dictionary[Variant, Array])
-		for key: Variant in dictionary.keys():
+		for key: Variant in dictionary:
 			var merged_arrays: Array = merged_dictionary.get_or_add(key, [ ])
 			var array_to_merge: Array = dictionary[key]
 			merged_arrays.append_array(array_to_merge)
@@ -66,7 +66,7 @@ func collect_data() -> Dictionary[StringName, Dictionary]:
 
 func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 	assert(collected_data.has_all([NODES, PROPERTIES, INTANGIBLE]))
-	assert(collected_data.keys().size() == 3)
+	assert(collected_data.size() == 3)
 	
 	var node_data: Dictionary[NodePath, Dictionary] = collected_data[NODES]
 	assert(node_data is Dictionary[NodePath, Dictionary])
@@ -91,7 +91,7 @@ func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 		node_serializer.restore_state(collected_nodes)
 
 func restore_properties(properties_data: Dictionary[NodePath, Dictionary], allow_async: bool = false) -> void:
-	for properties_serializer_path: NodePath in properties_data.keys():
+	for properties_serializer_path: NodePath in properties_data:
 		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
 		assert(collected_properties is Dictionary[NodePath, Variant])
 		var properties_serializer: PropertiesSerializer = get_node_or_null(properties_serializer_path)

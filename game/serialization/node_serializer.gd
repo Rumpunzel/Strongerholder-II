@@ -59,7 +59,7 @@ func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 	print_debug("Removed %d nodes for %s" % [nodes_freed, get_path()])
 	
 	var nodes_restored: int = 0
-	for node_scene_path: StringName in collected_nodes.keys():
+	for node_scene_path: StringName in collected_nodes:
 		var node_paths: Array[NodePath] = collected_nodes[node_scene_path]
 		var scene_to_spawn: PackedScene = load(node_scene_path)
 		assert(scene_to_spawn is PackedScene)

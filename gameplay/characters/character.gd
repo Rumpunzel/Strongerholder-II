@@ -22,7 +22,7 @@ enum Groups {
 @export var hit_box_shape: CharacterAreaShape = preload("uid://718wpxdsx3bo")
 @export var interaction_area_shape: CharacterAreaShape = preload("uid://3vtg05cuw32e")
 
-@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.25, 0.0)
+@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
 
 @export var _world_character: PackedScene
 @export var _random_world_characters: Array[PackedScene]

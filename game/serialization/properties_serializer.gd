@@ -41,7 +41,7 @@ func collect_properties() -> Dictionary[NodePath, Variant]:
 func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
 	assert(_multiplayer_synchronizer)
 	var root_node: Node = get_node(_multiplayer_synchronizer.root_path)
-	for property_path: NodePath in collected_properties.keys():
+	for property_path: NodePath in collected_properties:
 		var node_path: NodePath = NodePath(property_path.get_concatenated_names())
 		var node: Node = root_node.get_node(node_path)
 		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())

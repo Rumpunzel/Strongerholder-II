@@ -1,5 +1,4 @@
-@icon("uid://br0wwafeqokfw")
-class_name MainMenu
+@icon("uid://r4re5w2nnw4h")
 extends PanelContainer
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -29,7 +28,7 @@ func _on_load_pressed() -> void:
 	GameWorld.load_world_state()
 
 func _on_randomize_ghost_pressed() -> void:
-	EventBus.emit("random_ghost_requested")
+	Game.random_ghost_requested.emit()
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()

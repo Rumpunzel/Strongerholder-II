@@ -30,4 +30,5 @@ transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -
 _ignore_areas_for_same_character_controller = true
 
 [node name="InteractionArea" parent="." instance=ExtResource("4_pfsv8")]
-_ignore_areas_for_same_character_controller = true
+
+[connection signal="current_interactable_changed" from="InteractionArea" to="." method="_on_interaction_area_current_interactable_changed"]

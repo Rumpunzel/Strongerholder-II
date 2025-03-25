@@ -11,10 +11,10 @@ signal hit_box_exited(hit_box: HitBox)
 		_check_enabled()
 		_clean_hit_boxes_in_area()
 		if not character_controller:
-			_character = null
+			character = null
 			_world_character = null
 			return
-		_character = character_controller.character
+		character = character_controller.character
 		_world_character = character_controller.world_character
 
 @export var _ignore_areas_from_same_character_controller: bool = true
@@ -22,10 +22,11 @@ signal hit_box_exited(hit_box: HitBox)
 @export_group("Configuration")
 @export var _debub_color: Color = Color("0099b36b")
 
-var _character: Character:
+var character: Character:
 	set(new_character):
-		_character = new_character
-		if not _character:
+		character = new_character
+		if not character:
+			collision_layer = 32
 			_collision_shape = null
 			return
 		_setup_collision_shape()
@@ -40,9 +41,6 @@ var _collision_shape: CollisionShape3D:
 		add_child(_collision_shape, true)
 
 var _hit_boxes_in_area: Array[HitBox] = [ ]
-
-func follow_node(node: Node3D) -> void:
-	transform = node.transform
 
 func apply_material_override(material: Material) -> void:
 	if not _world_character: return

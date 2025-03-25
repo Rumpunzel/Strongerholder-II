@@ -1,20 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbjgxgkshjet6"]
+[gd_scene load_steps=3 format=3 uid="uid://bbjgxgkshjet6"]
 
 [ext_resource type="Script" uid="uid://cs7if1mfalxq5" path="res://gameplay/agents/agent.gd" id="1_u7v0r"]
-[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://gameplay/agents/hit_box.tscn" id="2_0obik"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
 properties/0/path = NodePath(".:_character_controller_path")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="Agent" type="Node" node_paths=PackedStringArray("_hit_box")]
+[node name="Agent" type="Node"]
 script = ExtResource("1_u7v0r")
-_hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cs7if1mfalxq5"
 
 [node name="AgentSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_qws77")
-
-[node name="HitBox" parent="." instance=ExtResource("2_0obik")]
-_ignore_areas_from_same_character_controller = null

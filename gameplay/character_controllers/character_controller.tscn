@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cvj6b1m2b65hd"]
+[gd_scene load_steps=5 format=3 uid="uid://cvj6b1m2b65hd"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/character_controllers/character_controller.gd" id="1_pp6cs"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_1pdhw"]
+[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://gameplay/agents/hit_box.tscn" id="3_hkpq7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -23,12 +24,13 @@ properties/5/path = NodePath(".:_character_path")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="CharacterController" type="CharacterBody3D" groups=["CharacterControllers"]]
+[node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_hit_box") groups=["CharacterControllers"]]
 collision_layer = 2
 collision_mask = 3
 input_ray_pickable = false
 velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_pp6cs")
+_hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -38,3 +40,8 @@ replication_config = SubResource("SceneReplicationConfig_3fwhk")
 script = ExtResource("2_1pdhw")
 _multiplayer_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
+
+[node name="HitBox" parent="." node_paths=PackedStringArray("character_controller") instance=ExtResource("3_hkpq7")]
+collision_layer = 6
+collision_mask = 0
+character_controller = NodePath("..")

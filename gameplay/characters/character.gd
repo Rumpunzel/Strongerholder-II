@@ -20,6 +20,7 @@ enum Groups {
 @export_category("World Character")
 @export var collision_shape: CharacterAreaShape = preload("uid://d27l7tjgj4lrb")
 @export var hit_box_shape: CharacterAreaShape = preload("uid://718wpxdsx3bo")
+@export_flags_3d_physics var hit_box_layer: int = 32
 @export var interaction_area_shape: CharacterAreaShape = preload("uid://3vtg05cuw32e")
 
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)

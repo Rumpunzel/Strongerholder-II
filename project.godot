@@ -123,7 +123,7 @@ unpossess={
 3d_physics/layer_6="HitBoxes"
 3d_physics/layer_7="HurtBoxes"
 3d_physics/layer_17="Ghosts"
-3d_physics/layer_21="GhostAreas"
+3d_physics/layer_21="GhostHitBoxes"
 
 [physics]
 

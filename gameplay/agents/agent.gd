@@ -9,9 +9,6 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 		character_controller = new_character_controller
 		_setup_character_controller()
 
-@export_group("Configuration")
-@export var _hit_box: HitBox
-
 var is_disabled: bool = false
 
 ## This is used for serialization purposes; serves otherwise no purpose
@@ -43,10 +40,8 @@ func _udpate_agent(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if is_disabled: return
 	assert(character_controller)
-	_hit_box.follow_node(character_controller)
 
 func _setup_character_controller() -> void:
-	_hit_box.character_controller = character_controller
 	_check_disabled()
 
 func _update_character_controller(_delta: float) -> void:
@@ -58,8 +53,3 @@ func _update_character_controller(_delta: float) -> void:
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	if not _hit_box: warnings.append("Missing HitBox reference.")
-	return warnings

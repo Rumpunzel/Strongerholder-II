@@ -148,4 +148,4 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not _camera: warnings.append("Missing Camera reference.")
 	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
 	if not _interaction_timer: warnings.append("Missing Timer reference.")
-	return warnings + super._get_configuration_warnings()
+	return warnings

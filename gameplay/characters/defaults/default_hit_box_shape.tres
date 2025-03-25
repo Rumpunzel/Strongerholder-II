@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://gameplay/character_controllers/character_area_shape.gd" id="1_s7fgh"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ci2td"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0x6pq"]
 
 [resource]
 script = ExtResource("1_s7fgh")
-_shape = SubResource("CapsuleShape3D_ci2td")
+_shape = SubResource("CylinderShape3D_0x6pq")
 _offset = Vector3(0, 0, 0)
 _automatic_ground_offset = true
 metadata/_custom_type_script = "uid://cfq64v34pot8s"

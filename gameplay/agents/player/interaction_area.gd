@@ -15,6 +15,9 @@ var current_interactable: HitBox:
 		if not current_interactable: return
 		current_interactable.apply_material_overlay(selection_material)
 
+func follow_node(node: Node3D) -> void:
+	transform = node.transform
+
 func nearest_hit_box_in_area() -> HitBox:
 	var nearest_hit_box: HitBox = null
 	var distance_to_nearest_hit_box: float = INF
@@ -24,7 +27,7 @@ func nearest_hit_box_in_area() -> HitBox:
 	return nearest_hit_box
 
 func _setup_collision_shape() -> void:
-	_collision_shape = _character.interaction_area_shape.create_collision_shape()
+	_collision_shape = character.interaction_area_shape.create_collision_shape()
 	super._setup_collision_shape()
 
 func _on_hit_box_entered(hit_box: HitBox) -> void:

@@ -9,29 +9,43 @@ const _ray_length: float = 1000.0
 @export var camera_angle_offset: float = 45.0
 @export var camera_turn_angle: float = 90.0
 @export var zoom: float = 1.0
+@export var smoothing_speed: float = 12.0
 
 var _turnIndex: int = 0
+var _point_to_frame: Vector3
+var _position_to_smooth_to: Vector3:
+	set(new_position_to_smooth_to):
+		_position_to_smooth_to = new_position_to_smooth_to
+		set_process(true)
 
 func _ready() -> void:
-	frame_point(Vector3.ZERO)
+	frame_point(Vector3.ZERO, true)
 
-func frame_node(node_to_frame: Node3D) -> void:
+func _process(delta: float) -> void:
+	position = position.move_toward(_position_to_smooth_to, smoothing_speed * delta)
+
+func frame_node(node_to_frame: Node3D, instant: bool = false) -> void:
 	assert(node_to_frame)
-	frame_point(node_to_frame.position)
+	frame_point(node_to_frame.position, instant)
 
-func frame_point(point_to_frame: Vector3) -> void:
+func frame_point(point_to_frame: Vector3, instant: bool = false) -> void:
 	assert(point_to_frame != null)
+	_point_to_frame = point_to_frame
 	var angle: float = deg_to_rad(_turnIndex * camera_turn_angle + camera_angle_offset)
 	var inverse_zoom: float = 1.0 / zoom
 	var inverse_zoom_root: float = sqrt(inverse_zoom)
 	
 	var offset: Vector3 = Vector3(
 		distance_from_follow * cos(angle) * inverse_zoom_root,
-		distance_off_ground * inverse_zoom - point_to_frame.y,
+		distance_off_ground * inverse_zoom - _point_to_frame.y,
 		distance_from_follow * sin(angle) * inverse_zoom_root,
 	)
 	
-	position = point_to_frame + offset
+	if not instant:
+		_position_to_smooth_to = _point_to_frame + offset
+		return
+	set_process(false)
+	position = _point_to_frame + offset
 	look_at(point_to_frame, Vector3.UP)
 
 func get_adjusted_movement(input_vector: Vector2) -> Vector2:

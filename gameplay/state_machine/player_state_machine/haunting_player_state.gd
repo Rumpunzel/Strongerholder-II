@@ -37,6 +37,7 @@ func handle_input(_event: InputEvent) -> void:
 func exit() -> void:
 	_haunting_character_controller.visible = true
 	player.unhaunt_character_controller(_haunting_character_controller)
+	Gameplay.character_controller_unhaunted.emit(_haunted_character_controller)
 
 func _on_haunt_timer_timeout() -> void:
 	assert(player.available_action)

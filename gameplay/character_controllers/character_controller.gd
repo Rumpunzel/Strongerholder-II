@@ -87,7 +87,7 @@ func _apply_gravity(delta: float) -> void:
 func _look_forward(delta: float) -> void:
 	look_target = position + velocity
 	look_target.y = position.y
-	if look_target == transform.origin: return
+	if look_target.is_equal_approx(transform.origin): return
 	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, character.turn_rate * delta)
 

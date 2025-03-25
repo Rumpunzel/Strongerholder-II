@@ -16,13 +16,11 @@ func start(host_as_singleplayer: Player) -> Error:
 	else:
 		player = Player.create(null)
 	add_child(player)
-	started.emit(player)
 	print_debug("Started singleplayer session!")
 	return Error.OK
 
 func stop() -> Player:
 	assert(player)
 	remove_child(player)
-	stopped.emit(player)
 	print_debug("Stopped singleplayer session!")
 	return player

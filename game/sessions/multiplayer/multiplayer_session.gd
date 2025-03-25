@@ -2,6 +2,9 @@
 class_name MultiplayerSession
 extends Session
 
+signal started(player: Player)
+signal stopped(existing_player: Player)
+
 signal game_joined(host_player_info: Dictionary)
 signal player_joined(player: SynchronizedPlayer)
 

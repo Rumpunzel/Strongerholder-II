@@ -44,10 +44,9 @@ var session: Session:
 		session_changed.emit(session)
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_config()
 	session_changed.connect(_on_session_changed)
-	_start_singleplayer_session.call_deferred()
+	_start_singleplayer_session()
 
 func request_pause() -> void:
 	if not session is MultiplayerSession and not get_tree().paused: _pause_game()

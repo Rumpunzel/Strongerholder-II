@@ -14,6 +14,7 @@ var _host_ghost: CharacterController
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
+	_on_session_changed(Game.session)
 	Game.session_changed.connect(_on_session_changed)
 
 func _configre_host_ghost(player: Player) -> void:
@@ -34,15 +35,13 @@ func _remove_all_visitor_ghosts() -> void:
 
 func _on_session_changed(new_session: Session) -> void:
 	if new_session is SingleplayerSession:
-		new_session.started.connect(_on_singleplayer_session_started)
+		var single_player_session: SingleplayerSession = new_session
+		_remove_all_visitor_ghosts()
+		_configre_host_ghost(single_player_session.player)
 	elif new_session is MultiplayerSession:
 		var new_multiplayer_session: MultiplayerSession = new_session
 		new_multiplayer_session.player_connected.connect(_on_player_connected)
 		new_multiplayer_session.player_disconnected.connect(_on_player_disconnected)
-
-func _on_singleplayer_session_started(player: Player) -> void:
-	_remove_all_visitor_ghosts()
-	_configre_host_ghost(player)
 
 func _on_player_connected(peer_id: int, player: SynchronizedPlayer) -> void:
 	if peer_id == multiplayer.get_unique_id(): return

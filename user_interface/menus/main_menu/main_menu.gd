@@ -30,10 +30,10 @@ func _on_continue_pressed() -> void:
 	close_menu()
 
 func _on_save_pressed() -> void:
-	GameWorld.save_world_state()
+	Game.request_save()
 
 func _on_load_pressed() -> void:
-	GameWorld.load_world_state()
+	Game.request_load()
 
 func _on_randomize_ghost_pressed() -> void:
 	Game.random_ghost_requested.emit()

@@ -5,7 +5,7 @@ var _input_prompts: Dictionary[StringName, InputPrompt] = { }
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	Game.available_action_changed.connect(_on_available_action_changed)
+	Gameplay.available_action_changed.connect(_on_available_action_changed)
 
 func clear_all_input_prompts() -> void:
 	for input_prompt: InputPrompt in _input_prompts.values():

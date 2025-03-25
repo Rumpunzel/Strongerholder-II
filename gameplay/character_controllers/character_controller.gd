@@ -31,7 +31,7 @@ var collision_shape: CollisionShape3D:
 			collision_shape.queue_free()
 		collision_shape = new_collision_shape
 		if not collision_shape: return
-		add_child.call_deferred(collision_shape, true)
+		add_child(collision_shape, true)
 
 var world_character: WorldCharacter:
 	set(new_world_character):
@@ -40,7 +40,7 @@ var world_character: WorldCharacter:
 			world_character.queue_free()
 		world_character = new_world_character
 		if not world_character: return
-		add_child.call_deferred(world_character, true)
+		add_child(world_character, true)
 
 var heads_up_anchor: HeadsUpAnchor:
 	set(new_heads_up_anchor):
@@ -49,7 +49,7 @@ var heads_up_anchor: HeadsUpAnchor:
 			heads_up_anchor.queue_free()
 		heads_up_anchor = new_heads_up_anchor
 		if not heads_up_anchor: return
-		add_child.call_deferred(heads_up_anchor, true)
+		add_child(heads_up_anchor, true)
 
 var look_target: Vector3 = Vector3.BACK
 
@@ -72,7 +72,7 @@ func _physics_process(delta: float) -> void:
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
 	move_and_slide()
-	if velocity: _look_forward(delta)
+	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / character.move_speed, velocity.y / _gravity, velocity.z / character.move_speed)
 
 func _process(_delta: float) -> void:
@@ -85,5 +85,6 @@ func _apply_gravity(delta: float) -> void:
 func _look_forward(delta: float) -> void:
 	look_target = position + velocity
 	look_target.y = position.y
+	if look_target == transform.origin: return
 	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, character.turn_rate * delta)

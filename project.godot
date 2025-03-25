@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Strongerholder"
 config/version="Development"
-run/main_scene="uid://bmwhs3lwb74ue"
+run/main_scene="uid://bvt1s3i2xw5s6"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://helmet.png"
 
@@ -21,7 +21,7 @@ config/icon="res://helmet.png"
 Game="*res://game/game.gd"
 UserInterface="res://user_interface/user_interface.tscn"
 ToastParty="*res://addons/toastparty/toast-autoload.gd"
-GameWorld="*res://gameplay/game_world.gd"
+Gameplay="*res://gameplay/gameplay.gd"
 
 [debug]
 

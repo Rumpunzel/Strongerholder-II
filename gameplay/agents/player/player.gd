@@ -94,7 +94,7 @@ func _on_interaction_area_current_interactable_changed(current_interactable: Hit
 	if current_interactable:
 		available_actions.append("interact")
 		heads_up_anchor = current_interactable.character_controller.heads_up_anchor
-	Game.available_action_changed.emit(available_actions, heads_up_anchor)
+	Gameplay.available_action_changed.emit(available_actions, heads_up_anchor)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

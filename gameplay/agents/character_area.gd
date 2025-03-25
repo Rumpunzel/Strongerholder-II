@@ -38,7 +38,7 @@ var _collision_shape: CollisionShape3D:
 			_collision_shape.queue_free()
 		_collision_shape = new_collision_shape
 		if not _collision_shape: return
-		add_child.call_deferred(_collision_shape, true)
+		add_child(_collision_shape, true)
 
 var hit_boxes_in_area: Array[HitBox] = [ ]
 

@@ -2,13 +2,11 @@
 class_name Kingdom
 extends Node
 
-const KINGDOM_SCENE: PackedScene = preload("uid://dromtcmsedm3r")
-
 @export_group("Configuration")
 @export var _agents: Node
 
-static func create() -> Kingdom:
-	return KINGDOM_SCENE.instantiate()
+func _ready() -> void:
+	Gameplay.request_agent_for_character_controller.connect(create_agent)
 
 func create_agent(character_controller: CharacterController) -> void:
 	assert(character_controller)

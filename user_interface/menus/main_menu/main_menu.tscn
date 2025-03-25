@@ -83,4 +83,9 @@ text = "Quit"
 [node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 
+[connection signal="pressed" from="Menu/VBoxContainer/Options/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/Options/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/Options/Load" to="." method="_on_load_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/RandomizeGhost" to="." method="_on_randomize_ghost_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Quit" to="QuitConfirmationDialog" method="popup_centered"]
+[connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

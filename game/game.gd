@@ -4,6 +4,9 @@ extends Node
 signal game_paused
 signal game_unpaused
 
+signal save_requested(save_file_path: StringName)
+signal load_requested(save_file_path: StringName)
+
 signal session_changed(new_session: Session)
 
 signal player_name_changed(player_name: String)
@@ -14,9 +17,6 @@ signal left_game
 
 @warning_ignore("unused_signal")
 signal random_ghost_requested
-
-@warning_ignore("unused_signal")
-signal available_action_changed(available_actions: Array[StringName], heads_up_anchor: HeadsUpAnchor)
 
 const HOST_ID: int = 1
 const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
@@ -45,7 +45,6 @@ var session: Session:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	request_pause()
 	_load_config()
 	session_changed.connect(_on_session_changed)
 	_start_singleplayer_session.call_deferred()
@@ -56,9 +55,14 @@ func request_pause() -> void:
 func request_unpause() -> void:
 	if get_tree().paused: _unpause_game()
 
-func quit_game(save_before: bool = true) -> void:
-	if save_before:
-		GameWorld.save_world_state()
+func request_save(save_file_path: StringName = SAVE_FILE_PATH) -> void:
+	save_requested.emit(save_file_path)
+
+func request_load(save_file_path: StringName = SAVE_FILE_PATH) -> void:
+	load_requested.emit(save_file_path)
+
+func quit_game(save_file_path: StringName = SAVE_FILE_PATH) -> void:
+	if not save_file_path.is_empty(): request_save(save_file_path)
 	_update_config_file()
 	get_tree().quit()
 
@@ -95,12 +99,12 @@ func _unpause_game() -> void:
 	game_unpaused.emit()
 	print_debug("Game unpaused!")
 
-func _start_singleplayer_session(existing_player: Player = null) -> SingleplayerSession:
+func _start_singleplayer_session(existing_player: Player = null, save_file_path: StringName = SAVE_FILE_PATH) -> SingleplayerSession:
 	assert(not session)
 	var new_singleplayer_session: SingleplayerSession = SingleplayerSession.create()
 	session = new_singleplayer_session
 	add_child(new_singleplayer_session)
-	GameWorld.load_world_state()
+	request_load(save_file_path)
 	new_singleplayer_session.start(existing_player)
 	return new_singleplayer_session
 

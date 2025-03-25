@@ -42,7 +42,7 @@ func create(spawn_transform: Transform3D) -> CharacterController:
 	var character_controller: CharacterController = create_dummy(spawn_transform)
 	character_controller.character = self
 	character_controller.transform = spawn_transform
-	GameWorld.create_agent(character_controller)
+	Gameplay.request_agent_for_character_controller.emit(character_controller)
 	return character_controller
 
 func create_dummy(spawn_transform: Transform3D) -> CharacterController:

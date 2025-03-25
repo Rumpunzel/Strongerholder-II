@@ -2,19 +2,20 @@
 class_name Serializer
 extends Node
 
-signal serialized
-signal deserialized
+signal saving_started
+signal saving_finished
+
+signal loading_started
+signal loading_finished
 
 const NODES: StringName = "nodes"
 const PROPERTIES: StringName = "properties"
 const INTANGIBLE: StringName = "intangible"
 
-const SERIALIZER_SCENE: PackedScene = preload("uid://kquuu3wv8puv")
-
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-static func create() -> Serializer:
-	return SERIALIZER_SCENE.instantiate()
+static func has_save_file(save_file_path: StringName = Game.SAVE_FILE_PATH) -> bool:
+	return FileAccess.file_exists(save_file_path)
 
 static func encode_data(value: Variant, full_objects: bool = false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))
@@ -32,23 +33,31 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
-func serialize(save_file_path: StringName) -> Error:
+func _ready() -> void:
+	Game.save_requested.connect(save_world_state)
+	Game.load_requested.connect(load_world_state)
+
+func save_world_state(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
+	saving_started.emit()
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
 	var collected_data: Dictionary[StringName, Dictionary] = collect_data()
 	var serialized_game_state: String = encode_data(collected_data)
 	save_file.store_line(serialized_game_state)
-	serialized.emit()
+	saving_finished.emit()
 	return Error.OK
 
-func deserialize(save_file_path: StringName) -> Error:
-	assert(FileAccess.file_exists(save_file_path))
+func load_world_state(save_file_path: StringName) -> Error:
+	if not has_save_file(save_file_path):
+		printerr("Tried to load without a save file; skipped!")
+		return Error.ERR_FILE_NOT_FOUND
+	loading_started.emit()
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
 	var serialized_game_state: String = save_file.get_as_text()
 	var collected_data: Dictionary[StringName, Dictionary] = decode_data(serialized_game_state)
 	assert(collected_data is Dictionary[StringName, Dictionary])
 	restore_state(collected_data)
-	deserialized.emit()
+	loading_finished.emit()
 	return Error.OK
 
 func collect_data() -> Dictionary[StringName, Dictionary]:

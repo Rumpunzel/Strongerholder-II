@@ -6,10 +6,8 @@ extends Agent
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 @export_group("Configuration")
-@export var _possession_material: Material
 @export var _camera: TopDownCamera
 @export var _interaction_area: InteractionArea
-@export var _interaction_timer: Timer
 
 var is_local_player: bool = true:
 	set(new_is_local_player):
@@ -18,19 +16,12 @@ var is_local_player: bool = true:
 
 var direction_input: Vector2 = Vector2.ZERO
 var interaction_input: StringName = ""
-
-var _available_action: CharacterInteraction:
+var available_action: CharacterInteraction:
 	set(new_current_interactable):
-		_available_action = new_current_interactable
+		available_action = new_current_interactable
 		var available_actions: Array[CharacterInteraction] = [ ]
-		if _available_action: available_actions.append(_available_action)
+		if available_action: available_actions.append(available_action)
 		Gameplay.available_action_changed.emit(available_actions)
-
-var _ghost_character_controller: CharacterController:
-	set(new_ghost_character_controller):
-		if _ghost_character_controller: _ghost_character_controller.visible = true
-		_ghost_character_controller = new_ghost_character_controller
-		if _ghost_character_controller: _ghost_character_controller.visible = false
 
 func _ready() -> void:
 	_setup_player()
@@ -40,9 +31,6 @@ func _process(delta: float) -> void:
 	_update_player(delta)
 	super._process(delta)
 
-func _physics_process(delta: float) -> void:
-	super._physics_process(delta)
-
 static func create(existing_character_controller: CharacterController) -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
 	new_player.character_controller = existing_character_controller
@@ -51,22 +39,20 @@ static func create(existing_character_controller: CharacterController) -> Player
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
-func possess_character_controller(character_controller_to_possess: CharacterController) -> void:
-	if not _ghost_character_controller: _ghost_character_controller = character_controller
-	else:
-		character_controller.world_character.apply_material_overlay(null)
-		Gameplay.character_controller_unpossessed.emit(character_controller)
-	character_controller = character_controller_to_possess
-	character_controller.world_character.apply_material_overlay(_possession_material)
-	Gameplay.character_controller_possessed.emit(character_controller)
+func update_character_controller(delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if is_disabled: return
+	_apply_input_direction_to_character_controller(delta)
+	# TODO: Pathfinding
+	# else: super._update_character_controller(delta)
+	if not is_local_player: return
+	# Other code
 
-func unpossess_character_controller() -> void:
-	if not _ghost_character_controller: return
-	character_controller.world_character.apply_material_overlay(null)
-	Gameplay.character_controller_unpossessed.emit(character_controller)
-	_ghost_character_controller.transform = character_controller.transform
-	character_controller = _ghost_character_controller
-	_ghost_character_controller = null
+func haunt_character_controller(haunted_character_controller: CharacterController) -> void:
+	character_controller = haunted_character_controller
+
+func unhaunt_character_controller(haunting_character_controller: CharacterController) -> void:
+	character_controller = haunting_character_controller
 
 func _setup_player() -> void:
 	if Engine.is_editor_hint(): return
@@ -78,23 +64,12 @@ func _update_player(_delta: float) -> void:
 	if is_disabled: return
 	_camera.frame_node(character_controller)
 	_interaction_area.follow_node(character_controller)
-	_process_interaction_input()
 	if not is_local_player: return
 	# Other code
 
 func _setup_character_controller() -> void:
 	_interaction_area.character_controller = character_controller
 	super._setup_character_controller()
-
-func _update_character_controller(delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if is_disabled: return
-	_apply_input_direction_to_character_controller(delta)
-	if _ghost_character_controller: _ghost_character_controller.transform = character_controller.transform
-	# TODO: Pathfinding
-	# else: super._update_character_controller(delta)
-	if not is_local_player: return
-	# Other code
 
 func _collect_input() -> void:
 	if not is_local_player: return
@@ -118,15 +93,6 @@ func _apply_input_direction_to_character_controller(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0.0, acceleration)
 	character_controller.velocity = velocity
 
-func _process_interaction_input() -> void:
-	if interaction_input == "unpossess":
-		unpossess_character_controller()
-	if not _available_action: return
-	if _available_action.is_action_just_pressed():
-		_interaction_timer.start(_available_action.type.charge_time)
-	if _available_action.is_action_just_released():
-		_interaction_timer.stop()
-
 func _create_character_interaction(for_hit_box: HitBox) -> CharacterInteraction:
 	return CharacterInteraction.new(
 		character_controller,
@@ -140,18 +106,12 @@ func _check_disabled() -> void:
 
 func _on_interaction_area_current_interactable_changed(current_interactable: HitBox) -> void:
 	if not current_interactable:
-		_available_action = null
+		available_action = null
 		return
-	_available_action = _create_character_interaction(current_interactable)
-
-func _on_interaction_timer_timeout() -> void:
-	assert(_available_action)
-	possess_character_controller(_available_action.target)
+	available_action = _create_character_interaction(current_interactable)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	if not _possession_material: warnings.append("Missing possession material.")
 	if not _camera: warnings.append("Missing Camera reference.")
 	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
-	if not _interaction_timer: warnings.append("Missing Timer reference.")
-	return warnings
+	return warnings + super._get_configuration_warnings()

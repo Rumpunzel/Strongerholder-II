@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cmbf2wnye66jw"]
 
-[ext_resource type="Shader" uid="uid://0opn3cgsdrfd" path="res://gameplay/agents/player/possession.gdshader" id="1_u40oy"]
+[ext_resource type="Shader" uid="uid://0opn3cgsdrfd" path="res://gameplay/agents/player/chromatic_aberration.gdshader" id="1_u40oy"]
 
 [resource]
 render_priority = 0

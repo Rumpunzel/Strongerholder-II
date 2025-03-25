@@ -1,3 +1,4 @@
+@tool
 @icon("uid://dv6mpdxcuq5j5")
 class_name Agent
 extends Node
@@ -8,6 +9,9 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 	set(new_character_controller):
 		character_controller = new_character_controller
 		_setup_character_controller()
+
+@export_group("Configuration")
+@export var _state_machine: StateMachine
 
 var is_disabled: bool = false
 
@@ -36,13 +40,13 @@ static func create(existing_character_controller: CharacterController) -> Agent:
 	new_agent.name = existing_character_controller.name
 	return new_agent
 
+func _setup_character_controller() -> void:
+	_check_disabled()
+
 func _udpate_agent(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if is_disabled: return
 	assert(character_controller)
-
-func _setup_character_controller() -> void:
-	_check_disabled()
 
 func _update_character_controller(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -53,3 +57,8 @@ func _update_character_controller(_delta: float) -> void:
 func _check_disabled() -> void:
 	if Engine.is_editor_hint(): return
 	is_disabled = not character_controller
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not _state_machine: warnings.append("Missing StateMachine reference.")
+	return warnings

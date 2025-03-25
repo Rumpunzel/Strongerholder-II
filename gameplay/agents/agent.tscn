@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbjgxgkshjet6"]
+[gd_scene load_steps=6 format=3 uid="uid://bbjgxgkshjet6"]
 
 [ext_resource type="Script" uid="uid://cs7if1mfalxq5" path="res://gameplay/agents/agent.gd" id="1_u7v0r"]
+[ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://gameplay/state_machine/agent_state_machine.gd" id="2_1lx21"]
+[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://gameplay/state_machine/default_agent_state.gd" id="3_1lx21"]
+[ext_resource type="Script" uid="uid://cnbe32kxn6l5l" path="res://gameplay/state_machine/haunted_agent_state.gd" id="4_1omu5"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
 properties/0/path = NodePath(".:_character_controller_path")
@@ -13,3 +16,19 @@ metadata/_custom_type_script = "uid://cs7if1mfalxq5"
 
 [node name="AgentSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_qws77")
+
+[node name="StateMachine" type="Control" parent="." node_paths=PackedStringArray("_state", "_agent")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_1lx21")
+_state = NodePath("Default")
+_agent = NodePath("..")
+metadata/_custom_type_script = "uid://d1mglynl0s74y"
+
+[node name="Default" type="Node" parent="StateMachine"]
+script = ExtResource("3_1lx21")
+metadata/_custom_type_script = "uid://d12y800yphwle"
+
+[node name="Haunted" type="Node" parent="StateMachine"]
+script = ExtResource("4_1omu5")
+metadata/_custom_type_script = "uid://cnbe32kxn6l5l"

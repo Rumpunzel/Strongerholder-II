@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnm0ga1m5opd4"
-path="res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
+uid="uid://btd64iwc2p3sh"
+path="res://.godot/imported/wanted-reward.svg-0987c908b9345a67495e5a2cd12157c4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icon.svg"
-dest_files=["res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"]
+source_file="res://editor/icons/white/wanted-reward.svg"
+dest_files=["res://.godot/imported/wanted-reward.svg-0987c908b9345a67495e5a2cd12157c4.ctex"]
 
 [params]
 

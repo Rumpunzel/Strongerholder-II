@@ -17,4 +17,4 @@ metadata/_custom_type_script = "uid://cs7if1mfalxq5"
 replication_config = SubResource("SceneReplicationConfig_qws77")
 
 [node name="HitBox" parent="." instance=ExtResource("2_0obik")]
-_ignore_areas_for_same_character_controller = true
+_ignore_areas_from_same_character_controller = null

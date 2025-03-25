@@ -18,7 +18,7 @@ var current_interactable: HitBox:
 func nearest_hit_box_in_area() -> HitBox:
 	var nearest_hit_box: HitBox = null
 	var distance_to_nearest_hit_box: float = INF
-	for near_hit_box: HitBox in hit_boxes_in_area:
+	for near_hit_box: HitBox in _hit_boxes_in_area:
 		if not nearest_hit_box_in_area or position.distance_squared_to(near_hit_box.position) < distance_to_nearest_hit_box:
 			nearest_hit_box = near_hit_box
 	return nearest_hit_box

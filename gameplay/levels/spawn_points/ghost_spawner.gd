@@ -21,7 +21,6 @@ func _configre_host_ghost(player: Player) -> void:
 	if _host_ghost:
 		# Everything is as it should be
 		if _host_ghost == player.character_controller: return
-		_local_ghosts.remove_child(_host_ghost)
 		_host_ghost.queue_free()
 	
 	_host_ghost = ghost_spawn_point.spawn_character_controller(_local_ghosts)

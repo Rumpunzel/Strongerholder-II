@@ -8,7 +8,13 @@ const INPUT_PROMPT_SCENE: PackedScene = preload("uid://d3ufd1hkx3mvi")
 @export_group("Configuration")
 @export var _timer: Timer
 
-var available_action: StringName
+var available_action: CharacterInteraction:
+	set(new_available_action):
+		available_action = new_available_action
+		if not available_action:
+			input_events.clear()
+			return
+		input_events = available_action.get_input_events()
 
 var input_events: Array[InputEvent]:
 	set(new_input_events):
@@ -16,13 +22,9 @@ var input_events: Array[InputEvent]:
 		_input_event_index = 0
 		if input_events.size() > 1: _timer.start()
 
-var heads_up_anchor: HeadsUpAnchor
-
 var _current_prompt: KeyPrompt:
 	set(new_current_prompt):
-		if _current_prompt:
-			remove_child(_current_prompt)
-			_current_prompt.queue_free()
+		if _current_prompt: _current_prompt.queue_free()
 		_current_prompt = new_current_prompt
 		if not _current_prompt: return
 		add_child(_current_prompt)
@@ -41,22 +43,18 @@ var _input_event_index: int = 0:
 			"InputEventShortcut": push_warning("InputEventShortcut is not yet implemented!")
 			_: push_error("InputEvent type for %s not supported!" % input_event)
 
-static func create(for_available_action: StringName, for_input_events: Array[InputEvent], at_heads_up_anchor: HeadsUpAnchor) -> InputPrompt:
-	assert(not for_available_action.is_empty())
-	assert(not for_input_events.is_empty())
-	assert(at_heads_up_anchor)
+static func create(for_available_action: CharacterInteraction) -> InputPrompt:
+	assert(for_available_action)
 	var new_input_prompt: InputPrompt = INPUT_PROMPT_SCENE.instantiate()
 	new_input_prompt.available_action = for_available_action
-	new_input_prompt.input_events = for_input_events
-	new_input_prompt.heads_up_anchor = at_heads_up_anchor
 	return new_input_prompt
 
 func _process(_delta: float) -> void:
-	assert(heads_up_anchor)
 	var viewport_camera: Camera3D = get_viewport().get_camera_3d()
+	var heads_up_anchor: HeadsUpAnchor = available_action.get_heads_up_anchor()
 	visible = not viewport_camera.is_position_behind(heads_up_anchor.global_position)
 	position = viewport_camera.unproject_position(heads_up_anchor.global_position) - Vector2(size.x, size.y / 2.0)
-	_current_prompt.button_pressed = Input.is_action_pressed(available_action)
+	_current_prompt.button_pressed = available_action.is_action_pressed()
 
 func hide_prompt() -> void:
 	queue_free()

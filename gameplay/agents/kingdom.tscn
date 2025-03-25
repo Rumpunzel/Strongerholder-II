@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="1_41yjh"]
 [ext_resource type="Script" uid="uid://ddnwoydv80vs0" path="res://gameplay/agents/kingdom.gd" id="1_kbwnf"]
 
-[node name="Kingdom" type="Node" node_paths=PackedStringArray("_agents")]
+[node name="Kingdom" type="Node" node_paths=PackedStringArray("_agents_node")]
 script = ExtResource("1_kbwnf")
-_agents = NodePath("Agents")
+_agents_node = NodePath("Agents")
 metadata/_custom_type_script = "uid://ddnwoydv80vs0"
 
 [node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
@@ -18,3 +18,6 @@ _multiplayer_spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
 [node name="Agents" type="Node" parent="."]
+
+[connection signal="child_entered_tree" from="Agents" to="." method="_on_agent_entered_tree"]
+[connection signal="child_exiting_tree" from="Agents" to="." method="_on_agent_exiting_tree"]

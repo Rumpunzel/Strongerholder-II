@@ -121,7 +121,6 @@ func _end_session() -> Player:
 	var old_session: Session = session
 	session = null
 	var existing_player: Player = old_session.stop()
-	remove_child(old_session)
 	old_session.queue_free()
 	return existing_player
 

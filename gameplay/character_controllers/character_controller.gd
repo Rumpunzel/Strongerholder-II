@@ -27,7 +27,6 @@ extends CharacterBody3D
 var collision_shape: CollisionShape3D:
 	set(new_collision_shape):
 		if collision_shape:
-			if get_children().has(collision_shape): remove_child(collision_shape)
 			collision_shape.queue_free()
 		collision_shape = new_collision_shape
 		if not collision_shape: return
@@ -36,7 +35,6 @@ var collision_shape: CollisionShape3D:
 var world_character: WorldCharacter:
 	set(new_world_character):
 		if world_character:
-			if get_children().has(world_character): remove_child(world_character)
 			world_character.queue_free()
 		world_character = new_world_character
 		if not world_character: return
@@ -45,7 +43,6 @@ var world_character: WorldCharacter:
 var heads_up_anchor: HeadsUpAnchor:
 	set(new_heads_up_anchor):
 		if heads_up_anchor:
-			if get_children().has(heads_up_anchor): remove_child(heads_up_anchor)
 			heads_up_anchor.queue_free()
 		heads_up_anchor = new_heads_up_anchor
 		if not heads_up_anchor: return

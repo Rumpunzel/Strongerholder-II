@@ -8,15 +8,9 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 	set(new_character_controller):
 		character_controller = new_character_controller
 		_setup_character_controller()
-		if not character_controller:
-			character = null
-			return
-		character = character_controller.character
 
 @export_group("Configuration")
 @export var _hit_box: HitBox
-
-var character: Character
 
 var is_disabled: bool = false
 
@@ -42,7 +36,7 @@ func _physics_process(delta: float) -> void:
 static func create(existing_character_controller: CharacterController) -> Agent:
 	var new_agent: Agent = AGENT_SCENE.instantiate()
 	new_agent.character_controller = existing_character_controller
-	new_agent.name = existing_character_controller.character.name
+	new_agent.name = existing_character_controller.name
 	return new_agent
 
 func _udpate_agent(_delta: float) -> void:

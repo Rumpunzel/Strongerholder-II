@@ -29,7 +29,7 @@ var available_action: CharacterInteraction:
 		available_action = new_current_interactable
 		var available_actions: Array[CharacterInteraction] = [ ]
 		if available_action: available_actions.append(available_action)
-		Gameplay.available_action_changed.emit(available_actions)
+		Gameplay.update_available_actions(available_actions)
 
 func _ready() -> void:
 	if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()

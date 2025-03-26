@@ -7,11 +7,16 @@
 [sub_resource type="LabelSettings" id="LabelSettings_2en6q"]
 font_size = 24
 
-[node name="MultiplayerMenu" type="VBoxContainer"]
+[node name="MultiplayerMenu" type="VBoxContainer" node_paths=PackedStringArray("_player_name", "_join_button", "_ip_address", "_host_button", "_host_ip_address_button")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 offset_bottom = 101.0
 script = ExtResource("1_k1c65")
+_player_name = NodePath("PlayerName")
+_join_button = NodePath("GridContainer/Join")
+_ip_address = NodePath("GridContainer/IpAddress")
+_host_button = NodePath("GridContainer/Host")
+_host_ip_address_button = NodePath("GridContainer/HostIpAddress")
 metadata/_custom_type_script = "uid://dvlr2wvgpeyqn"
 
 [node name="Label" type="Label" parent="."]
@@ -22,7 +27,6 @@ label_settings = SubResource("LabelSettings_2en6q")
 horizontal_alignment = 1
 
 [node name="PlayerName" type="LineEdit" parent="."]
-unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Player Name"
 alignment = 1
@@ -32,7 +36,6 @@ layout_mode = 2
 columns = 2
 
 [node name="Join" type="Button" parent="GridContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -43,7 +46,6 @@ toggled_text = "Disconnect"
 metadata/_custom_type_script = "uid://cpyey1rgiu5s0"
 
 [node name="IpAddress" type="LineEdit" parent="GridContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -51,7 +53,6 @@ placeholder_text = "127.0.0.1"
 alignment = 1
 
 [node name="Host" type="Button" parent="GridContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -62,7 +63,6 @@ toggled_text = "Stop Hosting"
 metadata/_custom_type_script = "uid://cpyey1rgiu5s0"
 
 [node name="HostIpAddress" type="Button" parent="GridContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

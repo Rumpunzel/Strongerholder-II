@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://rmev082m4bw0"]
+[gd_scene load_steps=4 format=3 uid="uid://rmev082m4bw0"]
 
 [ext_resource type="Script" uid="uid://cy4skffv6sbru" path="res://user_interface/user_interface.gd" id="1_dbod7"]
-[ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://user_interface/menus/main_menu/main_menu.tscn" id="1_ratyj"]
 [ext_resource type="PackedScene" uid="uid://rdlta1e1aqkb" path="res://user_interface/heads_up_displays/heads_up_displays.tscn" id="2_og86u"]
 [ext_resource type="PackedScene" uid="uid://b1ptb2poils3t" path="res://user_interface/menus/info/info.tscn" id="2_ur1vw"]
 
@@ -10,8 +9,6 @@ layer = 10
 script = ExtResource("1_dbod7")
 metadata/_edit_lock_ = true
 
-[node name="Info" parent="." instance=ExtResource("2_ur1vw")]
-
 [node name="HeadsUpDisplays" parent="." instance=ExtResource("2_og86u")]
 
-[node name="MainMenu" parent="." instance=ExtResource("1_ratyj")]
+[node name="Info" parent="." instance=ExtResource("2_ur1vw")]

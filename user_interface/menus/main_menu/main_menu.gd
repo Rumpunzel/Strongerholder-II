@@ -1,11 +1,14 @@
 @tool
-@icon("uid://r4re5w2nnw4h")
-extends PanelContainer
+@icon("uid://bec8d0jsuhm7n")
+class_name MainMenu
+extends CanvasLayer
+
+@export_group("Configuration")
+@export var multiplayer_menu: MultiplayerMenu
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	visible = get_tree().paused
-	Game.game_paused.connect(open_menu)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return
@@ -39,3 +42,8 @@ func _on_randomize_ghost_pressed() -> void:
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Game.quit_game()
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	if not multiplayer_menu: warnings.append("Missing MultiplayerMenu reference.")
+	return warnings

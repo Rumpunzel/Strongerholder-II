@@ -21,10 +21,10 @@ func spawn_character_controller(spawn_parent: Node) -> CharacterController:
 	var character_controller: CharacterController
 	if spawn_with_agent and not Engine.is_editor_hint():
 		character_controller = character.create(transform)
-	else: character_controller= character.create_dummy(transform)
+	else: character_controller = character.create_dummy(transform)
 	spawn_parent.add_child(character_controller, true)
 	if Engine.is_editor_hint():
-		if _editor_material: character_controller.world_character.apply_material_override(_editor_material)
+		if _editor_material: character_controller.character_model.apply_material_override(_editor_material)
 		return character_controller
 	_character_controllers_spawned += 1
 	return character_controller

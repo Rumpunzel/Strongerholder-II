@@ -25,8 +25,8 @@ enum Groups {
 
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
 
-@export var _world_character: PackedScene
-@export var _random_world_characters: Array[PackedScene]
+@export var _character_model: PackedScene
+@export var _random_character_models: Array[PackedScene]
 
 @export_group("Collision", "collision")
 @export_flags_3d_physics var collision_layer: int = 2
@@ -39,7 +39,7 @@ enum Groups {
 
 func create(spawn_transform: Transform3D) -> CharacterController:
 	# XOR operator; either specific character XOR a random character
-	assert(_world_character != null != not _random_world_characters.is_empty())
+	assert(_character_model != null != not _random_character_models.is_empty())
 	var character_controller: CharacterController = create_dummy(spawn_transform)
 	character_controller.character = self
 	character_controller.transform = spawn_transform
@@ -48,18 +48,18 @@ func create(spawn_transform: Transform3D) -> CharacterController:
 
 func create_dummy(spawn_transform: Transform3D) -> CharacterController:
 	# XOR operator; either specific character XOR a random character
-	assert(_world_character != null != not _random_world_characters.is_empty())
+	assert(_character_model != null != not _random_character_models.is_empty())
 	var character_controller: CharacterController = _character_controller_scene.instantiate()
 	character_controller.character = self
 	character_controller.transform = spawn_transform
 	return character_controller
 
-func create_world_character() -> WorldCharacter:
+func create_character_model() -> CharacterModel:
 	# XOR operator; either specific character XOR a random character
-	assert(_world_character != null != not _random_world_characters.is_empty())
-	if _world_character: return _world_character.instantiate()
-	var random_world_character: PackedScene = _random_world_characters.pick_random()
-	return random_world_character.instantiate()
+	assert(_character_model != null != not _random_character_models.is_empty())
+	if _character_model: return _character_model.instantiate()
+	var random_character_model: PackedScene = _random_character_models.pick_random()
+	return random_character_model.instantiate()
 
 func create_heads_up_anchor() -> HeadsUpAnchor:
 	var heads_up_anchor: HeadsUpAnchor = _heads_up_anchor_scene.instantiate()
@@ -71,10 +71,10 @@ func get_group_name() -> StringName:
 	return group_name.capitalize()
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	if not _world_character and _random_world_characters.is_empty(): warnings.append("Missing WorldCharacter scene.")
+	var warnings: PackedStringArray = []
+	if not _character_model and _random_character_models.is_empty(): warnings.append("Missing CharacterModel scene.")
 	# XOR operator; either specific character XOR a random character
-	if _world_character != null != not _random_world_characters.is_empty(): warnings.append("Either WorldCharacter XOR a random WorldCharacter.")
+	if _character_model != null != not _random_character_models.is_empty(): warnings.append("Either CharacterModel XOR a random CharacterModel.")
 	if not _character_controller_scene: warnings.append("Missing CharacterController scene.")
 	if not _heads_up_anchor_scene: warnings.append("Missing CharacterController scene.")
 	return warnings

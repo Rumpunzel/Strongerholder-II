@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=30 format=3 uid="uid://bf4cxhr3kab7j"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://protoype_assets/world_characters/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
 [ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_faw76"]
@@ -172,9 +172,22 @@ _data = {
 &"float": SubResource("Animation_88aim")
 }
 
-[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animated_sprite")]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_faw76"]
+animation = &"float"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xqo7j"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_faw76"]
+states/Start/position = Vector2(109, 80)
+states/float/node = SubResource("AnimationNodeAnimation_faw76")
+states/float/position = Vector2(337, 106)
+transitions = ["Start", "float", SubResource("AnimationNodeStateMachineTransition_xqo7j")]
+
+[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animated_sprite", "_animation_tree")]
 script = ExtResource("1_2ku6h")
 _animated_sprite = NodePath("AnimatedSprite3D")
+_animation_tree = NodePath("AnimationTree")
 metadata/_custom_type_script = "uid://f7j5ijitqy25"
 
 [node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -199,3 +212,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_qte8h")
 }
 autoplay = "float"
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_faw76")
+anim_player = NodePath("../AnimationPlayer")

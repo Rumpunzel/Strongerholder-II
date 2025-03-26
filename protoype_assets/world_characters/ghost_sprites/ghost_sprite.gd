@@ -1,7 +1,7 @@
 @tool
 @icon("uid://c8lah4qxw5f0v")
 class_name GhostSprite
-extends WorldCharacter
+extends CharacterModel
 
 @export_group("Configuration")
 @export var _animated_sprite: AnimatedSprite3D
@@ -24,6 +24,6 @@ func _random_ghost() -> void:
 	if _random_frame < 0: _random_frame = randi() % 19
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _animated_sprite: warnings.append("Missing AnimatedSprite3D reference.")
 	return warnings + super._get_configuration_warnings()

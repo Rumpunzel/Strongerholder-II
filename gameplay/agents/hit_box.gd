@@ -9,10 +9,10 @@ extends Area3D
 		_check_enabled()
 		if not character_controller:
 			character = null
-			_world_character = null
+			_character_model = null
 			return
 		character = character_controller.character
-		_world_character = character_controller.world_character
+		_character_model = character_controller.character_model
 
 @export var _ignore_areas_from_same_character_controller: bool = true
 
@@ -29,15 +29,15 @@ var character: Character:
 		collision_layer = character.hit_box_layer
 		character.hit_box_shape.configure_collision_shape(_collision_shape)
 
-var _world_character: WorldCharacter
+var _character_model: CharacterModel
 
 func apply_material_override(material: Material) -> void:
-	if not _world_character: return
-	_world_character.apply_material_override(material)
+	if not _character_model: return
+	_character_model.apply_material_override(material)
 
 func apply_material_overlay(material: Material) -> void:
-	if not _world_character: return
-	_world_character.apply_material_overlay(material)
+	if not _character_model: return
+	_character_model.apply_material_overlay(material)
 
 func _check_enabled() -> void:
 	if Engine.is_editor_hint(): return
@@ -50,6 +50,6 @@ func _is_ignored(hit_box: HitBox) -> bool:
 	return _ignore_areas_from_same_character_controller and hit_box.character_controller == character_controller
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _collision_shape: warnings.append("Missing CollisionShape3D reference.")
 	return warnings

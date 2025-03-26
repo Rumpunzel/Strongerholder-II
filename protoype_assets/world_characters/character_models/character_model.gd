@@ -1,6 +1,7 @@
 @tool
+@icon("uid://cpbv0myc0qfxb")
 class_name CharacterModel
-extends WorldCharacter
+extends Node3D
 
 @onready var _meshes: Array[MeshInstance3D] = gather_all_geometry_instances_on(self)
 
@@ -34,4 +35,4 @@ func apply_material_overlay(material: Material) -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
 	if not _animation_tree: warnings.append("Missing AnimationTree reference.")
-	return warnings + super._get_configuration_warnings()
+	return warnings

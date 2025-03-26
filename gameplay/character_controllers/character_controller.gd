@@ -10,7 +10,7 @@ extends CharacterBody3D
 		character = new_character
 		if not character:
 			name = "CharacterController"
-			world_character = null
+			character_model = null
 			heads_up_anchor = null
 			_collision_shape.shape = null
 			_collision_shape.position = Vector3.ZERO
@@ -20,7 +20,7 @@ extends CharacterBody3D
 		add_to_group(character.get_group_name())
 		collision_layer = character.collision_layer
 		collision_mask = character.collision_mask
-		world_character = character.create_world_character()
+		character_model = character.create_character_model()
 		heads_up_anchor = character.create_heads_up_anchor()
 		character.collision_shape.configure_collision_shape(_collision_shape)
 		_hit_box.character = character
@@ -29,13 +29,13 @@ extends CharacterBody3D
 @export var _collision_shape: CollisionShape3D
 @export var _hit_box: HitBox
 
-var world_character: WorldCharacter:
-	set(new_world_character):
-		if world_character:
-			world_character.queue_free()
-		world_character = new_world_character
-		if not world_character: return
-		add_child(world_character, true)
+var character_model: CharacterModel:
+	set(new_character_model):
+		if character_model:
+			character_model.queue_free()
+		character_model = new_character_model
+		if not character_model: return
+		add_child(character_model, true)
 
 var heads_up_anchor: HeadsUpAnchor:
 	set(new_heads_up_anchor):
@@ -71,7 +71,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if world_character: world_character.play_animation(_normalized_velocity)
+	if character_model: character_model.play_animation(_normalized_velocity)
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta
@@ -84,7 +84,7 @@ func _look_forward(delta: float) -> void:
 	transform = transform.interpolate_with(transform_looking_into_direction, character.turn_rate * delta)
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _collision_shape: warnings.append("Missing CollisionShape3D reference.")
 	if not _hit_box: warnings.append("Missing HitBox reference.")
 	return warnings

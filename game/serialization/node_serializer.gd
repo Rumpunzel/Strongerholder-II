@@ -3,12 +3,12 @@
 class_name NodeSerializer
 extends Node
 
-@export var _multiplayer_spawner: BetterMultiplayerSpawner
+@export var _spawner: Spawner
 
 func _enter_tree() -> void:
 	var parent: Node = get_parent()
-	if not _multiplayer_spawner and parent is BetterMultiplayerSpawner:
-		_multiplayer_spawner = parent
+	if not _spawner and parent is Spawner:
+		_spawner = parent
 
 ## Collects all data for dynamically spawned nodes
 ## @returns a [Dictionary] with [NodePath]s of the responsible [NodeSerializer]s to the node data
@@ -22,13 +22,13 @@ static func collect_node_data(node_serializers: Array[Node]) -> Dictionary[NodeP
 
 ## @returns a [Dictionary] with scene paths to [NodePath]s
 func collect_nodes() -> Dictionary[StringName, Array]:
-	assert(_multiplayer_spawner)
-	return _multiplayer_spawner.get_all_spawned_nodes()
+	assert(_spawner)
+	return _spawner.get_all_spawned_nodes()
 
 func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
-	assert(_multiplayer_spawner)
+	assert(_spawner)
 	# Clean state
-	var nodes_freed: int = _multiplayer_spawner.remove_all_spawned_nodes()
+	var nodes_freed: int = _spawner.remove_all_spawned_nodes()
 	print_debug("Removed %d nodes for %s" % [nodes_freed, get_path()])
 	
 	var nodes_restored: int = 0
@@ -65,5 +65,5 @@ func deserialize(save_file_path: StringName) -> Error:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	if not _multiplayer_spawner: warnings.append("Missing MultiplayerSpawner reference.")
+	if not _spawner: warnings.append("Missing Spawner reference.")
 	return warnings

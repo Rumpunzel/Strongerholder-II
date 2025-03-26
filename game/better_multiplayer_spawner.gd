@@ -1,10 +1,11 @@
-class_name BetterMultiplayerSpawner
+@tool
+class_name Spawner
 extends MultiplayerSpawner
 
 @onready var spawn_node: Node = get_node(spawn_path)
 
 func _ready() -> void:
-	Game.game_joined.connect(_on_game_joined)
+	add_to_group("Spawners")
 
 func get_spawnable_scene_paths() -> Array[String]:
 	var spawnable_scene_count: int = get_spawnable_scene_count()
@@ -34,5 +35,6 @@ func remove_all_spawned_nodes() -> int:
 		nodes_freed += 1
 	return nodes_freed
 
-func _on_game_joined(_ip_address: StringName, _port: int) -> void:
-	remove_all_spawned_nodes()
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = [ ]
+	return warnings

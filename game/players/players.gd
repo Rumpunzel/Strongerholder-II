@@ -54,6 +54,5 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 func _remove_player(player: Player) -> void:
 	if player == _local_player: return
 	assert(player)
-	#remove_child(player)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.to_player_info())

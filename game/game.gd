@@ -68,6 +68,7 @@ func host_game() -> void:
 
 func join_game(ip_address: String) -> void:
 	assert(ip_address.is_valid_ip_address())
+	_unspawn_everything()
 	game_joined.emit(ip_address, PORT)
 	_is_multiplayer = true
 
@@ -78,6 +79,7 @@ func stop_hosting_game() -> void:
 func leave_game() -> void:
 	disconnected_from_multiplayer.emit()
 	_is_multiplayer = false
+	request_load()
 
 func _pause_game() -> void:
 	get_tree().paused = true
@@ -88,6 +90,9 @@ func _unpause_game() -> void:
 	get_tree().paused = false
 	game_unpaused.emit()
 	print_debug("Game unpaused!")
+
+func _unspawn_everything() -> void:
+	get_tree().call_group("Spawners", "remove_all_spawned_nodes")
 
 func _update_config_file() -> Error:
 	var config: ConfigFile = ConfigFile.new()

@@ -15,9 +15,8 @@ spawn_path = NodePath("../Agents")
 script = ExtResource("2_uonn8")
 metadata/_custom_type_script = "uid://c60q2k1auie7c"
 
-[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_multiplayer_spawner")]
+[node name="NodeSerializer" type="Node" parent="AgentSpawner"]
 script = ExtResource("1_41yjh")
-_multiplayer_spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
 [node name="Agents" type="Node" parent="."]

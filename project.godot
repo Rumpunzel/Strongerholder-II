@@ -54,10 +54,11 @@ enabled=PackedStringArray("res://addons/radial_progress/plugin.cfg", "res://addo
 
 [global_group]
 
-PropertiesSerializers="All nodes responsible for serializing persistent property data"
-NodeSerializers="All nodes responsible for serializing persistent, dynamically spawned nodes"
-IntangibleSerializers="All nodes responsible for serializing persistent, unrealiable property data; e.g. concerning multiplayer"
 CharacterControllers=""
+SerializersIntangible="All nodes responsible for serializing persistent, unrealiable property data; e.g. concerning multiplayer"
+SerializersNodes="All nodes responsible for serializing persistent, dynamically spawned nodes"
+SerializersProperties="All nodes responsible for serializing persistent property data"
+Spawners=""
 
 [input]
 
@@ -128,5 +129,4 @@ unpossess={
 
 [physics]
 
-common/physics_jitter_fix=0.0
-common/physics_interpolation=true
+3d/physics_engine="Jolt Physics"

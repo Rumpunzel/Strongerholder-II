@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://gameplay/levels/level.gd" id="1_ywn5t"]
-[ext_resource type="Script" uid="uid://witnma4yody0" path="res://gameplay/levels/spawn_points/ghost_spawner.gd" id="2_bpeee"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="3_sli0y"]
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://gameplay/levels/spawn_points/character_spawner.gd" id="4_fbqqs"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://gameplay/characters/king.tres" id="5_kudci"]
@@ -24,14 +23,6 @@ uv1_scale = Vector3(16, 16, 16)
 [node name="TestLevel" type="Node3D"]
 script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
-
-[node name="GhostSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("ghost_spawn_point", "_local_ghosts")]
-_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
-spawn_path = NodePath("../VisitorGhosts")
-script = ExtResource("2_bpeee")
-ghost_spawn_point = NodePath("../GhostSpawnPoint")
-_local_ghosts = NodePath("../LocalGhosts")
-metadata/_custom_type_script = "uid://witnma4yody0"
 
 [node name="CharacterSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_character_spawn_points")]
 _spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")

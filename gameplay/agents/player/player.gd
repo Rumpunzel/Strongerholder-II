@@ -33,8 +33,10 @@ var available_action: CharacterInteraction:
 
 func _ready() -> void:
 	is_local_player = player_id == multiplayer.get_unique_id()
-	set_multiplayer_authority(player_id)
 	_setup_player()
+	_camera.frame_node(character_controller, true)
+	Game.player_name_changed.connect(_on_player_name_changed)
+	set_multiplayer_authority.call_deferred(player_id)
 	super._ready()
 
 func _process(delta: float) -> void:
@@ -88,7 +90,6 @@ func _update_player(_delta: float) -> void:
 		return
 	_collect_input()
 	if is_disabled: return
-	print("framing")
 	_camera.frame_node(character_controller)
 	if not is_local_player: return
 	# Other code
@@ -135,6 +136,9 @@ func _on_interaction_area_current_interactable_changed(current_interactable: Hit
 		available_action = null
 		return
 	available_action = _create_character_interaction(current_interactable)
+
+func _on_player_name_changed(new_player_name: String) -> void:
+	player_name = new_player_name
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

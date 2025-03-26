@@ -19,7 +19,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	assert(false, "StateMachine._unhandled_input needs to be overriden!")
 
 func _transition_to_next_state(_target_state_path: String, _data: Dictionary = { }) -> void:
-	assert(false, "StateMachine._transition_to_next_state is 'abstract' and needs to be overriden!")
+	assert(false, "StateMachine._transition_to_next_state is 'virtual' and needs to be overriden!")
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

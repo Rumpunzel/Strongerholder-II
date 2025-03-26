@@ -29,7 +29,7 @@ properties/5/path = NodePath(".:_character_controller_path")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="Player" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller", "_state_machine")]
+[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller", "_state_machine")]
 script = ExtResource("1_i6aj8")
 player_name = "Player 1"
 _camera = NodePath("TopDownCamera")

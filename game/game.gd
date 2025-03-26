@@ -8,20 +8,14 @@ signal game_unpaused
 signal save_requested(save_file_path: StringName)
 signal load_requested(save_file_path: StringName)
 
-#signal session_changed(new_session: Session)
-
 signal player_name_changed(player_name: String)
 
 signal game_hosted(ip_address: StringName, port: int)
 signal game_joined(ip_address: StringName, port: int)
 signal stopped_hosting_game
-signal left_game
+signal disconnected_from_multiplayer
 
 @warning_ignore_start("unused_signal")
-signal player_connected(peer_id: int, player: Player)
-## [param player] may be null if the host disconnected
-signal player_disconnected(peer_id: int, player: Player)
-
 signal random_ghost_requested
 @warning_ignore_restore("unused_signal")
 
@@ -48,6 +42,7 @@ var _is_multiplayer: bool = false:
 func _ready() -> void:
 	_load_config()
 	if Engine.is_editor_hint(): return
+	multiplayer.server_disconnected.connect(leave_game)
 	request_load()
 
 func request_pause() -> void:
@@ -81,7 +76,7 @@ func stop_hosting_game() -> void:
 	_is_multiplayer = false
 
 func leave_game() -> void:
-	left_game.emit()
+	disconnected_from_multiplayer.emit()
 	_is_multiplayer = false
 
 func _pause_game() -> void:

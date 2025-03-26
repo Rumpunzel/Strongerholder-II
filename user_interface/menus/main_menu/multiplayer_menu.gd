@@ -13,7 +13,7 @@ func _ready() -> void:
 	Game.player_name_changed.connect(_on_player_name_changed)
 	Game.game_hosted.connect(_on_game_hosted)
 	Game.stopped_hosting_game.connect(_on_stopped_hosting_game)
-	Game.left_game.connect(_on_left_game)
+	Game.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
 	Game.player_name = new_player_name
@@ -53,7 +53,7 @@ func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 func _on_stopped_hosting_game() -> void:
 	_host_ip_address_button.text = ""
 
-func _on_left_game() -> void:
+func _on_disconnected_from_multiplayer() -> void:
 	_join_button.disabled = false
 	_join_button.button_pressed = false
 	_ip_address.editable = true

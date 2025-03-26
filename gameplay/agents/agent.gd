@@ -8,7 +8,6 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export var character_controller: CharacterController:
 	set(new_character_controller):
 		character_controller = new_character_controller
-		name = character_controller.name
 		_setup_character_controller()
 
 @export_group("Configuration")

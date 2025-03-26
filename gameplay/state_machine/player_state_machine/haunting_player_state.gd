@@ -20,7 +20,7 @@ func enter(_previous_state_path: String, data: Dictionary = { }) -> void:
 
 func update(_delta: float) -> void:
 	if player.interaction_input == "unpossess":
-		finished.emit(DEFAULT_STATE)
+		finished.emit(STATE_DEFAULT)
 	if not player.available_action: return
 	if player.available_action.is_action_just_pressed():
 		_haunt_timer.start(player.available_action.type.charge_time)
@@ -46,7 +46,7 @@ func _on_haunt_timer_timeout() -> void:
 		HAUNTED: player.available_action.target,
 		HAUNTING: _haunting_character_controller,
 	}
-	finished.emit(HAUNTING_STATE, data)
+	finished.emit(STATE_HAUNTING, data)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

@@ -30,7 +30,7 @@ func _on_haunt_timer_timeout() -> void:
 		HAUNTED: player.available_action.target,
 		HAUNTING: player.character_controller,
 	}
-	finished.emit(HAUNTING_STATE, date)
+	finished.emit(STATE_HAUNTING, date)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

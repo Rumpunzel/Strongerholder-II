@@ -25,7 +25,7 @@ func _on_character_controller_haunted(haunted_character_controller: CharacterCon
 		HAUNTED: haunted_character_controller,
 		HAUNTING: haunting_character_controller,
 	}
-	finished.emit(HAUNTED_STATE, data)
+	finished.emit(STATE_HAUNTED, data)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

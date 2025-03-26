@@ -3,9 +3,9 @@
 class_name PlayerState
 extends State
 
-const DEFAULT_STATE: StringName = "Default"
-const HAUNTED_STATE: StringName = "Haunted"
-const HAUNTING_STATE: StringName = "Haunting"
+const STATE_DEFAULT: StringName = "Default"
+const STATE_HAUNTED: StringName = "Haunted"
+const STATE_HAUNTING: StringName = "Haunting"
 
 # Data dictionary keys
 const HAUNTED: StringName = "haunted_character_controller"

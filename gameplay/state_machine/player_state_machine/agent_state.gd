@@ -3,8 +3,8 @@
 class_name AgentState
 extends State
 
-const DEFAULT_STATE: StringName = "Default"
-const HAUNTED_STATE: StringName = "Haunted"
+const STATE_DEFAULT: StringName = "Default"
+const STATE_HAUNTED: StringName = "Haunted"
 
 # Data dictionary keys
 const HAUNTING: StringName = "haunting_character_controller"

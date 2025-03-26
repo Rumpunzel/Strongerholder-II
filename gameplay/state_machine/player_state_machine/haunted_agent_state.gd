@@ -29,7 +29,7 @@ func exit() -> void:
 
 func _on_character_controller_unhaunted(unhaunted_character_controller: CharacterController) -> void:
 	if unhaunted_character_controller != agent.character_controller: return
-	finished.emit(DEFAULT_STATE)
+	finished.emit(STATE_DEFAULT)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

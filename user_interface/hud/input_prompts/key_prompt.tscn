@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bgqwt7hjsgn3o"]
 
-[ext_resource type="Script" uid="uid://dw2cr4ecr33u2" path="res://user_interface/heads_up_displays/input_prompts/key_prompt.gd" id="1_iqjhr"]
+[ext_resource type="Script" uid="uid://dw2cr4ecr33u2" path="res://user_interface/hud/input_prompts/key_prompt.gd" id="1_iqjhr"]
 
 [node name="KeyPrompt" type="Button"]
 offset_right = 40.0

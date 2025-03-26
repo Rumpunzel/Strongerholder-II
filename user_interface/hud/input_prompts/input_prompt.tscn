@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3ufd1hkx3mvi"]
 
-[ext_resource type="Script" uid="uid://ebuushpy8m1r" path="res://user_interface/heads_up_displays/input_prompts/input_prompt.gd" id="1_6ubau"]
+[ext_resource type="Script" uid="uid://ebuushpy8m1r" path="res://user_interface/hud/input_prompts/input_prompt.gd" id="1_6ubau"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xrj8a"]
 

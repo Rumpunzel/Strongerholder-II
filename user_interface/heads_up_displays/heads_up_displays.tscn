@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://rdlta1e1aqkb"]
-
-[ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://user_interface/heads_up_displays/heads_up_displays.gd" id="1_hvfod"]
-
-[node name="HeadsUpDisplays" type="CanvasLayer"]
-script = ExtResource("1_hvfod")
-metadata/_edit_lock_ = true

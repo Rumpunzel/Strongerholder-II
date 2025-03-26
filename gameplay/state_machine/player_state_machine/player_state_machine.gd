@@ -9,6 +9,7 @@ extends StateMachine
 @export var _player: Player
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	for state: PlayerState in get_children():
 		state.player = _player
 		state.finished.connect(_transition_to_next_state)
@@ -16,12 +17,15 @@ func _ready() -> void:
 	_state.enter("")
 
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
 	_state.update(delta)
 
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
 	_state.physics_update(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	_state.handle_input(event)
 
 func _transition_to_next_state(target_state_path: String, data: Dictionary = { }) -> void:

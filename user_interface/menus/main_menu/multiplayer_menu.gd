@@ -21,7 +21,7 @@ func _on_player_name_text_changed(new_player_name: String) -> void:
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
 		var ip_address_to_join: StringName = _ip_address.text
-		if ip_address_to_join.is_empty(): ip_address_to_join = MultiplayerSession.DEFAULT_SERVER_IP
+		if ip_address_to_join.is_empty(): ip_address_to_join = Game.DEFAULT_SERVER_IP
 		Game.join_game(ip_address_to_join)
 	else:
 		Game.leave_game()

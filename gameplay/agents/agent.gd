@@ -8,6 +8,7 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export var character_controller: CharacterController:
 	set(new_character_controller):
 		character_controller = new_character_controller
+		name = character_controller.name
 		_setup_character_controller()
 
 @export_group("Configuration")
@@ -37,7 +38,6 @@ func _physics_process(delta: float) -> void:
 static func create(existing_character_controller: CharacterController) -> Agent:
 	var new_agent: Agent = AGENT_SCENE.instantiate()
 	new_agent.character_controller = existing_character_controller
-	new_agent.name = existing_character_controller.name
 	return new_agent
 
 func _setup_character_controller() -> void:

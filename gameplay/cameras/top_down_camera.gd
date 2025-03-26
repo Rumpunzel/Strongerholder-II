@@ -4,12 +4,15 @@ extends Camera3D
 
 const _ray_length: float = 1000.0
 
-@export var distance_off_ground: float = 20.0
-@export var distance_from_follow: float = 20.0
+@export var distance_off_ground: float = 24.0
+@export var distance_from_follow: float = 24.0
 @export var camera_angle_offset: float = 45.0
 @export var camera_turn_angle: float = 90.0
 @export var zoom: float = 1.0
-@export var smoothing_speed: float = 12.0
+
+@warning_ignore("unused_private_class_variable")
+@export_tool_button("Frame origin", "Camera3D") var _frame_origin_action: Callable = frame_point.bind(Vector3.ZERO, true)
+@export var _smoothing_speed: float = 12.0
 
 var _turnIndex: int = 0
 var _point_to_frame: Vector3
@@ -22,7 +25,7 @@ func _ready() -> void:
 	frame_point(Vector3.ZERO, true)
 
 func _process(delta: float) -> void:
-	position = position.move_toward(_position_to_smooth_to, smoothing_speed * delta)
+	position = position.move_toward(_position_to_smooth_to, _smoothing_speed * delta)
 
 func frame_node(node_to_frame: Node3D, instant: bool = false) -> void:
 	assert(node_to_frame)

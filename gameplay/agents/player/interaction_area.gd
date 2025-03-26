@@ -13,26 +13,18 @@ signal current_interactable_changed(current_interactable: HitBox)
 		character_controller = new_character_controller
 		_check_enabled()
 		_clean_hit_boxes_in_area()
-		if not character_controller:
-			character = null
+		if not character_controller: return
+		if not character_controller.character:
+			_collision_shape.shape = null
+			_collision_shape.position = Vector3.ZERO
 			return
-		character = character_controller.character
-		follow_node(character_controller)
+		character_controller.character.interaction_area_shape.configure_collision_shape(_collision_shape)
 
 @export var _ignore_areas_from_same_character_controller: bool = true
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
 @export var _highlight_material: Material
-
-var character: Character:
-	set(new_character):
-		character = new_character
-		if not character:
-			_collision_shape.shape = null
-			_collision_shape.position = Vector3.ZERO
-			return
-		character.interaction_area_shape.configure_collision_shape(_collision_shape)
 
 var current_interactable: HitBox:
 	set(new_current_interactable):
@@ -43,9 +35,6 @@ var current_interactable: HitBox:
 		current_interactable.apply_material_overlay(_highlight_material)
 
 var _hit_boxes_in_area: Array[HitBox] = [ ]
-
-func follow_node(node: Node3D) -> void:
-	transform = node.transform
 
 func nearest_hit_box_in_area() -> HitBox:
 	var nearest_hit_box: HitBox = null

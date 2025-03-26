@@ -6,7 +6,6 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	visible = get_tree().paused
 	Game.game_paused.connect(open_menu)
-	Game.game_unpaused.connect(close_menu)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return

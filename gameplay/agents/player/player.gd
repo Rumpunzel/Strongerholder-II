@@ -32,7 +32,10 @@ var available_action: CharacterInteraction:
 		Gameplay.available_action_changed.emit(available_actions)
 
 func _ready() -> void:
-	is_local_player = player_id == multiplayer.get_unique_id()
+	if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
+	else:
+		player_id = Game.HOST_ID
+		is_local_player = true
 	_setup_player()
 	_camera.frame_node(character_controller, true)
 	Game.player_name_changed.connect(_on_player_name_changed)
@@ -71,6 +74,7 @@ func update_character_controller(delta: float) -> void:
 	_apply_input_direction_to_character_controller(delta)
 	# TODO: Pathfinding
 	# else: super._update_character_controller(delta)
+	_camera.frame_node(character_controller)
 	if not is_local_player: return
 	# Other code
 
@@ -90,7 +94,6 @@ func _update_player(_delta: float) -> void:
 		return
 	_collect_input()
 	if is_disabled: return
-	_camera.frame_node(character_controller)
 	if not is_local_player: return
 	# Other code
 

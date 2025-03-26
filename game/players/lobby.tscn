@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://citi18cutmbiw"]
+[gd_scene load_steps=5 format=3 uid="uid://citi18cutmbiw"]
 
 [ext_resource type="Script" uid="uid://7ifllupku6cd" path="res://game/players/lobby.gd" id="1_ltjv6"]
+[ext_resource type="Script" uid="uid://c60q2k1auie7c" path="res://game/better_multiplayer_spawner.gd" id="2_26gjw"]
 [ext_resource type="Script" uid="uid://b2l2cxx5y325t" path="res://game/players/lobby_toaster.gd" id="2_evyxh"]
 [ext_resource type="Script" uid="uid://ct7g1ldiml4be" path="res://game/players/players.gd" id="3_26gjw"]
 
@@ -11,6 +12,8 @@ _players = NodePath("Players")
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
 spawn_path = NodePath("../Players")
+script = ExtResource("2_26gjw")
+metadata/_custom_type_script = "uid://c60q2k1auie7c"
 
 [node name="Toaster" type="Node" parent="."]
 script = ExtResource("2_evyxh")

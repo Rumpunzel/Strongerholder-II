@@ -3,11 +3,11 @@
 class_name NodeSerializer
 extends Node
 
-@export var _multiplayer_spawner: MultiplayerSpawner
+@export var _multiplayer_spawner: BetterMultiplayerSpawner
 
 func _enter_tree() -> void:
 	var parent: Node = get_parent()
-	if not _multiplayer_spawner and parent is MultiplayerSpawner:
+	if not _multiplayer_spawner and parent is BetterMultiplayerSpawner:
 		_multiplayer_spawner = parent
 
 ## Collects all data for dynamically spawned nodes
@@ -23,39 +23,12 @@ static func collect_node_data(node_serializers: Array[Node]) -> Dictionary[NodeP
 ## @returns a [Dictionary] with scene paths to [NodePath]s
 func collect_nodes() -> Dictionary[StringName, Array]:
 	assert(_multiplayer_spawner)
-	var spawnable_scene_count: int = _multiplayer_spawner.get_spawnable_scene_count()
-	# All scene paths spawned by the MultiplayerSpawner
-	var spawnable_scene_paths: Array[StringName] = [ ]
-	for index: int in range(spawnable_scene_count):
-		var spawnable_scene_path: StringName = _multiplayer_spawner.get_spawnable_scene(index)
-		spawnable_scene_paths.append(spawnable_scene_path)
-	
-	var spawn_node: Node = get_node(_multiplayer_spawner.spawn_path)
-	# Nodes are collected in a Dictionar with scene paths to NodePaths
-	var nodes_to_serialize: Dictionary[StringName, Array] = { }
-	for node: Node in spawn_node.get_children():
-		var node_scene_path: NodePath = node.scene_file_path
-		if not spawnable_scene_paths.has(node_scene_path): continue
-		var node_paths: Array[NodePath] = nodes_to_serialize.get_or_add(node_scene_path, [ ])
-		node_paths.append(node.get_path())
-	return nodes_to_serialize
+	return _multiplayer_spawner.get_all_spawned_nodes()
 
 func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 	assert(_multiplayer_spawner)
-	var spawnable_scene_count: int = _multiplayer_spawner.get_spawnable_scene_count()
-	var spawnable_scene_paths: Array[StringName] = [ ]
-	for index: int in range(spawnable_scene_count):
-		var spawnable_scene_path: NodePath = _multiplayer_spawner.get_spawnable_scene(index)
-		spawnable_scene_paths.append(spawnable_scene_path)
-	
 	# Clean state
-	var nodes_freed: int = 0
-	var spawn_node: Node = get_node(_multiplayer_spawner.spawn_path)
-	for node: Node in spawn_node.get_children():
-		var node_scene_path: StringName = node.scene_file_path
-		if not spawnable_scene_paths.has(node_scene_path): continue
-		spawn_node.remove_child(node)
-		node.queue_free()
+	var nodes_freed: int = _multiplayer_spawner.remove_all_spawned_nodes()
 	print_debug("Removed %d nodes for %s" % [nodes_freed, get_path()])
 	
 	var nodes_restored: int = 0
@@ -69,6 +42,7 @@ func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 			var parent_node: Node = get_node(parent_node_path)
 			node_to_spawn.name = node_path.get_name(node_path.get_name_count() - 1)
 			parent_node.add_child(node_to_spawn)
+			nodes_restored += 1
 	print_debug("Restored %d nodes for %s" % [nodes_restored, get_path()])
 
 func serialize(save_file_path: StringName) -> Error:

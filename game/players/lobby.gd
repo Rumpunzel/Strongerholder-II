@@ -1,5 +1,6 @@
 @tool
 @icon("uid://bsnfjvi6jpfrm")
+class_name Lobby
 extends Node
 
 signal multiplayer_started
@@ -14,15 +15,11 @@ signal player_joined(player: Player)
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	assert(_players)
+	multiplayer.multiplayer_peer = null
 	multiplayer.peer_connected.connect(_on_player_connected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	
-	Game.game_hosted.connect(host_game)
-	Game.game_joined.connect(join_game)
-	Game.stopped_hosting_game.connect(leave_multiplayer)
-	Game.disconnected_from_multiplayer.connect(leave_multiplayer)
 
 func host_game(ip_address: StringName, port: int) -> Error:
 	var server_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()

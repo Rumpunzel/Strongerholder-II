@@ -19,7 +19,6 @@ config/icon="res://helmet.png"
 [autoload]
 
 Game="*res://game/game.gd"
-Lobby="res://game/players/lobby.tscn"
 UserInterface="res://user_interface/user_interface.tscn"
 ToastParty="*res://addons/toastparty/toast-autoload.gd"
 Gameplay="*res://gameplay/gameplay.gd"

@@ -15,12 +15,13 @@ spawn_path = NodePath("../Players")
 script = ExtResource("2_26gjw")
 metadata/_custom_type_script = "uid://c60q2k1auie7c"
 
+[node name="Players" type="Node" parent="."]
+script = ExtResource("3_26gjw")
+metadata/_custom_type_script = "uid://ct7g1ldiml4be"
+
 [node name="Toaster" type="Node" parent="."]
 script = ExtResource("2_evyxh")
 metadata/_custom_type_script = "uid://b68u3p1bd6gb"
-
-[node name="Players" type="Node" parent="."]
-script = ExtResource("3_26gjw")
 
 [connection signal="game_joined" from="." to="Toaster" method="_on_game_joined"]
 [connection signal="multiplayer_started" from="." to="Toaster" method="toast_success" binds= ["Hosted game!"]]

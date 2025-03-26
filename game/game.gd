@@ -29,27 +29,32 @@ const HOST_ID: int = 1
 
 const _PLAYER_SECTION: StringName = "player"
 
-var _is_multiplayer: bool = false:
-	set(new_is_multiplayer):
-		_is_multiplayer = new_is_multiplayer
-		if _is_multiplayer: request_unpause()
-
 @export var player_name: String:
 	set(new_player_name):
 		player_name = new_player_name
 		player_name_changed.emit(player_name)
 
+@onready var _lobby: Lobby
+
+var _pause_requested: bool = false
+
 func _ready() -> void:
 	_load_config()
 	if Engine.is_editor_hint(): return
+	_initialize_lobby()
 	multiplayer.server_disconnected.connect(leave_game)
 	request_load()
 
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if _pause_requested and not multiplayer.multiplayer_peer and not get_tree().paused: _pause_game()
+
 func request_pause() -> void:
-	if not _is_multiplayer and not get_tree().paused: _pause_game()
+	_pause_requested = true
 
 func request_unpause() -> void:
 	if get_tree().paused: _unpause_game()
+	_pause_requested = false
 
 func request_save(save_file_path: StringName = SAVE_FILE_PATH) -> void:
 	save_requested.emit(save_file_path)
@@ -63,22 +68,24 @@ func quit_game(save_file_path: StringName = SAVE_FILE_PATH) -> void:
 	get_tree().quit()
 
 func host_game() -> void:
+	_lobby.host_game(DEFAULT_SERVER_IP, PORT)
 	game_hosted.emit(DEFAULT_SERVER_IP, PORT)
-	_is_multiplayer = true
+	_unpause_game()
 
 func join_game(ip_address: String) -> void:
 	assert(ip_address.is_valid_ip_address())
 	_unspawn_everything()
+	_lobby.join_game(ip_address, PORT)
 	game_joined.emit(ip_address, PORT)
-	_is_multiplayer = true
+	_unpause_game()
 
 func stop_hosting_game() -> void:
+	_lobby.leave_multiplayer()
 	stopped_hosting_game.emit()
-	_is_multiplayer = false
 
 func leave_game() -> void:
+	_lobby.leave_multiplayer()
 	disconnected_from_multiplayer.emit()
-	_is_multiplayer = false
 	request_load()
 
 func _pause_game() -> void:
@@ -114,3 +121,8 @@ func _load_config() -> Error:
 	player_name = config.get_value(_PLAYER_SECTION, "player_name")
 	print_debug("Loaded config!")
 	return Error.OK
+
+func _initialize_lobby() -> void:
+	var lobby_scene: PackedScene = preload("uid://citi18cutmbiw")
+	_lobby = lobby_scene.instantiate()
+	add_child(_lobby)

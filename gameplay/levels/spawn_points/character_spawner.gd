@@ -1,7 +1,7 @@
 @tool
 @icon("uid://c8dtrg5rbcbl5")
 class_name CharacterSpawner
-extends BetterMultiplayerSpawner
+extends Spawner
 
 @export_group("Configuration")
 @export var _character_spawn_points: CharacterSpawnPoints
@@ -9,8 +9,9 @@ extends BetterMultiplayerSpawner
 func _ready() -> void:
 	assert(_character_spawn_points)
 	_character_spawn_points.spawn_all_character_controllers(spawn_node)
+	super._ready()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
 	if not _character_spawn_points: warnings.append("Missing CharacterSpawnPoints reference.")
-	return warnings
+	return warnings + super._get_configuration_warnings()

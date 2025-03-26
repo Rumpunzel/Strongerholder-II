@@ -9,7 +9,7 @@ extends PlayerState
 var _haunted_character_controller: CharacterController
 var _haunting_character_controller: CharacterController
 
-func enter(_previous_state_path: String, data: Dictionary = { }) -> void:
+func enter(_previous_state_path: String, data: Dictionary[String, Variant] = { }) -> void:
 	assert(data.has_all([HAUNTED, HAUNTING]))
 	assert(data.size() == 2)
 	_haunted_character_controller = data[HAUNTED]
@@ -21,6 +21,7 @@ func enter(_previous_state_path: String, data: Dictionary = { }) -> void:
 func update(_delta: float) -> void:
 	if player.interaction_input == "unpossess":
 		finished.emit(STATE_DEFAULT)
+		return
 	if not player.available_action: return
 	if player.available_action.is_action_just_pressed():
 		_haunt_timer.start(player.available_action.type.charge_time)
@@ -39,10 +40,24 @@ func exit() -> void:
 	player.unhaunt_character_controller(_haunting_character_controller)
 	Gameplay.character_controller_unhaunted.emit(_haunted_character_controller)
 
+func serialize_data() -> Dictionary[String, Variant]:
+	var serialized_data: Dictionary[String, Variant] = { }
+	serialized_data[HAUNTED] = _haunted_character_controller.get_path()
+	serialized_data[HAUNTING] = _haunting_character_controller.get_path()
+	return serialized_data.merged(super.serialize_data())
+
+func deserialize_data(serialized_data: Dictionary[String, Variant]) -> Dictionary[String, Variant]:
+	var haunted_character_controller_node_path: NodePath = serialized_data[HAUNTED]
+	var haunting_character_controller_node_path: NodePath = serialized_data[HAUNTING]
+	var deserialized_data: Dictionary[String, Variant] = { }
+	deserialized_data[HAUNTED] = get_node(haunted_character_controller_node_path)
+	deserialized_data[HAUNTING] = get_node(haunting_character_controller_node_path)
+	return deserialized_data.merged(super.deserialize_data(serialized_data))
+
 func _on_haunt_timer_timeout() -> void:
 	assert(player.available_action)
 	_haunt_timer.stop()
-	var data: Dictionary = {
+	var data: Dictionary[String, Variant] = {
 		HAUNTED: player.available_action.target,
 		HAUNTING: _haunting_character_controller,
 	}

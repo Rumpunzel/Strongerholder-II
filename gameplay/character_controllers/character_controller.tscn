@@ -7,7 +7,7 @@
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
@@ -22,7 +22,7 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 properties/5/path = NodePath(".:_character_path")
 properties/5/spawn = true
-properties/5/replication_mode = 1
+properties/5/replication_mode = 2
 
 [node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape", "_hit_box") groups=["CharacterControllers"]]
 collision_layer = 2
@@ -34,15 +34,14 @@ _collision_shape = NodePath("CollisionShape3D")
 _hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
 
-[node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer" node_paths=PackedStringArray("_multiplayer_synchronizer")]
+[node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer"]
 script = ExtResource("2_1pdhw")
-_multiplayer_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="HitBox" parent="." node_paths=PackedStringArray("character_controller") instance=ExtResource("3_hkpq7")]
 collision_mask = 0

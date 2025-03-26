@@ -6,7 +6,7 @@ extends Node
 ## Marks the root of this serliazier as unreliable, such as nodes created by multiplayer; are serialized asynchronously
 @export var intangible: bool = false
 
-@export var _multiplayer_synchronizer: MultiplayerSynchronizer
+@export var _synchronizer: Synchronizer
 
 func _ready() -> void:
 	if intangible: add_to_group("IntangibleSerializers")
@@ -24,30 +24,10 @@ static func collect_properties_data(properties_serializers: Array[Node]) -> Dict
 
 ## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 func collect_properties() -> Dictionary[NodePath, Variant]:
-	assert(_multiplayer_synchronizer)
-	var properties_to_serialize: Array[NodePath] = _multiplayer_synchronizer.replication_config.get_properties()
-	var root_node_path: NodePath = _multiplayer_synchronizer.root_path
-	var root_node: Node = get_node(root_node_path)
-	
-	var properties_dict: Dictionary[NodePath, Variant] = { }
-	for property_path: NodePath in properties_to_serialize:
-		var node_path: NodePath = NodePath(property_path.get_concatenated_names())
-		var node: Node = root_node.get_node(node_path)
-		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
-		var property_value: Variant = node.get_indexed(property_node_path)
-		properties_dict[property_path] = property_value
-	return properties_dict
+	return _synchronizer.collect_properties()
 
 func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
-	assert(_multiplayer_synchronizer)
-	var root_node: Node = get_node(_multiplayer_synchronizer.root_path)
-	for property_path: NodePath in collected_properties:
-		var node_path: NodePath = NodePath(property_path.get_concatenated_names())
-		var node: Node = root_node.get_node(node_path)
-		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
-		var property_value: Variant = collected_properties[property_path]
-		node.set_indexed(property_node_path, property_value)
-	print_debug("Restored %d properties for %s" % [collected_properties.size(), get_path()])
+	_synchronizer.restore_state(collected_properties)
 
 func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
@@ -69,5 +49,5 @@ func deserialize(save_file_path: StringName) -> Error:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	if not _multiplayer_synchronizer: warnings.append("Missing MultiplayerSynchronizer reference.")
+	if not _synchronizer: warnings.append("Missing Synchronizer reference.")
 	return warnings

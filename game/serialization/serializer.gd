@@ -61,9 +61,9 @@ func load_world_state(save_file_path: StringName) -> Error:
 	return Error.OK
 
 func collect_data() -> Dictionary[StringName, Dictionary]:
-	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("NodeSerializers")
-	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("PropertiesSerializers")
-	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("IntangibleSerializers")
+	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersNodes")
+	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersProperties")
+	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersIntangible")
 	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
 	var properties_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
 	var intangible_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(intangible_serializers)

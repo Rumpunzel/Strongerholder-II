@@ -23,9 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://rku3rl1yv06c" path="res://protoype_assets/dont_starve_ghosts/wurt.webp" id="21_3eeba"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_faw76"]
-properties/0/path = NodePath(".:_random_frame")
+properties/0/path = NodePath("AnimatedSprite3D:frame")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g5i5u"]
 animations = [{
@@ -193,10 +193,9 @@ metadata/_custom_type_script = "uid://f7j5ijitqy25"
 [node name="SpriteSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_faw76")
 
-[node name="PropertiesSerializer" type="Node" parent="SpriteSynchronizer" node_paths=PackedStringArray("_multiplayer_synchronizer")]
+[node name="PropertiesSerializer" type="Node" parent="SpriteSynchronizer"]
 script = ExtResource("2_xqo7j")
 intangible = true
-_multiplayer_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]

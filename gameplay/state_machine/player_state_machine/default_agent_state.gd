@@ -4,7 +4,7 @@ extends AgentState
 
 @export_group("Configuration")
 
-func enter(_previous_state_path: String, _data: Dictionary = { }) -> void:
+func enter(_previous_state_path: String, _data: Dictionary[String, Variant] = { }) -> void:
 	Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
 
 func update(_delta: float) -> void:
@@ -21,7 +21,7 @@ func exit() -> void:
 
 func _on_character_controller_haunted(haunted_character_controller: CharacterController, haunting_character_controller: CharacterController) -> void:
 	if haunted_character_controller != agent.character_controller: return
-	var data: Dictionary = {
+	var data: Dictionary[String, Variant] = {
 		HAUNTED: haunted_character_controller,
 		HAUNTING: haunting_character_controller,
 	}

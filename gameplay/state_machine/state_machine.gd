@@ -6,7 +6,8 @@ extends Node
 @export_group("Configuration")
 
 func _ready() -> void:
-	for state: State in get_children():
+	if Engine.is_editor_hint(): return
+	for state: State in find_children("*", "State"):
 		state.finished.connect(_transition_to_next_state)
 
 func _process(_delta: float) -> void:

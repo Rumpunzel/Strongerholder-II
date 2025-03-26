@@ -5,7 +5,7 @@ extends PlayerState
 @export_group("Configuration")
 @export var _haunt_timer: Timer
 
-func enter(_previous_state_path: String, _data: Dictionary = { }) -> void:
+func enter(_previous_state_path: String, _data: Dictionary[String, Variant] = { }) -> void:
 	pass
 
 func update(_delta: float) -> void:
@@ -26,7 +26,7 @@ func exit() -> void:
 
 func _on_haunt_timer_timeout() -> void:
 	assert(player.available_action)
-	var date: Dictionary = {
+	var date: Dictionary[String, Variant] = {
 		HAUNTED: player.available_action.target,
 		HAUNTING: player.character_controller,
 	}

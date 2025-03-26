@@ -3,6 +3,9 @@
 class_name State
 extends Node
 
+const NAME: StringName = "name"
+const DATA: StringName = "data"
+
 ## Emitted when the state finishes and wants to transition to another state.
 @warning_ignore("unused_signal")
 signal finished(next_state_path: String, data: Dictionary)
@@ -27,6 +30,12 @@ func handle_input(_event: InputEvent) -> void:
 ## Called by the state machine before changing the active state.
 func exit() -> void:
 	pass
+
+func serialize_data() -> Dictionary[String, Variant]:
+	return { }
+
+func deserialize_data(_serialized_data: Dictionary[String, Variant]) -> Dictionary[String, Variant]:
+	return { }
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

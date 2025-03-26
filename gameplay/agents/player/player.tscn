@@ -1,65 +1,45 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=8 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://gameplay/agents/player/player.gd" id="1_i6aj8"]
-[ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://gameplay/state_machine/player_state_machine/player_state_machine.gd" id="2_8ukje"]
+[ext_resource type="PackedScene" uid="uid://bnt8j7t5q2kd7" path="res://gameplay/agents/player/player_state_machine.tscn" id="2_8ukje"]
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://gameplay/cameras/top_down_camera.tscn" id="2_du4nq"]
-[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://gameplay/state_machine/player_state_machine/default_player_state.gd" id="3_8ukje"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://gameplay/agents/player/interaction_area.tscn" id="4_pfsv8"]
-[ext_resource type="Script" uid="uid://c3t43la47t8vq" path="res://gameplay/state_machine/player_state_machine/haunting_player_state.gd" id="5_y2l5l"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/ghost.tres" id="6_y2l5l"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/character_controllers/character_controller.tscn" id="7_0dv1b"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath(".:name")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 properties/1/path = NodePath(".:player_id")
 properties/1/spawn = true
-properties/1/replication_mode = 1
+properties/1/replication_mode = 2
 properties/2/path = NodePath(".:player_name")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 2
 properties/3/path = NodePath(".:direction_input")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 properties/4/path = NodePath(".:interaction_input")
 properties/4/spawn = true
-properties/4/replication_mode = 1
+properties/4/replication_mode = 2
 properties/5/path = NodePath(".:_character_controller_path")
 properties/5/spawn = true
-properties/5/replication_mode = 1
+properties/5/replication_mode = 2
 
-[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller", "_state_machine")]
+[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller")]
 script = ExtResource("1_i6aj8")
 player_name = "Player 1"
 _camera = NodePath("TopDownCamera")
 _interaction_area = NodePath("Ghost/InteractionArea")
 character_controller = NodePath("Ghost")
-_state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_p0vpi")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_state", "_player")]
-script = ExtResource("2_8ukje")
-_state = NodePath("Default")
+[node name="StateMachine" parent="." node_paths=PackedStringArray("_player") instance=ExtResource("2_8ukje")]
 _player = NodePath("..")
-metadata/_custom_type_script = "uid://hcr7qut3ys1y"
-
-[node name="Default" type="Node" parent="StateMachine" node_paths=PackedStringArray("_haunt_timer")]
-script = ExtResource("3_8ukje")
-_haunt_timer = NodePath("HauntTimer")
-metadata/_custom_type_script = "uid://o0v0yokcefkd"
-
-[node name="HauntTimer" type="Timer" parent="StateMachine/Default"]
-
-[node name="Haunting" type="Node" parent="StateMachine" node_paths=PackedStringArray("_haunt_timer")]
-script = ExtResource("5_y2l5l")
-_haunt_timer = NodePath("HauntTimer")
-metadata/_custom_type_script = "uid://c3t43la47t8vq"
-
-[node name="HauntTimer" type="Timer" parent="StateMachine/Haunting"]
 
 [node name="TopDownCamera" parent="." instance=ExtResource("2_du4nq")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707106, 0.707107, -0.707107, -0.5, 0.5, 16.9706, 24, 16.9706)
@@ -72,6 +52,4 @@ character = ExtResource("6_y2l5l")
 [node name="InteractionArea" parent="Ghost" node_paths=PackedStringArray("character_controller") instance=ExtResource("4_pfsv8")]
 character_controller = NodePath("..")
 
-[connection signal="timeout" from="StateMachine/Default/HauntTimer" to="StateMachine/Default" method="_on_haunt_timer_timeout"]
-[connection signal="timeout" from="StateMachine/Haunting/HauntTimer" to="StateMachine/Haunting" method="_on_haunt_timer_timeout"]
 [connection signal="current_interactable_changed" from="Ghost/InteractionArea" to="." method="_on_interaction_area_current_interactable_changed"]

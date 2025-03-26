@@ -24,14 +24,17 @@ properties/5/path = NodePath(".:_character_path")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_hit_box") groups=["CharacterControllers"]]
+[node name="CharacterController" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape", "_hit_box") groups=["CharacterControllers"]]
 collision_layer = 2
 collision_mask = 3
 input_ray_pickable = false
 velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_pp6cs")
+_collision_shape = NodePath("CollisionShape3D")
 _hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")

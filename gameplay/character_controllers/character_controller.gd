@@ -10,32 +10,24 @@ extends CharacterBody3D
 		character = new_character
 		if not character:
 			name = "CharacterController"
-			collision_layer = 2
-			collision_mask = 3
-			collision_shape = null
 			world_character = null
 			heads_up_anchor = null
+			_collision_shape.shape = null
+			_collision_shape.position = Vector3.ZERO
 			_hit_box.character = null
 			return
 		name = character.name
 		add_to_group(character.get_group_name())
 		collision_layer = character.collision_layer
 		collision_mask = character.collision_mask
-		collision_shape = character.collision_shape.create_collision_shape()
 		world_character = character.create_world_character()
 		heads_up_anchor = character.create_heads_up_anchor()
+		character.collision_shape.configure_collision_shape(_collision_shape)
 		_hit_box.character = character
 
 @export_group("Configuration")
+@export var _collision_shape: CollisionShape3D
 @export var _hit_box: HitBox
-
-var collision_shape: CollisionShape3D:
-	set(new_collision_shape):
-		if collision_shape:
-			collision_shape.queue_free()
-		collision_shape = new_collision_shape
-		if not collision_shape: return
-		add_child(collision_shape, true)
 
 var world_character: WorldCharacter:
 	set(new_world_character):
@@ -93,5 +85,6 @@ func _look_forward(delta: float) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
+	if not _collision_shape: warnings.append("Missing CollisionShape3D reference.")
 	if not _hit_box: warnings.append("Missing HitBox reference.")
 	return warnings

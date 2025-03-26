@@ -1,14 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmk3aay8c7045"]
 
-[ext_resource type="Script" uid="uid://beyuv6a8ge7y6" path="res://gameplay/agents/hit_box.gd" id="1_2m6r6"]
+[ext_resource type="Script" uid="uid://cv2yrhaavvy7d" path="res://gameplay/agents/hit_box.gd" id="1_2m6r6"]
 
-[node name="HitBox" type="Area3D"]
-collision_layer = 32
+[node name="HitBox" type="Area3D" node_paths=PackedStringArray("_collision_shape")]
+collision_layer = 0
 collision_mask = 64
 script = ExtResource("1_2m6r6")
-_ignore_areas_for_same_character_controller = null
-_debub_color = Color(0.992157, 0, 0.247059, 0.419608)
-metadata/_custom_type_script = "uid://beyuv6a8ge7y6"
+_collision_shape = NodePath("CollisionShape3D")
+metadata/_custom_type_script = "uid://cv2yrhaavvy7d"
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+debug_color = Color(0.992157, 0, 0.247059, 0.419608)

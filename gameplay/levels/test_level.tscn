@@ -31,8 +31,9 @@ script = ExtResource("4_fbqqs")
 _character_spawn_points = NodePath("../CharacterSpawnPoints")
 metadata/_custom_type_script = "uid://cnqgk717dgofh"
 
-[node name="NodeSerializer" type="Node" parent="CharacterSpawner"]
+[node name="NodeSerializer" type="Node" parent="CharacterSpawner" node_paths=PackedStringArray("_spawner")]
 script = ExtResource("7_ah70l")
+_spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -9,10 +9,8 @@ extends Area3D
 		_check_enabled()
 		if not character_controller:
 			character = null
-			_character_model = null
 			return
 		character = character_controller.character
-		_character_model = character_controller.character_model
 
 @export var _ignore_areas_from_same_character_controller: bool = true
 
@@ -29,15 +27,13 @@ var character: Character:
 		collision_layer = character.hit_box_layer
 		character.hit_box_shape.configure_collision_shape(_collision_shape)
 
-var _character_model: CharacterModel
-
 func apply_material_override(material: Material) -> void:
-	if not _character_model: return
-	_character_model.apply_material_override(material)
+	if not character_controller.character_model: return
+	character_controller.character_model.apply_material_override(material)
 
 func apply_material_overlay(material: Material) -> void:
-	if not _character_model: return
-	_character_model.apply_material_overlay(material)
+	if not character_controller.character_model: return
+	character_controller.character_model.apply_material_overlay(material)
 
 func _check_enabled() -> void:
 	if Engine.is_editor_hint(): return

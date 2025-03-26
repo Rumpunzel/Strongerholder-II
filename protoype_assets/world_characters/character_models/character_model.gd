@@ -3,8 +3,6 @@
 class_name CharacterModel
 extends Node3D
 
-@onready var _meshes: Array[MeshInstance3D] = gather_all_geometry_instances_on(self)
-
 @export_group("Configuration")
 @export var _animation_tree: AnimationTree
 
@@ -25,11 +23,11 @@ func play_animation(normalized_velocity: Vector3) -> void:
 		_state_machine.travel("Idle")
 
 func apply_material_override(material: Material) -> void:
-	for mesh: MeshInstance3D in _meshes:
+	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
 		mesh.material_override = material
 
 func apply_material_overlay(material: Material) -> void:
-	for mesh: MeshInstance3D in _meshes:
+	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
 		mesh.material_overlay = material
 
 func _get_configuration_warnings() -> PackedStringArray:

@@ -12,22 +12,19 @@ extends StateMachine
 var _serialized_state: Dictionary[StringName, Variant]:
 	get: return { State.NAME: _state.name, State.DATA: _state.serialize_data() }
 	set(new_serialized_state):
-		print("%s new serialized data: %s" % [_player.name, new_serialized_state])
-		print("%s old serialized data: %s" % [_player.name, _serialized_state])
 		if new_serialized_state == _serialized_state: return
 		var state_name: String = new_serialized_state[State.NAME]
-		print("state_name: %s" % state_name)
 		if state_name.is_empty(): return
 		_state = get_node(state_name)
 		var serialized_data: Dictionary[String, Variant] = new_serialized_state[State.DATA]
 		var data: Dictionary[String, Variant] = _state.deserialize_data(serialized_data)
-		print("entering state: %s" % serialized_data)
 		_state.enter("", data)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	for state: PlayerState in find_children("*", "PlayerState"):
 		state.player = _player
+	_state.enter("")
 	super._ready()
 
 func _process(delta: float) -> void:

@@ -15,5 +15,5 @@ func update_available_actions(available_actions: Array[CharacterInteraction]) ->
 static func _initialize_heads_up_displays() -> HUD:
 	var hud_scene: PackedScene = preload("uid://rdlta1e1aqkb")
 	var hud: HUD = hud_scene.instantiate()
-	Game.add_child(hud)
+	Gameplay.add_child(hud)
 	return hud

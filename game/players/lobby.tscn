@@ -27,5 +27,5 @@ metadata/_custom_type_script = "uid://b68u3p1bd6gb"
 [connection signal="multiplayer_started" from="." to="Toaster" method="toast_success" binds= ["Hosted game!"]]
 [connection signal="multiplayer_stopped" from="." to="Players" method="_on_multiplayer_stopped"]
 [connection signal="multiplayer_stopped" from="." to="Toaster" method="toast_info" binds= ["Left multiplayer!"]]
-[connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]
 [connection signal="player_joined" from="." to="Players" method="_on_player_joined"]
+[connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]

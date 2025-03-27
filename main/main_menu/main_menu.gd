@@ -19,7 +19,8 @@ signal leave_game_requested
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		visible = false
+		var edited_scene: Node = EditorInterface.get_edited_scene_root()
+		visible = edited_scene == self or edited_scene == owner
 		return
 	visible = get_tree().paused
 

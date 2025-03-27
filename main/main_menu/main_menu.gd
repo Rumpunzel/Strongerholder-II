@@ -3,6 +3,7 @@
 class_name MainMenu
 extends CanvasLayer
 
+signal pause_requested
 signal unpause_requested
 signal quit_requested
 
@@ -24,16 +25,24 @@ func _ready() -> void:
 		return
 	visible = get_tree().paused
 
+func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
+	if event.is_action_released("open_menu") and not visible:
+		open_menu()
+		pause_requested.emit()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_released("close_menu") and visible:
+		close_menu()
+		unpause_requested.emit()
+		get_viewport().set_input_as_handled()
+
 func open_menu() -> void:
-	if visible: return
 	show()
 
 func close_menu() -> void:
-	if not visible: return
 	hide()
 
 func _on_continue_pressed() -> void:
-	unpause_requested.emit()
 	close_menu()
 
 func _on_save_pressed() -> void:

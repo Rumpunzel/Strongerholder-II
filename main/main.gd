@@ -24,27 +24,18 @@ func _ready() -> void:
 	_load_config()
 	if Engine.is_editor_hint(): return
 	#Gameplay.load_requested.connect(request_pause)
+	pause_game()
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if _pause_requested and not multiplayer.multiplayer_peer and not get_tree().paused: _pause_game()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint(): return
-	if event.is_action_released("open_menu"):
-		_main_menu.open_menu()
-		request_pause()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_released("close_menu"):
-		if get_tree().paused: _unpause_game()
-		_main_menu.close_menu()
-		get_viewport().set_input_as_handled()
-
-func request_pause() -> void:
+func pause_game() -> void:
 	_pause_requested = true
 
-func request_unpause() -> void:
+func unpause_game() -> void:
+	get_tree().paused = false
 	_pause_requested = false
 
 func quit_game(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:

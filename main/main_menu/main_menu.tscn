@@ -19,7 +19,6 @@ texture = SubResource("GradientTexture1D_nb4k0")
 font_size = 42
 
 [node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("multiplayer_menu")]
-process_mode = 3
 layer = 100
 script = ExtResource("1_bwjgb")
 multiplayer_menu = NodePath("PanelContainer/Menu/VBoxContainer/MultiplayerMenu")

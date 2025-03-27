@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://main/main_menu/main_menu.tscn" id="3_5un7r"]
 
 [node name="Main" type="Node" node_paths=PackedStringArray("_main_menu")]
+process_mode = 3
 script = ExtResource("1_emt18")
 player_name = "Stefe"
 _main_menu = NodePath("MainMenu")
@@ -21,6 +22,7 @@ metadata/_custom_type_script = "uid://c38qwchvf73qr"
 [connection signal="host_game_requested" from="MainMenu" to="PlayerLobby" method="host_game"]
 [connection signal="join_game_requested" from="MainMenu" to="PlayerLobby" method="join_game"]
 [connection signal="leave_game_requested" from="MainMenu" to="PlayerLobby" method="disconnect_from_multiplayer"]
+[connection signal="pause_requested" from="MainMenu" to="." method="pause_game"]
 [connection signal="quit_requested" from="MainMenu" to="." method="quit_game"]
 [connection signal="stop_hosting_game_requested" from="MainMenu" to="PlayerLobby" method="disconnect_from_multiplayer"]
-[connection signal="unpause_requested" from="MainMenu" to="." method="request_unpause"]
+[connection signal="unpause_requested" from="MainMenu" to="." method="unpause_game"]

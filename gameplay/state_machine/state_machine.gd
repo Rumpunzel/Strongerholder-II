@@ -7,12 +7,13 @@ extends Node
 @export var _initial_state: GDScript
 
 ## This is used for serialization purposes; serves otherwise no purpose
+@warning_ignore("unused_private_class_variable")
 var _serialized_state: Dictionary[StringName, Variant]:
 	get: return _get_state().serialize()
 	set(new_serialized_state):
-		if _get_state() and new_serialized_state == _serialized_state: return
-		_set_state(State.from_serialized_state(new_serialized_state, self))
-		_get_state().enter()
+		var new_sate: State = State.from_serialized_state(new_serialized_state)
+		_set_state(new_sate.deserialize(new_serialized_state, self))
+		_get_state().enter(self)
 
 func script_is_valid_state(script: Script) -> bool:
 	if script.get_global_name() == "State": return true
@@ -21,7 +22,7 @@ func script_is_valid_state(script: Script) -> bool:
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	_get_state().enter()
+	_get_state().enter(self)
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -40,7 +41,7 @@ func _transition_to_next_state(target_state: State) -> void:
 	var previous_state: State = _get_state()
 	_set_state(target_state)
 	_get_state().finished.connect(_transition_to_next_state)
-	_get_state().enter(previous_state)
+	_get_state().enter(self, previous_state)
 
 func _get_state() -> State:
 	assert(false, "StateMachine._get_state is 'virtual' and needs to be overriden!")

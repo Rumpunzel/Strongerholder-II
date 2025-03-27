@@ -12,21 +12,13 @@ func _init(
 ) -> void:
 	_haunted_character_controller = haunted_character_controller
 	_haunting_character_controller = haunting_character_controller
-	Gameplay.character_controller_haunted.emit(_haunted_character_controller, _haunting_character_controller)
 
-static func from_serialized_state(serialized_state: Dictionary[StringName, Variant], any_node: Node) -> HauntedAgentState:
-	var state: HauntedAgentState = super.from_serialized_state(serialized_state, any_node)
-	var haunted_character_controller_node_path: NodePath = serialized_state[HAUNTED]
-	var haunting_character_controller_node_path: NodePath = serialized_state[HAUNTING]
-	state._haunted_character_controller = any_node.get_node(haunted_character_controller_node_path)
-	state._haunting_character_controller = any_node.get_node(haunting_character_controller_node_path)
-	return state
-
-func enter(previous_state: State = null) -> void:
+func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunting_character_controller.visible = false
 	interaction_area.character_controllers_to_ignore_areas_from.append(_haunted_character_controller)
 	camera.frame_node(_haunted_character_controller, true)
-	super.enter(previous_state)
+	Gameplay.character_controller_haunted.emit(_haunted_character_controller, _haunting_character_controller)
+	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
 	if interaction_input == "unpossess":
@@ -57,6 +49,18 @@ func serialize() -> Dictionary[StringName, Variant]:
 	serialized_state[HAUNTED] = _haunted_character_controller.get_path()
 	serialized_state[HAUNTING] = _haunting_character_controller.get_path()
 	return serialized_state
+
+func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> HauntingPlayerState:
+	var state: HauntingPlayerState = super.deserialize(serialized_state, state_machine)
+	var haunted_character_controller_node_path: NodePath = serialized_state[HAUNTED]
+	var haunting_character_controller_node_path: NodePath = serialized_state[HAUNTING]
+	print("haunted_character_controller_node_path: %s" % haunted_character_controller_node_path)
+	print("haunting_character_controller_node_path: %s" % haunting_character_controller_node_path)
+	state._haunted_character_controller = state_machine.get_node(haunted_character_controller_node_path)
+	state._haunting_character_controller = state_machine.get_node(haunting_character_controller_node_path)
+	print("state._haunted_character_controller: %s" % state._haunted_character_controller)
+	print("state._haunting_character_controller: %s" % state._haunting_character_controller)
+	return state
 
 func _on_haunt_timer_timeout() -> void:
 	assert(available_action)

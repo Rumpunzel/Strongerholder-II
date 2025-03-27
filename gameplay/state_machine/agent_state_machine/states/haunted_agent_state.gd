@@ -16,19 +16,11 @@ func _init(
 	_haunting_character_controller = haunting_character_controller
 	Gameplay.character_controller_unhaunted.connect(_on_character_controller_unhaunted)
 
-static func from_serialized_state(serialized_state: Dictionary[StringName, Variant], any_node: Node) -> HauntedAgentState:
-	var state: HauntedAgentState = super.from_serialized_state(serialized_state, any_node)
-	var haunted_character_controller_node_path: NodePath = serialized_state[HAUNTED]
-	var haunting_character_controller_node_path: NodePath = serialized_state[HAUNTING]
-	state._haunted_character_controller = any_node.get_node(haunted_character_controller_node_path)
-	state._haunting_character_controller = any_node.get_node(haunting_character_controller_node_path)
-	return state
-
-func enter(previous_state: State = null) -> void:
+func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted_character_controller)
 	assert(_haunting_character_controller)
 	_haunted_character_controller.character_model.apply_material_overlay(HAUNTED_MATERIAL)
-	super.enter(previous_state)
+	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
 	pass
@@ -45,6 +37,14 @@ func serialize() -> Dictionary[StringName, Variant]:
 	serialized_state[HAUNTED] = _haunted_character_controller.get_path()
 	serialized_state[HAUNTING] = _haunting_character_controller.get_path()
 	return serialized_state
+
+func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> HauntedAgentState:
+	var state: HauntedAgentState = super.deserialize(serialized_state, state_machine)
+	var haunted_character_controller_node_path: NodePath = serialized_state[HAUNTED]
+	var haunting_character_controller_node_path: NodePath = serialized_state[HAUNTING]
+	state._haunted_character_controller = state_machine.get_node(haunted_character_controller_node_path)
+	state._haunting_character_controller = state_machine.get_node(haunting_character_controller_node_path)
+	return state
 
 func _on_character_controller_unhaunted(unhaunted_character_controller: CharacterController) -> void:
 	if unhaunted_character_controller != agent.character_controller: return

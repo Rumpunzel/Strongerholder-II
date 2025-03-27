@@ -11,7 +11,7 @@ const PREVIOUS_STATE_SCRIPT: StringName = "previous_state_script"
 
 var _previous_state_script: GDScript
 
-static func from_serialized_state(serialized_state: Dictionary[StringName, Variant], _any_node: Node) -> State:
+static func from_serialized_state(serialized_state: Dictionary[StringName, Variant]) -> State:
 	var state_script_path: String = serialized_state[STATE_SCRIPT]
 	var state_script: GDScript = load(state_script_path)
 	var state: State = state_script.new()
@@ -22,8 +22,9 @@ static func from_serialized_state(serialized_state: Dictionary[StringName, Varia
 
 ## Called by the state machine upon changing the active state.
 ## The [param data] parameter is a dictionary with arbitrary data the state can use to initialize itself.
-func enter(previous_state: State = null) -> void:
+func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	if previous_state: _previous_state_script = previous_state.get_script()
+	finished.connect(state_machine._transition_to_next_state)
 
 ## Called by the state machine on the engine's main loop tick.
 func update(_delta: float) -> void:
@@ -48,6 +49,9 @@ func serialize() -> Dictionary[StringName, Variant]:
 	}
 	if _previous_state_script: serialized_state[PREVIOUS_STATE_SCRIPT] = _previous_state_script.resource_path
 	return serialized_state
+
+func deserialize(_serialized_state: Dictionary[StringName, Variant], _state_machine: StateMachine) -> State:
+	return self
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

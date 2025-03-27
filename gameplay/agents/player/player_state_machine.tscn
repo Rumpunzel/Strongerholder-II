@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bnt8j7t5q2kd7"]
 
 [ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://gameplay/state_machine/player_state_machine/player_state_machine.gd" id="1_fqpfm"]
-[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://gameplay/state_machine/player_state_machine/default_player_state.gd" id="2_qo8vh"]
+[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://gameplay/state_machine/player_state_machine/states/default_player_state.gd" id="2_qo8vh"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_yv55l"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="3_hfxkc"]
 

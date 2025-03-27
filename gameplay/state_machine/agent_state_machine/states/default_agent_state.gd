@@ -1,9 +1,9 @@
 class_name DefaultAgentState
 extends AgentState
 
-func enter(previous_state: State = null) -> void:
+func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
-	super.enter(previous_state)
+	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
 	pass

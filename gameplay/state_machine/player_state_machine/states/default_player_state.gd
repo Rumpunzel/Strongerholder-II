@@ -1,12 +1,14 @@
 class_name DefaultPlayerState
 extends PlayerState
 
-func enter(previous_state: State = null) -> void:
-	super.enter(previous_state)
+func enter(state_machine: StateMachine, previous_state: State = null) -> void:
+	print("enter")
+	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
 	if not available_action: return
 	if available_action.is_action_just_pressed():
+		print("here")
 		_on_haunt_timer_timeout()
 		#_haunt_timer.start(available_action.type.charge_time)
 	#if available_action.is_action_just_released():
@@ -24,4 +26,5 @@ func exit() -> void:
 
 func _on_haunt_timer_timeout() -> void:
 	assert(available_action)
+	print("there")
 	finished.emit(HauntingPlayerState.new(available_action.target, character_controller))

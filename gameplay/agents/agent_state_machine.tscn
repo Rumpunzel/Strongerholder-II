@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bcacx3jed1ihs"]
 
-[ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://gameplay/state_machine/agent_state_machine/agent_state_machine.gd" id="1_uwxlv"]
-[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://gameplay/state_machine/agent_state_machine/states/default_agent_state.gd" id="2_ihdu3"]
+[ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://gameplay/agents/state_machine/agent_state_machine.gd" id="1_uwxlv"]
+[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://gameplay/agents/state_machine/states/default_agent_state.gd" id="2_ihdu3"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_jmrf7"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_uec0s"]
 

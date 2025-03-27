@@ -53,10 +53,10 @@ enabled=PackedStringArray("res://addons/radial_progress/plugin.cfg", "res://addo
 
 [global_group]
 
-CharacterControllers=""
 SerializersNodes="All nodes responsible for serializing persistent, dynamically spawned nodes"
 SerializersProperties="All nodes responsible for serializing persistent property data"
 Spawners=""
+Characters=""
 
 [input]
 

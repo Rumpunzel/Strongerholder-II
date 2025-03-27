@@ -5,9 +5,9 @@ signal save_requested(save_file_path: StringName)
 signal load_requested(save_file_path: StringName)
 
 @warning_ignore_start("unused_signal")
-signal request_agent_for_character_controller(character_controller: CharacterController)
-signal character_controller_haunted(haunted_character_controller: CharacterController, haunting_character_controller: CharacterController)
-signal character_controller_unhaunted(unhaunted_character_controller: CharacterController)
+signal request_agent_for_character(character: Character)
+signal character_haunted(haunted_character: Character, haunting_character: Character)
+signal character_unhaunted(unhaunted_character: Character)
 @warning_ignore_restore("unused_signal")
 
 @onready var _hud: HUD = _initialize_heads_up_displays()

@@ -8,10 +8,10 @@ extends Spawner
 
 func _ready() -> void:
 	assert(_character_spawn_points)
-	_character_spawn_points.spawn_all_character_controllers(spawn_node)
+	_character_spawn_points.spawn_all_characters(spawn_node)
 	super._ready()
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _character_spawn_points: warnings.append("Missing CharacterSpawnPoints reference.")
 	return warnings + super._get_configuration_warnings()

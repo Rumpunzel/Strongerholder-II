@@ -1,0 +1,99 @@
+@tool
+@icon("uid://bnaoddhf8gssj")
+class_name Character
+extends CharacterBody3D
+
+@export var character_profile: CharacterProfile:
+	set(new_character):
+		if character_profile:
+			remove_from_group(character_profile.get_group_name())
+		character_profile = new_character
+		_check_processing()
+		if not character_profile:
+			name = "Character"
+			character_model = null
+			heads_up_anchor = null
+			_collision_shape.shape = null
+			_collision_shape.position = Vector3.ZERO
+			_hit_box.character_profile = null
+			return
+		name = character_profile.name
+		add_to_group(character_profile.get_group_name())
+		collision_layer = character_profile.collision_layer
+		collision_mask = character_profile.collision_mask
+		character_model = character_profile.create_character_model()
+		heads_up_anchor = character_profile.create_heads_up_anchor()
+		character_profile.collision_shape.configure_collision_shape(_collision_shape)
+		_hit_box.character_profile = character_profile
+
+@export_group("Configuration")
+@export var _collision_shape: CollisionShape3D
+@export var _hit_box: HitBox
+
+var character_model: CharacterModel:
+	set(new_character_model):
+		if character_model:
+			character_model.queue_free()
+		character_model = new_character_model
+		if not character_model: return
+		add_child.call_deferred(character_model, true)
+
+var heads_up_anchor: HeadsUpAnchor:
+	set(new_heads_up_anchor):
+		if heads_up_anchor:
+			heads_up_anchor.queue_free()
+		heads_up_anchor = new_heads_up_anchor
+		if not heads_up_anchor: return
+		add_child.call_deferred(heads_up_anchor, true)
+
+var look_target: Vector3 = Vector3.BACK
+
+var _normalized_velocity: Vector3 = Vector3.ZERO
+var _is_on_floor: bool = true
+
+var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+## This is used for serialization purposes; serves otherwise no purpose
+var _character_profile_path: String:
+	get: return character_profile.resource_path if character_profile else ""
+	set(new_character_profile_path):
+		if new_character_profile_path == _character_profile_path: return
+		if character_profile or _character_profile_path.is_empty(): return
+		assert(_character_profile_path.is_absolute_path())
+		character_profile = load(_character_profile_path)
+
+func _ready() -> void:
+	_check_processing()
+
+func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	_is_on_floor = is_on_floor()
+	if not _is_on_floor: _apply_gravity(delta)
+	move_and_slide()
+	_look_forward(delta)
+	_normalized_velocity = Vector3(velocity.x / character_profile.move_speed, velocity.y / _gravity, velocity.z / character_profile.move_speed)
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if character_model: character_model.play_animation(_normalized_velocity)
+
+func _apply_gravity(delta: float) -> void:
+	velocity.y -= _gravity * delta
+
+func _look_forward(delta: float) -> void:
+	look_target = position + velocity
+	look_target.y = position.y
+	if look_target.is_equal_approx(transform.origin): return
+	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
+	transform = transform.interpolate_with(transform_looking_into_direction, character_profile.turn_rate * delta)
+
+func _check_processing() -> void:
+	var enabled: bool = character_profile != null
+	set_process(enabled)
+	set_physics_process(enabled)
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	if not _collision_shape: warnings.append("Missing CollisionShape3D reference.")
+	if not _hit_box: warnings.append("Missing HitBox reference.")
+	return warnings

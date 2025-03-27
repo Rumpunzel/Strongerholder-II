@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_qws77"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
-properties/0/path = NodePath(".:_character_controller_path")
+properties/0/path = NodePath(".:_character_path")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 

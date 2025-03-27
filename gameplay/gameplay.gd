@@ -1,5 +1,4 @@
 @icon("uid://bes0anop2dh5u")
-#@icon("uid://csn6gjpak3yxk")
 extends Node
 
 signal save_requested(save_file_path: StringName)

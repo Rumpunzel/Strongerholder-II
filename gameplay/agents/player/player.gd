@@ -1,7 +1,7 @@
 @tool
 @icon("uid://nl71yast8tsi")
 class_name Player
-extends Agent
+extends Node
 
 signal player_info_changed(player_info: Dictionary[StringName, Variant])
 
@@ -23,14 +23,16 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		player_name = new_player_name
 		player_info_changed.emit(get_player_info())
 
-@export_group("Configuration")
-@export var _camera: TopDownCamera
-@export var _interaction_area: InteractionArea
+@export var character_controller: CharacterController:
+	set(new_character_controller):
+		character_controller = new_character_controller
+		if not character_controller: return
+		if not is_node_ready(): await ready
+		camera.frame_node(character_controller, true)
 
-var is_local_player: bool = true:
-	set(new_is_local_player):
-		is_local_player = new_is_local_player
-		if _camera: _camera.current = is_local_player
+@export_group("Configuration")
+@export var camera: TopDownCamera
+@export var interaction_area: InteractionArea
 
 var direction_input: Vector2 = Vector2.ZERO
 var interaction_input: StringName = ""
@@ -41,19 +43,37 @@ var available_action: CharacterInteraction:
 		if available_action: available_actions.append(available_action)
 		Gameplay.update_available_actions(available_actions)
 
+var is_local_player: bool = true:
+	set(new_is_local_player):
+		is_local_player = new_is_local_player
+		camera.current = is_local_player
+
+## This is used for serialization purposes; serves otherwise no purpose
+var _character_controller_path: NodePath:
+	get: return character_controller.get_path() if character_controller else NodePath()
+	set(new_character_controller_path):
+		if new_character_controller_path == _character_controller_path: return
+		if character_controller or _character_controller_path.is_empty(): return
+		await get_tree().process_frame
+		character_controller = get_node(_character_controller_path)
+
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	#if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
 	#else:
 		#player_id = PlayerLobby.HOST_ID
 		#is_local_player = true
 	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
-	_setup_player()
-	_camera.frame_node(character_controller, true)
-	super._ready()
+	#camera.frame_node(character_controller, true)
+	_collect_input()
 
-func _process(delta: float) -> void:
-	_update_player(delta)
-	super._process(delta)
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		camera.frame_node(character_controller, true)
+		return
+	_collect_input()
+	if not is_local_player: return
+	# Other code
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -84,38 +104,8 @@ func get_player_info() -> Dictionary[StringName, Variant]:
 	validate_player_info(player_info)
 	return player_info
 
-func update_character_controller(delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if is_disabled: return
-	_apply_input_direction_to_character_controller(delta)
-	# TODO: Pathfinding
-	# else: super._update_character_controller(delta)
-	_camera.frame_node(character_controller)
-	if not is_local_player: return
-	# Other code
-
-func haunt_character_controller(haunted_character_controller: CharacterController) -> void:
-	character_controller = haunted_character_controller
-
-func unhaunt_character_controller(haunting_character_controller: CharacterController) -> void:
-	character_controller = haunting_character_controller
-
-func _setup_player() -> void:
-	if Engine.is_editor_hint(): return
-	_collect_input()
-
-func _update_player(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		_camera.frame_node(character_controller, true)
-		return
-	_collect_input()
-	if is_disabled: return
-	if not is_local_player: return
-	# Other code
-
 func _setup_character_controller() -> void:
-	_interaction_area.character_controller = character_controller
-	super._setup_character_controller()
+	interaction_area.character_controller = character_controller
 
 func _collect_input() -> void:
 	if not is_local_player: return
@@ -125,30 +115,12 @@ func _collect_input() -> void:
 	if Input.is_action_pressed("interact"): interaction_input = "interact"
 	elif Input.is_action_pressed("unpossess"): interaction_input = "unpossess"
 
-func _apply_input_direction_to_character_controller(delta: float) -> void:
-	assert(character_controller)
-	var move_speed: float = character_controller.character.move_speed
-	var acceleration: float = character_controller.character.acceleration * delta
-	var velocity: Vector3 = character_controller.velocity
-	if direction_input:
-		var adjusted_direction_input: Vector2 = _camera.get_adjusted_movement(direction_input)
-		velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
-		velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, acceleration)
-		velocity.z = move_toward(velocity.z, 0.0, acceleration)
-	character_controller.velocity = velocity
-
 func _create_character_interaction(for_hit_box: HitBox) -> CharacterInteraction:
 	return CharacterInteraction.new(
 		character_controller,
 		for_hit_box.character_controller,
 		preload("uid://cuoqy5wkfjika"),
 	)
-
-func _check_disabled() -> void:
-	if Engine.is_editor_hint(): return
-	is_disabled = not character_controller
 
 func _on_interaction_area_current_interactable_changed(current_interactable: HitBox) -> void:
 	if not current_interactable:
@@ -161,6 +133,6 @@ func _on_player_name_changed(new_player_name: String) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	if not _camera: warnings.append("Missing Camera reference.")
-	if not _interaction_area: warnings.append("Missing InteractionArea reference.")
-	return warnings + super._get_configuration_warnings()
+	if not camera: warnings.append("Missing Camera reference.")
+	if not interaction_area: warnings.append("Missing InteractionArea reference.")
+	return warnings

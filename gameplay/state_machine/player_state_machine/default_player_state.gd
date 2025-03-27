@@ -9,14 +9,15 @@ func enter(_previous_state_path: String, _data: Dictionary[String, Variant] = { 
 	pass
 
 func update(_delta: float) -> void:
-	if not player.available_action: return
-	if player.available_action.is_action_just_pressed():
-		_haunt_timer.start(player.available_action.type.charge_time)
-	if player.available_action.is_action_just_released():
+	if not available_action: return
+	if available_action.is_action_just_pressed():
+		_haunt_timer.start(available_action.type.charge_time)
+	if available_action.is_action_just_released():
 		_haunt_timer.stop()
 
 func physics_update(delta: float) -> void:
-	player.update_character_controller(delta)
+	apply_input_direction(delta)
+	camera.frame_node(character_controller)
 
 func handle_input(_event: InputEvent) -> void:
 	pass
@@ -25,10 +26,10 @@ func exit() -> void:
 	_haunt_timer.stop()
 
 func _on_haunt_timer_timeout() -> void:
-	assert(player.available_action)
+	assert(available_action)
 	var date: Dictionary[String, Variant] = {
-		HAUNTED: player.available_action.target,
-		HAUNTING: player.character_controller,
+		HAUNTED: available_action.target,
+		HAUNTING: character_controller,
 	}
 	finished.emit(STATE_HAUNTING, date)
 

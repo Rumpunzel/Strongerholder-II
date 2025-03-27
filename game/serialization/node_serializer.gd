@@ -29,10 +29,12 @@ func collect_nodes() -> Dictionary[StringName, Array]:
 func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 	assert(_spawner)
 	# Clean state
-	var nodes_freed: int = _spawner.remove_all_spawned_nodes()
-	print_debug("Removed %d nodes for %s" % [nodes_freed, get_path()])
+	var nodes_freed: Array[NodePath] = _spawner.remove_all_spawned_nodes()
+	print_debug("Removed %s for %s" % [nodes_freed, _spawner.get_path()])
 	
-	var nodes_restored: int = 0
+	await get_tree().process_frame
+	
+	var nodes_restored: Array[NodePath] = [ ]
 	for node_scene_path: StringName in collected_nodes:
 		var node_paths: Array[NodePath] = collected_nodes[node_scene_path]
 		var scene_to_spawn: PackedScene = load(node_scene_path)
@@ -43,8 +45,8 @@ func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 			var parent_node: Node = get_node(parent_node_path)
 			node_to_spawn.name = node_path.get_name(node_path.get_name_count() - 1)
 			parent_node.add_child(node_to_spawn)
-			nodes_restored += 1
-	print_debug("Restored %d nodes for %s" % [nodes_restored, get_path()])
+			nodes_restored.append(node_to_spawn.get_path())
+	print_debug("Restored %s for %s" % [nodes_restored, _spawner.get_path()])
 
 func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())

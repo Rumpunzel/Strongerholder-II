@@ -9,9 +9,8 @@ properties/0/path = NodePath(".:_character_controller_path")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 
-[node name="Agent" type="Node" node_paths=PackedStringArray("_state_machine")]
+[node name="Agent" type="Node"]
 script = ExtResource("1_u7v0r")
-_state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://cs7if1mfalxq5"
 
 [node name="AgentSynchronizer" type="MultiplayerSynchronizer" parent="."]

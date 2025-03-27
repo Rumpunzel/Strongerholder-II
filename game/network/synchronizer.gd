@@ -23,4 +23,4 @@ func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
 		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
 		var property_value: Variant = collected_properties[property_path]
 		node.set_indexed(property_node_path, property_value)
-	print_debug("Restored %d properties for %s" % [collected_properties.size(), get_path()])
+	print_debug("Restored %s properties for %s" % [collected_properties, root_path])

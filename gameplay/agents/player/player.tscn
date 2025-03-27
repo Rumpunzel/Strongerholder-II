@@ -28,12 +28,11 @@ properties/5/path = NodePath(".:_character_controller_path")
 properties/5/spawn = true
 properties/5/replication_mode = 2
 
-[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller", "_state_machine")]
+[node name="1" type="Node" node_paths=PackedStringArray("character_controller", "camera", "interaction_area")]
 script = ExtResource("1_i6aj8")
-_camera = NodePath("TopDownCamera")
-_interaction_area = NodePath("Ghost/InteractionArea")
 character_controller = NodePath("Ghost")
-_state_machine = NodePath("StateMachine")
+camera = NodePath("TopDownCamera")
+interaction_area = NodePath("Ghost/InteractionArea")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

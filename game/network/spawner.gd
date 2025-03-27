@@ -26,14 +26,14 @@ func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
 		spawned_nodes[node_scene_path] = node_paths
 	return spawned_nodes
 
-func remove_all_spawned_nodes() -> int:
-	var nodes_freed: int = 0
+func remove_all_spawned_nodes() -> Array[NodePath]:
+	var nodes_freed: Array[NodePath] = [ ]
 	var spawnable_scene_paths: Array[String] = get_spawnable_scene_paths()
 	for node: Node in spawn_node.get_children():
 		if not spawnable_scene_paths.has(node.scene_file_path): continue
+		nodes_freed.append(node.get_path())
 		spawn_node.remove_child(node)
 		node.queue_free()
-		nodes_freed += 1
 	return nodes_freed
 
 func _get_configuration_warnings() -> PackedStringArray:

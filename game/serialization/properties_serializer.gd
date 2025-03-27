@@ -5,18 +5,26 @@ extends Node
 
 enum Type {
 	## Properties will be restored normally
-	NORMAL,
+	NORMAL = 0,
 	## Marks this serliazier as unreliable, such as multiplayer peers
 	##  will try to restore normally and then potentialy restor asynchronously if not found
-	INTANGIBLE,
+	INTANGIBLE = 64,
 	## Marks the root of this serliazier as unreliable and important, such as state data of multiplayer peers
 	##  will try to restore normally and discard if not found
-	EPHEMERAL,
+	EPHEMERAL = 128,
 }
 
 @export var type: Type = Type.NORMAL
 
+## Lower [code]restoriation_order[/code] will be restored first
+##  if [code]<0[/code] order is based on [code]type[/code]
+@export var _restoriation_order: int = -1
+
+@export_group("Configuration")
 @export var _synchronizer: Synchronizer
+
+var restoriation_order: int:
+	get: return _restoriation_order if _restoriation_order >=0 else type
 
 func _ready() -> void:
 	add_to_group("SerializersProperties")
@@ -25,13 +33,17 @@ func _ready() -> void:
 		_synchronizer = parent
 
 ## Collects all properties data
-## @returns a [Dictionary] with [NodePath]s of the responsible [PropertiesSerializer] to the properties data
-static func collect_properties_data(properties_serializers: Array[Node]) -> Dictionary[NodePath, Dictionary]:
-	var properties_data: Dictionary[NodePath, Dictionary] = { }
+## @returns a [Dictionary] with [int]s representing the restoration order
+##  to a [Dictionary] [NodePath]s of the responsible [PropertiesSerializer] to the properties data
+static func collect_properties_data(properties_serializers: Array[Node]) -> Dictionary[int, Dictionary]:
+	var properties_data: Dictionary[int, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in properties_serializers:
 		# Properties are collected in a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
-		properties_data[properties_serializer.get_path()] = collected_properties
+		var restoration_order: int = properties_serializer.restoriation_order
+		var properties_data_for_restoration_order: Dictionary[NodePath, Dictionary] = properties_data.get_or_add(restoration_order, { } as Dictionary[NodePath, Dictionary])
+		properties_data_for_restoration_order[properties_serializer.get_path()] = collected_properties
+		properties_data[restoration_order] = properties_data_for_restoration_order
 	return properties_data
 
 ## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]

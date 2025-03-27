@@ -74,7 +74,7 @@ func collect_data() -> Dictionary[StringName, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersNodes")
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersProperties")
 	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
-	var properties_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
+	var properties_data: Dictionary[int, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
 	return {
 		NODES: node_data,
 		PROPERTIES: properties_data.merged(_queued_intangible_data),
@@ -90,9 +90,9 @@ func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 	
 	await get_tree().process_frame
 	
-	var properties_data: Dictionary[NodePath, Dictionary] = collected_data[PROPERTIES]
-	assert(properties_data is Dictionary[NodePath, Dictionary])
-	restore_properties(properties_data)
+	var properties_data: Dictionary[int, Dictionary] = collected_data[PROPERTIES]
+	assert(properties_data is Dictionary[int, Dictionary])
+	restore_properties_in_restoration_order(properties_data)
 
 func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 	for node_serializer_path: NodePath in node_data:
@@ -102,7 +102,19 @@ func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 		assert(node_serializer)
 		node_serializer.restore_state(collected_nodes)
 
-func restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> void:
+func restore_properties_in_restoration_order(properties_data: Dictionary[int, Dictionary]) -> void:
+	var restoration_order: Array[int] = properties_data.keys()
+	# Ensure restoration order
+	restoration_order.sort()
+	for restoration_orer: int in restoration_order:
+		var collected_properties: Dictionary[NodePath, Dictionary] = properties_data[restoration_orer]
+		assert(collected_properties is Dictionary[NodePath, Dictionary])
+		print_debug("Started restoring properties for restoration_order: %d" % restoration_orer)
+		_restore_properties(collected_properties)
+		print_debug("Finished restoring properties for restoration_order: %d" % restoration_orer)
+	if not _queued_intangible_data.is_empty(): print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
+
+func _restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> void:
 	for properties_serializer_path: NodePath in properties_data:
 		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
 		assert(collected_properties is Dictionary[NodePath, Variant])
@@ -129,7 +141,6 @@ func restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> vo
 				# Ignore
 				printerr("Could not find EPHEMERAL PropertiesSerializer at %s; skipped!" % properties_serializer_path)
 			_: push_error("PropertiesSerializer.Type %s not implemented!" % serliazer_type)
-	if not _queued_intangible_data.is_empty(): print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return

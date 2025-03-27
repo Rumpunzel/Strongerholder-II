@@ -42,7 +42,6 @@ metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
 [node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer" node_paths=PackedStringArray("_synchronizer")]
 script = ExtResource("2_1pdhw")
-_restoriation_order = null
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 

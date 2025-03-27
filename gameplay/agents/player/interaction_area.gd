@@ -10,17 +10,20 @@ signal current_interactable_changed(current_interactable: HitBox)
 
 @export var character_controller: CharacterController:
 	set(new_character_controller):
+		if character_controller and character_controllers_to_ignore_areas_from.has(character_controller):
+			character_controllers_to_ignore_areas_from.erase(character_controller)
 		character_controller = new_character_controller
 		_check_enabled()
 		_clean_hit_boxes_in_area()
 		if not character_controller: return
+		character_controllers_to_ignore_areas_from.append(character_controller)
 		if not character_controller.character:
 			_collision_shape.shape = null
 			_collision_shape.position = Vector3.ZERO
 			return
 		character_controller.character.interaction_area_shape.configure_collision_shape(_collision_shape)
 
-@export var _ignore_areas_from_same_character_controller: bool = true
+@export var character_controllers_to_ignore_areas_from: Array[CharacterController] = [ ]
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
@@ -63,7 +66,7 @@ func _check_enabled() -> void:
 	_collision_shape.disabled = not is_enabled
 
 func _is_ignored(hit_box: HitBox) -> bool:
-	return _ignore_areas_from_same_character_controller and hit_box.character_controller == character_controller
+	return character_controllers_to_ignore_areas_from.has(hit_box.character_controller)
 
 func _on_hit_box_entered(hit_box: HitBox) -> void:
 	if current_interactable: return

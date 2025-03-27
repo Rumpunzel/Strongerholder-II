@@ -14,8 +14,8 @@ const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 var _pause_requested: bool = false
 
 func _ready() -> void:
-	_load_config()
 	if Engine.is_editor_hint(): return
+	_load_config()
 	#Gameplay.load_requested.connect(request_pause)
 	pause_game()
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)

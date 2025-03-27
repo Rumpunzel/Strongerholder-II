@@ -15,6 +15,7 @@ color = Color(0, 0, 0, 1)
 group = 0
 move_speed = 8.0
 acceleration = 48.0
+deceleration = 48.0
 turn_rate = 12.0
 collision_shape = ExtResource("3_0y2lj")
 hit_box_shape = ExtResource("4_ithgo")

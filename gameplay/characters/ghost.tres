@@ -36,6 +36,7 @@ color = Color(0, 0, 0, 1)
 group = 1
 move_speed = 6.0
 acceleration = 64.0
+deceleration = 16.0
 turn_rate = 12.0
 collision_shape = SubResource("Resource_aj5ki")
 hit_box_shape = SubResource("Resource_mcvja")

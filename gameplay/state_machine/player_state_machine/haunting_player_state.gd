@@ -15,8 +15,8 @@ func enter(previous_state_path: String, data: Dictionary[String, Variant] = { })
 	_haunted_character_controller = data[HAUNTED]
 	_haunting_character_controller = data[HAUNTING]
 	_haunting_character_controller.visible = false
+	interaction_area.character_controllers_to_ignore_areas_from.append(_haunted_character_controller)
 	Gameplay.character_controller_haunted.emit(_haunted_character_controller, _haunting_character_controller)
-	print("previous_state_path: %s" % previous_state_path)
 	if previous_state_path.is_empty(): camera.frame_node(_haunted_character_controller, true)
 
 func update(_delta: float) -> void:
@@ -39,6 +39,7 @@ func handle_input(_event: InputEvent) -> void:
 
 func exit() -> void:
 	_haunting_character_controller.visible = true
+	interaction_area.character_controllers_to_ignore_areas_from.erase(_haunted_character_controller)
 	Gameplay.character_controller_unhaunted.emit(_haunted_character_controller)
 
 func serialize_data() -> Dictionary[String, Variant]:

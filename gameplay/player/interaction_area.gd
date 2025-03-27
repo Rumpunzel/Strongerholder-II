@@ -14,7 +14,7 @@ signal current_interactable_changed(current_interactable: HitBox)
 			characters_to_ignore_areas_from.erase(character)
 		character = new_character
 		_check_enabled()
-		_clean_hit_boxes_in_area()
+		clean_hit_boxes_in_area()
 		if not character: return
 		characters_to_ignore_areas_from.append(character)
 		if not character.character_profile:
@@ -47,7 +47,7 @@ func nearest_hit_box_in_area() -> HitBox:
 			nearest_hit_box = near_hit_box
 	return nearest_hit_box
 
-func _clean_hit_boxes_in_area() -> void:
+func clean_hit_boxes_in_area() -> void:
 	if _hit_boxes_in_area.is_empty(): return
 	var cleaned_hit_boxes_in_area: Array[HitBox] = []
 	var removed_hit_boxes_in_area: Array[HitBox] = []

@@ -16,6 +16,7 @@ func _init(
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunting_character.visible = false
 	interaction_area.characters_to_ignore_areas_from.append(_haunted_character)
+	interaction_area.clean_hit_boxes_in_area()
 	camera.frame_node(_haunted_character, true)
 	Gameplay.character_haunted.emit(_haunted_character, _haunting_character)
 	super.enter(state_machine, previous_state)
@@ -42,6 +43,7 @@ func handle_input(_event: InputEvent) -> void:
 func exit() -> void:
 	_haunting_character.visible = true
 	interaction_area.characters_to_ignore_areas_from.erase(_haunted_character)
+	interaction_area.clean_hit_boxes_in_area()
 	Gameplay.character_unhaunted.emit(_haunted_character)
 
 func serialize() -> Dictionary[StringName, Variant]:

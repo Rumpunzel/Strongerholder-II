@@ -3,14 +3,26 @@
 class_name PropertiesSerializer
 extends Node
 
-## Marks the root of this serliazier as unreliable, such as nodes created by multiplayer; are serialized asynchronously
-@export var intangible: bool = false
+enum Type {
+	## Properties will be restored normally
+	NORMAL,
+	## Marks this serliazier as unreliable, such as multiplayer peers
+	##  will try to restore normally and then potentialy restor asynchronously if not found
+	INTANGIBLE,
+	## Marks the root of this serliazier as unreliable and important, such as state data of multiplayer peers
+	##  will try to restore normally and discard if not found
+	EPHEMERAL,
+}
+
+@export var type: Type = Type.NORMAL
 
 @export var _synchronizer: Synchronizer
 
 func _ready() -> void:
-	if intangible: add_to_group("IntangibleSerializers")
-	else: add_to_group("PropertiesSerializers")
+	add_to_group("SerializersProperties")
+	var parent: Node = get_parent()
+	if not _synchronizer and parent is Synchronizer:
+		_synchronizer = parent
 
 ## Collects all properties data
 ## @returns a [Dictionary] with [NodePath]s of the responsible [PropertiesSerializer] to the properties data

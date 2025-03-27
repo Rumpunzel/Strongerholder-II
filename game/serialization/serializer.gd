@@ -10,7 +10,6 @@ signal loading_finished
 
 const NODES: StringName = "nodes"
 const PROPERTIES: StringName = "properties"
-const INTANGIBLE: StringName = "intangible"
 
 const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
 
@@ -34,6 +33,15 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			var array_to_merge: Array = dictionary[key]
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
+
+static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override_non_normal: bool = false) -> void:
+	assert(node)
+	if node is PropertiesSerializer:
+		var properties_serializer: PropertiesSerializer = node
+		if override_non_normal or properties_serializer.type == PropertiesSerializer.Type.NORMAL:
+			properties_serializer.type = as_type
+	for child: Node in node.get_children():
+		mark_all_child_serializers_for(child, as_type)
 
 func _ready() -> void:
 	Gameplay.save_requested.connect(save_world_state)
@@ -65,19 +73,16 @@ func load_world_state(save_file_path: StringName) -> Error:
 func collect_data() -> Dictionary[StringName, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersNodes")
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersProperties")
-	var intangible_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersIntangible")
 	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
 	var properties_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
-	var intangible_data: Dictionary[NodePath, Dictionary] = PropertiesSerializer.collect_properties_data(intangible_serializers)
 	return {
 		NODES: node_data,
-		PROPERTIES: properties_data,
-		INTANGIBLE: intangible_data,
+		PROPERTIES: properties_data.merged(_queued_intangible_data),
 	}
 
 func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
-	assert(collected_data.has_all([NODES, PROPERTIES, INTANGIBLE]))
-	assert(collected_data.size() == 3)
+	assert(collected_data.has_all([NODES, PROPERTIES]))
+	assert(collected_data.size() == 2)
 	
 	var node_data: Dictionary[NodePath, Dictionary] = collected_data[NODES]
 	assert(node_data is Dictionary[NodePath, Dictionary])
@@ -88,10 +93,6 @@ func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 	var properties_data: Dictionary[NodePath, Dictionary] = collected_data[PROPERTIES]
 	assert(properties_data is Dictionary[NodePath, Dictionary])
 	restore_properties(properties_data)
-	
-	var intangible_data: Dictionary[NodePath, Dictionary] = collected_data[INTANGIBLE]
-	assert(intangible_data is Dictionary[NodePath, Dictionary])
-	restore_properties(intangible_data, true)
 
 func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 	for node_serializer_path: NodePath in node_data:
@@ -101,21 +102,34 @@ func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 		assert(node_serializer)
 		node_serializer.restore_state(collected_nodes)
 
-func restore_properties(properties_data: Dictionary[NodePath, Dictionary], allow_async: bool = false) -> void:
+func restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> void:
 	for properties_serializer_path: NodePath in properties_data:
 		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
 		assert(collected_properties is Dictionary[NodePath, Variant])
+		
 		var properties_serializer: PropertiesSerializer = get_node_or_null(properties_serializer_path)
-		if properties_serializer: properties_serializer.restore_state(collected_properties)
-		elif not allow_async: printerr("Could not find PropertiesSerializer at %s; skipped!" % properties_serializer_path)
-		else:
-			# Queue for later restoration
-			_queued_intangible_data[properties_serializer_path] = collected_properties
-			if not get_tree().node_added.is_connected(_on_node_added):
-				get_tree().node_added.connect(_on_node_added)
-				print_debug("Started listening to nodes being added...")
-			print_debug("Could not find PropertiesSerializer at %s; queuing restoration for later..." % properties_serializer_path)
-	if allow_async: print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
+		if properties_serializer:
+			# [PropertiesSerializer] found, restore normally
+			properties_serializer.restore_state(collected_properties)
+			continue
+		
+		var serliazer_type: PropertiesSerializer.Type = properties_serializer.type
+		match serliazer_type:
+			PropertiesSerializer.Type.NORMAL:
+				# This is an error and should be looked at if it occurs after development
+				printerr("Could not find PropertiesSerializer at %s; skipped!" % properties_serializer_path)
+			PropertiesSerializer.Type.INTANGIBLE:
+				# Queue for later restoration
+				_queued_intangible_data[properties_serializer_path] = collected_properties
+				print_debug("Could not find PropertiesSerializer at %s; queuing restoration for later..." % properties_serializer_path)
+				if not get_tree().node_added.is_connected(_on_node_added):
+					get_tree().node_added.connect(_on_node_added)
+					print_debug("Started listening to nodes being added...")
+			PropertiesSerializer.Type.EPHEMERAL:
+				# Ignore
+				printerr("Could not find EPHEMERAL PropertiesSerializer at %s; skipped!" % properties_serializer_path)
+			_: push_error("PropertiesSerializer.Type %s not implemented!" % serliazer_type)
+	if not _queued_intangible_data.is_empty(): print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return

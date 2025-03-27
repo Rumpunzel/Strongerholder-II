@@ -12,7 +12,7 @@ extends StateMachine
 var _serialized_state: Dictionary[StringName, Variant]:
 	get: return { State.NAME: _state.name, State.DATA: _state.serialize_data() }
 	set(new_serialized_state):
-		if new_serialized_state == _serialized_state: return
+		if _state and new_serialized_state == _serialized_state: return
 		var state_name: String = new_serialized_state[State.NAME]
 		if state_name.is_empty(): return
 		_state = get_node(state_name)

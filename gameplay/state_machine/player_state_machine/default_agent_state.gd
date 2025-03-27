@@ -5,7 +5,8 @@ extends AgentState
 @export_group("Configuration")
 
 func enter(_previous_state_path: String, _data: Dictionary[String, Variant] = { }) -> void:
-	Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
+	if not Gameplay.character_controller_haunted.is_connected(_on_character_controller_haunted):
+		Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
 
 func update(_delta: float) -> void:
 	pass

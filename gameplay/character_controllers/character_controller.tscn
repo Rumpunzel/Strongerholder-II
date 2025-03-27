@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvj6b1m2b65hd"]
+[gd_scene load_steps=6 format=3 uid="uid://cvj6b1m2b65hd"]
 
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/character_controllers/character_controller.gd" id="1_pp6cs"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_1pdhw"]
+[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_8fovg"]
 [ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://gameplay/agents/hit_box.tscn" id="3_hkpq7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
@@ -36,9 +37,12 @@ metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
+script = ExtResource("2_8fovg")
+metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
-[node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer"]
+[node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer" node_paths=PackedStringArray("_synchronizer")]
 script = ExtResource("2_1pdhw")
+_synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

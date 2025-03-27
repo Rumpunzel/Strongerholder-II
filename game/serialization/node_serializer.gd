@@ -5,7 +5,8 @@ extends Node
 
 @export var _spawner: Spawner
 
-func _enter_tree() -> void:
+func _ready() -> void:
+	add_to_group("SerializersNodes")
 	var parent: Node = get_parent()
 	if not _spawner and parent is Spawner:
 		_spawner = parent

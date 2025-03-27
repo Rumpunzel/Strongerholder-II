@@ -42,10 +42,11 @@ var available_action: CharacterInteraction:
 		Gameplay.update_available_actions(available_actions)
 
 func _ready() -> void:
-	if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
-	else:
-		player_id = PlayerLobby.HOST_ID
-		is_local_player = true
+	#if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
+	#else:
+		#player_id = PlayerLobby.HOST_ID
+		#is_local_player = true
+	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
 	_setup_player()
 	_camera.frame_node(character_controller, true)
 	super._ready()

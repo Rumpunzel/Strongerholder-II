@@ -21,8 +21,9 @@ func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
 	for node: Node in spawn_node.get_children():
 		var node_scene_path: StringName = node.scene_file_path
 		if not spawnable_scene_paths.has(node_scene_path): continue
-		var node_paths: Array[String] = spawned_nodes.get_or_add(node_scene_path, [ ])
+		var node_paths: Array[NodePath] = spawned_nodes.get_or_add(node_scene_path, [ ] as Array[NodePath])
 		node_paths.append(node.get_path())
+		spawned_nodes[node_scene_path] = node_paths
 	return spawned_nodes
 
 func remove_all_spawned_nodes() -> int:

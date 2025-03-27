@@ -1,19 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbjgxgkshjet6"]
+[gd_scene load_steps=5 format=3 uid="uid://bbjgxgkshjet6"]
 
 [ext_resource type="Script" uid="uid://cs7if1mfalxq5" path="res://gameplay/agents/agent.gd" id="1_u7v0r"]
 [ext_resource type="PackedScene" uid="uid://bcacx3jed1ihs" path="res://gameplay/agents/agent_state_machine.tscn" id="2_0obik"]
+[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_qws77"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
 properties/0/path = NodePath(".:_character_controller_path")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 
-[node name="Agent" type="Node"]
+[node name="Agent" type="Node" node_paths=PackedStringArray("_state_machine")]
 script = ExtResource("1_u7v0r")
+_state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://cs7if1mfalxq5"
 
 [node name="AgentSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_qws77")
+script = ExtResource("2_qws77")
+metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_agent") instance=ExtResource("2_0obik")]
 _agent = NodePath("..")

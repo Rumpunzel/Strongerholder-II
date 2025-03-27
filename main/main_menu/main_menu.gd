@@ -33,13 +33,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event.is_action_released("close_menu") and visible:
 		close_menu()
-		unpause_requested.emit()
 		get_viewport().set_input_as_handled()
 
 func open_menu() -> void:
 	show()
 
 func close_menu() -> void:
+	unpause_requested.emit()
 	hide()
 
 func _on_continue_pressed() -> void:

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=9 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://gameplay/agents/player/player.gd" id="1_i6aj8"]
+[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_0dv1b"]
 [ext_resource type="PackedScene" uid="uid://bnt8j7t5q2kd7" path="res://gameplay/agents/player/player_state_machine.tscn" id="2_8ukje"]
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://gameplay/cameras/top_down_camera.tscn" id="2_du4nq"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://gameplay/agents/player/interaction_area.tscn" id="4_pfsv8"]
@@ -27,15 +28,18 @@ properties/5/path = NodePath(".:_character_controller_path")
 properties/5/spawn = true
 properties/5/replication_mode = 2
 
-[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller")]
+[node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller", "_state_machine")]
 script = ExtResource("1_i6aj8")
 _camera = NodePath("TopDownCamera")
 _interaction_area = NodePath("Ghost/InteractionArea")
 character_controller = NodePath("Ghost")
+_state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_p0vpi")
+script = ExtResource("2_0dv1b")
+metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_player") instance=ExtResource("2_8ukje")]
 _player = NodePath("..")

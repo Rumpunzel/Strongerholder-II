@@ -54,7 +54,6 @@ enabled=PackedStringArray("res://addons/radial_progress/plugin.cfg", "res://addo
 [global_group]
 
 CharacterControllers=""
-SerializersIntangible="All nodes responsible for serializing persistent, unrealiable property data; e.g. concerning multiplayer"
 SerializersNodes="All nodes responsible for serializing persistent, dynamically spawned nodes"
 SerializersProperties="All nodes responsible for serializing persistent property data"
 Spawners=""
@@ -111,7 +110,7 @@ interact={
 }
 unpossess={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":70,"key_label":0,"unicode":102,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":113,"location":0,"echo":false,"script":null)
 ]
 }
 

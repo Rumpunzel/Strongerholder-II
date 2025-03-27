@@ -9,7 +9,7 @@ extends CharacterModel
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_random_ghost()
-	Game.random_ghost_requested.connect(_random_ghost)
+	#Game.random_ghost_requested.connect(_random_ghost)
 
 func play_animation(_normalized_velocity: Vector3) -> void:
 	pass

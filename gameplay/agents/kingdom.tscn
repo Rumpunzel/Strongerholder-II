@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://game/serialization/node_serializer.gd" id="1_41yjh"]
 [ext_resource type="Script" uid="uid://ddnwoydv80vs0" path="res://gameplay/agents/kingdom.gd" id="1_kbwnf"]
-[ext_resource type="Script" uid="uid://c60q2k1auie7c" path="res://game/better_multiplayer_spawner.gd" id="2_uonn8"]
+[ext_resource type="Script" uid="uid://c60q2k1auie7c" path="res://game/network/spawner.gd" id="2_uonn8"]
 
 [node name="Kingdom" type="Node" node_paths=PackedStringArray("_agents_node")]
 script = ExtResource("1_kbwnf")

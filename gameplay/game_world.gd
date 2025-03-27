@@ -3,4 +3,4 @@ class_name GameWorld
 extends Node
 
 func _ready() -> void:
-	Game.request_pause()
+	Gameplay.request_load()

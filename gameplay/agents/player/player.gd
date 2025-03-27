@@ -5,7 +5,7 @@ extends Agent
 
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
-@export var player_id: int = Game.HOST_ID:
+@export var player_id: int = PlayerLobby.HOST_ID:
 	set(new_player_id):
 		player_id = new_player_id
 		name = "%d" % player_id
@@ -34,12 +34,11 @@ var available_action: CharacterInteraction:
 func _ready() -> void:
 	if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
 	else:
-		player_id = Game.HOST_ID
+		player_id = PlayerLobby.HOST_ID
 		is_local_player = true
 	_setup_player()
 	_camera.frame_node(character_controller, true)
-	Game.player_name_changed.connect(_on_player_name_changed)
-	set_multiplayer_authority.call_deferred(player_id)
+	#Game.player_name_changed.connect(_on_player_name_changed)
 	super._ready()
 
 func _process(delta: float) -> void:
@@ -56,9 +55,11 @@ static func create(existing_character_controller: CharacterController = null) ->
 
 static func from_player_info(player_info: Dictionary) -> Player:
 	validate_player_info(player_info)
+	var new_player_id: int = player_info.id
+	var new_player_name: String = player_info.name
 	var new_player: Player = Player.create()
-	new_player.player_id = player_info.id
-	new_player.player_name = player_info.name
+	new_player.player_id = new_player_id
+	new_player.player_name = new_player_name
 	return new_player
 
 static func validate_player_info(player_info: Dictionary) -> void:

@@ -12,9 +12,11 @@ const NODES: StringName = "nodes"
 const PROPERTIES: StringName = "properties"
 const INTANGIBLE: StringName = "intangible"
 
+const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
+
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-static func has_save_file(save_file_path: StringName = Game.SAVE_FILE_PATH) -> bool:
+static func has_save_file(save_file_path: StringName = SAVE_FILE_PATH) -> bool:
 	return FileAccess.file_exists(save_file_path)
 
 static func encode_data(value: Variant, full_objects: bool = false) -> String:
@@ -34,8 +36,8 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 	return merged_dictionary
 
 func _ready() -> void:
-	Game.save_requested.connect(save_world_state)
-	Game.load_requested.connect(load_world_state)
+	Gameplay.save_requested.connect(save_world_state)
+	Gameplay.load_requested.connect(load_world_state)
 
 func save_world_state(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())

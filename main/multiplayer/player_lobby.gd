@@ -1,13 +1,20 @@
 @tool
 @icon("uid://bsnfjvi6jpfrm")
-class_name Lobby
+class_name PlayerLobby
 extends Node
 
-signal multiplayer_started
-signal multiplayer_stopped
+signal game_hosted(ip_address: StringName, port: int)
 
 signal game_joined(host_player_info: Dictionary)
 signal player_joined(player: Player)
+signal disconnected_from_multiplayer
+
+signal player_name_changed(player_name: String)
+
+const PORT: int = 7000
+const DEFAULT_SERVER_IP: StringName = "127.0.0.1" # IPv4 localhost
+const MAX_CONNECTIONS: int = 4
+const HOST_ID: int = 1
 
 @export_group("Configuration")
 @export var _players: Players
@@ -21,21 +28,16 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
-func host_game(ip_address: StringName, port: int) -> Error:
+func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> Error:
 	var server_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
-	var error: Error = server_peer.create_server(port, Game.MAX_CONNECTIONS)
+	var error: Error = server_peer.create_server(port, MAX_CONNECTIONS)
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
-	multiplayer_started.emit()
+	game_hosted.emit(ip_address, port)
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
-func leave_multiplayer() -> void:
-	multiplayer_stopped.emit()
-	multiplayer.multiplayer_peer = null
-	print_debug("Left multiplayer game!")
-
-func join_game(ip_address: StringName, port: int) -> Error:
+func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
@@ -44,12 +46,17 @@ func join_game(ip_address: StringName, port: int) -> Error:
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
+func disconnect_from_multiplayer() -> void:
+	disconnected_from_multiplayer.emit()
+	multiplayer.multiplayer_peer = null
+	print_debug("Disconnected from multiplayer!")
+
 @rpc("any_peer", "reliable")
 func _register_player(player_info: Dictionary = Players.get_local_player_info()) -> void:
 	Player.validate_player_info(player_info)
 	var player_id: int = multiplayer.get_remote_sender_id()
 	var new_player: Player = _create_player(player_id, player_info)
-	if player_id == Game.HOST_ID:
+	if player_id == HOST_ID:
 		game_joined.emit(player_info)
 		print_debug("Joined Player %s's multiplayer game!" % player_info)
 	else:
@@ -79,6 +86,6 @@ func _on_server_disconnected() -> void:
 	print_debug("Server disconnected!")
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _players: warnings.append("Missing Players reference.")
 	return warnings

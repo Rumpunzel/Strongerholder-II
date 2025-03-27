@@ -1,5 +1,9 @@
-@icon("uid://csn6gjpak3yxk")
+@icon("uid://bes0anop2dh5u")
+#@icon("uid://csn6gjpak3yxk")
 extends Node
+
+signal save_requested(save_file_path: StringName)
+signal load_requested(save_file_path: StringName)
 
 @warning_ignore_start("unused_signal")
 signal request_agent_for_character_controller(character_controller: CharacterController)
@@ -8,6 +12,12 @@ signal character_controller_unhaunted(unhaunted_character_controller: CharacterC
 @warning_ignore_restore("unused_signal")
 
 @onready var _hud: HUD = _initialize_heads_up_displays()
+
+func request_save(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:
+	save_requested.emit(save_file_path)
+
+func request_load(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:
+	load_requested.emit(save_file_path)
 
 func update_available_actions(available_actions: Array[CharacterInteraction]) -> void:
 	_hud.update_available_actions(available_actions)

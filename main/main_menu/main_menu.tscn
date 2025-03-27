@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
 
-[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/menus/main_menu/main_menu.gd" id="1_bwjgb"]
-[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/menus/main_menu/game_info.tscn" id="2_hnapd"]
+[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://main/main_menu/main_menu.gd" id="1_bwjgb"]
+[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://main/main_menu/game_info.tscn" id="2_hnapd"]
 [ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/menus/info/title_label.gd" id="3_ru3py"]
-[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://user_interface/menus/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
+[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://main/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
@@ -91,6 +91,11 @@ auto_translate_mode = 1
 [connection signal="pressed" from="PanelContainer/Menu/VBoxContainer/Options/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="PanelContainer/Menu/VBoxContainer/Options/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="PanelContainer/Menu/VBoxContainer/Options/Load" to="." method="_on_load_pressed"]
+[connection signal="host_game_requested" from="PanelContainer/Menu/VBoxContainer/MultiplayerMenu" to="." method="_on_host_game_requested"]
+[connection signal="join_game_requested" from="PanelContainer/Menu/VBoxContainer/MultiplayerMenu" to="." method="_on_join_game_requested"]
+[connection signal="leave_game_requested" from="PanelContainer/Menu/VBoxContainer/MultiplayerMenu" to="." method="_on_leave_game_requested"]
+[connection signal="player_name_change_requested" from="PanelContainer/Menu/VBoxContainer/MultiplayerMenu" to="." method="_on_player_name_change_requested"]
+[connection signal="stop_hosting_game_requested" from="PanelContainer/Menu/VBoxContainer/MultiplayerMenu" to="." method="_on_stop_hosting_game_requested"]
 [connection signal="pressed" from="PanelContainer/Menu/VBoxContainer/RandomizeGhost" to="." method="_on_randomize_ghost_pressed"]
 [connection signal="pressed" from="PanelContainer/Menu/VBoxContainer/Quit" to="QuitConfirmationDialog" method="popup_centered"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

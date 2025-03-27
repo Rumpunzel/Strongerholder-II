@@ -28,17 +28,19 @@ func exit() -> void:
 	Gameplay.character_controller_unhaunted.disconnect(_on_character_controller_unhaunted)
 
 func serialize_data() -> Dictionary[String, Variant]:
-	var serialized_data: Dictionary[String, Variant] = { }
-	serialized_data[HAUNTED] = _haunted_character_controller.get_path()
-	serialized_data[HAUNTING] = _haunting_character_controller.get_path()
+	var serialized_data: Dictionary[String, Variant] = {
+		HAUNTED: _haunted_character_controller.get_path(),
+		HAUNTING: _haunting_character_controller.get_path(),
+	}
 	return serialized_data.merged(super.serialize_data())
 
 func deserialize_data(serialized_data: Dictionary[String, Variant]) -> Dictionary[String, Variant]:
 	var haunted_character_controller_node_path: NodePath = serialized_data[HAUNTED]
 	var haunting_character_controller_node_path: NodePath = serialized_data[HAUNTING]
-	var deserialized_data: Dictionary[String, Variant] = { }
-	deserialized_data[HAUNTED] = get_node(haunted_character_controller_node_path)
-	deserialized_data[HAUNTING] = get_node(haunting_character_controller_node_path)
+	var deserialized_data: Dictionary[String, Variant] = {
+		HAUNTED: get_node(haunted_character_controller_node_path),
+		HAUNTING: get_node(haunting_character_controller_node_path),
+	}
 	return deserialized_data.merged(super.deserialize_data(serialized_data))
 
 func _on_character_controller_unhaunted(unhaunted_character_controller: CharacterController) -> void:

@@ -48,9 +48,6 @@ func _unpause_game() -> void:
 	get_tree().paused = false
 	print_debug("Game unpaused!")
 
-#func _unspawn_everything() -> void:
-	#get_tree().call_group("Spawners", "remove_all_spawned_nodes")
-
 func _update_config_file() -> Error:
 	var config: ConfigFile = ConfigFile.new()
 	# Save it to a file (overwrite if already exists).

@@ -48,7 +48,6 @@ func _ready() -> void:
 		is_local_player = true
 	_setup_player()
 	_camera.frame_node(character_controller, true)
-	#Game.player_name_changed.connect(_on_player_name_changed)
 	super._ready()
 
 func _process(delta: float) -> void:

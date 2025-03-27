@@ -55,6 +55,7 @@ func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
 func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
+	if not save_file: return FileAccess.get_open_error()
 	var collected_properties: Dictionary[NodePath, Variant] = collect_properties()
 	assert(collected_properties is Dictionary[NodePath, Variant])
 	var serialized_properties: String = Serializer.encode_data(collected_properties)
@@ -64,6 +65,7 @@ func serialize(save_file_path: StringName) -> Error:
 func deserialize(save_file_path: StringName) -> Error:
 	assert(FileAccess.file_exists(save_file_path))
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
+	if not save_file: return FileAccess.get_open_error()
 	var serialized_properties: String = save_file.get_as_text()
 	var collected_properties: Dictionary[NodePath, Variant] = Serializer.decode_data(serialized_properties)
 	assert(collected_properties is Dictionary[NodePath, Variant])

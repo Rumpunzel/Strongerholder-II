@@ -40,7 +40,6 @@ func _transition_to_next_state(target_state: State) -> void:
 	_get_state().exit()
 	var previous_state: State = _get_state()
 	_set_state(target_state)
-	_get_state().finished.connect(_transition_to_next_state)
 	_get_state().enter(self, previous_state)
 
 func _get_state() -> State:

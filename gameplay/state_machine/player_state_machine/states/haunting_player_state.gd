@@ -54,12 +54,8 @@ func deserialize(serialized_state: Dictionary[StringName, Variant], state_machin
 	var state: HauntingPlayerState = super.deserialize(serialized_state, state_machine)
 	var haunted_character_controller_node_path: NodePath = serialized_state[HAUNTED]
 	var haunting_character_controller_node_path: NodePath = serialized_state[HAUNTING]
-	print("haunted_character_controller_node_path: %s" % haunted_character_controller_node_path)
-	print("haunting_character_controller_node_path: %s" % haunting_character_controller_node_path)
 	state._haunted_character_controller = state_machine.get_node(haunted_character_controller_node_path)
 	state._haunting_character_controller = state_machine.get_node(haunting_character_controller_node_path)
-	print("state._haunted_character_controller: %s" % state._haunted_character_controller)
-	print("state._haunting_character_controller: %s" % state._haunting_character_controller)
 	return state
 
 func _on_haunt_timer_timeout() -> void:

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterProfile" load_steps=10 format=3 uid="uid://ro6wvnf88xbo"]
 
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://gameplay/characters/character_profiles/character_profile.gd" id="1_hac1t"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_controller.tscn" id="1_tyc7q"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_.tscn" id="1_tyc7q"]
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://gameplay/characters/heads_up_anchor.tscn" id="2_d0vdr"]
 [ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://gameplay/characters/character_models/king.tscn" id="3_0kn5r"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://gameplay/characters/character_profiles/defaults/default_collision_shape.tres" id="3_c8byr"]

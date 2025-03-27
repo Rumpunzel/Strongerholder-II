@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://gameplay/cameras/top_down_camera.tscn" id="2_du4nq"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://gameplay/player/interaction_area.tscn" id="4_pfsv8"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://gameplay/characters/character_profiles/ghost.tres" id="6_y2l5l"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_controller.tscn" id="7_0dv1b"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://gameplay/characters/character_.tscn" id="7_0dv1b"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath(".:name")
@@ -46,7 +46,7 @@ _player = NodePath("..")
 [node name="TopDownCamera" parent="." instance=ExtResource("2_du4nq")]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707106, 0.707107, -0.707107, -0.5, 0.5, 16.9706, 24, 16.9706)
 
-[node name="Ghost" parent="." groups=["Characters"] instance=ExtResource("7_0dv1b")]
+[node name="Ghost" parent="." instance=ExtResource("7_0dv1b")]
 collision_layer = 65536
 collision_mask = 1
 character_profile = ExtResource("6_y2l5l")

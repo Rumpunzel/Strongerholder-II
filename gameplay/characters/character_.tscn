@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://cvj6b1m2b65hd"]
 
-[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/characters/character_controller.gd" id="1_pp6cs"]
-[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="2_1pdhw"]
-[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_8fovg"]
-[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://gameplay/characters/hit_box.tscn" id="3_hkpq7"]
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://gameplay/characters/character.gd" id="1_5d6pa"]
+[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://game/network/synchronizer.gd" id="2_ehxha"]
+[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://game/serialization/properties_serializer.gd" id="3_bdm7o"]
+[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://gameplay/characters/hit_box.tscn" id="4_hon2k"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -30,23 +30,23 @@ collision_layer = 2
 collision_mask = 3
 input_ray_pickable = false
 velocity = Vector3(0, -957.116, 0)
-script = ExtResource("1_pp6cs")
+script = ExtResource("1_5d6pa")
 _collision_shape = NodePath("CollisionShape3D")
 _hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
-script = ExtResource("2_8fovg")
+script = ExtResource("2_ehxha")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
 [node name="PropertiesSerializer" type="Node" parent="CharacterSynchronizer" node_paths=PackedStringArray("_synchronizer")]
-script = ExtResource("2_1pdhw")
+script = ExtResource("3_bdm7o")
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
-[node name="HitBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("3_hkpq7")]
+[node name="HitBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_hon2k")]
 collision_mask = 0
 character = NodePath("..")

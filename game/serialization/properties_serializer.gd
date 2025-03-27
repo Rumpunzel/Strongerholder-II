@@ -7,17 +7,17 @@ enum Type {
 	## Properties will be restored normally
 	NORMAL = 0,
 	## Marks this serliazier as unreliable, such as multiplayer peers
-	##  will try to restore normally and then potentialy restor asynchronously if not found
+	## Will try to restore normally and then potentialy restor asynchronously if not found
 	INTANGIBLE = 64,
 	## Marks the root of this serliazier as unreliable and important, such as state data of multiplayer peers
-	##  will try to restore normally and discard if not found
+	## Will try to restore normally and discard if not found
 	EPHEMERAL = 128,
 }
 
 @export var type: Type = Type.NORMAL
 
 ## Lower [code]restoriation_order[/code] will be restored first
-##  if [code]<0[/code] order is based on [code]type[/code]
+## If [code]<0[/code] order is based on [code]type[/code]
 @export var _restoriation_order: int = -1
 
 @export_group("Configuration")
@@ -33,8 +33,7 @@ func _ready() -> void:
 		_synchronizer = parent
 
 ## Collects all properties data
-## @returns a [Dictionary] with [int]s representing the restoration order
-##  to a [Dictionary] [NodePath]s of the responsible [PropertiesSerializer] to the properties data
+## @returns a [Dictionary] with [int]s representing the restoration orde to a [Dictionary] [NodePath]s of the responsible [PropertiesSerializer] to the properties data
 static func collect_properties_data(properties_serializers: Array[Node]) -> Dictionary[int, Dictionary]:
 	var properties_data: Dictionary[int, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in properties_serializers:

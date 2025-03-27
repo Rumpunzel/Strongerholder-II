@@ -1,12 +1,9 @@
-@tool
 class_name DefaultAgentState
 extends AgentState
 
-@export_group("Configuration")
-
-func enter(_previous_state_path: String, _data: Dictionary[String, Variant] = { }) -> void:
-	if not Gameplay.character_controller_haunted.is_connected(_on_character_controller_haunted):
-		Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
+func enter(previous_state: State = null) -> void:
+	Gameplay.character_controller_haunted.connect(_on_character_controller_haunted)
+	super.enter(previous_state)
 
 func update(_delta: float) -> void:
 	pass
@@ -22,12 +19,4 @@ func exit() -> void:
 
 func _on_character_controller_haunted(haunted_character_controller: CharacterController, haunting_character_controller: CharacterController) -> void:
 	if haunted_character_controller != agent.character_controller: return
-	var data: Dictionary[String, Variant] = {
-		HAUNTED: haunted_character_controller,
-		HAUNTING: haunting_character_controller,
-	}
-	finished.emit(STATE_HAUNTED, data)
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	return warnings + super._get_configuration_warnings()
+	finished.emit(HauntedAgentState.new(haunted_character_controller, haunting_character_controller))

@@ -29,7 +29,6 @@ properties/5/replication_mode = 2
 
 [node name="1" type="Node" node_paths=PackedStringArray("_camera", "_interaction_area", "character_controller")]
 script = ExtResource("1_i6aj8")
-player_name = "Player 1"
 _camera = NodePath("TopDownCamera")
 _interaction_area = NodePath("Ghost/InteractionArea")
 character_controller = NodePath("Ghost")

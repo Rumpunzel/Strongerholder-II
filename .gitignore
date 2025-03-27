@@ -13,6 +13,7 @@ data_*/
 
 # User data ignores
 config.cfg
+config_multiplayer.cfg
 *.save
 
 # Test build ignores

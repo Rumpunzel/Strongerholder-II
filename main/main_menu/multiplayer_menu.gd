@@ -11,11 +11,22 @@ signal join_game_requested(ip_address_to_join: StringName)
 signal leave_game_requested
 
 @export_group("Configuration")
-@export var _player_name: LineEdit
+@export var _player_name: BetterLineEdit
 @export var _join_button: Button
-@export var _ip_address: LineEdit
+@export var _ip_address: BetterLineEdit
 @export var _host_button: Button
 @export var _host_ip_address_button: Button
+
+func reset_menu() -> void:
+	_join_button.disabled = false
+	_join_button.button_pressed = false
+	_ip_address.editable = true
+	_host_button.disabled = false
+	_host_button.button_pressed = false
+	_host_ip_address_button.text = ""
+
+func update_player_name(player_name: String) -> void:
+	_player_name.text = player_name
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
 	player_name_change_requested.emit(new_player_name)
@@ -50,14 +61,6 @@ func _on_player_name_changed(player_name: String) -> void:
 
 func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
-
-func _on_disconnected_from_multiplayer() -> void:
-	_join_button.disabled = false
-	_join_button.button_pressed = false
-	_ip_address.editable = true
-	_host_button.disabled = false
-	_host_button.button_pressed = false
-	_host_ip_address_button.text = ""
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

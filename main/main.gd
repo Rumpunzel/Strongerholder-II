@@ -8,13 +8,6 @@ signal random_ghost_requested
 
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
-const _PLAYER_SECTION: StringName = "player"
-
-@export var player_name: String:
-	set(new_player_name):
-		player_name = new_player_name
-		#player_name_changed.emit(player_name)
-
 @export_group("Configuration")
 @export var _main_menu: MainMenu
 
@@ -35,7 +28,7 @@ func pause_game() -> void:
 	_pause_requested = true
 
 func unpause_game() -> void:
-	get_tree().paused = false
+	_unpause_game()
 	_pause_requested = false
 
 func quit_game(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:
@@ -60,24 +53,35 @@ func _unpause_game() -> void:
 
 func _update_config_file() -> Error:
 	var config: ConfigFile = ConfigFile.new()
-	config.set_value(_PLAYER_SECTION, "player_name", player_name)
 	# Save it to a file (overwrite if already exists).
-	config.save(CONFIG_FILE_PATH)
-	print_debug("Saved config!")
-	return Error.OK
+	var error: Error = config.save(CONFIG_FILE_PATH)
+	if error == OK: print_debug("Saved config!")
+	else: printerr("Could not save config file due to Error %s" % error)
+	return error
 
 func _load_config() -> Error:
+	if not FileAccess.file_exists(CONFIG_FILE_PATH):
+		print_debug("No config file found, creating default!")
+		var default_config: ConfigFile = ConfigFile.new()
+		var default_error: Error = default_config.save(CONFIG_FILE_PATH)
+		if default_error == OK: print_debug("Saved default config!")
+		else:
+			printerr("Could not save default config file due to Error %s" % default_error)
+			return default_error
 	var config: ConfigFile = ConfigFile.new()
 	# Load data from a file.
 	var error: Error = config.load(CONFIG_FILE_PATH)
 	# If the file didn't load, ignore it.
-	if error != OK:
-		printerr("Could not load config file due to Error %s" % error)
-		return error
-	
-	player_name = config.get_value(_PLAYER_SECTION, "player_name")
-	print_debug("Loaded config!")
-	return Error.OK
+	if error == OK:
+		print_debug("Loaded config!")
+	else: printerr("Could not load config file due to Error %s" % error)
+	return error
+
+func _on_game_hosted(_ip_address: StringName, _port: int) -> void:
+	_unpause_game()
+
+func _on_game_joined(_host_player_info: Dictionary) -> void:
+	_unpause_game()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

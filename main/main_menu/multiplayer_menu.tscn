@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bi3mr4sjccywj"]
+[gd_scene load_steps=6 format=3 uid="uid://bi3mr4sjccywj"]
 
 [ext_resource type="Script" uid="uid://dvlr2wvgpeyqn" path="res://main/main_menu/multiplayer_menu.gd" id="1_k1c65"]
 [ext_resource type="Script" uid="uid://cpyey1rgiu5s0" path="res://user_interface/toggle_button.gd" id="2_mwgi0"]
+[ext_resource type="Script" uid="uid://c5s3itsvtp0mg" path="res://user_interface/better_line_edit.gd" id="2_rgp2h"]
 [ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://user_interface/clipboard_button.gd" id="3_iouuv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2en6q"]
@@ -30,6 +31,8 @@ horizontal_alignment = 1
 layout_mode = 2
 placeholder_text = "Player Name"
 alignment = 1
+script = ExtResource("2_rgp2h")
+metadata/_custom_type_script = "uid://c5s3itsvtp0mg"
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
@@ -51,6 +54,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "127.0.0.1"
 alignment = 1
+script = ExtResource("2_rgp2h")
+metadata/_custom_type_script = "uid://c5s3itsvtp0mg"
 
 [node name="Host" type="Button" parent="GridContainer"]
 layout_mode = 2
@@ -71,8 +76,8 @@ script = ExtResource("3_iouuv")
 message = "IP address copied to clipboard!"
 metadata/_custom_type_script = "uid://cpw5mv8f3f0o2"
 
-[connection signal="text_changed" from="PlayerName" to="." method="_on_player_name_text_changed"]
+[connection signal="text_submitted_or_focus_lost" from="PlayerName" to="." method="_on_player_name_text_changed"]
 [connection signal="toggled" from="GridContainer/Join" to="." method="_on_join_toggled"]
 [connection signal="text_changed" from="GridContainer/IpAddress" to="." method="_on_ip_address_text_changed"]
-[connection signal="text_submitted" from="GridContainer/IpAddress" to="." method="_on_ip_address_text_submitted"]
+[connection signal="text_submitted_or_focus_lost" from="GridContainer/IpAddress" to="." method="_on_ip_address_text_submitted"]
 [connection signal="toggled" from="GridContainer/Host" to="." method="_on_host_toggled"]

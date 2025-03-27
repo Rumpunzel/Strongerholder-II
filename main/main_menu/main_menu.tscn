@@ -18,10 +18,10 @@ texture = SubResource("GradientTexture1D_nb4k0")
 [sub_resource type="LabelSettings" id="LabelSettings_ru3py"]
 font_size = 42
 
-[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("multiplayer_menu")]
+[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_multiplayer_menu")]
 layer = 100
 script = ExtResource("1_bwjgb")
-multiplayer_menu = NodePath("PanelContainer/Menu/VBoxContainer/MultiplayerMenu")
+_multiplayer_menu = NodePath("PanelContainer/Menu/VBoxContainer/MultiplayerMenu")
 metadata/_custom_type_script = "uid://yu3m6ywkwlvf"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

@@ -3,15 +3,25 @@
 class_name Player
 extends Agent
 
+signal player_info_changed(player_info: Dictionary[StringName, Variant])
+
+const ID: StringName = "player_id"
+const NAME: StringName = "player_name"
+
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 @export var player_id: int = PlayerLobby.HOST_ID:
 	set(new_player_id):
+		if new_player_id == player_id: return
 		player_id = new_player_id
 		name = "%d" % player_id
+		player_info_changed.emit(get_player_info())
 
 @export var player_name: String:
-	get: return player_name if not player_name.is_empty() else "Player %d" % player_id
+	set(new_player_name):
+		if new_player_name == player_name: return
+		player_name = new_player_name
+		player_info_changed.emit(get_player_info())
 
 @export_group("Configuration")
 @export var _camera: TopDownCamera
@@ -53,21 +63,26 @@ static func create(existing_character_controller: CharacterController = null) ->
 	if existing_character_controller: new_player.character_controller = existing_character_controller
 	return new_player
 
-static func from_player_info(player_info: Dictionary) -> Player:
+static func from_player_info(player_info: Dictionary[StringName, Variant]) -> Player:
 	validate_player_info(player_info)
-	var new_player_id: int = player_info.id
-	var new_player_name: String = player_info.name
+	var new_player_id: int = player_info[ID]
+	var new_player_name: String = player_info[NAME]
 	var new_player: Player = Player.create()
 	new_player.player_id = new_player_id
 	new_player.player_name = new_player_name
 	return new_player
 
-static func validate_player_info(player_info: Dictionary) -> void:
-	assert(player_info.has_all(["id", "name"]))
+static func validate_player_info(player_info: Dictionary[StringName, Variant]) -> void:
+	assert(player_info.has_all([ID, NAME]))
 	assert(player_info.size() == 2)
 
-func to_player_info() -> Dictionary:
-	return { "id": player_id, "name": player_name, }
+func get_player_info() -> Dictionary[StringName, Variant]:
+	var player_info: Dictionary[StringName, Variant] = {
+		ID: player_id,
+		NAME: player_name if not player_name.is_empty() else "Player %d" % player_id,
+	}
+	validate_player_info(player_info)
+	return player_info
 
 func update_character_controller(delta: float) -> void:
 	if Engine.is_editor_hint(): return

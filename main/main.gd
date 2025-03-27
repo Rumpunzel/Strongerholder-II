@@ -23,7 +23,7 @@ var _pause_requested: bool = false
 func _ready() -> void:
 	_load_config()
 	if Engine.is_editor_hint(): return
-	Gameplay.load_requested.connect(request_pause)
+	#Gameplay.load_requested.connect(request_pause)
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
 
 func _process(_delta: float) -> void:

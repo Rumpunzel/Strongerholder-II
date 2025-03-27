@@ -18,7 +18,9 @@ signal leave_game_requested
 @export var multiplayer_menu: MultiplayerMenu
 
 func _ready() -> void:
-	if Engine.is_editor_hint(): return
+	if Engine.is_editor_hint():
+		visible = false
+		return
 	visible = get_tree().paused
 
 func open_menu() -> void:

@@ -13,6 +13,7 @@ metadata/_custom_type_script = "uid://c38qwchvf73qr"
 [node name="PlayerLobby" parent="." instance=ExtResource("2_vop5m")]
 
 [node name="MainMenu" parent="." instance=ExtResource("3_5un7r")]
+visible = false
 
 [connection signal="disconnected_from_multiplayer" from="PlayerLobby" to="." method="_on_disconnected_from_multiplayer"]
 [connection signal="disconnected_from_multiplayer" from="PlayerLobby" to="MainMenu/PanelContainer/Menu/VBoxContainer/MultiplayerMenu" method="_on_disconnected_from_multiplayer"]

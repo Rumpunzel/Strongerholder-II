@@ -6,6 +6,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
+	var available_action: CharacterInteraction = get_available_action()
 	if not available_action: return
 	if available_action.is_action_just_pressed():
 		_on_haunt_timer_timeout()
@@ -15,7 +16,6 @@ func update(_delta: float) -> void:
 
 func physics_update(delta: float) -> void:
 	apply_input_direction(delta)
-	camera.frame_node(character)
 
 func handle_input(_event: InputEvent) -> void:
 	pass
@@ -24,5 +24,6 @@ func exit() -> void:
 	pass
 
 func _on_haunt_timer_timeout() -> void:
+	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
-	finished.emit(HauntingPlayerState.new(available_action.target, character))
+	finished.emit(HauntingPlayerState.new(available_action.target, get_character()))

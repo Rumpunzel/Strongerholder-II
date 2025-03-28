@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=14 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://engine/player/player.gd" id="1_i6aj8"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://main/network/synchronizer.gd" id="2_0dv1b"]
 [ext_resource type="PackedScene" uid="uid://bnt8j7t5q2kd7" path="res://engine/player/player_state_machine.tscn" id="2_8ukje"]
-[ext_resource type="PackedScene" uid="uid://cnh75c8plrhf1" path="res://engine/cameras/top_down_camera.tscn" id="2_du4nq"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="4_pfsv8"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_shdhw"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_c7orq"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="6_y2l5l"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_yyw35"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character_.tscn" id="7_0dv1b"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
@@ -28,10 +30,25 @@ properties/5/path = NodePath(".:_character_path")
 properties/5/spawn = true
 properties/5/replication_mode = 2
 
-[node name="1" type="Node" node_paths=PackedStringArray("character", "camera", "interaction_area")]
+[sub_resource type="Resource" id="Resource_shdhw"]
+script = ExtResource("5_c7orq")
+duration = 0.5
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_04p45"]
+script = ExtResource("5_c7orq")
+duration = 0.5
+transition = 10
+ease = 0
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_801mx"]
+
+[node name="1" type="Node" node_paths=PackedStringArray("character", "default_phantom_camera", "haunt_phantom_camera", "interaction_area")]
 script = ExtResource("1_i6aj8")
 character = NodePath("Ghost")
-camera = NodePath("TopDownCamera")
+default_phantom_camera = NodePath("DefaultCamera")
+haunt_phantom_camera = NodePath("HauntCamera")
 interaction_area = NodePath("Ghost/InteractionArea")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
@@ -43,8 +60,40 @@ metadata/_custom_type_script = "uid://crm43jylxmjbd"
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_player") instance=ExtResource("2_8ukje")]
 _player = NodePath("..")
 
-[node name="TopDownCamera" parent="." instance=ExtResource("2_du4nq")]
-transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707106, 0.707107, -0.707107, -0.5, 0.5, 16.9706, 24, 16.9706)
+[node name="DefaultCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_target", "follow_targets", "look_at_target")]
+transform = Transform3D(0.707107, -0.514496, 0.485071, -2.98023e-08, 0.685994, 0.727607, -0.707107, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
+top_level = true
+script = ExtResource("4_shdhw")
+priority = 1
+follow_mode = 3
+follow_target = NodePath("../Ghost")
+follow_targets = [NodePath("../Ghost")]
+look_at_target = NodePath("../Ghost")
+tween_resource = SubResource("Resource_shdhw")
+tween_on_load = false
+follow_offset = Vector3(16, 24, 16)
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="HauntCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_targets")]
+transform = Transform3D(0.707105, -0.514496, 0.485071, -2.98022e-08, 0.685994, 0.727607, -0.707105, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
+top_level = true
+script = ExtResource("4_shdhw")
+follow_mode = 3
+follow_targets = [NodePath("../Ghost")]
+tween_resource = SubResource("Resource_04p45")
+tween_on_load = false
+follow_offset = Vector3(16, 24, 16)
+
+[node name="TopDownCamera" type="Camera3D" parent="."]
+physics_interpolation_mode = 1
+transform = Transform3D(0.707107, -0.514496, 0.485071, -2.98023e-08, 0.685994, 0.727607, -0.707107, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
+attributes = SubResource("CameraAttributesPhysical_801mx")
+current = true
+
+[node name="PhantomCameraHost" type="Node" parent="TopDownCamera"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("6_yyw35")
 
 [node name="Ghost" parent="." instance=ExtResource("7_0dv1b")]
 collision_layer = 65536

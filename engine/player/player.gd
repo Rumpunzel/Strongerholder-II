@@ -28,11 +28,12 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		character = new_character
 		if not character: return
 		if not is_node_ready(): await ready
-		camera.frame_node(character, true)
 
 @export_group("Configuration")
-@export var camera: TopDownCamera
+@export var default_phantom_camera: PhantomCamera3D
+@export var haunt_phantom_camera: PhantomCamera3D
 @export var interaction_area: InteractionArea
+@export var _camera: Camera3D
 
 var direction_input: Vector2 = Vector2.ZERO
 var interaction_input: StringName = ""
@@ -46,7 +47,7 @@ var available_action: CharacterInteraction:
 var is_local_player: bool = true:
 	set(new_is_local_player):
 		is_local_player = new_is_local_player
-		camera.current = is_local_player
+		_camera.current = is_local_player
 
 ## This is used for serialization purposes; serves otherwise no purpose
 var _character_path: NodePath:
@@ -64,13 +65,10 @@ func _ready() -> void:
 		#player_id = Multiplayer.HOST_ID
 		#is_local_player = true
 	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
-	#camera.frame_node(character, true)
 	_collect_input()
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		camera.frame_node(character, true)
-		return
+	if Engine.is_editor_hint(): return
 	_collect_input()
 	if not is_local_player: return
 	# Other code
@@ -104,6 +102,15 @@ func get_player_info() -> Dictionary[StringName, Variant]:
 	validate_player_info(player_info)
 	return player_info
 
+func get_camera_adjusted_direction_input() -> Vector2:
+	var viewport_camera: Camera3D = get_viewport().get_camera_3d()
+	var camera_forward: Vector3 = viewport_camera.transform.basis.z
+	camera_forward.y = 0.0
+	var camera_right: Vector3 = viewport_camera.transform.basis.x
+	camera_right.y = 0.0
+	var adjusted_input_vector: Vector3 = camera_forward.normalized() * direction_input.y + camera_right.normalized() * direction_input.x
+	return Vector2(adjusted_input_vector.x, adjusted_input_vector.z)
+
 func _setup_character() -> void:
 	interaction_area.character = character
 
@@ -133,6 +140,8 @@ func _on_player_name_changed(new_player_name: String) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
-	if not camera: warnings.append("Missing Camera reference.")
+	if not default_phantom_camera: warnings.append("Missing default PhantomCamera3D reference.")
+	if not haunt_phantom_camera: warnings.append("Missing haunt PhantomCamera3D reference.")
 	if not interaction_area: warnings.append("Missing InteractionArea reference.")
+	if not _camera: warnings.append("Missing Camera3D reference.")
 	return warnings

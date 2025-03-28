@@ -15,16 +15,21 @@ func _init(
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunting_character.visible = false
+	var interaction_area: InteractionArea = get_interaction_area()
 	interaction_area.characters_to_ignore_areas_from.append(_haunted_character)
-	interaction_area.clean_hit_boxes_in_area()
-	camera.frame_node(_haunted_character, true)
+	interaction_area.reevaluate_hit_boxes_in_area()
+	var haunt_phantom_camera: PhantomCamera3D = get_haunt_phantom_camera()
+	haunt_phantom_camera.append_follow_targets(_haunted_character)
+	haunt_phantom_camera.priority = 16
 	Game.character_haunted.emit(_haunted_character, _haunting_character)
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
+	var interaction_input: StringName = get_interaction_input()
 	if interaction_input == "unpossess":
 		finished.emit(DefaultPlayerState.new())
 		return
+	var available_action: CharacterInteraction = get_available_action()
 	if not available_action: return
 	if available_action.is_action_just_pressed():
 		_on_haunt_timer_timeout()
@@ -35,15 +40,18 @@ func update(_delta: float) -> void:
 func physics_update(delta: float) -> void:
 	apply_input_direction(delta, _haunted_character)
 	_haunting_character.transform = _haunted_character.transform
-	camera.frame_node(_haunted_character)
 
 func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
 	_haunting_character.visible = true
+	var interaction_area: InteractionArea = get_interaction_area()
 	interaction_area.characters_to_ignore_areas_from.erase(_haunted_character)
-	interaction_area.clean_hit_boxes_in_area()
+	interaction_area.reevaluate_hit_boxes_in_area()
+	var haunt_phantom_camera: PhantomCamera3D = get_haunt_phantom_camera()
+	haunt_phantom_camera.erase_follow_targets(_haunted_character)
+	haunt_phantom_camera.priority = 0
 	Game.character_unhaunted.emit(_haunted_character)
 
 func serialize() -> Dictionary[StringName, Variant]:
@@ -61,5 +69,6 @@ func deserialize(serialized_state: Dictionary[StringName, Variant], state_machin
 	return state
 
 func _on_haunt_timer_timeout() -> void:
+	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
 	finished.emit(HauntingPlayerState.new(available_action.target, _haunting_character))

@@ -14,7 +14,9 @@ signal current_interactable_changed(current_interactable: HitBox)
 			characters_to_ignore_areas_from.erase(character)
 		character = new_character
 		reevaluate_hit_boxes_in_area()
-		if not character: return
+		if not character:
+			set_enabled(false)
+			return
 		characters_to_ignore_areas_from.append(character)
 		if not character.character_profile:
 			_collision_shape.shape = null

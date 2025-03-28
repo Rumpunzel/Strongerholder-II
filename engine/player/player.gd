@@ -36,14 +36,17 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 
 @export var character: Character:
 	set(new_character):
+		if character:
+			_state_machine.stop()
 		character = new_character
 		if not is_node_ready(): await ready
-		interaction_area.set_enabled(character != null)
 		interaction_area.character = character
 		default_phantom_camera.follow_target = character
 		default_phantom_camera.look_at_target = character
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
+		if character:
+			_state_machine.start()
 
 @export_group("Configuration")
 @export var interaction_area: InteractionArea
@@ -81,25 +84,25 @@ var _character_path: NodePath:
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
-	#if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
-	#else:
-		#player_id = Multiplayer.HOST_ID
-		#is_local_player = true
 	if not is_local_player: return
 	# Only collect input if this is the local [Player]
 	_collect_input()
+	if not character: return
 	_state_machine.start()
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if not is_local_player: return
 	_collect_input()
+	if not character: return
 	_state_machine.update(delta)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if not is_local_player: return
+	if not character: return
 	_state_machine.physics_update(delta)
+	interaction_area.transform = character.transform
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -169,9 +172,9 @@ func _on_player_name_changed(new_player_name: String) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
+	if not interaction_area: warnings.append("Missing InteractionArea reference.")
 	if not default_phantom_camera: warnings.append("Missing default PhantomCamera3D reference.")
 	if not haunt_phantom_camera: warnings.append("Missing haunt PhantomCamera3D reference.")
-	if not interaction_area: warnings.append("Missing InteractionArea reference.")
 	if not _state_machine: warnings.append("Missing PlayerStateMachine reference.")
 	if not _camera: warnings.append("Missing Camera3D reference.")
 	return warnings

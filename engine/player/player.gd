@@ -26,8 +26,9 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 @export var character: Character:
 	set(new_character):
 		character = new_character
-		if not character: return
 		if not is_node_ready(): await ready
+		default_phantom_camera.follow_target = character
+		haunt_phantom_camera.follow_targets = [character]
 
 @export_group("Configuration")
 @export var default_phantom_camera: PhantomCamera3D
@@ -70,8 +71,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_collect_input()
-	if not is_local_player: return
-	# Other code
 
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")

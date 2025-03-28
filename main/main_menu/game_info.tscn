@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://csmae7j3a5gs4"]
 
-[ext_resource type="Script" uid="uid://ddmvvunabxnw2" path="res://user_interface/menus/info/version_label.gd" id="1_oroyg"]
+[ext_resource type="Script" uid="uid://ddmvvunabxnw2" path="res://user_interface/info/version_label.gd" id="1_oroyg"]
 
 [node name="GameInfo" type="MarginContainer"]
 anchors_preset = 15

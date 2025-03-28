@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
+
+[ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://engine/levels/level.gd" id="1_ywn5t"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/levels/spawn_points/character_spawner.gd" id="4_fbqqs"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://game/character_profiles/king.tres" id="5_kudci"]
+[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://game/character_profiles/rogue.tres" id="6_ck0y7"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://main/serialization/node_serializer.gd" id="7_ah70l"]
+[ext_resource type="Script" uid="uid://bav5t732bt84v" path="res://engine/levels/spawn_points/character_spawn_points.gd" id="7_sli0y"]
+[ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
+[ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://engine/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
+size = Vector3(64, 16, 64)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bkb5w"]
+size = Vector2(64, 64)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5pvop"]
+albedo_texture = ExtResource("8_s5f45")
+uv1_scale = Vector3(16, 16, 16)
+
+[node name="TestLevel" type="Node3D"]
+script = ExtResource("1_ywn5t")
+metadata/_custom_type_script = "uid://dktxo1t8ahw30"
+
+[node name="CharacterSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_character_spawn_points")]
+spawn_path = NodePath("../Characters")
+script = ExtResource("4_fbqqs")
+_character_spawn_points = NodePath("../CharacterSpawnPoints")
+metadata/_custom_type_script = "uid://cnqgk717dgofh"
+
+[node name="NodeSerializer" type="Node" parent="CharacterSpawner" node_paths=PackedStringArray("_spawner")]
+script = ExtResource("7_ah70l")
+_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.444104, 0.895975, 0, -0.895975, 0.444104, 0, 10.6623, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
+shape = SubResource("BoxShape3D_2lmav")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_bkb5w")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
+
+[node name="CharacterSpawnPoints" type="Node3D" parent="."]
+script = ExtResource("7_sli0y")
+metadata/_custom_type_script = "uid://bav5t732bt84v"
+
+[node name="KingSpawnPoint" type="Marker3D" parent="CharacterSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+script = ExtResource("10_bpeee")
+character_profile = ExtResource("5_kudci")
+spawn_limit = 1
+metadata/_custom_type_script = "uid://da7xwt7wct3ms"
+
+[node name="RogueSpawnPoint" type="Marker3D" parent="CharacterSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
+script = ExtResource("10_bpeee")
+character_profile = ExtResource("6_ck0y7")
+spawn_limit = 1
+metadata/_custom_type_script = "uid://da7xwt7wct3ms"
+
+[node name="Characters" type="Node3D" parent="."]

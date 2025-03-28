@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://main/main_menu/main_menu.gd" id="1_bwjgb"]
 [ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://main/main_menu/game_info.tscn" id="2_hnapd"]
-[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/menus/info/title_label.gd" id="3_ru3py"]
+[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_ru3py"]
 [ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://main/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]

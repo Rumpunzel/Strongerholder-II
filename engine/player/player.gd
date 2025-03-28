@@ -28,7 +28,9 @@ const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 		character = new_character
 		if not is_node_ready(): await ready
 		default_phantom_camera.follow_target = character
+		default_phantom_camera.look_at_target = character
 		haunt_phantom_camera.follow_targets = [character]
+		haunt_phantom_camera.look_at_targets = [character]
 
 @export_group("Configuration")
 @export var default_phantom_camera: PhantomCamera3D

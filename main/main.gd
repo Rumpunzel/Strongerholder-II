@@ -16,7 +16,7 @@ var _pause_requested: bool = false
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_load_config()
-	#Gameplay.load_requested.connect(request_pause)
+	#Game.load_requested.connect(request_pause)
 	pause_game()
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
 
@@ -32,12 +32,12 @@ func unpause_game() -> void:
 	_pause_requested = false
 
 func quit_game(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:
-	if not save_file_path.is_empty(): Gameplay.request_save(save_file_path)
+	if not save_file_path.is_empty(): Game.request_save(save_file_path)
 	_update_config_file()
 	get_tree().quit()
 
 func _on_disconnected_from_multiplayer() -> void:
-	Gameplay.request_load()
+	Game.request_load()
 
 func _pause_game() -> void:
 	get_tree().paused = true

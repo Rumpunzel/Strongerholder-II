@@ -46,13 +46,13 @@ func _on_continue_pressed() -> void:
 	close_menu()
 
 func _on_save_pressed() -> void:
-	Gameplay.request_save()
+	Game.request_save()
 
 func _on_load_pressed() -> void:
-	Gameplay.request_load()
+	Game.request_load()
 
 func _on_randomize_ghost_pressed() -> void:
-	#GameplayGame.random_ghost_requested.emit()
+	#Game.random_ghost_requested.emit()
 	pass
 
 func _on_quit_confirmation_dialog_confirmed() -> void:

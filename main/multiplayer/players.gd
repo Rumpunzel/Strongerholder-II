@@ -10,7 +10,8 @@ enum RemovalReason {
 signal host_player_info_changed(host_player_info: Dictionary[StringName, Variant])
 signal player_disconnected(player: Player)
 
-var _local_player: Player
+var local_player: Player
+
 var _guest_players: Dictionary[int, Player] = { }
 
 func _ready() -> void:
@@ -19,25 +20,27 @@ func _ready() -> void:
 
 func add_player(player: Player) -> void:
 	assert(not multiplayer.multiplayer_peer or multiplayer.is_server())
-	#print("players new player_id: %d" % player.player_id)
-	#print("players new player_name: %s" % player.player_name)
-	#player.set_multiplayer_authority(player.player_id)
-	#print("players new authority: %d" % player.get_multiplayer_authority())
+	print("players new player_id: %d" % player.player_id)
+	print("players new player_name: %s" % player.player_name)
+	print("players new authority: %d" % player.get_multiplayer_authority())
+	player.set_multiplayer_authority(player.player_id)
 	player.player_info_changed.connect(_on_player_info_changed)
 	add_child(player, true)
 	print_debug("Added player: %s" % player.get_player_info())
 
 func create_local_player(player_id: int, player_name: String) -> void:
-	assert(not _local_player)
-	_local_player = Player.from_player_info(get_local_player_info(player_id, player_name))
-	add_player(_local_player)
-
-func get_local_player_info(player_id: int = PlayerLobby.HOST_ID, player_name: String = _local_player.player_name) -> Dictionary[StringName, Variant]:
-	return { Player.ID: player_id, Player.NAME: player_name }
+	assert(not local_player)
+	var player_info: Dictionary[StringName, Variant] = {
+		Player.ID: player_id,
+		Player.NAME: player_name,
+	}
+	Player.validate_player_info(player_info)
+	local_player = Player.from_player_info(player_info)
+	add_player(local_player)
 
 func change_name_for_local_player(player_name: String) -> void:
-	_local_player.player_name = player_name
-	host_player_info_changed.emit(_local_player.get_player_info())
+	local_player.player_name = player_name
+	host_player_info_changed.emit(local_player.get_player_info())
 	print_debug("Changed name of local player to: %s" % player_name)
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
@@ -49,7 +52,7 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 		_remove_player(player)
 
 func _remove_player(player: Player) -> void:
-	if player == _local_player: return
+	if player == local_player: return
 	assert(player)
 	player.player_info_changed.disconnect(_on_player_info_changed)
 	_guest_players.erase(player.player_id)
@@ -72,6 +75,9 @@ func _on_player_joined(player: Player) -> void:
 	add_player(player)
 	_guest_players[player.player_id] = player
 
+func _on_game_joined(host_player_info: Dictionary) -> void:
+	print("host_player_info: %s" % host_player_info)
+
 func _on_player_disconnected(peer_id: int) -> void:
 	var disconnected_player: Player = _guest_players.get(peer_id)
 	if not disconnected_player:
@@ -85,9 +91,18 @@ func _on_server_disconnected() -> void:
 	_remove_all_players(RemovalReason.SERVER_DISCONNECTED)
 
 func _on_child_entered_tree(node: Node) -> void:
-	if not node is Player: return
+	assert(node is Player)
 	var player: Player = node
-	print("players new player_id: %d" % player.player_id)
-	print("players new player_name: %s" % player.player_name)
-	player.set_multiplayer_authority(player.player_id)
-	print("players new authority: %d" % player.get_multiplayer_authority())
+	# Only need to do this on the client
+	if not multiplayer.multiplayer_peer or multiplayer.is_server(): return
+	var peer_id_from_name: int = int(player.name)
+	var peer_id: int = multiplayer.get_unique_id()
+	print("peer_id_from_name: %d" % peer_id_from_name)
+	print("peer_id: %d" % peer_id)
+	if peer_id_from_name == peer_id:
+		local_player = player
+		local_player.set_multiplayer_authority(peer_id)
+		local_player.player_id = peer_id
+	else:
+		player.set_multiplayer_authority(peer_id_from_name)
+		player.player_id = peer_id_from_name

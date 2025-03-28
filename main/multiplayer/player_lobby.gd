@@ -6,7 +6,6 @@ extends Node
 signal local_player_name_changed(player_name: String)
 
 signal game_hosted(ip_address: StringName, port: int)
-
 signal game_joined(host_player_info: Dictionary)
 signal player_joined(player: Player)
 signal disconnected_from_multiplayer
@@ -24,8 +23,8 @@ const _PLAYER_SECTION: StringName = "player"
 @export var _players: Players
 
 func _ready() -> void:
-	_load_config()
 	if Engine.is_editor_hint(): return
+	_load_config()
 	assert(_players)
 	multiplayer.multiplayer_peer = null
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -40,10 +39,12 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 	multiplayer.multiplayer_peer = server_peer
 	game_hosted.emit(ip_address, port)
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [ip_address, port])
+	add_child(Node.new())
 	return Error.OK
 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
+	#_unspawn_everything()
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error
@@ -51,15 +52,20 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
+func _unspawn_everything() -> void:
+	get_tree().call_group("Spawners", "remove_all_spawned_nodes")
+
 func disconnect_from_multiplayer() -> void:
 	disconnected_from_multiplayer.emit()
 	multiplayer.multiplayer_peer = null
 	print_debug("Disconnected from multiplayer!")
 
 @rpc("any_peer", "reliable")
-func _register_player(player_info: Dictionary = _players.get_local_player_info()) -> void:
+func _register_player(player_info: Dictionary) -> void:
 	Player.validate_player_info(player_info)
+	print("player registering with this player_info: %s" % player_info)
 	var player_id: int = multiplayer.get_remote_sender_id()
+	print("player_id: %d" % player_id)
 	var new_player: Player = _create_player(player_id, player_info)
 	if player_id == HOST_ID:
 		game_joined.emit(player_info)
@@ -76,7 +82,7 @@ func _create_player(peer_id: int, player_info: Dictionary) -> Player:
 
 func _update_config_file() -> Error:
 	var config: ConfigFile = ConfigFile.new()
-	var local_player_info: Dictionary[StringName, Variant] = _players.get_local_player_info()
+	var local_player_info: Dictionary[StringName, Variant] = _players.local_player.get_player_info()
 	var player_name: String = local_player_info[Player.NAME]
 	config.set_value(_PLAYER_SECTION, "player_name", player_name)
 	# Save it to a file (overwrite if already exists).
@@ -117,7 +123,7 @@ func _on_host_player_info_changed(host_player_info: Dictionary[StringName, Varia
 ## When a peer connects, send them the host info.
 ## This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(peer_id: int) -> void:
-	_register_player.rpc_id(peer_id)
+	_register_player.rpc_id(peer_id, _players.local_player.get_player_info())
 
 func _on_connected_to_server() -> void:
 	print_debug("Connected to multiplayer server!")

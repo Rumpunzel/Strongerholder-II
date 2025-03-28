@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dromtcmsedm3r"]
+
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://main/serialization/node_serializer.gd" id="1_41yjh"]
+[ext_resource type="Script" uid="uid://ddnwoydv80vs0" path="res://game/agents/kingdom.gd" id="1_kbwnf"]
+[ext_resource type="Script" uid="uid://c60q2k1auie7c" path="res://main/network/spawner.gd" id="2_uonn8"]
+
+[node name="Kingdom" type="Node" node_paths=PackedStringArray("_agents_node")]
+script = ExtResource("1_kbwnf")
+_agents_node = NodePath("Agents")
+metadata/_custom_type_script = "uid://ddnwoydv80vs0"
+
+[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
+spawn_path = NodePath("../Agents")
+script = ExtResource("2_uonn8")
+metadata/_custom_type_script = "uid://c60q2k1auie7c"
+
+[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
+script = ExtResource("1_41yjh")
+_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="Agents" type="Node" parent="."]
+
+[connection signal="child_entered_tree" from="Agents" to="." method="_on_agent_entered_tree"]
+[connection signal="child_exiting_tree" from="Agents" to="." method="_on_agent_exiting_tree"]

@@ -14,7 +14,7 @@ signal current_interactable_changed(current_interactable: HitBox)
 			characters_to_ignore_areas_from.erase(character)
 		character = new_character
 		_check_enabled()
-		clean_hit_boxes_in_area()
+		reevaluate_hit_boxes_in_area()
 		if not character: return
 		characters_to_ignore_areas_from.append(character)
 		if not character.character_profile:
@@ -38,6 +38,7 @@ var current_interactable: HitBox:
 		current_interactable.apply_material_overlay(_highlight_material)
 
 var _hit_boxes_in_area: Array[HitBox] = []
+var _ignored_hit_boxes_in_area: Array[HitBox] = []
 
 func nearest_hit_box_in_area() -> HitBox:
 	var nearest_hit_box: HitBox = null
@@ -47,16 +48,40 @@ func nearest_hit_box_in_area() -> HitBox:
 			nearest_hit_box = near_hit_box
 	return nearest_hit_box
 
-func clean_hit_boxes_in_area() -> void:
-	if _hit_boxes_in_area.is_empty(): return
-	var cleaned_hit_boxes_in_area: Array[HitBox] = []
-	var removed_hit_boxes_in_area: Array[HitBox] = []
-	for hit_box: HitBox in _hit_boxes_in_area:
-		if _is_ignored(hit_box): removed_hit_boxes_in_area.append(hit_box)
-		else: cleaned_hit_boxes_in_area.append(hit_box)
-	_hit_boxes_in_area = cleaned_hit_boxes_in_area
+func reevaluate_hit_boxes_in_area() -> void:
+	var hit_boxes_in_area: Array[HitBox] = []
+	var ignored_hit_boxes_in_area: Array[HitBox] = []
+	
+	var removed_hit_boxes_in_area: Array[HitBox] = _remove_ignored_hit_boxes_in_area(hit_boxes_in_area, ignored_hit_boxes_in_area)
+	var added_hit_boxes_in_area: Array[HitBox] = _add_unignored_hit_boxes_in_area(hit_boxes_in_area, ignored_hit_boxes_in_area)
+	
+	_hit_boxes_in_area = hit_boxes_in_area
+	_ignored_hit_boxes_in_area = ignored_hit_boxes_in_area
+	
 	for hit_box: HitBox in removed_hit_boxes_in_area:
 		hit_box_exited.emit(hit_box)
+	for hit_box: HitBox in added_hit_boxes_in_area:
+		hit_box_entered.emit(hit_box)
+
+func _remove_ignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_hit_boxes_in_area: Array[HitBox]) -> Array[HitBox]:
+	var removed_hit_boxes_in_area: Array[HitBox] = []
+	for hit_box: HitBox in _hit_boxes_in_area:
+		if not _is_ignored(hit_box):
+			hit_boxes_in_area.append(hit_box)
+		else:
+			ignored_hit_boxes_in_area.append(hit_box)
+			removed_hit_boxes_in_area.append(hit_box)
+	return removed_hit_boxes_in_area
+
+func _add_unignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_hit_boxes_in_area: Array[HitBox]) -> Array[HitBox]:
+	var added_hit_boxes_in_area: Array[HitBox] = []
+	for hit_box: HitBox in _ignored_hit_boxes_in_area:
+		if not _is_ignored(hit_box):
+			hit_boxes_in_area.append(hit_box)
+			added_hit_boxes_in_area.append(hit_box)
+		else:
+			ignored_hit_boxes_in_area.append(hit_box)
+	return added_hit_boxes_in_area
 
 func _check_enabled() -> void:
 	if Engine.is_editor_hint(): return
@@ -79,7 +104,9 @@ func _on_hit_box_exited(hit_box: HitBox) -> void:
 func _on_area_entered(area: Area3D) -> void:
 	if not area is HitBox: return
 	var hit_box: HitBox = area
-	if _is_ignored(hit_box): return
+	if _is_ignored(hit_box):
+		_ignored_hit_boxes_in_area.append(hit_box)
+		return
 	var index_to_insert: int = 0
 	for index: int in _hit_boxes_in_area.size():
 		var hit_box_in_are: HitBox = _hit_boxes_in_area[index]
@@ -92,7 +119,9 @@ func _on_area_entered(area: Area3D) -> void:
 func _on_area_exited(area: Area3D) -> void:
 	if not area is HitBox: return
 	var hit_box: HitBox = area
-	if _is_ignored(hit_box): return
+	if _is_ignored(hit_box):
+		_ignored_hit_boxes_in_area.erase(hit_box)
+		return
 	_hit_boxes_in_area.erase(hit_box)
 	hit_box_exited.emit(hit_box)
 

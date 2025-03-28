@@ -1,11 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=16 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://engine/player/player.gd" id="1_i6aj8"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://main/network/synchronizer.gd" id="2_0dv1b"]
-[ext_resource type="PackedScene" uid="uid://bnt8j7t5q2kd7" path="res://engine/player/player_state_machine.tscn" id="2_8ukje"]
+[ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://engine/player/state_machine/player_state_machine.gd" id="3_c7orq"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="4_pfsv8"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_shdhw"]
+[ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://engine/player/state_machine/states/player_state_default.gd" id="4_yyw35"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_c7orq"]
+[ext_resource type="Script" uid="uid://baud71gvivp52" path="res://main/serialization/properties_serializer.gd" id="5_yyw35"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="6_y2l5l"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_yyw35"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character_.tscn" id="7_0dv1b"]
@@ -29,6 +31,9 @@ properties/4/replication_mode = 2
 properties/5/path = NodePath(".:_character_path")
 properties/5/spawn = true
 properties/5/replication_mode = 2
+properties/6/path = NodePath("StateMachine:_serialized_state")
+properties/6/spawn = true
+properties/6/replication_mode = 2
 
 [sub_resource type="Resource" id="Resource_shdhw"]
 script = ExtResource("5_c7orq")
@@ -44,13 +49,12 @@ ease = 0
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_801mx"]
 
-[node name="1" type="Node" node_paths=PackedStringArray("character", "default_phantom_camera", "haunt_phantom_camera", "interaction_area", "_state_machine", "_camera")]
+[node name="Player" type="Node" node_paths=PackedStringArray("character", "interaction_area", "default_phantom_camera", "haunt_phantom_camera", "_state_machine", "_camera")]
 script = ExtResource("1_i6aj8")
-ghost_sprite_frame = null
 character = NodePath("Ghost")
+interaction_area = NodePath("Ghost/InteractionArea")
 default_phantom_camera = NodePath("DefaultCamera")
 haunt_phantom_camera = NodePath("HauntCamera")
-interaction_area = NodePath("Ghost/InteractionArea")
 _state_machine = NodePath("StateMachine")
 _camera = NodePath("TopDownCamera")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
@@ -60,14 +64,21 @@ replication_config = SubResource("SceneReplicationConfig_p0vpi")
 script = ExtResource("2_0dv1b")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
-[node name="StateMachine" parent="." node_paths=PackedStringArray("_player") instance=ExtResource("2_8ukje")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player")]
+script = ExtResource("3_c7orq")
 _player = NodePath("..")
+_initial_state = ExtResource("4_yyw35")
+metadata/_custom_type_script = "uid://hcr7qut3ys1y"
+
+[node name="PropertiesSerializer" type="Node" parent="StateMachine"]
+script = ExtResource("5_yyw35")
+properties_to_serialize = Array[NodePath]([NodePath("..:_serialized_state")])
+metadata/_custom_type_script = "uid://baud71gvivp52"
 
 [node name="DefaultCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_target", "look_at_target")]
 transform = Transform3D(0.707107, -0.514496, 0.485071, -2.98023e-08, 0.685994, 0.727607, -0.707107, -0.514496, 0.485071, 16, 24, 16)
 top_level = true
 script = ExtResource("4_shdhw")
-priority = 1
 follow_mode = 2
 follow_target = NodePath("../Ghost")
 look_at_mode = 2

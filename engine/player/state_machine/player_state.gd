@@ -13,9 +13,13 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func get_character() -> Character: return player.character
+func get_interaction_area() -> InteractionArea: return player.interaction_area
+
 func get_default_phantom_camera() -> PhantomCamera3D: return player.default_phantom_camera
 func get_haunt_phantom_camera() -> PhantomCamera3D: return player.haunt_phantom_camera
-func get_interaction_area() -> InteractionArea: return player.interaction_area
+
+func get_active_camera_priority() -> int: return player.get_active_camera_priority()
+func get_default_camera_priority() -> int: return player.get_default_camera_priority()
 
 func get_direction_input() -> Vector2: return player.get_camera_adjusted_direction_input()
 func get_interaction_input() -> StringName: return player.interaction_input

@@ -59,7 +59,7 @@ static func validate_registering_player_info(player_info: Dictionary[StringName,
 @rpc("any_peer", "reliable")
 func _register_player(registering_player_info: Dictionary[StringName, Variant]) -> void:
 	validate_registering_player_info(registering_player_info)
-	var peer_id: int = multiplayer.get_remote_sender_id()
+	var peer_id: int = multiplayer.get_remote_sender_id() if multiplayer.multiplayer_peer else HOST_ID
 	var player_info: Dictionary[StringName, Variant] = _create_player_info(peer_id, registering_player_info)
 	if peer_id == HOST_ID:
 		game_joined.emit(player_info)

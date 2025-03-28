@@ -13,7 +13,6 @@ signal current_interactable_changed(current_interactable: HitBox)
 		if character and characters_to_ignore_areas_from.has(character):
 			characters_to_ignore_areas_from.erase(character)
 		character = new_character
-		_check_enabled()
 		reevaluate_hit_boxes_in_area()
 		if not character: return
 		characters_to_ignore_areas_from.append(character)
@@ -63,6 +62,11 @@ func reevaluate_hit_boxes_in_area() -> void:
 	for hit_box: HitBox in added_hit_boxes_in_area:
 		hit_box_entered.emit(hit_box)
 
+func set_enabled(enabled: bool) -> void:
+	monitoring = enabled
+	monitorable = enabled
+	_collision_shape.disabled = not enabled
+
 func _remove_ignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_hit_boxes_in_area: Array[HitBox]) -> Array[HitBox]:
 	var removed_hit_boxes_in_area: Array[HitBox] = []
 	for hit_box: HitBox in _hit_boxes_in_area:
@@ -82,13 +86,6 @@ func _add_unignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_
 		else:
 			ignored_hit_boxes_in_area.append(hit_box)
 	return added_hit_boxes_in_area
-
-func _check_enabled() -> void:
-	if Engine.is_editor_hint(): return
-	var is_enabled: bool = character != null
-	monitoring = is_enabled
-	monitorable = is_enabled
-	_collision_shape.disabled = not is_enabled
 
 func _is_ignored(hit_box: HitBox) -> bool:
 	return characters_to_ignore_areas_from.has(hit_box.character)

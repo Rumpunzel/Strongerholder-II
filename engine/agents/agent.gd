@@ -31,6 +31,10 @@ static func create(existing_character: Character) -> Agent:
 	new_agent.character = existing_character
 	return new_agent
 
+func _ready() -> void:
+	if Engine.is_editor_hint(): return
+	_state_machine.start()
+
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_state_machine.update(delta)

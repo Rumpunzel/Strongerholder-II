@@ -34,11 +34,11 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
-static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override_non_normal: bool = false) -> void:
+static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override: bool = false) -> void:
 	assert(node)
 	if node is PropertiesSerializer:
 		var properties_serializer: PropertiesSerializer = node
-		if override_non_normal or properties_serializer.type == PropertiesSerializer.Type.NORMAL:
+		if override or as_type > properties_serializer.type:
 			properties_serializer.type = as_type
 	for child: Node in node.get_children():
 		mark_all_child_serializers_for(child, as_type)

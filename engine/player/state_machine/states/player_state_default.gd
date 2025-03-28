@@ -2,6 +2,7 @@ class_name DefaultPlayerState
 extends PlayerState
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
+	get_default_phantom_camera().priority = get_active_camera_priority()
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
@@ -20,7 +21,7 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	pass
+	get_default_phantom_camera().priority = get_default_camera_priority()
 
 func _on_haunt_timer_timeout() -> void:
 	var available_action: CharacterInteraction = get_available_action()

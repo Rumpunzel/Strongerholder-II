@@ -21,16 +21,13 @@ enum Type {
 @export var _restoriation_order: int = -1
 
 @export_group("Configuration")
-@export var _synchronizer: Synchronizer
+@export var properties_to_serialize: Array[NodePath]
 
 var restoriation_order: int:
 	get: return _restoriation_order if _restoriation_order >=0 else type
 
 func _ready() -> void:
 	add_to_group("SerializersProperties")
-	var parent: Node = get_parent()
-	if not _synchronizer and parent is Synchronizer:
-		_synchronizer = parent
 
 ## Collects all properties data
 ## @returns a [Dictionary] with [int]s representing the restoration orde to a [Dictionary] [NodePath]s of the responsible [PropertiesSerializer] to the properties data
@@ -47,10 +44,23 @@ static func collect_properties_data(properties_serializers: Array[Node]) -> Dict
 
 ## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 func collect_properties() -> Dictionary[NodePath, Variant]:
-	return _synchronizer.collect_properties()
+	var properties_dict: Dictionary[NodePath, Variant] = { }
+	for property_path: NodePath in properties_to_serialize:
+		var node_path: NodePath = NodePath(property_path.get_concatenated_names())
+		var node: Node = get_node(node_path)
+		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
+		var property_value: Variant = node.get_indexed(property_node_path)
+		properties_dict[property_path] = property_value
+	return properties_dict
 
 func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
-	_synchronizer.restore_state(collected_properties)
+	for property_path: NodePath in collected_properties:
+		var node_path: NodePath = NodePath(property_path.get_concatenated_names())
+		var node: Node = get_node(node_path)
+		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
+		var property_value: Variant = collected_properties[property_path]
+		node.set_indexed(property_node_path, property_value)
+	print_debug("Restored %s properties for %s" % [collected_properties, get_path()])
 
 func serialize(save_file_path: StringName) -> Error:
 	assert(save_file_path.is_absolute_path())
@@ -74,5 +84,4 @@ func deserialize(save_file_path: StringName) -> Error:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]
-	if not _synchronizer: warnings.append("Missing Synchronizer reference.")
 	return warnings

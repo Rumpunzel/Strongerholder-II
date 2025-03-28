@@ -1,5 +1,5 @@
 @tool
-@icon("uid://drw5rl4ut3rge")
+@icon("uid://c5eog0fivdu4c")
 class_name NodeSerializer
 extends Node
 

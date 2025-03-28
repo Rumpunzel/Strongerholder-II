@@ -20,8 +20,7 @@ func script_is_valid_state(script: Script) -> bool:
 	if script_is_valid_state(script.get_base_script()): return true
 	return false
 
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
+func start() -> void:
 	_get_state().enter(self)
 
 ## Called by the state machine on the engine's main loop tick.

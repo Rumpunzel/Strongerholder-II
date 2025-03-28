@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://engine/agents/state_machine/agent_state_machine.gd" id="1_uwxlv"]
 [ext_resource type="Script" uid="uid://d12y800yphwle" path="res://engine/agents/state_machine/states/default_agent_state.gd" id="2_ihdu3"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://main/network/synchronizer.gd" id="2_jmrf7"]
-[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://main/serialization/properties_serializer.gd" id="2_uec0s"]
+[ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://main/serialization/synchronizer_serializer.gd" id="2_uec0s"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uwxlv"]
 properties/0/path = NodePath(".:_serialized_state")

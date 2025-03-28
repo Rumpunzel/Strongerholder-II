@@ -46,6 +46,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
 		if character:
+			SerializerNode.mark_all_child_serializers_for(character, PropertiesSerializer.Type.INTANGIBLE)
 			_state_machine.start()
 
 @export_group("Configuration")
@@ -54,6 +55,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 @export var haunt_phantom_camera: PhantomCamera3D
 @export var _state_machine: PlayerStateMachine
 @export var _camera: Camera3D
+@export var _default_character_profile: CharacterProfile
 
 var direction_input: Vector2 = Vector2.ZERO
 var interaction_input: StringName = ""
@@ -62,7 +64,7 @@ var available_action: CharacterInteraction:
 		available_action = new_current_interactable
 		var available_actions: Array[CharacterInteraction] = []
 		if available_action: available_actions.append(available_action)
-		Game.update_available_actions(available_actions)
+		HUD.update_available_actions(available_actions)
 
 var is_local_player: bool = true:
 	set(new_is_local_player):
@@ -83,12 +85,15 @@ var _character_path: NodePath:
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
+	SerializerNode.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
 	if not is_local_player: return
 	# Only collect input if this is the local [Player]
 	_collect_input()
-	if not character: return
-	_state_machine.start()
+	if not character:
+		await get_tree().process_frame
+		character = Game.create_character(_default_character_profile, Transform3D())
+	else:
+		_state_machine.start()
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -177,4 +182,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not haunt_phantom_camera: warnings.append("Missing haunt PhantomCamera3D reference.")
 	if not _state_machine: warnings.append("Missing PlayerStateMachine reference.")
 	if not _camera: warnings.append("Missing Camera3D reference.")
+	if not _default_character_profile: warnings.append("Missing default CharacterProfile.")
 	return warnings

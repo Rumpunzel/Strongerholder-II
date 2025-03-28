@@ -7,6 +7,7 @@ extends CanvasLayer
 @export var _multiplayer_menu: MultiplayerMenu
 
 @onready var _main: MainNode = Main
+@onready var _serializer: SerializerNode = Serializer
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -36,10 +37,10 @@ func _on_continue_pressed() -> void:
 	close_menu()
 
 func _on_save_pressed() -> void:
-	Game.request_save()
+	_serializer.save_world_state()
 
 func _on_load_pressed() -> void:
-	Game.request_load()
+	_serializer.load_world_state()
 
 func _on_randomize_ghost_pressed() -> void:
 	#Game.random_ghost_requested.emit()

@@ -2,5 +2,7 @@
 class_name GameWorld
 extends Node
 
+@onready var _serializer: SerializerNode = Serializer
+
 func _ready() -> void:
-	Game.request_load()
+	_serializer.load_world_state()

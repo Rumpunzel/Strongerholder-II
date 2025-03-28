@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://rdlta1e1aqkb"]
-
-[ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://engine/hud/hud.gd" id="1_723pt"]
-
-[node name="HUD" type="CanvasLayer"]
-script = ExtResource("1_723pt")
-metadata/_edit_lock_ = true

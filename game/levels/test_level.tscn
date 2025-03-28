@@ -1,13 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
 
-[ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://engine/levels/level.gd" id="1_ywn5t"]
-[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/levels/spawn_points/character_spawner.gd" id="4_fbqqs"]
+[ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://game/levels/level.gd" id="1_ywn5t"]
+[ext_resource type="Script" uid="uid://cv80krf8r7fls" path="res://engine/agents/agent_spawner.gd" id="2_r5egs"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/characters/character_spawner.gd" id="4_fbqqs"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://game/character_profiles/king.tres" id="5_kudci"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://game/character_profiles/rogue.tres" id="6_ck0y7"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://main/serialization/node_serializer.gd" id="7_ah70l"]
-[ext_resource type="Script" uid="uid://bav5t732bt84v" path="res://engine/levels/spawn_points/character_spawn_points.gd" id="7_sli0y"]
+[ext_resource type="Script" uid="uid://bav5t732bt84v" path="res://game/levels/spawn_points/character_spawn_points.gd" id="7_sli0y"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
-[ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://engine/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
+[ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://game/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -23,6 +24,17 @@ uv1_scale = Vector3(16, 16, 16)
 script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
 
+[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
+spawn_path = NodePath("../Agents")
+script = ExtResource("2_r5egs")
+metadata/_custom_type_script = "uid://c60q2k1auie7c"
+
+[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
+script = ExtResource("7_ah70l")
+_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
 [node name="CharacterSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_character_spawn_points")]
 spawn_path = NodePath("../Characters")
 script = ExtResource("4_fbqqs")
@@ -33,6 +45,8 @@ metadata/_custom_type_script = "uid://cnqgk717dgofh"
 script = ExtResource("7_ah70l")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="Agents" type="Node" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 

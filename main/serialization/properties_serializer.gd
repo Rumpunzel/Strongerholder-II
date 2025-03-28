@@ -68,7 +68,7 @@ func serialize(save_file_path: StringName) -> Error:
 	if not save_file: return FileAccess.get_open_error()
 	var collected_properties: Dictionary[NodePath, Variant] = collect_properties()
 	assert(collected_properties is Dictionary[NodePath, Variant])
-	var serialized_properties: String = Serializer.encode_data(collected_properties)
+	var serialized_properties: String = SerializerNode.encode_data(collected_properties)
 	save_file.store_line(serialized_properties)
 	return Error.OK
 
@@ -77,7 +77,7 @@ func deserialize(save_file_path: StringName) -> Error:
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
 	if not save_file: return FileAccess.get_open_error()
 	var serialized_properties: String = save_file.get_as_text()
-	var collected_properties: Dictionary[NodePath, Variant] = Serializer.decode_data(serialized_properties)
+	var collected_properties: Dictionary[NodePath, Variant] = SerializerNode.decode_data(serialized_properties)
 	assert(collected_properties is Dictionary[NodePath, Variant])
 	restore_state(collected_properties)
 	return Error.OK

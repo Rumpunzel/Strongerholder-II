@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/characters/heads_up_anchor.tscn" id="2_uoewa"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://game/character_profiles/defaults/default_collision_shape.tres" id="3_0y2lj"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/character_profiles/character_profile.gd" id="3_7rwy5"]
-[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://engine/characters/character_models/rogue.tscn" id="3_kcow0"]
+[ext_resource type="PackedScene" uid="uid://c1y1c3gomyjk6" path="res://game/character_profiles/character_models/rogue.tscn" id="3_kcow0"]
 [ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://game/character_profiles/defaults/default_hit_box_shape.tres" id="4_ithgo"]
 [ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://game/character_profiles/defaults/default_interaction_area_shape.tres" id="5_ys22x"]
 

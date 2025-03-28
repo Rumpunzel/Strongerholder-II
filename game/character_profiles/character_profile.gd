@@ -41,15 +41,6 @@ enum Groups {
 func create(spawn_transform: Transform3D) -> Character:
 	# XOR operator; either specific character_profile XOR a random character_profile
 	assert(_character_model != null != not _random_character_models.is_empty())
-	var character: Character = create_dummy(spawn_transform)
-	character.character_profile = self
-	character.transform = spawn_transform
-	Game.request_agent_for_character.emit(character)
-	return character
-
-func create_dummy(spawn_transform: Transform3D) -> Character:
-	# XOR operator; either specific character_profile XOR a random character_profile
-	assert(_character_model != null != not _random_character_models.is_empty())
 	var character: Character = _character_scene.instantiate()
 	character.character_profile = self
 	character.transform = spawn_transform

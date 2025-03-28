@@ -6,10 +6,16 @@ extends Spawner
 @export_group("Configuration")
 @export var _character_spawn_points: CharacterSpawnPoints
 
+func _enter_tree() -> void:
+	Game.character_created.connect(_on_character_created)
+
 func _ready() -> void:
 	assert(_character_spawn_points)
 	_character_spawn_points.spawn_all_characters(spawn_node)
 	super._ready()
+
+func _on_character_created(character: Character) -> void:
+	spawn_node.add_child(character, true)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

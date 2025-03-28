@@ -1,5 +1,5 @@
 @icon("uid://lafgp3e7lvc3")
-class_name Serializer
+class_name SerializerNode
 extends Node
 
 signal saving_started
@@ -43,11 +43,7 @@ static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerial
 	for child: Node in node.get_children():
 		mark_all_child_serializers_for(child, as_type)
 
-func _ready() -> void:
-	Game.save_requested.connect(save_world_state)
-	Game.load_requested.connect(load_world_state)
-
-func save_world_state(save_file_path: StringName) -> Error:
+func save_world_state(save_file_path: StringName = SAVE_FILE_PATH) -> Error:
 	assert(save_file_path.is_absolute_path())
 	saving_started.emit()
 	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
@@ -57,7 +53,7 @@ func save_world_state(save_file_path: StringName) -> Error:
 	saving_finished.emit()
 	return Error.OK
 
-func load_world_state(save_file_path: StringName) -> Error:
+func load_world_state(save_file_path: StringName = SAVE_FILE_PATH) -> Error:
 	if not has_save_file(save_file_path):
 		printerr("Tried to load without a save file; skipped!")
 		return Error.ERR_FILE_NOT_FOUND
@@ -125,8 +121,8 @@ func _restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> v
 			properties_serializer.restore_state(collected_properties)
 			continue
 		
-		var serliazer_type: PropertiesSerializer.Type = properties_serializer.type
-		match serliazer_type:
+		var serializer_type: PropertiesSerializer.Type = properties_serializer.type
+		match serializer_type:
 			PropertiesSerializer.Type.NORMAL:
 				# This is an error and should be looked at if it occurs after development
 				printerr("Could not find PropertiesSerializer at %s; skipped!" % properties_serializer_path)
@@ -140,7 +136,7 @@ func _restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> v
 			PropertiesSerializer.Type.EPHEMERAL:
 				# Ignore
 				printerr("Could not find EPHEMERAL PropertiesSerializer at %s; skipped!" % properties_serializer_path)
-			_: push_error("PropertiesSerializer.Type %s not implemented!" % serliazer_type)
+			_: push_error("PropertiesSerializer.Type %s not implemented!" % serializer_type)
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return

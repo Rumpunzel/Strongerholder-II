@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/character_profiles/character_profile.gd" id="1_hac1t"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character_.tscn" id="1_tyc7q"]
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/characters/heads_up_anchor.tscn" id="2_d0vdr"]
-[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://engine/characters/character_models/king.tscn" id="3_0kn5r"]
+[ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://game/character_profiles/character_models/king.tscn" id="3_0kn5r"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://game/character_profiles/defaults/default_collision_shape.tres" id="3_c8byr"]
 [ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://game/character_profiles/defaults/default_hit_box_shape.tres" id="4_4iqrm"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="6_tyc7q"]

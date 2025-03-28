@@ -33,6 +33,8 @@ var _pause_requested: bool = false
 
 var _config: ConfigFile = _load_config_file()
 
+@onready var _serializer: SerializerNode = Serializer
+
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	#Game.load_requested.connect(request_pause)
@@ -61,8 +63,8 @@ func join_game(ip_address: StringName) -> void:
 func disconnect_from_multiplayer() -> void:
 	_multiplayer.disconnect_from_multiplayer()
 
-func quit_game(save_file_path: StringName = Serializer.SAVE_FILE_PATH) -> void:
-	if not save_file_path.is_empty(): Game.request_save(save_file_path)
+func quit_game(save_file_path: StringName = SerializerNode.SAVE_FILE_PATH) -> void:
+	if not save_file_path.is_empty(): _serializer.save_world_state(save_file_path)
 	get_tree().quit()
 
 func update_value_in_config(section: String, key: String, value: Variant) -> Error:
@@ -129,7 +131,7 @@ static func _create_default_config_file() -> Error:
 	return error
 
 func _on_disconnected_from_multiplayer() -> void:
-	Game.request_load()
+	_serializer.load_world_state()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

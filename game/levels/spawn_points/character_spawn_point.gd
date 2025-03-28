@@ -20,9 +20,10 @@ func spawn_character(spawn_parent: Node) -> Character:
 		return
 	var character: Character
 	if spawn_with_agent and not Engine.is_editor_hint():
+		character = Game.create_character(character_profile, transform)
+	else:
 		character = character_profile.create(transform)
-	else: character = character_profile.create_dummy(transform)
-	spawn_parent.add_child(character, true)
+		spawn_parent.add_child(character, true)
 	if Engine.is_editor_hint():
 		if _editor_material: character.character_model.apply_material_override(_editor_material)
 		return character

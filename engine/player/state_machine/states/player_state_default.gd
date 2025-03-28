@@ -2,7 +2,6 @@ class_name DefaultPlayerState
 extends PlayerState
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
-	print("enter")
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:

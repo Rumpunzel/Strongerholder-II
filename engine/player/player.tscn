@@ -44,12 +44,14 @@ ease = 0
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_801mx"]
 
-[node name="1" type="Node" node_paths=PackedStringArray("character", "default_phantom_camera", "haunt_phantom_camera", "interaction_area", "_camera")]
+[node name="1" type="Node" node_paths=PackedStringArray("character", "default_phantom_camera", "haunt_phantom_camera", "interaction_area", "_state_machine", "_camera")]
 script = ExtResource("1_i6aj8")
+ghost_sprite_frame = null
 character = NodePath("Ghost")
 default_phantom_camera = NodePath("DefaultCamera")
 haunt_phantom_camera = NodePath("HauntCamera")
 interaction_area = NodePath("Ghost/InteractionArea")
+_state_machine = NodePath("StateMachine")
 _camera = NodePath("TopDownCamera")
 metadata/_custom_type_script = "uid://b0eafjrcpkmfp"
 
@@ -75,14 +77,13 @@ tween_on_load = false
 follow_offset = Vector3(16, 24, 16)
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
-[node name="HauntCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_targets", "look_at_targets")]
+[node name="HauntCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_targets")]
 transform = Transform3D(0.707105, -0.514496, 0.485071, -2.98022e-08, 0.685994, 0.727607, -0.707105, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
 top_level = true
 script = ExtResource("4_shdhw")
 follow_mode = 3
 follow_targets = [NodePath("../Ghost")]
 look_at_mode = 3
-look_at_targets = [NodePath("../Ghost")]
 tween_resource = SubResource("Resource_04p45")
 tween_on_load = false
 follow_offset = Vector3(16, 24, 16)

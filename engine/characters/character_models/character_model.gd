@@ -16,6 +16,7 @@ static func gather_all_geometry_instances_on(node: Node) -> Array[MeshInstance3D
 	return geometry_instances
 
 func play_animation(normalized_velocity: Vector3) -> void:
+	if not _state_machine: return
 	if normalized_velocity:
 		_state_machine.travel("Walk")
 		_animation_tree.set("parameters/Walk/blend_position", normalized_velocity.length_squared())

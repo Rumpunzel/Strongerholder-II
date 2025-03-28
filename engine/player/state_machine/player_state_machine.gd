@@ -7,6 +7,10 @@ extends StateMachine
 
 @onready var _state: PlayerState = _initial_state.new()
 
+## Called by the state machine when receiving unhandled input events.
+func handle_input(event: InputEvent) -> void:
+	_get_state().handle_input(event)
+
 func _get_state() -> PlayerState:
 	_state.player = _player
 	return _state

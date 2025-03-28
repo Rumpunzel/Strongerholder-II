@@ -3,20 +3,10 @@
 class_name MainMenu
 extends CanvasLayer
 
-signal pause_requested
-signal unpause_requested
-signal quit_requested
-
-signal player_name_change_requested(player_name: String)
-
-signal host_game_requested
-signal stop_hosting_game_requested
-
-signal join_game_requested(ip_address_to_join: StringName)
-signal leave_game_requested
-
 @export_group("Configuration")
 @export var _multiplayer_menu: MultiplayerMenu
+
+@onready var _main: MainNode = Main
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -29,7 +19,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return
 	if event.is_action_released("open_menu") and not visible:
 		open_menu()
-		pause_requested.emit()
+		_main.pause_game()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_released("close_menu") and visible:
 		close_menu()
@@ -39,7 +29,7 @@ func open_menu() -> void:
 	show()
 
 func close_menu() -> void:
-	unpause_requested.emit()
+	_main.unpause_game()
 	hide()
 
 func _on_continue_pressed() -> void:
@@ -56,7 +46,7 @@ func _on_randomize_ghost_pressed() -> void:
 	pass
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
-	quit_requested.emit()
+	_main.quit_game()
 
 # [Multiplayer] callbacks
 func _on_local_player_name_changed(player_name: String) -> void:
@@ -64,22 +54,6 @@ func _on_local_player_name_changed(player_name: String) -> void:
 
 func _on_disconnected_from_multiplayer() -> void:
 	_multiplayer_menu.reset_menu()
-
-# [MultiplayerMenu] callbacks
-func _on_player_name_change_requested(player_name: String) -> void:
-	player_name_change_requested.emit(player_name)
-	
-func _on_host_game_requested() -> void:
-	host_game_requested.emit()
-
-func _on_stop_hosting_game_requested() -> void:
-	stop_hosting_game_requested.emit()
-
-func _on_join_game_requested(ip_address_to_join: StringName) -> void:
-	join_game_requested.emit(ip_address_to_join)
-
-func _on_leave_game_requested() -> void:
-	leave_game_requested.emit()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

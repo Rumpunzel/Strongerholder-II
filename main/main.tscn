@@ -4,9 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://citi18cutmbiw" path="res://main/multiplayer/multiplayer.tscn" id="2_vop5m"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://main/main_menu/main_menu.tscn" id="3_5un7r"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("_main_menu")]
+[node name="Main" type="Node" node_paths=PackedStringArray("_multiplayer", "_main_menu")]
 process_mode = 3
 script = ExtResource("1_emt18")
+_multiplayer = NodePath("Multiplayer")
 _main_menu = NodePath("MainMenu")
 metadata/_custom_type_script = "uid://c38qwchvf73qr"
 
@@ -18,12 +19,3 @@ metadata/_custom_type_script = "uid://c38qwchvf73qr"
 [connection signal="disconnected_from_multiplayer" from="Multiplayer" to="MainMenu" method="_on_disconnected_from_multiplayer"]
 [connection signal="game_hosted" from="Multiplayer" to="." method="_on_game_hosted"]
 [connection signal="game_joined" from="Multiplayer" to="." method="_on_game_joined"]
-[connection signal="local_player_name_changed" from="Multiplayer" to="MainMenu" method="_on_local_player_name_changed"]
-[connection signal="host_game_requested" from="MainMenu" to="Multiplayer" method="host_game"]
-[connection signal="join_game_requested" from="MainMenu" to="Multiplayer" method="join_game"]
-[connection signal="leave_game_requested" from="MainMenu" to="Multiplayer" method="disconnect_from_multiplayer"]
-[connection signal="pause_requested" from="MainMenu" to="." method="pause_game"]
-[connection signal="player_name_change_requested" from="MainMenu" to="Multiplayer" method="_on_player_name_change_requested"]
-[connection signal="quit_requested" from="MainMenu" to="." method="quit_game"]
-[connection signal="stop_hosting_game_requested" from="MainMenu" to="Multiplayer" method="disconnect_from_multiplayer"]
-[connection signal="unpause_requested" from="MainMenu" to="." method="unpause_game"]

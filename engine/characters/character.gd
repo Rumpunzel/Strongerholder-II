@@ -63,6 +63,7 @@ var _character_profile_path: String:
 		character_profile = load(_character_profile_path)
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	_check_processing()
 
 func _physics_process(delta: float) -> void:
@@ -72,9 +73,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / character_profile.move_speed, velocity.y / _gravity, velocity.z / character_profile.move_speed)
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
 	if character_model: character_model.play_animation(_normalized_velocity)
 
 func _apply_gravity(delta: float) -> void:

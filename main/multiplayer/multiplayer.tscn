@@ -11,12 +11,12 @@ _multiplayer_lobby = NodePath("MultiplayerLobby")
 metadata/_custom_type_script = "uid://7ifllupku6cd"
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
 spawn_path = NodePath("../MultiplayerLobby")
 script = ExtResource("2_8t06j")
 metadata/_custom_type_script = "uid://c60q2k1auie7c"
 
 [node name="MultiplayerLobby" type="Node" parent="."]
-process_mode = 1
 script = ExtResource("3_v2t12")
 metadata/_custom_type_script = "uid://ct7g1ldiml4be"
 
@@ -32,5 +32,4 @@ metadata/_custom_type_script = "uid://b68u3p1bd6gb"
 [connection signal="player_joined" from="." to="MultiplayerLobby" method="_on_player_joined"]
 [connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]
 [connection signal="child_entered_tree" from="MultiplayerLobby" to="MultiplayerLobby" method="_on_child_entered_tree"]
-[connection signal="host_player_info_changed" from="MultiplayerLobby" to="." method="_on_host_player_info_changed"]
 [connection signal="player_disconnected" from="MultiplayerLobby" to="Toaster" method="_on_player_disconnected"]

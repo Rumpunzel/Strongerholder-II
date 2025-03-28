@@ -1,4 +1,4 @@
-@icon("uid://djyg1pu0yqd4c")
+@icon("uid://bsnfjvi6jpfrm")
 class_name MultiplayerLobby
 extends Node
 
@@ -7,41 +7,38 @@ enum RemovalReason {
 	SERVER_DISCONNECTED,
 }
 
-signal host_player_info_changed(host_player_info: Dictionary[StringName, Variant])
 signal player_disconnected(player: Player)
 
-var local_player: Player
-
 var _guest_players: Dictionary[int, Player] = {}
+
+@onready var _main: MainNode = Main
+@onready var _local_player: Player = _create_local_player()
 
 func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	
+	_main.local_ghost_sprite_frame_changed.connect(_on_local_ghost_sprite_frame_changed)
+	_main.local_player_name_changed.connect(_on_local_player_name_changed)
 
 func add_player(player: Player) -> void:
 	assert(not multiplayer.multiplayer_peer or multiplayer.is_server())
-	print("players new player_id: %d" % player.player_id)
-	print("players new player_name: %s" % player.player_name)
-	print("players new authority: %d" % player.get_multiplayer_authority())
 	player.set_multiplayer_authority(player.player_id)
 	player.player_info_changed.connect(_on_player_info_changed)
 	add_child(player, true)
 	print_debug("Added player: %s" % player.get_player_info())
 
-func create_local_player(player_id: int, player_name: String) -> void:
-	assert(not local_player)
-	var player_info: Dictionary[StringName, Variant] = {
-		Player.ID: player_id,
-		Player.NAME: player_name,
-	}
-	Player.validate_player_info(player_info)
-	local_player = Player.from_player_info(player_info)
-	add_player(local_player)
+func remove_local_player() -> void:
+	assert(_local_player)
+	_local_player.queue_free()
+	_local_player = null
+	print_debug("Removed local player!")
 
-func change_name_for_local_player(player_name: String) -> void:
-	local_player.player_name = player_name
-	host_player_info_changed.emit(local_player.get_player_info())
-	print_debug("Changed name of local player to: %s" % player_name)
+func _create_local_player() -> Player:
+	assert(not _local_player)
+	var local_player: Player = Player.create(Multiplayer.HOST_ID, _main.local_player_name)
+	add_player(local_player)
+	return local_player
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
 	for player: Player in get_children():
@@ -52,12 +49,22 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 		_remove_player(player)
 
 func _remove_player(player: Player) -> void:
-	if player == local_player: return
+	if player == _local_player: return
 	assert(player)
 	player.player_info_changed.disconnect(_on_player_info_changed)
 	_guest_players.erase(player.player_id)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
+
+func _on_local_ghost_sprite_frame_changed(local_ghost_sprite_frame: int) -> void:
+	if not _local_player: return
+	_local_player.ghost_sprite_frame = local_ghost_sprite_frame
+	print_debug("Changed ghost sprite frame of local player to: %s" % local_ghost_sprite_frame)
+
+func _on_local_player_name_changed(local_player_name: String) -> void:
+	if not _local_player: return
+	_local_player.player_name = local_player_name
+	print_debug("Changed name of local player to: %s" % local_player_name)
 
 func _on_player_info_changed(player_info: Dictionary[StringName, Variant]) -> void:
 	Player.validate_player_info(player_info)
@@ -97,12 +104,10 @@ func _on_child_entered_tree(node: Node) -> void:
 	if not multiplayer.multiplayer_peer or multiplayer.is_server(): return
 	var peer_id_from_name: int = int(player.name)
 	var peer_id: int = multiplayer.get_unique_id()
-	print("peer_id_from_name: %d" % peer_id_from_name)
-	print("peer_id: %d" % peer_id)
 	if peer_id_from_name == peer_id:
-		local_player = player
-		local_player.set_multiplayer_authority(peer_id)
-		local_player.player_id = peer_id
+		_local_player = player
+		_local_player.set_multiplayer_authority(peer_id)
+		_local_player.player_id = peer_id
 	else:
 		player.set_multiplayer_authority(peer_id_from_name)
 		player.player_id = peer_id_from_name

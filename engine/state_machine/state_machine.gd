@@ -24,17 +24,13 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_get_state().enter(self)
 
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
+## Called by the state machine on the engine's main loop tick.
+func update(delta: float) -> void:
 	_get_state().update(delta)
 
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
+## Called by the state machine on the engine's physics update tick.
+func physics_update(delta: float) -> void:
 	_get_state().physics_update(delta)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint(): return
-	_get_state().handle_input(event)
 
 func _transition_to_next_state(target_state: State) -> void:
 	_get_state().exit()

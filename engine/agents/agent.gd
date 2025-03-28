@@ -14,6 +14,9 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 		if not character.is_inside_tree(): await character.ready
 		_character_path = character.get_path()
 
+@export_group("Configuration")
+@export var _state_machine: AgentStateMachine
+
 ## This is used for serialization purposes; serves otherwise no purpose
 var _character_path: NodePath:
 	get: return character.get_path() if character else NodePath()
@@ -28,6 +31,15 @@ static func create(existing_character: Character) -> Agent:
 	new_agent.character = existing_character
 	return new_agent
 
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	_state_machine.update(delta)
+
+func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	_state_machine.physics_update(delta)
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
+	if not _state_machine: warnings.append("Missing AgentStateMachine reference.")
 	return warnings

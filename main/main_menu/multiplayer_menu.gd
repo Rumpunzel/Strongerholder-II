@@ -2,20 +2,14 @@
 class_name MultiplayerMenu
 extends VBoxContainer
 
-signal player_name_change_requested(player_name: String)
-
-signal host_game_requested
-signal stop_hosting_game_requested
-
-signal join_game_requested(ip_address_to_join: StringName)
-signal leave_game_requested
-
 @export_group("Configuration")
 @export var _player_name: BetterLineEdit
 @export var _join_button: Button
 @export var _ip_address: BetterLineEdit
 @export var _host_button: Button
 @export var _host_ip_address_button: Button
+
+@onready var _main: MainNode = Main
 
 func reset_menu() -> void:
 	_join_button.disabled = false
@@ -29,14 +23,14 @@ func update_player_name(player_name: String) -> void:
 	_player_name.text = player_name
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
-	player_name_change_requested.emit(new_player_name)
+	_main.local_player_name = new_player_name
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
 		var ip_address_to_join: StringName = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
-		join_game_requested.emit(ip_address_to_join)
-	else: leave_game_requested.emit()
+		_main.join_game(ip_address_to_join)
+	else: _main.disconnect_from_multiplayer()
 	_ip_address.editable = not joining
 	_host_button.disabled = joining
 
@@ -49,8 +43,8 @@ func _on_ip_address_text_submitted(new_ip_address: StringName) -> void:
 	_join_button.button_pressed = true
 
 func _on_host_toggled(hosting: bool) -> void:
-	if hosting: host_game_requested.emit()
-	else: stop_hosting_game_requested.emit()
+	if hosting: _main.host_game()
+	else: _main.disconnect_from_multiplayer()
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 

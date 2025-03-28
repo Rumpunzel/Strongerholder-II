@@ -34,7 +34,7 @@ func _on_player_name_text_changed(new_player_name: String) -> void:
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
 		var ip_address_to_join: StringName = _ip_address.text
-		if ip_address_to_join.is_empty(): ip_address_to_join = PlayerLobby.DEFAULT_SERVER_IP
+		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
 		join_game_requested.emit(ip_address_to_join)
 	else: leave_game_requested.emit()
 	_ip_address.editable = not joining
@@ -54,7 +54,7 @@ func _on_host_toggled(hosting: bool) -> void:
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 
-# [PlayerLobby] callbacks
+# [Multiplayer] callbacks
 func _on_player_name_changed(player_name: String) -> void:
 	if _player_name.text == player_name: return
 	_player_name.text = player_name
@@ -63,7 +63,7 @@ func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _player_name: warnings.append("Missing player name reference.")
 	if not _join_button: warnings.append("Missing join button reference.")
 	if not _ip_address: warnings.append("Missing ip address reference.")

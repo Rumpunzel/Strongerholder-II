@@ -10,7 +10,7 @@ const NAME: StringName = "player_name"
 
 const PLAYER_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
-@export var player_id: int = PlayerLobby.HOST_ID:
+@export var player_id: int = Multiplayer.HOST_ID:
 	set(new_player_id):
 		if new_player_id == player_id: return
 		player_id = new_player_id
@@ -61,7 +61,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	#if multiplayer.multiplayer_peer: is_local_player = player_id == multiplayer.get_unique_id()
 	#else:
-		#player_id = PlayerLobby.HOST_ID
+		#player_id = Multiplayer.HOST_ID
 		#is_local_player = true
 	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
 	#camera.frame_node(character, true)

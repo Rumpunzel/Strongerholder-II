@@ -1,5 +1,5 @@
 @icon("uid://djyg1pu0yqd4c")
-class_name Players
+class_name MultiplayerLobby
 extends Node
 
 enum RemovalReason {
@@ -12,7 +12,7 @@ signal player_disconnected(player: Player)
 
 var local_player: Player
 
-var _guest_players: Dictionary[int, Player] = { }
+var _guest_players: Dictionary[int, Player] = {}
 
 func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)

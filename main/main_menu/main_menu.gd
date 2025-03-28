@@ -58,7 +58,7 @@ func _on_randomize_ghost_pressed() -> void:
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	quit_requested.emit()
 
-# [PlayerLobby] callbacks
+# [Multiplayer] callbacks
 func _on_local_player_name_changed(player_name: String) -> void:
 	_multiplayer_menu.update_player_name(player_name)
 
@@ -82,6 +82,6 @@ func _on_leave_game_requested() -> void:
 	leave_game_requested.emit()
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _multiplayer_menu: warnings.append("Missing MultiplayerMenu reference.")
 	return warnings

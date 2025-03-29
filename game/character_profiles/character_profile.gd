@@ -44,6 +44,7 @@ func create(spawn_transform: Transform3D) -> Character:
 	var character: Character = _character_scene.instantiate()
 	character.character_profile = self
 	character.transform = spawn_transform
+	Game.character_created.emit(character)
 	return character
 
 func create_character_model() -> CharacterModel:

@@ -36,6 +36,7 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
 	#_multiplayer_lobby.remove_local_player()
+	get_tree().call_group("Spawners", "remove_all_spawned_nodes")
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error

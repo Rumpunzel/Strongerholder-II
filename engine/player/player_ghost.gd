@@ -84,12 +84,14 @@ func _physics_process(delta: float) -> void:
 	_state_machine.physics_update(delta)
 	interaction_area.transform = character.transform
 
+static func create(new_player_id: int, new_character: Character) -> PlayerGhost:
+	var new_player: PlayerGhost = PLAYER_GHOST_SCENE.instantiate()
+	new_player.player_id = new_player_id
+	new_player.character = new_character
+	return new_player
+
 static func read_movement_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
-
-static func create() -> PlayerGhost:
-	var new_player: PlayerGhost = PLAYER_GHOST_SCENE.instantiate()
-	return new_player
 
 func get_camera_adjusted_direction_input() -> Vector2:
 	var camera_forward: Vector3 = _camera.transform.basis.z

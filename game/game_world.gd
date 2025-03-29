@@ -1,3 +1,4 @@
+@tool
 @icon("uid://bq2ao4pir5jfp")
 class_name GameWorld
 extends Node
@@ -5,9 +6,14 @@ extends Node
 signal game_paused
 signal game_unpaused
 
+@export_group("Configuration")
+@export var _player_ghost_spawner: PlayerGhostSpawner
+@export var _agent_spawner: AgentSpawner
+
 var _pause_requested: bool = false
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	pause_game()
 	
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
@@ -41,3 +47,9 @@ func _on_connected_to_multiplayer() -> void:
 
 func _on_disconnected_from_multiplayer() -> void:
 	Serializer.load_world_state()
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	if not _player_ghost_spawner: warnings.append("Missing PlayerGhostSpawner reference.")
+	if not _agent_spawner: warnings.append("Missing AgentSpawner reference.")
+	return warnings

@@ -35,6 +35,8 @@ _collision_shape = NodePath("CollisionShape3D")
 _hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
 [node name="CharacterSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3fwhk")
 script = ExtResource("2_b3pdv")
@@ -44,8 +46,6 @@ metadata/_custom_type_script = "uid://crm43jylxmjbd"
 script = ExtResource("3_42yey")
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="HitBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_5i04j")]
 collision_mask = 0

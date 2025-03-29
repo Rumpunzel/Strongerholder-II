@@ -1,5 +1,5 @@
 @tool
-@icon("uid://nl71yast8tsi")
+@icon("uid://c73t2rg8wrdt3")
 class_name Player
 extends Node
 

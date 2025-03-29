@@ -63,6 +63,7 @@ SerializersNodes="All nodes responsible for serializing persistent, dynamically 
 SerializersProperties="All nodes responsible for serializing persistent property data"
 Spawners=""
 Characters=""
+CharacterSpawnPoints=""
 
 [input]
 

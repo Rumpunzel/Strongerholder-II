@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b68xi4y8ntcj1"]
-
-[ext_resource type="Script" uid="uid://c38qwchvf73qr" path="res://client/client.gd" id="1_emt18"]
-
-[node name="Main" type="Node"]
-process_mode = 3
-script = ExtResource("1_emt18")
-metadata/_custom_type_script = "uid://c38qwchvf73qr"

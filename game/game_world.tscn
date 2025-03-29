@@ -1,15 +1,44 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvt1s3i2xw5s6"]
+[gd_scene load_steps=9 format=3 uid="uid://bvt1s3i2xw5s6"]
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://game/game_world.gd" id="1_jjm87"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://game/pause_menu/pause_menu.tscn" id="2_8hsaj"]
+[ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://game/levels/ghost_spawner.gd" id="3_2snef"]
+[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/characters/character_spawner.gd" id="3_hhbt8"]
 [ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://game/levels/test_level.tscn" id="4_f1af4"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="4_hhbt8"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://client/serialization/node_serializer.gd" id="5_22s7i"]
+[ext_resource type="Script" uid="uid://cv80krf8r7fls" path="res://engine/agents/agent_spawner.gd" id="6_121om"]
 
-[node name="GameWorld" type="Node"]
-process_mode = 3
+[node name="GameWorld" type="Node" node_paths=PackedStringArray("_player_ghost_spawner", "_agent_spawner")]
 script = ExtResource("1_jjm87")
+_player_ghost_spawner = NodePath("PlayerGhostSpawner")
+_agent_spawner = NodePath("AgentSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
 
 [node name="PauseMenu" parent="." instance=ExtResource("2_8hsaj")]
+
+[node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath(".")
+script = ExtResource("3_hhbt8")
+metadata/_custom_type_script = "uid://cnqgk717dgofh"
+
+[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
+spawn_path = NodePath(".")
+script = ExtResource("6_121om")
+metadata/_custom_type_script = "uid://cv80krf8r7fls"
+
+[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
+script = ExtResource("5_22s7i")
+_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+spawn_path = NodePath(".")
+script = ExtResource("3_2snef")
+_player_ghost_character_profile = ExtResource("4_hhbt8")
+metadata/_custom_type_script = "uid://853l0h1bjf04"
 
 [node name="TestLevel" parent="." instance=ExtResource("4_f1af4")]
 

@@ -14,16 +14,16 @@ extends Marker3D
 
 var _characters_spawned: int = 0
 
-func spawn_character(spawn_parent: Node) -> Character:
+func _ready() -> void:
+	print("hello")
+	add_to_group("CharacterSpawnPoints")
+
+func spawn_character() -> Character:
+	print("there")
 	if spawn_limit > 0 and _characters_spawned >= spawn_limit:
 		push_warning("Trying to spawn a Character but reached spawn limit already!")
-		return
-	var character: Character
-	if spawn_with_agent and not Engine.is_editor_hint():
-		character = Game.create_character(character_profile, transform)
-	else:
-		character = character_profile.create(transform)
-		spawn_parent.add_child(character, true)
+		return null
+	var character: Character = character_profile.create(transform)
 	if Engine.is_editor_hint():
 		if _editor_material: character.character_model.apply_material_override(_editor_material)
 		return character

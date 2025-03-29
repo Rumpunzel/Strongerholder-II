@@ -3,7 +3,7 @@ class_name PlayerStateMachine
 extends StateMachine
 
 @export_group("Configuration")
-@export var _player: Player
+@export var _player: PlayerGhost
 
 @onready var _state: PlayerState = _initial_state.new()
 
@@ -12,7 +12,7 @@ func handle_input(event: InputEvent) -> void:
 	_get_state().handle_input(event)
 
 func _get_state() -> PlayerState:
-	_state.player = _player
+	if _state: _state.player = _player
 	return _state
 
 func _set_state(state: State) -> void:

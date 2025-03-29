@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterProfile" load_steps=11 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost.tscn" id="1_b8jju"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character_.tscn" id="1_s4khq"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="1_s4khq"]
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/characters/heads_up_anchor.tscn" id="2_m7bob"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/character_profiles/character_profile.gd" id="3_6mhvl"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="3_pj10w"]

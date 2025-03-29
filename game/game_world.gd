@@ -11,9 +11,7 @@ func _ready() -> void:
 	pause_game()
 	
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
-	
-	Multiplayer.game_hosted.connect(_on_connected_to_multiplayer)
-	Multiplayer.game_joined.connect(_on_connected_to_multiplayer)
+	Multiplayer.connected_to_multiplayer.connect(_on_connected_to_multiplayer)
 	
 	Serializer.load_world_state()
 

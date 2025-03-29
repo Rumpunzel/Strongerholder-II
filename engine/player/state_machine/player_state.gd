@@ -6,7 +6,7 @@ extends State
 const HAUNTED: StringName = "haunted_character"
 const HAUNTING: StringName = "haunting_character"
 
-var player: Player
+var player: PlayerGhost
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:

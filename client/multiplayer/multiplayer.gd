@@ -5,6 +5,8 @@ extends Node
 signal game_hosted(ip_address: StringName, port: int)
 signal game_joined(host_player_info: Dictionary)
 signal player_joined(player: Player)
+
+signal connected_to_multiplayer
 signal disconnected_from_multiplayer
 
 const PORT: int = 7000
@@ -26,6 +28,7 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 	if error: return error
 	multiplayer.multiplayer_peer = server_peer
 	game_hosted.emit(ip_address, port)
+	connected_to_multiplayer.emit()
 	print_debug("Started hosting multiplayer game @ %s:%d!" % [ip_address, port])
 	add_child(Node.new())
 	return Error.OK
@@ -56,6 +59,7 @@ func _register_player(registering_player_info: Dictionary[StringName, Variant]) 
 	var player_info: Dictionary[StringName, Variant] = _create_player_info(peer_id, registering_player_info)
 	if peer_id == HOST_ID:
 		game_joined.emit(player_info)
+		connected_to_multiplayer.emit()
 		print_debug("Joined Player %s's multiplayer game!" % player_info)
 	else:
 		var player: Player = Player.from_player_info(player_info)

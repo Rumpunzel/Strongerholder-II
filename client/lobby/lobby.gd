@@ -1,3 +1,4 @@
+@tool
 @icon("uid://bsnfjvi6jpfrm")
 extends Spawner
 
@@ -6,6 +7,7 @@ enum RemovalReason {
 	SERVER_DISCONNECTED,
 }
 
+signal player_connected(player: Player)
 signal player_disconnected(player: Player)
 
 var _local_player: Player
@@ -13,10 +15,12 @@ var _guest_players: Dictionary[int, Player] = {}
 
 func _enter_tree() -> void:
 	spawn_path = get_path()
+	if Engine.is_editor_hint(): return
 	add_spawnable_scene(Player.PLAYER_SCENE.resource_path)
 	child_entered_tree.connect(_on_child_entered_tree)
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
@@ -29,11 +33,18 @@ func _ready() -> void:
 	
 	_create_local_player()
 
+func get_connected_players() -> Array[Player]:
+	var connected_players: Array[Player] = []
+	connected_players.append(_local_player)
+	connected_players.append_array(_guest_players.values())
+	return connected_players
+
 func add_player(player: Player) -> void:
 	assert(not multiplayer.multiplayer_peer or multiplayer.is_server())
 	player.set_multiplayer_authority(player.player_id)
 	player.player_info_changed.connect(_on_player_info_changed)
 	add_child(player, true)
+	player_connected.emit(player)
 	print_debug("Added player: %s" % player.get_player_info())
 
 func remove_local_player() -> void:

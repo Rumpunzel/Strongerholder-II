@@ -23,6 +23,7 @@ extends CharacterBody3D
 		collision_mask = character_profile.collision_mask
 		character_model = character_profile.create_character_model()
 		heads_up_anchor = character_profile.create_heads_up_anchor()
+		if not is_node_ready(): await ready
 		character_profile.collision_shape.configure_collision_shape(_collision_shape)
 		_hit_box.character_profile = character_profile
 

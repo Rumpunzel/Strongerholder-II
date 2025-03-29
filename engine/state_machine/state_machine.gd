@@ -32,7 +32,9 @@ func physics_update(delta: float) -> void:
 	_get_state().physics_update(delta)
 
 func stop() -> void:
-	_get_state().exit()
+	var state: State = _get_state()
+	if not state: return
+	state.exit()
 
 func _transition_to_next_state(target_state: State) -> void:
 	_get_state().exit()

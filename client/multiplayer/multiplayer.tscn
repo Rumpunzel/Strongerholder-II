@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://citi18cutmbiw"]
+
+[ext_resource type="Script" uid="uid://7ifllupku6cd" path="res://client/multiplayer/multiplayer.gd" id="1_x1lla"]
+[ext_resource type="Script" uid="uid://b2l2cxx5y325t" path="res://client/multiplayer/multiplayer_toaster.gd" id="4_jk0et"]
+
+[node name="Multiplayer" type="Node"]
+script = ExtResource("1_x1lla")
+metadata/_custom_type_script = "uid://7ifllupku6cd"
+
+[node name="Toaster" type="Node" parent="."]
+script = ExtResource("4_jk0et")
+metadata/_custom_type_script = "uid://b68u3p1bd6gb"
+
+[connection signal="disconnected_from_multiplayer" from="." to="Toaster" method="toast_info" binds= ["Disconnected from multiplayer!"]]
+[connection signal="game_hosted" from="." to="Toaster" method="_on_game_hosted"]
+[connection signal="game_joined" from="." to="Toaster" method="_on_game_joined"]
+[connection signal="player_joined" from="." to="Toaster" method="_on_player_joined"]

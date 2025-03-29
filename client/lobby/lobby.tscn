@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx7w2qcprqnho"]
+
+[ext_resource type="Script" uid="uid://c60q2k1auie7c" path="res://client/network/spawner.gd" id="2_qsic3"]
+[ext_resource type="Script" uid="uid://ct7g1ldiml4be" path="res://client/lobby/lobby.gd" id="3_m6tj1"]
+[ext_resource type="Script" uid="uid://blppgo7lqlpsx" path="res://client/lobby/lobby_toaster.gd" id="3_udypa"]
+
+[node name="Lobby" type="MultiplayerSpawner"]
+script = ExtResource("3_m6tj1")
+metadata/_custom_type_script = "uid://ct7g1ldiml4be"
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+spawn_path = NodePath("../Players")
+script = ExtResource("2_qsic3")
+metadata/_custom_type_script = "uid://c60q2k1auie7c"
+
+[node name="Players" type="Node" parent="."]
+
+[node name="Toaster" type="Node" parent="."]
+script = ExtResource("3_udypa")
+metadata/_custom_type_script = "uid://b68u3p1bd6gb"
+
+[connection signal="player_disconnected" from="." to="Toaster" method="_on_player_disconnected"]

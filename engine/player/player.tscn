@@ -1,13 +1,13 @@
 [gd_scene load_steps=15 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://b0eafjrcpkmfp" path="res://engine/player/player.gd" id="1_i6aj8"]
-[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://main/network/synchronizer.gd" id="2_0dv1b"]
+[ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_0dv1b"]
 [ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://engine/player/state_machine/player_state_machine.gd" id="3_c7orq"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="4_pfsv8"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_shdhw"]
 [ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://engine/player/state_machine/states/player_state_default.gd" id="4_yyw35"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_c7orq"]
-[ext_resource type="Script" uid="uid://baud71gvivp52" path="res://main/serialization/properties_serializer.gd" id="5_yyw35"]
+[ext_resource type="Script" uid="uid://baud71gvivp52" path="res://client/serialization/properties_serializer.gd" id="5_yyw35"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="6_y2l5l"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_yyw35"]
 

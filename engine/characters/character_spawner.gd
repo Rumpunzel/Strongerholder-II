@@ -6,11 +6,9 @@ extends Spawner
 @export_group("Configuration")
 @export var _character_spawn_points: CharacterSpawnPoints
 
-func _enter_tree() -> void:
-	Game.character_created.connect(_on_character_created)
-
 func _ready() -> void:
 	assert(_character_spawn_points)
+	Game.character_created.connect(_on_character_created)
 	_character_spawn_points.spawn_all_characters(spawn_node)
 	super._ready()
 
@@ -20,4 +18,4 @@ func _on_character_created(character: Character) -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not _character_spawn_points: warnings.append("Missing CharacterSpawnPoints reference.")
-	return warnings + super._get_configuration_warnings()
+	return warnings

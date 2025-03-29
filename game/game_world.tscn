@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvt1s3i2xw5s6"]
+[gd_scene load_steps=4 format=3 uid="uid://bvt1s3i2xw5s6"]
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://game/game_world.gd" id="1_jjm87"]
+[ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://game/pause_menu/pause_menu.tscn" id="2_8hsaj"]
 [ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://game/levels/test_level.tscn" id="4_f1af4"]
 
 [node name="GameWorld" type="Node"]
+process_mode = 3
 script = ExtResource("1_jjm87")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
 
+[node name="PauseMenu" parent="." instance=ExtResource("2_8hsaj")]
+
 [node name="TestLevel" parent="." instance=ExtResource("4_f1af4")]
+
+[connection signal="game_paused" from="." to="PauseMenu" method="open_menu"]
+[connection signal="closed" from="PauseMenu" to="." method="unpause_game"]
+[connection signal="opened" from="PauseMenu" to="." method="pause_game"]

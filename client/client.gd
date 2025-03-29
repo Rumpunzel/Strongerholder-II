@@ -1,4 +1,3 @@
-@tool
 @icon("uid://csn6gjpak3yxk")
 class_name MainNode
 extends Node
@@ -25,46 +24,10 @@ const _PLAYER_SECTION: StringName = "player"
 const _LOCAL_PLAYER_NAME: StringName = "local_player_name"
 const _LOCAL_GHOST_SPRITE_FRAME: StringName = "local_ghost_sprite_frame"
 
-@export_group("Configuration")
-@export var _multiplayer: Multiplayer
-@export var _main_menu: MainMenu
-
-var _pause_requested: bool = false
-
 var _config: ConfigFile = _load_config_file()
 
-@onready var _serializer: SerializerNode = Serializer
-
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
-	#Game.load_requested.connect(request_pause)
-	pause_game()
-	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if _pause_requested and not multiplayer.multiplayer_peer and not get_tree().paused: _pause_game()
-
-func pause_game() -> void:
-	_pause_requested = true
-
-func unpause_game() -> void:
-	_unpause_game()
-	_pause_requested = false
-
-func host_game() -> void:
-	_multiplayer.host_game()
-	_unpause_game()
-
-func join_game(ip_address: StringName) -> void:
-	_multiplayer.join_game(ip_address)
-	_unpause_game()
-
-func disconnect_from_multiplayer() -> void:
-	_multiplayer.disconnect_from_multiplayer()
-
-func quit_game(save_file_path: StringName = SerializerNode.SAVE_FILE_PATH) -> void:
-	if not save_file_path.is_empty(): _serializer.save_world_state(save_file_path)
+func quit_game() -> void:
+	Serializer.save_world_state()
 	get_tree().quit()
 
 func update_value_in_config(section: String, key: String, value: Variant) -> Error:
@@ -90,15 +53,6 @@ func get_values_from_config(section: String, keys: Array[String], default_value:
 		var value: Variant = _config.get_value(section, key, default_value)
 		values[key] = value
 	return values
-
-func _pause_game() -> void:
-	get_tree().paused = true
-	_main_menu.open_menu()
-	print_debug("Game paused...")
-
-func _unpause_game() -> void:
-	get_tree().paused = false
-	print_debug("Game unpaused!")
 
 func _update_config_file() -> Error:
 	# Save it to a file (overwrite if already exists).
@@ -129,14 +83,6 @@ static func _create_default_config_file() -> Error:
 	if error == OK: print_debug("Saved default config!")
 	else: printerr("Could not save default config file due to Error %s" % error)
 	return error
-
-func _on_disconnected_from_multiplayer() -> void:
-	_serializer.load_world_state()
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	if not _main_menu: warnings.append("Missing MainMenu reference.")
-	return warnings
 
 class ConfigEntry:
 	var section: String

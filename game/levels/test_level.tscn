@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/characters/character_spawner.gd" id="4_fbqqs"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://game/character_profiles/king.tres" id="5_kudci"]
 [ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://game/character_profiles/rogue.tres" id="6_ck0y7"]
-[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://main/serialization/node_serializer.gd" id="7_ah70l"]
+[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://client/serialization/node_serializer.gd" id="7_ah70l"]
 [ext_resource type="Script" uid="uid://bav5t732bt84v" path="res://game/levels/spawn_points/character_spawn_points.gd" id="7_sli0y"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
 [ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://game/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
@@ -21,6 +21,7 @@ albedo_texture = ExtResource("8_s5f45")
 uv1_scale = Vector3(16, 16, 16)
 
 [node name="TestLevel" type="Node3D"]
+process_mode = 1
 script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
 

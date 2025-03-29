@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
 
-[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://main/main_menu/main_menu.gd" id="1_bwjgb"]
-[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://main/main_menu/game_info.tscn" id="2_hnapd"]
-[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_ru3py"]
-[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://main/main_menu/multiplayer_menu.tscn" id="4_hnapd"]
+[ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://game/pause_menu/pause_menu.gd" id="1_h4gok"]
+[ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://game/pause_menu/game_info.tscn" id="2_wsp0d"]
+[ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_4wkd6"]
+[ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://game/pause_menu/multiplayer_menu.tscn" id="4_xkrjr"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
@@ -18,9 +18,9 @@ texture = SubResource("GradientTexture1D_nb4k0")
 [sub_resource type="LabelSettings" id="LabelSettings_ru3py"]
 font_size = 42
 
-[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_multiplayer_menu")]
+[node name="PauseMenu" type="CanvasLayer" node_paths=PackedStringArray("_multiplayer_menu")]
 layer = 100
-script = ExtResource("1_bwjgb")
+script = ExtResource("1_h4gok")
 _multiplayer_menu = NodePath("PanelContainer/Menu/VBoxContainer/MultiplayerMenu")
 metadata/_custom_type_script = "uid://yu3m6ywkwlvf"
 
@@ -32,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_j0huj")
 
-[node name="GameInfo" parent="PanelContainer" instance=ExtResource("2_hnapd")]
+[node name="GameInfo" parent="PanelContainer" instance=ExtResource("2_wsp0d")]
 layout_mode = 2
 
 [node name="Menu" type="MarginContainer" parent="PanelContainer"]
@@ -53,7 +53,7 @@ layout_mode = 2
 text = "Strongerholder"
 label_settings = SubResource("LabelSettings_ru3py")
 horizontal_alignment = 1
-script = ExtResource("3_ru3py")
+script = ExtResource("3_4wkd6")
 metadata/_custom_type_script = "uid://lt4t275g8dsp"
 
 [node name="Options" type="VBoxContainer" parent="PanelContainer/Menu/VBoxContainer"]
@@ -73,7 +73,7 @@ text = "Save
 layout_mode = 2
 text = "Load"
 
-[node name="MultiplayerMenu" parent="PanelContainer/Menu/VBoxContainer" instance=ExtResource("4_hnapd")]
+[node name="MultiplayerMenu" parent="PanelContainer/Menu/VBoxContainer" instance=ExtResource("4_xkrjr")]
 layout_mode = 2
 
 [node name="RandomizeGhost" type="Button" parent="PanelContainer/Menu/VBoxContainer"]

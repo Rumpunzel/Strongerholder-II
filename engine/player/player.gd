@@ -17,9 +17,9 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 
 @export var player_id: int = Multiplayer.HOST_ID:
 	set(new_player_id):
+		if not Engine.is_editor_hint(): name = "%d" % new_player_id
 		if new_player_id == player_id: return
 		player_id = new_player_id
-		if not Engine.is_editor_hint(): name = "%d" % player_id
 		player_info_changed.emit(get_player_info())
 
 @export var player_name: String:
@@ -46,7 +46,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
 		if character:
-			SerializerNode.mark_all_child_serializers_for(character, PropertiesSerializer.Type.INTANGIBLE)
+			Serializer.mark_all_child_serializers_for(character, PropertiesSerializer.Type.INTANGIBLE)
 			_state_machine.start()
 
 @export_group("Configuration")
@@ -85,7 +85,7 @@ var _character_path: NodePath:
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	SerializerNode.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
+	Serializer.mark_all_child_serializers_for(self, PropertiesSerializer.Type.INTANGIBLE)
 	if not is_local_player: return
 	# Only collect input if this is the local [Player]
 	_collect_input()

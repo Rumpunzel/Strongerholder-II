@@ -9,8 +9,6 @@ extends VBoxContainer
 @export var _host_button: Button
 @export var _host_ip_address_button: Button
 
-@onready var _main: MainNode = Main
-
 func reset_menu() -> void:
 	_join_button.disabled = false
 	_join_button.button_pressed = false
@@ -23,14 +21,14 @@ func update_player_name(player_name: String) -> void:
 	_player_name.text = player_name
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
-	_main.local_player_name = new_player_name
+	Client.local_player_name = new_player_name
 
 func _on_join_toggled(joining: bool) -> void:
 	if joining:
 		var ip_address_to_join: StringName = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
-		_main.join_game(ip_address_to_join)
-	else: _main.disconnect_from_multiplayer()
+		Multiplayer.join_game(ip_address_to_join)
+	else: Multiplayer.disconnect_from_multiplayer()
 	_ip_address.editable = not joining
 	_host_button.disabled = joining
 
@@ -43,8 +41,8 @@ func _on_ip_address_text_submitted(new_ip_address: StringName) -> void:
 	_join_button.button_pressed = true
 
 func _on_host_toggled(hosting: bool) -> void:
-	if hosting: _main.host_game()
-	else: _main.disconnect_from_multiplayer()
+	if hosting: Multiplayer.host_game()
+	else: Multiplayer.disconnect_from_multiplayer()
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 

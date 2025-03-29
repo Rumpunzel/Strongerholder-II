@@ -1,4 +1,3 @@
-@tool
 class_name Spawner
 extends MultiplayerSpawner
 
@@ -35,7 +34,3 @@ func remove_all_spawned_nodes() -> Array[NodePath]:
 		spawn_node.remove_child(node)
 		node.queue_free()
 	return nodes_freed
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
-	return warnings

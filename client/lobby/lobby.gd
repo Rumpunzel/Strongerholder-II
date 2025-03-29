@@ -1,6 +1,5 @@
 @icon("uid://bsnfjvi6jpfrm")
-class_name MultiplayerLobby
-extends Node
+extends Spawner
 
 enum RemovalReason {
 	PLAYER_DISCONNECTED,
@@ -9,17 +8,26 @@ enum RemovalReason {
 
 signal player_disconnected(player: Player)
 
+var _local_player: Player
 var _guest_players: Dictionary[int, Player] = {}
 
-@onready var _main: MainNode = Main
-@onready var _local_player: Player = _create_local_player()
+func _enter_tree() -> void:
+	spawn_path = get_path()
+	add_spawnable_scene(Player.PLAYER_SCENE.resource_path)
+	child_entered_tree.connect(_on_child_entered_tree)
 
 func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
-	_main.local_ghost_sprite_frame_changed.connect(_on_local_ghost_sprite_frame_changed)
-	_main.local_player_name_changed.connect(_on_local_player_name_changed)
+	Client.local_ghost_sprite_frame_changed.connect(_on_local_ghost_sprite_frame_changed)
+	Client.local_player_name_changed.connect(_on_local_player_name_changed)
+	
+	Multiplayer.player_joined.connect(_on_player_joined)
+	Multiplayer.game_joined.connect(_on_game_joined)
+	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
+	
+	_create_local_player()
 
 func add_player(player: Player) -> void:
 	assert(not multiplayer.multiplayer_peer or multiplayer.is_server())
@@ -34,11 +42,10 @@ func remove_local_player() -> void:
 	_local_player = null
 	print_debug("Removed local player!")
 
-func _create_local_player() -> Player:
+func _create_local_player() -> void:
 	assert(not _local_player)
-	var local_player: Player = Player.create(Multiplayer.HOST_ID, _main.local_player_name)
-	add_player(local_player)
-	return local_player
+	_local_player = Player.create(Multiplayer.HOST_ID, Client.local_player_name)
+	add_player(_local_player)
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
 	for player: Player in get_children():
@@ -102,6 +109,7 @@ func _on_child_entered_tree(node: Node) -> void:
 	var player: Player = node
 	# Only need to do this on the client
 	if not multiplayer.multiplayer_peer or multiplayer.is_server(): return
+	assert(player.name.is_valid_int())
 	var peer_id_from_name: int = int(player.name)
 	var peer_id: int = multiplayer.get_unique_id()
 	if peer_id_from_name == peer_id:

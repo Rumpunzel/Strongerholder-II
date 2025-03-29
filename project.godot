@@ -18,9 +18,11 @@ config/icon="res://helmet.png"
 
 [autoload]
 
-Main="*res://main/main.tscn"
+Client="*res://client/client.gd"
+Multiplayer="*res://client/multiplayer/multiplayer.gd"
+Lobby="*res://client/lobby/lobby.gd"
+Serializer="*res://client/serialization/serializer.gd"
 Game="*res://game/game.gd"
-Serializer="*res://main/serialization/serializer.tscn"
 HUD="*res://game/hud/hud.gd"
 UserInterface="res://user_interface/user_interface.tscn"
 ToastParty="*res://addons/toastparty/toast-autoload.gd"

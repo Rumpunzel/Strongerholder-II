@@ -1,5 +1,4 @@
 @icon("uid://lafgp3e7lvc3")
-class_name SerializerNode
 extends Node
 
 signal saving_started
@@ -15,16 +14,16 @@ const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-static func has_save_file(save_file_path: StringName = SAVE_FILE_PATH) -> bool:
+func has_save_file(save_file_path: StringName = SAVE_FILE_PATH) -> bool:
 	return FileAccess.file_exists(save_file_path)
 
-static func encode_data(value: Variant, full_objects: bool = false) -> String:
+func encode_data(value: Variant, full_objects: bool = false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))
 
-static func decode_data(string: String, allow_objects: bool = false) -> Variant:
+func decode_data(string: String, allow_objects: bool = false) -> Variant:
 	return JSON.to_native(JSON.parse_string(string), allow_objects)
 
-static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Dictionary[Variant, Array]:
+func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Dictionary[Variant, Array]:
 	var merged_dictionary: Dictionary[Variant, Array] = { }
 	for dictionary: Dictionary[Variant, Array] in dictionaries:
 		assert(dictionary is Dictionary[Variant, Array])
@@ -34,7 +33,7 @@ static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Diction
 			merged_arrays.append_array(array_to_merge)
 	return merged_dictionary
 
-static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override: bool = false) -> void:
+func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override: bool = false) -> void:
 	assert(node)
 	if node is PropertiesSerializer:
 		var properties_serializer: PropertiesSerializer = node

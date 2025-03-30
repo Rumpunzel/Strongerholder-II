@@ -15,10 +15,8 @@ func _init(
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunting_character.visible = false
-	var interaction_area: InteractionArea = get_interaction_area()
 	interaction_area.characters_to_ignore_areas_from.append(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
-	var haunt_phantom_camera: PhantomCamera3D = get_haunt_phantom_camera()
 	haunt_phantom_camera.append_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_active_camera_priority()
 	Game.character_haunted.emit(_haunted_character, _haunting_character)
@@ -26,7 +24,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()
-	if interaction_input == "unpossess":
+	if interaction_input == "unhaunt":
 		finished.emit(DefaultPlayerState.new())
 		return
 	var available_action: CharacterInteraction = get_available_action()
@@ -46,10 +44,8 @@ func handle_input(_event: InputEvent) -> void:
 
 func exit() -> void:
 	_haunting_character.visible = true
-	var interaction_area: InteractionArea = get_interaction_area()
 	interaction_area.characters_to_ignore_areas_from.erase(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
-	var haunt_phantom_camera: PhantomCamera3D = get_haunt_phantom_camera()
 	haunt_phantom_camera.erase_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
 	Game.character_unhaunted.emit(_haunted_character)

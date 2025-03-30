@@ -22,6 +22,13 @@ spawn_path = NodePath(".")
 script = ExtResource("3_hhbt8")
 metadata/_custom_type_script = "uid://cnqgk717dgofh"
 
+[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+spawn_path = NodePath(".")
+script = ExtResource("3_2snef")
+_player_ghost_character_profile = ExtResource("4_hhbt8")
+metadata/_custom_type_script = "uid://853l0h1bjf04"
+
 [node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
 spawn_path = NodePath(".")
@@ -33,15 +40,10 @@ script = ExtResource("5_22s7i")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
-[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
-spawn_path = NodePath(".")
-script = ExtResource("3_2snef")
-_player_ghost_character_profile = ExtResource("4_hhbt8")
-metadata/_custom_type_script = "uid://853l0h1bjf04"
-
 [node name="TestLevel" parent="." instance=ExtResource("4_f1af4")]
 
 [connection signal="game_paused" from="." to="PauseMenu" method="open_menu"]
 [connection signal="closed" from="PauseMenu" to="." method="unpause_game"]
 [connection signal="opened" from="PauseMenu" to="." method="pause_game"]
+[connection signal="player_ghost_created" from="PlayerGhostSpawner" to="CharacterSpawner" method="_on_player_ghost_created"]
+[connection signal="agent_created" from="AgentSpawner" to="CharacterSpawner" method="_on_agent_created"]

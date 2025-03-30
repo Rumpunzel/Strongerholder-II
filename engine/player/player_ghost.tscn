@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=15 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://blq77gvr6c2qt" path="res://engine/player/player_ghost.gd" id="1_rp0et"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_d7fgu"]
+[ext_resource type="Script" uid="uid://dqdyomt3y3nx8" path="res://engine/player/input_reader.gd" id="3_d7fgu"]
 [ext_resource type="Script" uid="uid://hcr7qut3ys1y" path="res://engine/player/state_machine/player_state_machine.gd" id="3_kwn24"]
 [ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://engine/player/state_machine/states/player_state_default.gd" id="4_irqko"]
 [ext_resource type="Script" uid="uid://baud71gvivp52" path="res://client/serialization/properties_serializer.gd" id="5_cs6u8"]
@@ -11,24 +12,18 @@
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="9_46i1k"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
-properties/0/path = NodePath(".:name")
+properties/0/path = NodePath(".:_character_path")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:player_id")
+properties/1/path = NodePath("StateMachine:_serialized_state")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath(".:direction_input")
+properties/2/path = NodePath("InputReader:direction_input")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath(".:interaction_input")
+properties/3/path = NodePath("InputReader:interaction_input")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-properties/4/path = NodePath(".:_character_path")
-properties/4/spawn = true
-properties/4/replication_mode = 2
-properties/5/path = NodePath("StateMachine:_serialized_state")
-properties/5/spawn = true
-properties/5/replication_mode = 2
 
 [sub_resource type="Resource" id="Resource_shdhw"]
 script = ExtResource("7_r3pxx")
@@ -44,8 +39,9 @@ ease = 0
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_801mx"]
 
-[node name="PlayerGhost" type="Node" node_paths=PackedStringArray("interaction_area", "default_phantom_camera", "haunt_phantom_camera", "_state_machine", "_camera")]
+[node name="PlayerGhost" type="Node" node_paths=PackedStringArray("input_reader", "interaction_area", "default_phantom_camera", "haunt_phantom_camera", "_state_machine", "_camera")]
 script = ExtResource("1_rp0et")
+input_reader = NodePath("InputReader")
 interaction_area = NodePath("InteractionArea")
 default_phantom_camera = NodePath("DefaultCamera")
 haunt_phantom_camera = NodePath("HauntCamera")
@@ -58,13 +54,23 @@ replication_config = SubResource("SceneReplicationConfig_p0vpi")
 script = ExtResource("2_d7fgu")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
+[node name="InputReader" type="Node" parent="." node_paths=PackedStringArray("_interaction_area", "_camera")]
+script = ExtResource("3_d7fgu")
+_interaction_area = NodePath("../InteractionArea")
+_camera = NodePath("../TopDownCamera")
+metadata/_custom_type_script = "uid://dqdyomt3y3nx8"
+
 [node name="InteractionArea" parent="." instance=ExtResource("9_46i1k")]
 monitoring = false
 monitorable = false
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player_ghost", "_input_reader", "_interaction_area", "_default_phantom_camera", "_haunt_phantom_camera")]
 script = ExtResource("3_kwn24")
-_player = NodePath("..")
+_player_ghost = NodePath("..")
+_input_reader = NodePath("../InputReader")
+_interaction_area = NodePath("../InteractionArea")
+_default_phantom_camera = NodePath("../DefaultCamera")
+_haunt_phantom_camera = NodePath("../HauntCamera")
 _initial_state = ExtResource("4_irqko")
 metadata/_custom_type_script = "uid://hcr7qut3ys1y"
 
@@ -84,14 +90,12 @@ tween_on_load = false
 follow_offset = Vector3(16, 24, 16)
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
-[node name="HauntCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_targets", "look_at_targets")]
+[node name="HauntCamera" type="Node3D" parent="."]
 transform = Transform3D(0.707105, -0.514496, 0.485071, -2.98022e-08, 0.685994, 0.727607, -0.707105, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
 top_level = true
 script = ExtResource("6_jlh3c")
 follow_mode = 3
-follow_targets = [null]
 look_at_mode = 3
-look_at_targets = [null]
 tween_resource = SubResource("Resource_04p45")
 tween_on_load = false
 follow_offset = Vector3(16, 24, 16)
@@ -99,11 +103,10 @@ follow_offset = Vector3(16, 24, 16)
 [node name="TopDownCamera" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, -0.514496, 0.485071, -2.98023e-08, 0.685994, 0.727607, -0.707107, -0.514496, 0.485071, 16, 24, 16)
 attributes = SubResource("CameraAttributesPhysical_801mx")
-current = true
 
 [node name="PhantomCameraHost" type="Node" parent="TopDownCamera"]
 process_priority = 300
 process_physics_priority = 300
 script = ExtResource("8_mvbif")
 
-[connection signal="current_interactable_changed" from="InteractionArea" to="." method="_on_interaction_area_current_interactable_changed"]
+[connection signal="available_actions_changed" from="InteractionArea" to="." method="_on_interaction_area_available_actions_changed"]

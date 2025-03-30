@@ -7,6 +7,7 @@ signal hit_box_entered(hit_box: HitBox)
 signal hit_box_exited(hit_box: HitBox)
 
 signal current_interactable_changed(current_interactable: HitBox)
+signal available_actions_changed(available_actions: Array[CharacterInteraction])
 
 @export var character: Character:
 	set(new_character):
@@ -35,8 +36,18 @@ var current_interactable: HitBox:
 		if current_interactable: current_interactable.apply_material_overlay(null)
 		current_interactable = new_current_interactable
 		current_interactable_changed.emit(current_interactable)
-		if not current_interactable: return
+		if not current_interactable:
+			available_action = null
+			return
+		available_action = _create_character_interaction(current_interactable)
 		current_interactable.apply_material_overlay(_highlight_material)
+
+var available_action: CharacterInteraction:
+	set(new_current_interactable):
+		available_action = new_current_interactable
+		var available_actions: Array[CharacterInteraction] = []
+		if available_action: available_actions.append(available_action)
+		available_actions_changed.emit(available_actions)
 
 var _hit_boxes_in_area: Array[HitBox] = []
 var _ignored_hit_boxes_in_area: Array[HitBox] = []
@@ -91,6 +102,13 @@ func _add_unignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_
 
 func _is_ignored(hit_box: HitBox) -> bool:
 	return characters_to_ignore_areas_from.has(hit_box.character)
+
+func _create_character_interaction(for_hit_box: HitBox) -> CharacterInteraction:
+	return CharacterInteraction.new(
+		character,
+		for_hit_box.character,
+		preload("uid://cuoqy5wkfjika"),
+	)
 
 func _on_hit_box_entered(hit_box: HitBox) -> void:
 	if current_interactable: return

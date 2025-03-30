@@ -3,7 +3,7 @@
 class_name AgentSpawner
 extends Spawner
 
-signal agent_created
+signal agent_created(agent: Agent)
 
 @export_group("Configuration")
 

@@ -40,7 +40,7 @@ func get_connected_players() -> Array[Player]:
 	return connected_players
 
 func add_player(player: Player) -> void:
-	assert(not multiplayer.multiplayer_peer or multiplayer.is_server())
+	assert(Multiplayer.is_server())
 	player.set_multiplayer_authority(player.player_id)
 	player.player_info_changed.connect(_on_player_info_changed)
 	add_child(player, true)
@@ -119,7 +119,7 @@ func _on_child_entered_tree(node: Node) -> void:
 	assert(node is Player)
 	var player: Player = node
 	# Only need to do this on the client
-	if not multiplayer.multiplayer_peer or multiplayer.is_server(): return
+	if not Multiplayer.is_client(): return
 	assert(player.name.is_valid_int())
 	var peer_id_from_name: int = int(player.name)
 	var peer_id: int = multiplayer.get_unique_id()

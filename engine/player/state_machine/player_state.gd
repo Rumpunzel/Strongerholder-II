@@ -6,24 +6,24 @@ extends State
 const HAUNTED: StringName = "haunted_character"
 const HAUNTING: StringName = "haunting_character"
 
-var player: PlayerGhost
+var player_ghost: PlayerGhost
+var input_reader: InputReader
+var interaction_area: InteractionArea
+var default_phantom_camera: PhantomCamera3D
+var haunt_phantom_camera: PhantomCamera3D
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:
 	pass
 
-func get_character() -> Character: return player.character
-func get_interaction_area() -> InteractionArea: return player.interaction_area
+func get_character() -> Character: return player_ghost.character
 
-func get_default_phantom_camera() -> PhantomCamera3D: return player.default_phantom_camera
-func get_haunt_phantom_camera() -> PhantomCamera3D: return player.haunt_phantom_camera
+func get_active_camera_priority() -> int: return player_ghost.get_active_camera_priority()
+func get_default_camera_priority() -> int: return player_ghost.get_default_camera_priority()
 
-func get_active_camera_priority() -> int: return player.get_active_camera_priority()
-func get_default_camera_priority() -> int: return player.get_default_camera_priority()
-
-func get_direction_input() -> Vector2: return player.get_camera_adjusted_direction_input()
-func get_interaction_input() -> StringName: return player.interaction_input
-func get_available_action() -> CharacterInteraction: return player.available_action
+func get_direction_input() -> Vector2: return input_reader.get_camera_adjusted_direction_input()
+func get_interaction_input() -> StringName: return input_reader.interaction_input
+func get_available_action() -> CharacterInteraction: return interaction_area.available_action
 
 func apply_input_direction(delta: float, to_character: Character = get_character()) -> void:
 	if not to_character: return

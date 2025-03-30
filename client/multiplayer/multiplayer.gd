@@ -49,6 +49,12 @@ func disconnect_from_multiplayer() -> void:
 	multiplayer.multiplayer_peer = null
 	print_debug("Disconnected from multiplayer!")
 
+func is_server() -> bool:
+	return not multiplayer.multiplayer_peer or multiplayer.is_server()
+
+func is_client() -> bool:
+	return multiplayer.multiplayer_peer and not multiplayer.is_server()
+
 static func validate_registering_player_info(player_info: Dictionary[StringName, Variant]) -> void:
 	assert(player_info.has_all([Player.NAME, Player.GHOST_SPRITE_FRAME]))
 	assert(player_info.size() == 2)

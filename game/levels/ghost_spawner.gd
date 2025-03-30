@@ -22,7 +22,7 @@ func _ready() -> void:
 func create_player_ghost(player: Player, character: Character = _player_ghost_character_profile.create(Transform3D())) -> void:
 	assert(player)
 	assert(character)
-	var new_player_ghost: PlayerGhost = PlayerGhost.create(player.player_id, character)
+	var new_player_ghost: PlayerGhost = PlayerGhost.create(player, character)
 	_player_ghosts[player] = new_player_ghost
 	spawn_node.add_child(new_player_ghost, true)
 	player_ghost_created.emit(new_player_ghost)

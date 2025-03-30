@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_oo1cw")
-name = "Possess"
-input_action = "interact"
+name = "Haunt"
+input_action = "haunt"
 charge_time = 1.0
 metadata/_custom_type_script = "uid://d14jrxqbsuw5b"

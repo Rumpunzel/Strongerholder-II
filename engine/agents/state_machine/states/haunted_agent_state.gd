@@ -14,7 +14,7 @@ func _init(
 ) -> void:
 	_haunted_character = haunted_character
 	_haunting_character = haunting_character
-	Game.character_unhaunted.connect(_on_character_unhaunted)
+	#Game.character_unhaunted.connect(_on_character_unhaunted)
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted_character)
@@ -30,7 +30,7 @@ func handle_input(_event: InputEvent) -> void:
 
 func exit() -> void:
 	_haunted_character.character_model.apply_material_overlay(null)
-	Game.character_unhaunted.disconnect(_on_character_unhaunted)
+	#Game.character_unhaunted.disconnect(_on_character_unhaunted)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()

@@ -15,17 +15,20 @@ extends Marker3D
 var _characters_spawned: int = 0
 
 func _ready() -> void:
-	print("hello")
 	add_to_group("CharacterSpawnPoints")
+	if Engine.is_editor_hint():
+		var character: Character = character_profile.create(Transform3D())
+		if _editor_material: character.character_model.apply_material_override(_editor_material)
+		add_child(character)
 
 func spawn_character() -> Character:
-	print("there")
 	if spawn_limit > 0 and _characters_spawned >= spawn_limit:
 		push_warning("Trying to spawn a Character but reached spawn limit already!")
 		return null
 	var character: Character = character_profile.create(transform)
-	if Engine.is_editor_hint():
-		if _editor_material: character.character_model.apply_material_override(_editor_material)
-		return character
 	_characters_spawned += 1
 	return character
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	return warnings

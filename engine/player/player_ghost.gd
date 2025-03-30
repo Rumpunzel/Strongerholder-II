@@ -3,6 +3,9 @@
 class_name PlayerGhost
 extends Node
 
+signal character_haunted(haunted_character: Character, haunting_character: Character)
+signal character_unhaunted(unhaunted_character: Character)
+
 const PLAYER_GHOST_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 const _ACTIVE_CAMERA_PRIORITY: int = 16
@@ -37,6 +40,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 			return
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
+		await get_tree().process_frame
 		_state_machine.start()
 
 @export_group("Configuration")
@@ -48,15 +52,26 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 @export var _camera: Camera3D
 
 ## This is used for serialization purposes; serves otherwise no purpose
+var _player_id: int:
+	get: return player.player_id if player else -1
+	set(new_player_id):
+		if new_player_id == _player_id: return
+		if new_player_id <= 0:
+			player = null
+			return
+		await get_tree().process_frame
+		player = Lobby.get_player(new_player_id)
+
+## This is used for serialization purposes; serves otherwise no purpose
 var _character_path: NodePath:
 	get: return character.get_path() if character and character.is_inside_tree() else NodePath()
 	set(new_character_path):
 		if new_character_path == _character_path: return
-		if _character_path.is_empty():
+		if new_character_path.is_empty():
 			character = null
 			return
 		await get_tree().process_frame
-		character = get_node(_character_path)
+		character = get_node(new_character_path)
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -86,7 +101,7 @@ func get_default_camera_priority() -> int:
 func _on_interaction_area_available_actions_changed(available_actions: Array[CharacterInteraction]) -> void:
 	assert(player.is_local_player)
 	if not player.is_local_player: return
-	HUD.update_available_actions(available_actions)
+	#HUD.update_available_actions(available_actions)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

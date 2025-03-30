@@ -11,11 +11,11 @@ var _agents: Dictionary[Character, Agent] = {}
 
 func _ready() -> void:
 	super._ready()
+	if Multiplayer.is_client(): return
 	await get_tree().process_frame
 	spawn_all_from_spawn_spoints()
 
 func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
-	print("here")
 	var all_character_spawn_points: Array[Node] = get_tree().get_nodes_in_group("CharacterSpawnPoints")
 	for character_spawn_point: CharacterSpawnPoint in all_character_spawn_points:
 		var new_character: Character = character_spawn_point.spawn_character()

@@ -5,6 +5,9 @@ extends Spawner
 
 signal player_ghost_created(player_ghost: PlayerGhost)
 
+signal character_haunted(haunted_character: Character, haunting_character: Character)
+signal character_unhaunted(unhaunted_character: Character)
+
 @export var _player_ghost_character_profile: CharacterProfile
 
 @export_group("Configuration")
@@ -13,6 +16,7 @@ var _player_ghosts: Dictionary[Player, PlayerGhost] = {}
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
+	if Multiplayer.is_client(): return
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		create_player_ghost(connected_player)

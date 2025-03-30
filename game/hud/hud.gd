@@ -1,4 +1,5 @@
 @icon("uid://bigo28m2mor2y")
+class_name HUD
 extends CanvasLayer
 
 func update_available_actions(available_actions: Array[CharacterInteraction]) -> void:

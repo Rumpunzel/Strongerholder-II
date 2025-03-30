@@ -39,6 +39,10 @@ func get_connected_players() -> Array[Player]:
 	connected_players.append_array(_guest_players.values())
 	return connected_players
 
+func get_player(player_id: int) -> Player:
+	if player_id == Multiplayer.HOST_ID: return _local_player
+	return _guest_players[player_id]
+
 func add_player(player: Player) -> void:
 	assert(Multiplayer.is_server())
 	player.set_multiplayer_authority(player.player_id)

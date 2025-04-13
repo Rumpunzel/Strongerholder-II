@@ -10,6 +10,21 @@ enum RemovalReason {
 signal player_connected(player: Player)
 signal player_disconnected(player: Player)
 
+signal local_player_name_changed(local_player_name: String)
+signal local_ghost_sprite_frame_changed(local_ghost_sprite_frame: int)
+
+var local_player_name: String:
+	set(new_local_player_name):
+		local_player_name = new_local_player_name
+		local_player_name_changed.emit(local_player_name)
+		print_debug("Changed name of local player to: %s" % local_player_name)
+
+var local_ghost_sprite_frame: int:
+	set(new_local_ghost_sprite_frame):
+		local_ghost_sprite_frame = new_local_ghost_sprite_frame
+		local_ghost_sprite_frame_changed.emit(local_ghost_sprite_frame)
+		print_debug("Changed ghost sprite frame of local player to: %s" % local_ghost_sprite_frame)
+
 var _local_player: Player
 var _guest_players: Dictionary[int, Player] = {}
 
@@ -24,9 +39,6 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
-	Client.local_ghost_sprite_frame_changed.connect(_on_local_ghost_sprite_frame_changed)
-	Client.local_player_name_changed.connect(_on_local_player_name_changed)
-	
 	Multiplayer.player_joined.connect(_on_player_joined)
 	Multiplayer.game_joined.connect(_on_game_joined)
 	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
@@ -34,13 +46,12 @@ func _ready() -> void:
 	_create_local_player()
 
 func get_connected_players() -> Array[Player]:
-	var connected_players: Array[Player] = []
-	connected_players.append(_local_player)
+	var connected_players: Array[Player] = [_local_player]
 	connected_players.append_array(_guest_players.values())
 	return connected_players
 
 func get_player(player_id: int) -> Player:
-	if player_id == Multiplayer.HOST_ID: return _local_player
+	if player_id == _local_player.player_id: return _local_player
 	return _guest_players[player_id]
 
 func add_player(player: Player) -> void:
@@ -59,7 +70,7 @@ func remove_local_player() -> void:
 
 func _create_local_player() -> void:
 	assert(not _local_player)
-	_local_player = Player.create(Multiplayer.HOST_ID, Client.local_player_name)
+	_local_player = Player.create(Multiplayer.HOST_ID, local_player_name)
 	add_player(_local_player)
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
@@ -77,16 +88,6 @@ func _remove_player(player: Player) -> void:
 	_guest_players.erase(player.player_id)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
-
-func _on_local_ghost_sprite_frame_changed(local_ghost_sprite_frame: int) -> void:
-	if not _local_player: return
-	_local_player.ghost_sprite_frame = local_ghost_sprite_frame
-	print_debug("Changed ghost sprite frame of local player to: %s" % local_ghost_sprite_frame)
-
-func _on_local_player_name_changed(local_player_name: String) -> void:
-	if not _local_player: return
-	_local_player.player_name = local_player_name
-	print_debug("Changed name of local player to: %s" % local_player_name)
 
 func _on_player_info_changed(player_info: Dictionary[StringName, Variant]) -> void:
 	Player.validate_player_info(player_info)
@@ -127,10 +128,6 @@ func _on_child_entered_tree(node: Node) -> void:
 	assert(player.name.is_valid_int())
 	var peer_id_from_name: int = int(player.name)
 	var peer_id: int = multiplayer.get_unique_id()
-	if peer_id_from_name == peer_id:
-		_local_player = player
-		_local_player.set_multiplayer_authority(peer_id)
-		_local_player.player_id = peer_id
-	else:
-		player.set_multiplayer_authority(peer_id_from_name)
-		player.player_id = peer_id_from_name
+	player.set_multiplayer_authority(peer_id_from_name)
+	player.player_id = peer_id_from_name
+	if peer_id_from_name == peer_id: _local_player = player

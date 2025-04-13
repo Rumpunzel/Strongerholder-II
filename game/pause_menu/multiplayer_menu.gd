@@ -9,6 +9,10 @@ extends VBoxContainer
 @export var _host_button: Button
 @export var _host_ip_address_button: Button
 
+func _ready() -> void:
+	Multiplayer.game_hosted.connect(_on_game_hosted)
+	Lobby.local_player_name_changed.connect(_on_local_player_name_changed)
+
 func reset_menu() -> void:
 	_join_button.disabled = false
 	_join_button.button_pressed = false
@@ -21,16 +25,16 @@ func update_player_name(player_name: String) -> void:
 	_player_name.text = player_name
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
-	Client.local_player_name = new_player_name
+	Lobby.local_player_name = new_player_name
 
 func _on_join_toggled(joining: bool) -> void:
+	_ip_address.editable = not joining
+	_host_button.disabled = joining
 	if joining:
 		var ip_address_to_join: StringName = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
 		Multiplayer.join_game(ip_address_to_join)
 	else: Multiplayer.disconnect_from_multiplayer()
-	_ip_address.editable = not joining
-	_host_button.disabled = joining
 
 func _on_ip_address_text_changed(new_ip_address: StringName) -> void:
 	_join_button.disabled = not new_ip_address.is_empty() and not new_ip_address.is_valid_ip_address()
@@ -41,18 +45,19 @@ func _on_ip_address_text_submitted(new_ip_address: StringName) -> void:
 	_join_button.button_pressed = true
 
 func _on_host_toggled(hosting: bool) -> void:
-	if hosting: Multiplayer.host_game()
-	else: Multiplayer.disconnect_from_multiplayer()
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
+	if hosting: Multiplayer.host_game()
+	else: Multiplayer.disconnect_from_multiplayer()
 
 # [Multiplayer] callbacks
-func _on_player_name_changed(player_name: String) -> void:
-	if _player_name.text == player_name: return
-	_player_name.text = player_name
-
 func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
+
+# [Lobby] callbacks
+func _on_local_player_name_changed(player_name: String) -> void:
+	if _player_name.text == player_name: return
+	_player_name.text = player_name
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

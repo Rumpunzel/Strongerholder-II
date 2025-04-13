@@ -19,8 +19,8 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 			input_reader.set_multiplayer_authority(Multiplayer.HOST_ID)
 		name = player.name
 		input_reader.player = player
-		interaction_area.set_enabled(player.is_local_player)
-		_camera.current = player.is_local_player and character
+		interaction_area.set_enabled(player.is_local_player())
+		_camera.current = player.is_local_player() and character
 
 @export var character: Character:
 	set(new_character):
@@ -33,11 +33,12 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		interaction_area.character = character
 		default_phantom_camera.follow_target = character
 		default_phantom_camera.look_at_target = character
-		_camera.current = player.is_local_player and character
+		_camera.current = player.is_local_player() and character
 		if not character:
 			haunt_phantom_camera.append_follow_targets(character)
 			haunt_phantom_camera.append_look_at_target(character)
 			return
+		character.name = name
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
 		await get_tree().process_frame
@@ -59,7 +60,6 @@ var _player_id: int:
 		if new_player_id <= 0:
 			player = null
 			return
-		await get_tree().process_frame
 		player = Lobby.get_player(new_player_id)
 
 ## This is used for serialization purposes; serves otherwise no purpose
@@ -87,20 +87,22 @@ func _physics_process(delta: float) -> void:
 	interaction_area.transform = character.transform
 
 static func create(for_player: Player, new_character: Character) -> PlayerGhost:
+	assert(for_player)
+	assert(new_character)
 	var new_player_ghost: PlayerGhost = PLAYER_GHOST_SCENE.instantiate()
 	new_player_ghost.player = for_player
 	new_player_ghost.character = new_character
 	return new_player_ghost
 
 func get_active_camera_priority() -> int:
-	return _ACTIVE_CAMERA_PRIORITY if player.is_local_player else _INACTIVE_CAMERA_PRIORITY
+	return _ACTIVE_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY
 
 func get_default_camera_priority() -> int:
-	return _DEFAULT_CAMERA_PRIORITY if player.is_local_player else _INACTIVE_CAMERA_PRIORITY
+	return _DEFAULT_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY
 
 func _on_interaction_area_available_actions_changed(available_actions: Array[CharacterInteraction]) -> void:
-	assert(player.is_local_player)
-	if not player.is_local_player: return
+	assert(player.is_local_player())
+	if not player.is_local_player(): return
 	#HUD.update_available_actions(available_actions)
 
 func _get_configuration_warnings() -> PackedStringArray:

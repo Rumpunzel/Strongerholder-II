@@ -5,8 +5,8 @@ extends Node
 
 @export var player: Player:
 	set(new_player):
+		assert(new_player)
 		player = new_player
-		if not player: set_multiplayer_authority(Multiplayer.HOST_ID)
 		set_multiplayer_authority(player.get_multiplayer_authority())
 
 @export_group("Configuration")
@@ -18,13 +18,14 @@ var interaction_input: StringName = ""
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	if not player.is_local_player: return
+	if not player.is_local_player(): return
 	# Only collect input if this is the local [Player]
 	_collect_input()
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not player.is_local_player: return
+	if not player.is_local_player(): return
+	# Only collect input if this is the local [Player]
 	_collect_input()
 
 static func read_movement_input() -> Vector2:

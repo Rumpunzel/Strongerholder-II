@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://duroinrufk4sr"]
+
+[ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://game/levels/ghost_spawner.gd" id="1_w72hh"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="2_wlsi4"]
+[ext_resource type="PackedScene" uid="uid://cq6kkww3vmo8b" path="res://game/character_spawner.tscn" id="3_w72hh"]
+
+[node name="PlayerGhostSpawner" type="MultiplayerSpawner" node_paths=PackedStringArray("_character_spawner")]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+spawn_path = NodePath(".")
+script = ExtResource("1_w72hh")
+_character_spawner = NodePath("CharacterSpawner")
+_player_ghost_character_profile = ExtResource("2_wlsi4")
+metadata/_custom_type_script = "uid://853l0h1bjf04"
+
+[node name="CharacterSpawner" parent="." instance=ExtResource("3_w72hh")]

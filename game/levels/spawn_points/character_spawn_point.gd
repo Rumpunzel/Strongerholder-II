@@ -17,9 +17,9 @@ var _characters_spawned: int = 0
 func _ready() -> void:
 	add_to_group("CharacterSpawnPoints")
 	if Engine.is_editor_hint():
-		var character: Character = character_profile.create(Transform3D())
-		if _editor_material: character.character_model.apply_material_override(_editor_material)
-		add_child(character)
+		var character_model: CharacterModel = character_profile.create_character_model()
+		if _editor_material: character_model.apply_material_override(_editor_material)
+		add_child(character_model)
 
 func spawn_character() -> Character:
 	if spawn_limit > 0 and _characters_spawned >= spawn_limit:

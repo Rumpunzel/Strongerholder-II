@@ -1,20 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://bvt1s3i2xw5s6"]
+[gd_scene load_steps=10 format=3 uid="uid://bvt1s3i2xw5s6"]
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://game/game.gd" id="1_l8g03"]
 [ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://game/hud/hud.gd" id="2_3vho3"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://game/pause_menu/pause_menu.tscn" id="2_j8tme"]
-[ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://game/levels/ghost_spawner.gd" id="3_3vho3"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="4_qf6n1"]
-[ext_resource type="Script" uid="uid://cv80krf8r7fls" path="res://engine/agents/agent_spawner.gd" id="5_vsp63"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://client/serialization/node_serializer.gd" id="6_b686c"]
-[ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/characters/character_spawner.gd" id="7_hb504"]
 [ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://game/levels/test_level.tscn" id="8_ee6o4"]
+[ext_resource type="PackedScene" uid="uid://duroinrufk4sr" path="res://game/player_ghost_spawner.tscn" id="8_l8g03"]
 [ext_resource type="Script" uid="uid://ct2kte5v780cm" path="res://game/levels/level_spawner.gd" id="9_4cobl"]
+[ext_resource type="PackedScene" uid="uid://etrru1v1aeft" path="res://game/agent_spawner.tscn" id="9_j8tme"]
 [ext_resource type="PackedScene" uid="uid://rmev082m4bw0" path="res://user_interface/user_interface.tscn" id="10_j8tme"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("_player_ghost_spawner", "_agent_spawner")]
+[node name="Game" type="Node" node_paths=PackedStringArray("_agent_spawner")]
 script = ExtResource("1_l8g03")
-_player_ghost_spawner = NodePath("PlayerGhostSpawner")
 _agent_spawner = NodePath("AgentSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
 
@@ -29,9 +26,9 @@ metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://bmwhs3lwb74ue")
 spawn_path = NodePath(".")
+spawn_limit = 1
 script = ExtResource("9_4cobl")
 _default_level = ExtResource("8_ee6o4")
-_editor_material = null
 metadata/_custom_type_script = "uid://ct2kte5v780cm"
 
 [node name="NodeSerializer" type="Node" parent="LevelSpawner" node_paths=PackedStringArray("_spawner")]
@@ -39,23 +36,9 @@ script = ExtResource("6_b686c")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
-[node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath(".")
-script = ExtResource("7_hb504")
-metadata/_custom_type_script = "uid://cnqgk717dgofh"
+[node name="PlayerGhostSpawner" parent="." instance=ExtResource("8_l8g03")]
 
-[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
-spawn_path = NodePath(".")
-script = ExtResource("3_3vho3")
-_player_ghost_character_profile = ExtResource("4_qf6n1")
-metadata/_custom_type_script = "uid://853l0h1bjf04"
-
-[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
-spawn_path = NodePath(".")
-script = ExtResource("5_vsp63")
-metadata/_custom_type_script = "uid://cv80krf8r7fls"
+[node name="AgentSpawner" parent="." instance=ExtResource("9_j8tme")]
 
 [node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
 script = ExtResource("6_b686c")
@@ -65,5 +48,3 @@ metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 [connection signal="game_paused" from="." to="PauseMenu" method="open_menu"]
 [connection signal="closed" from="PauseMenu" to="." method="unpause_game"]
 [connection signal="opened" from="PauseMenu" to="." method="pause_game"]
-[connection signal="player_ghost_created" from="PlayerGhostSpawner" to="CharacterSpawner" method="_on_player_ghost_created"]
-[connection signal="agent_created" from="AgentSpawner" to="CharacterSpawner" method="_on_agent_created"]

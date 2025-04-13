@@ -2,35 +2,29 @@
 class_name MainNode
 extends Node
 
-signal local_player_name_changed(local_player_name: String)
-signal local_ghost_sprite_frame_changed(local_ghost_sprite_frame: int)
-
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
-var local_player_name: String:
-	set(new_local_player_name):
-		local_player_name = new_local_player_name
-		local_player_name_changed.emit(local_player_name)
-		update_value_in_config(_PLAYER_SECTION, _LOCAL_PLAYER_NAME, local_player_name)
-
-var local_ghost_sprite_frame: int:
-	set(new_local_ghost_sprite_frame):
-		local_ghost_sprite_frame = new_local_ghost_sprite_frame
-		local_ghost_sprite_frame_changed.emit(local_ghost_sprite_frame)
-		update_value_in_config(_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME, local_ghost_sprite_frame)
-
 ## Config
-const _PLAYER_SECTION: StringName = "player"
+const _LOCAL_PLAYER_SECTION: StringName = "local_player"
 const _LOCAL_PLAYER_NAME: StringName = "local_player_name"
 const _LOCAL_GHOST_SPRITE_FRAME: StringName = "local_ghost_sprite_frame"
 
 var _config: ConfigFile = _load_config_file()
 
+func _ready() -> void:
+	if _config.has_section_key(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME):
+		Lobby.local_player_name = get_value_from_config(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME)
+	if _config.has_section_key(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME):
+		Lobby.local_ghost_sprite_frame = get_value_from_config(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME)
+	
+	Lobby.local_player_name_changed.connect(update_value_in_config.bind(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME))
+	Lobby.local_ghost_sprite_frame_changed.connect(update_value_in_config.bind(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME))
+
 func quit_game() -> void:
 	Serializer.save_world_state()
 	get_tree().quit()
 
-func update_value_in_config(section: String, key: String, value: Variant) -> Error:
+func update_value_in_config(value: Variant, section: String, key: String) -> Error:
 	assert(not section.is_empty())
 	assert(not key.is_empty())
 	assert(_config)
@@ -85,10 +79,10 @@ static func _create_default_config_file() -> Error:
 	return error
 
 class ConfigEntry:
+	var value: Variant
 	var section: String
 	var key: String
-	var value: Variant
-	func _init(new_section: String, new_key: String, new_value: Variant) -> void:
+	func _init(new_value: Variant, new_section: String, new_key: String) -> void:
+		value = new_value
 		section = new_section
 		key = new_key
-		value = new_value

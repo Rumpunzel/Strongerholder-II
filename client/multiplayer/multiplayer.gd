@@ -1,6 +1,6 @@
 @tool
 @icon("uid://djyg1pu0yqd4c")
-extends Node
+extends Spawner
 
 signal game_hosted(ip_address: StringName, port: int)
 signal game_joined(host_player_info: Dictionary)
@@ -14,8 +14,13 @@ const DEFAULT_SERVER_IP: StringName = "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS: int = 4
 const HOST_ID: int = 1
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	spawn_path = get_tree().root.get_path()
 	if Engine.is_editor_hint(): return
+	add_spawnable_scene(Game.GAME_SCENE.resource_path)
+
+func _ready() -> void:
+	super._ready()
 	multiplayer.multiplayer_peer = null
 	multiplayer.peer_connected.connect(_on_player_connected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
@@ -35,12 +40,23 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
-	#_multiplayer_lobby.remove_local_player()
-	get_tree().call_group("Spawners", "remove_all_spawned_nodes")
+	
+	var loading_screen_scene: PackedScene = load("uid://dmweuj7kxaxov")
+	var loading_screen: CanvasLayer = loading_screen_scene.instantiate()
+	add_child(loading_screen)
+	
+	await get_tree().process_frame
+	Lobby.remove_local_player()
+	get_tree().unload_current_scene()
+	await get_tree().create_timer(5.0).timeout
+	await get_tree().process_frame
+	
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
+	
+	loading_screen.queue_free()
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
@@ -49,11 +65,9 @@ func disconnect_from_multiplayer() -> void:
 	multiplayer.multiplayer_peer = null
 	print_debug("Disconnected from multiplayer!")
 
-func is_server() -> bool:
-	return not multiplayer.multiplayer_peer or multiplayer.is_server()
+func is_server() -> bool: return not multiplayer.multiplayer_peer or multiplayer.is_server()
 
-func is_client() -> bool:
-	return multiplayer.multiplayer_peer and not multiplayer.is_server()
+func is_client() -> bool: return not is_server()
 
 static func validate_registering_player_info(player_info: Dictionary[StringName, Variant]) -> void:
 	assert(player_info.has_all([Player.NAME, Player.GHOST_SPRITE_FRAME]))
@@ -73,7 +87,7 @@ func _register_player(registering_player_info: Dictionary[StringName, Variant]) 
 		player_joined.emit(player)
 		print_debug("Player %s joined multiplayer game!" % player_info)
 
-func _create_registering_player_info(player_name: String = Client.local_player_name, ghost_sprite_frame: int = Client.local_ghost_sprite_frame) -> Dictionary[StringName, Variant]:
+func _create_registering_player_info(player_name: String = Lobby.local_player_name, ghost_sprite_frame: int = Lobby.local_ghost_sprite_frame) -> Dictionary[StringName, Variant]:
 	var registering_player_info: Dictionary[StringName, Variant] = {
 		Player.NAME: player_name,
 		Player.GHOST_SPRITE_FRAME: ghost_sprite_frame,

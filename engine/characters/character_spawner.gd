@@ -5,11 +5,8 @@ extends Spawner
 
 @export_group("Configuration")
 
-func _on_player_ghost_created(player_ghost: PlayerGhost) -> void:
-	spawn_node.add_child(player_ghost.character, true)
-
-func _on_agent_created(agent: Agent) -> void:
-	spawn_node.add_child(agent.character, true)
+func spawn_character(character: Character) -> void:
+	spawn_node.add_child(character, true)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

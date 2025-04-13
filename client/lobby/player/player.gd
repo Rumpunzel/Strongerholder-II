@@ -32,8 +32,6 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 
 @export_group("Configuration")
 
-var is_local_player: bool = true
-
 static func create(new_player_id: int, new_player_name: String) -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
 	new_player.player_id = new_player_id
@@ -50,6 +48,9 @@ static func from_player_info(player_info: Dictionary[StringName, Variant]) -> Pl
 static func validate_player_info(player_info: Dictionary[StringName, Variant]) -> void:
 	assert(player_info.has_all([ID, NAME, GHOST_SPRITE_FRAME]))
 	assert(player_info.size() == 3)
+
+func is_local_player() -> bool:
+	return multiplayer.multiplayer_peer == null or multiplayer.get_unique_id() == player_id
 
 func get_player_info() -> Dictionary[StringName, Variant]:
 	var player_info: Dictionary[StringName, Variant] = {

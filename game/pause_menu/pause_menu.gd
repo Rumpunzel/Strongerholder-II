@@ -7,7 +7,6 @@ signal opened
 signal closed
 
 @export_group("Configuration")
-@export var _multiplayer_menu: MultiplayerMenu
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -51,14 +50,6 @@ func _on_randomize_ghost_pressed() -> void:
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Client.quit_game()
 
-# [Multiplayer] callbacks
-func _on_local_player_name_changed(player_name: String) -> void:
-	_multiplayer_menu.update_player_name(player_name)
-
-func _on_disconnected_from_multiplayer() -> void:
-	_multiplayer_menu.reset_menu()
-
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
-	if not _multiplayer_menu: warnings.append("Missing MultiplayerMenu reference.")
 	return warnings

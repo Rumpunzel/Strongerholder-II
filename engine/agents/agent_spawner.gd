@@ -6,14 +6,9 @@ extends Spawner
 signal agent_created(agent: Agent)
 
 @export_group("Configuration")
+@export var _character_spawner: CharacterSpawner
 
 var _agents: Dictionary[Character, Agent] = {}
-
-func _ready() -> void:
-	super._ready()
-	if Multiplayer.is_client(): return
-	await get_tree().process_frame
-	spawn_all_from_spawn_spoints()
 
 func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
 	var all_character_spawn_points: Array[Node] = get_tree().get_nodes_in_group("CharacterSpawnPoints")
@@ -28,6 +23,7 @@ func create_agent(character: Character) -> void:
 	var new_agent: Agent = Agent.create(character)
 	spawn_node.add_child(new_agent, true)
 	_agents[character] = new_agent
+	_character_spawner.spawn_character(character)
 	agent_created.emit(new_agent)
 
 func remove_player_ghost(character: Character) -> void:
@@ -38,4 +34,5 @@ func remove_player_ghost(character: Character) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
+	if not _character_spawner: warnings.append("Missing CharacterSpawner reference.")
 	return warnings

@@ -53,6 +53,18 @@ version_control/autoload_on_startup=true
 
 enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg", "res://addons/radial_progress/plugin.cfg", "res://addons/toastparty/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://addons/": "orange",
+"res://client/": "gray",
+"res://engine/": "blue",
+"res://game/": "yellow",
+"res://protoype_assets/": "teal",
+"res://tools/": "red",
+"res://user_interface/": "green"
+}
+
 [global_group]
 
 Claymations=""

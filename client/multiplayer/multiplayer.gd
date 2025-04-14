@@ -48,7 +48,7 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	await get_tree().process_frame
 	Lobby.remove_local_player()
 	get_tree().unload_current_scene()
-	await get_tree().create_timer(5.0).timeout
+	await get_tree().create_timer(2.0).timeout
 	await get_tree().process_frame
 	
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()

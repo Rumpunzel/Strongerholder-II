@@ -7,7 +7,7 @@ extends Node
 	set(new_player):
 		assert(new_player)
 		player = new_player
-		set_multiplayer_authority(player.get_multiplayer_authority())
+		set_multiplayer_authority(player.player_id)
 
 @export_group("Configuration")
 @export var _interaction_area: InteractionArea

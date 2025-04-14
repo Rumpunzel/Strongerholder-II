@@ -1,7 +1,7 @@
 @tool
 @icon("uid://c73t2rg8wrdt3")
 class_name Player
-extends Node
+extends Synchronizer
 
 signal player_info_changed(player_info: Dictionary[StringName, Variant])
 

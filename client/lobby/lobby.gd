@@ -56,7 +56,6 @@ func get_player(player_id: int) -> Player:
 
 func add_player(player: Player) -> void:
 	assert(Multiplayer.is_server())
-	player.set_multiplayer_authority(player.player_id)
 	player.player_info_changed.connect(_on_player_info_changed)
 	add_child(player, true)
 	player_connected.emit(player)
@@ -128,6 +127,5 @@ func _on_child_entered_tree(node: Node) -> void:
 	assert(player.name.is_valid_int())
 	var peer_id_from_name: int = int(player.name)
 	var peer_id: int = multiplayer.get_unique_id()
-	player.set_multiplayer_authority(peer_id_from_name)
 	player.player_id = peer_id_from_name
 	if peer_id_from_name == peer_id: _local_player = player

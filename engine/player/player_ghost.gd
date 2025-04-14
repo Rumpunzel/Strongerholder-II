@@ -14,9 +14,8 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 
 @export var player: Player:
 	set(new_player):
+		assert(new_player)
 		player = new_player
-		if not player:
-			input_reader.set_multiplayer_authority(Multiplayer.HOST_ID)
 		name = player.name
 		input_reader.player = player
 		interaction_area.set_enabled(player.is_local_player())

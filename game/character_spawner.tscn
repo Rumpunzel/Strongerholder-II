@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cnqgk717dgofh" path="res://engine/characters/character_spawner.gd" id="1_hrqy3"]
 
 [node name="CharacterSpawner" type="MultiplayerSpawner"]
-_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+_spawnable_scenes = PackedStringArray("uid://cvj6b1m2b65hd")
 spawn_path = NodePath(".")
 script = ExtResource("1_hrqy3")
 metadata/_custom_type_script = "uid://cnqgk717dgofh"

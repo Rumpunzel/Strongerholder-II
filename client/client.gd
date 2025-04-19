@@ -4,21 +4,7 @@ extends Node
 
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
-## Config
-const _LOCAL_PLAYER_SECTION: StringName = "local_player"
-const _LOCAL_PLAYER_NAME: StringName = "local_player_name"
-const _LOCAL_GHOST_SPRITE_FRAME: StringName = "local_ghost_sprite_frame"
-
 var _config: ConfigFile = _load_config_file()
-
-func _ready() -> void:
-	if _config.has_section_key(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME):
-		Lobby.local_player_name = get_value_from_config(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME)
-	if _config.has_section_key(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME):
-		Lobby.local_ghost_sprite_frame = get_value_from_config(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME)
-	
-	Lobby.local_player_name_changed.connect(update_value_in_config.bind(_LOCAL_PLAYER_SECTION, _LOCAL_PLAYER_NAME))
-	Lobby.local_ghost_sprite_frame_changed.connect(update_value_in_config.bind(_LOCAL_PLAYER_SECTION, _LOCAL_GHOST_SPRITE_FRAME))
 
 func quit_game() -> void:
 	Serializer.save_world_state()

@@ -1,3 +1,4 @@
+@tool
 @icon("uid://r4re5w2nnw4h")
 class_name MultiplayerMenu
 extends VBoxContainer
@@ -10,8 +11,10 @@ extends VBoxContainer
 @export var _host_ip_address_button: Button
 
 func _ready() -> void:
+	update_player_name(Lobby.get_local_player().player_name)
+	
 	Multiplayer.game_hosted.connect(_on_game_hosted)
-	Lobby.local_player_name_changed.connect(_on_local_player_name_changed)
+	Lobby.player_info_changed.connect(_on_player_info_changed)
 
 func reset_menu() -> void:
 	_join_button.disabled = false
@@ -22,10 +25,12 @@ func reset_menu() -> void:
 	_host_ip_address_button.text = ""
 
 func update_player_name(player_name: String) -> void:
+	if _player_name.text == player_name: return
 	_player_name.text = player_name
 
 func _on_player_name_text_changed(new_player_name: String) -> void:
-	Lobby.local_player_name = new_player_name
+	var local_player: Player = Lobby.get_local_player()
+	local_player.player_name = new_player_name
 
 func _on_join_toggled(joining: bool) -> void:
 	_ip_address.editable = not joining
@@ -55,9 +60,10 @@ func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
 
 # [Lobby] callbacks
-func _on_local_player_name_changed(player_name: String) -> void:
-	if _player_name.text == player_name: return
-	_player_name.text = player_name
+func _on_player_info_changed(player: Player) -> void:
+	print("here")
+	if not player.is_local_player(): return
+	update_player_name(player.player_name)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

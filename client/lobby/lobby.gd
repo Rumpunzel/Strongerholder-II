@@ -3,6 +3,7 @@
 extends Spawner
 
 enum RemovalReason {
+	JOINING_GAME,
 	PLAYER_DISCONNECTED,
 	SERVER_DISCONNECTED,
 }
@@ -10,35 +11,22 @@ enum RemovalReason {
 signal player_connected(player: Player)
 signal player_disconnected(player: Player)
 
-signal local_player_name_changed(local_player_name: String)
-signal local_ghost_sprite_frame_changed(local_ghost_sprite_frame: int)
-
-var local_player_name: String:
-	set(new_local_player_name):
-		local_player_name = new_local_player_name
-		local_player_name_changed.emit(local_player_name)
-		print_debug("Changed name of local player to: %s" % local_player_name)
-
-var local_ghost_sprite_frame: int:
-	set(new_local_ghost_sprite_frame):
-		local_ghost_sprite_frame = new_local_ghost_sprite_frame
-		local_ghost_sprite_frame_changed.emit(local_ghost_sprite_frame)
-		print_debug("Changed ghost sprite frame of local player to: %s" % local_ghost_sprite_frame)
-
-var _local_player: Player
-var _guest_players: Dictionary[int, Player] = {}
+signal player_info_changed(player: Player)
 
 func _enter_tree() -> void:
 	spawn_path = get_path()
+	spawn_function = _spawn_player
 	if Engine.is_editor_hint(): return
 	add_spawnable_scene(Player.PLAYER_SCENE.resource_path)
 	child_entered_tree.connect(_on_child_entered_tree)
 
 func _ready() -> void:
+	super._ready()
 	if Engine.is_editor_hint(): return
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
+	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.player_joined.connect(_on_player_joined)
 	Multiplayer.game_joined.connect(_on_game_joined)
 	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
@@ -46,31 +34,36 @@ func _ready() -> void:
 	_create_local_player()
 
 func get_connected_players() -> Array[Player]:
-	var connected_players: Array[Player] = [_local_player]
-	connected_players.append_array(_guest_players.values())
-	return connected_players
+	var players: Array[Player] = []
+	for child: Node in get_children():
+		if child is Player: players.append(child)
+	return players
 
 func get_player(player_id: int) -> Player:
-	if player_id == _local_player.player_id: return _local_player
-	return _guest_players[player_id]
+	for player: Player in get_connected_players():
+		if player.player_id == player_id: return player
+	return null
 
-func add_player(player: Player) -> void:
+func get_local_player() -> Player:
+	var local_player_id: int = Multiplayer.HOST_ID
+	if multiplayer and get_connected_players().size() > 1: local_player_id = multiplayer.get_unique_id()
+	var local_player: Player = get_player(local_player_id)
+	if not local_player:
+		for player: Player in get_connected_players():
+			if player.is_local_player(): local_player = player
+	assert(local_player)
+	return local_player
+
+func _spawn_player(player: Player) -> void:
 	assert(Multiplayer.is_server())
-	player.player_info_changed.connect(_on_player_info_changed)
+	player.set_multiplayer_authority(player.player_id)
 	add_child(player, true)
 	player_connected.emit(player)
 	print_debug("Added player: %s" % player.get_player_info())
 
-func remove_local_player() -> void:
-	assert(_local_player)
-	_local_player.queue_free()
-	_local_player = null
-	print_debug("Removed local player!")
-
 func _create_local_player() -> void:
-	assert(not _local_player)
-	_local_player = Player.create(Multiplayer.HOST_ID, local_player_name)
-	add_player(_local_player)
+	assert(get_child_count() == 0)
+	_spawn_player(Player.create(Multiplayer.HOST_ID))
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
 	for player: Player in get_children():
@@ -78,20 +71,20 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 			assert(removal_reason == RemovalReason.SERVER_DISCONNECTED)
 			printerr("Lost connection to host!")
 			continue
+		if player.is_local_player():
+			continue
 		_remove_player(player)
 
 func _remove_player(player: Player) -> void:
-	if player == _local_player: return
 	assert(player)
 	player.player_info_changed.disconnect(_on_player_info_changed)
-	_guest_players.erase(player.player_id)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
 
 func _on_player_info_changed(player_info: Dictionary[StringName, Variant]) -> void:
 	Player.validate_player_info(player_info)
 	var player_id: int = player_info[Player.ID]
-	var for_player: Player = _guest_players.get(player_id)
+	var for_player: Player = get_player(player_id)
 	if not for_player: return
 	var player_name: String = player_info[Player.NAME]
 	for_player.player_name = player_name
@@ -100,15 +93,17 @@ func _on_player_info_changed(player_info: Dictionary[StringName, Variant]) -> vo
 func _on_disconnected_from_multiplayer() -> void:
 	_remove_all_players(RemovalReason.PLAYER_DISCONNECTED)
 
+func _on_joining_multiplayer() -> void:
+	_remove_all_players(RemovalReason.JOINING_GAME)
+
 func _on_player_joined(player: Player) -> void:
-	add_player(player)
-	_guest_players[player.player_id] = player
+	_spawn_player(player)
 
 func _on_game_joined(host_player_info: Dictionary) -> void:
 	print("host_player_info: %s" % host_player_info)
 
 func _on_player_disconnected(peer_id: int) -> void:
-	var disconnected_player: Player = _guest_players.get(peer_id)
+	var disconnected_player: Player = get_player(peer_id)
 	if not disconnected_player:
 		printerr("Host disconnected!")
 		return
@@ -122,10 +117,11 @@ func _on_server_disconnected() -> void:
 func _on_child_entered_tree(node: Node) -> void:
 	assert(node is Player)
 	var player: Player = node
+	player.player_info_changed.connect(player_info_changed.emit.bind(player))
 	# Only need to do this on the client
 	if not Multiplayer.is_client(): return
 	assert(player.name.is_valid_int())
 	var peer_id_from_name: int = int(player.name)
-	var peer_id: int = multiplayer.get_unique_id()
 	player.player_id = peer_id_from_name
-	if peer_id_from_name == peer_id: _local_player = player
+	player.set_multiplayer_authority(player.player_id)
+	print("player_id: %d" % peer_id_from_name)

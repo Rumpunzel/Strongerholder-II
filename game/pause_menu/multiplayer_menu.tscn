@@ -1,12 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bi3mr4sjccywj"]
+[gd_scene load_steps=5 format=3 uid="uid://bi3mr4sjccywj"]
 
 [ext_resource type="Script" uid="uid://dvlr2wvgpeyqn" path="res://game/pause_menu/multiplayer_menu.gd" id="1_k1c65"]
 [ext_resource type="Script" uid="uid://cpyey1rgiu5s0" path="res://user_interface/toggle_button.gd" id="2_mwgi0"]
 [ext_resource type="Script" uid="uid://c5s3itsvtp0mg" path="res://user_interface/better_line_edit.gd" id="2_rgp2h"]
 [ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://user_interface/clipboard_button.gd" id="3_iouuv"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_2en6q"]
-font_size = 24
 
 [node name="MultiplayerMenu" type="VBoxContainer" node_paths=PackedStringArray("_player_name", "_join_button", "_ip_address", "_host_button", "_host_ip_address_button")]
 custom_minimum_size = Vector2(256, 0)
@@ -19,13 +16,6 @@ _ip_address = NodePath("GridContainer/IpAddress")
 _host_button = NodePath("GridContainer/Host")
 _host_ip_address_button = NodePath("GridContainer/HostIpAddress")
 metadata/_custom_type_script = "uid://dvlr2wvgpeyqn"
-
-[node name="Label" type="Label" parent="."]
-visible = false
-layout_mode = 2
-text = "Multiplayer"
-label_settings = SubResource("LabelSettings_2en6q")
-horizontal_alignment = 1
 
 [node name="PlayerName" type="LineEdit" parent="."]
 layout_mode = 2

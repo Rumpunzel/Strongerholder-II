@@ -3,7 +3,10 @@
 class_name Player
 extends Synchronizer
 
-signal player_info_changed(player_info: Dictionary[StringName, Variant])
+signal player_info_changed
+
+## Config
+const _PLAYER_SECTION: StringName = "player"
 
 const ID: StringName = "player_id"
 const NAME: StringName = "player_name"
@@ -16,26 +19,37 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 		if not Engine.is_editor_hint(): name = "%d" % new_player_id
 		if new_player_id == player_id: return
 		player_id = new_player_id
-		player_info_changed.emit(get_player_info())
+		player_info_changed.emit()
 
 @export var player_name: String:
 	set(new_player_name):
+		print(new_player_name)
 		if new_player_name == player_name: return
 		player_name = new_player_name
-		player_info_changed.emit(get_player_info())
+		player_info_changed.emit()
+		if not is_local_player(): return
+		Client.update_value_in_config(player_name, _PLAYER_SECTION, NAME)
 
 @export var ghost_sprite_frame: int = 0:
 	set(new_ghost_sprite_frame):
 		if new_ghost_sprite_frame == ghost_sprite_frame: return
 		ghost_sprite_frame = new_ghost_sprite_frame
-		player_info_changed.emit(get_player_info())
+		player_info_changed.emit()
+		if not is_local_player(): return
+		Client.update_value_in_config(ghost_sprite_frame, _PLAYER_SECTION, GHOST_SPRITE_FRAME)
 
 @export_group("Configuration")
 
-static func create(new_player_id: int, new_player_name: String) -> Player:
+func _ready() -> void:
+	if Engine.is_editor_hint(): return
+	if not is_local_player(): return
+	player_name = Client.get_value_from_config(_PLAYER_SECTION, NAME, "Player")
+	ghost_sprite_frame = Client.get_value_from_config(_PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
+
+static func create(new_player_id: int, new_player_name: String = "") -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
 	new_player.player_id = new_player_id
-	new_player.player_name = new_player_name
+	if not new_player_name.is_empty(): new_player.player_name = new_player_name
 	return new_player
 
 static func from_player_info(player_info: Dictionary[StringName, Variant]) -> Player:
@@ -50,7 +64,9 @@ static func validate_player_info(player_info: Dictionary[StringName, Variant]) -
 	assert(player_info.size() == 3)
 
 func is_local_player() -> bool:
-	return multiplayer.multiplayer_peer == null or multiplayer.get_unique_id() == player_id
+	if not multiplayer: return true
+	if not multiplayer.multiplayer_peer: return true
+	return multiplayer.get_unique_id() == player_id
 
 func get_player_info() -> Dictionary[StringName, Variant]:
 	var player_info: Dictionary[StringName, Variant] = {

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
+[gd_scene load_steps=10 format=3 uid="uid://5sd2jgms4uso"]
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://game/pause_menu/pause_menu.gd" id="1_h4gok"]
 [ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://game/pause_menu/game_info.tscn" id="2_wsp0d"]
 [ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_4wkd6"]
+[ext_resource type="PackedScene" uid="uid://becdxlww4k13g" path="res://game/pause_menu/lobby_menu.tscn" id="3_s5xay"]
 [ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://game/pause_menu/multiplayer_menu.tscn" id="4_xkrjr"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
@@ -33,6 +34,18 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_j0huj")
 
 [node name="GameInfo" parent="PanelContainer" instance=ExtResource("2_wsp0d")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="LobbyMenu" parent="PanelContainer/MarginContainer" instance=ExtResource("3_s5xay")]
 layout_mode = 2
 
 [node name="Menu" type="MarginContainer" parent="PanelContainer"]

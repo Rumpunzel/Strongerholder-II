@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://becdxlww4k13g"]
+
+[ext_resource type="PackedScene" uid="uid://75rctdin2cpp" path="res://game/pause_menu/player_info.tscn" id="1_7eg3o"]
+[ext_resource type="Script" uid="uid://cd0g7grdwdvy1" path="res://game/pause_menu/lobby_menu.gd" id="1_7xmpv"]
+
+[node name="LobbyMenu" type="PanelContainer" node_paths=PackedStringArray("_player_infos_container")]
+script = ExtResource("1_7xmpv")
+_player_infos_container = NodePath("")
+_player_info_scene = ExtResource("1_7eg3o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Players"
+horizontal_alignment = 1
+
+[node name="PlayerInfos" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8

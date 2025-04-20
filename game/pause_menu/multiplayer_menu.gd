@@ -11,6 +11,7 @@ extends VBoxContainer
 @export var _host_ip_address_button: Button
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	update_player_name(Lobby.get_local_player().player_name)
 	Multiplayer.game_hosted.connect(_on_game_hosted)
 	Lobby.player_info_changed.connect(_on_player_info_changed)

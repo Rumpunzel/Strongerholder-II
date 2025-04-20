@@ -63,14 +63,28 @@ frame_17/duration = 1.0
 frame_18/texture = ExtResource("12_yf40m")
 frame_18/duration = 1.0
 
-[node name="PlayerInfo" type="PanelContainer" node_paths=PackedStringArray("_ghost_sprite", "_player_name")]
+[node name="PlayerInfo" type="PanelContainer" node_paths=PackedStringArray("_host_indicator", "_local_indicator", "_ghost_sprite", "_player_name")]
 custom_minimum_size = Vector2(96, 96)
 offset_top = 127.0
 offset_right = 96.0
 offset_bottom = 127.0
 script = ExtResource("1_cwx72")
+_host_indicator = NodePath("Host")
+_local_indicator = NodePath("Local")
 _ghost_sprite = NodePath("GhostSprite")
 _player_name = NodePath("MarginContainer/PanelContainer/PlayerName")
+
+[node name="Host" type="ReferenceRect" parent="."]
+layout_mode = 2
+border_color = Color(1, 0.890196, 0.270588, 1)
+border_width = 5.0
+editor_only = false
+
+[node name="Local" type="ReferenceRect" parent="."]
+layout_mode = 2
+border_color = Color(0.270588, 0.843137, 1, 1)
+border_width = 2.0
+editor_only = false
 
 [node name="GhostSprite" type="TextureRect" parent="."]
 layout_mode = 2

@@ -72,10 +72,7 @@ static func validate_player_info(player_info: Dictionary[StringName, Variant]) -
 	assert(player_info.size() == 3)
 
 func is_local_player() -> bool:
-	## If oustide the tree while being added by [Lobby], [mulitplayer] is unavailable
-	if not multiplayer:
-		assert(not is_inside_tree())
-		return false
+	if not is_inside_tree(): return Multiplayer.multiplayer.get_unique_id() == player_id
 	return multiplayer.get_unique_id() == player_id
 
 func get_player_info() -> Dictionary[StringName, Variant]:

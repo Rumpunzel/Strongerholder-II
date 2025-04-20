@@ -60,7 +60,6 @@ func _spawn_player(player_info: Dictionary[StringName, Variant]) -> Player:
 	return player
 
 func _create_local_player() -> void:
-	assert(get_child_count() == 0)
 	spawn(Player.get_local_player_info())
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
@@ -76,11 +75,13 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 func _remove_player(player: Player) -> void:
 	assert(player)
 	player.player_info_changed.disconnect(player_info_changed.emit)
+	remove_child(player)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
 
 func _on_disconnected_from_multiplayer() -> void:
 	_remove_all_players(RemovalReason.PLAYER_DISCONNECTED)
+	_create_local_player()
 
 func _on_joining_multiplayer() -> void:
 	_remove_all_players(RemovalReason.JOINING_GAME)
@@ -90,8 +91,8 @@ func _on_player_joined(player_info: Dictionary[StringName, Variant]) -> void:
 	Player.validate_player_info(player_info)
 	spawn(player_info)
 
-func _on_game_joined(host_player_info: Dictionary) -> void:
-	print("host_player_info: %s" % host_player_info)
+func _on_game_joined(_host_player_info: Dictionary) -> void:
+	return
 
 func _on_player_disconnected(peer_id: int) -> void:
 	var disconnected_player: Player = get_player(peer_id)
@@ -104,3 +105,4 @@ func _on_player_disconnected(peer_id: int) -> void:
 
 func _on_server_disconnected() -> void:
 	_remove_all_players(RemovalReason.SERVER_DISCONNECTED)
+	_create_local_player()

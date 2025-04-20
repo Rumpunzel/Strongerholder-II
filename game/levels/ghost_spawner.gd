@@ -21,13 +21,13 @@ func start_synching_players() -> void:
 		create_player_ghost(connected_player)
 	
 	Lobby.player_connected.connect(create_player_ghost)
-	Lobby.player_disconnected.connect(remove_player_ghost)
+	Lobby.child_exiting_tree.connect(remove_player_ghost)
 
 func stop_synching_players() -> void:
 	remove_all_spawned_nodes()
 	
 	Lobby.player_connected.disconnect(create_player_ghost)
-	Lobby.player_disconnected.disconnect(remove_player_ghost)
+	Lobby.child_exiting_tree.disconnect(remove_player_ghost)
 
 func create_player_ghost(player: Player, character: Character = _player_ghost_character_profile.create(Transform3D())) -> void:
 	assert(player)

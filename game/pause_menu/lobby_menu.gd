@@ -8,7 +8,7 @@ func _ready() -> void:
 		create_player_info(connected_player)
 	
 	Lobby.player_connected.connect(create_player_info)
-	Lobby.player_disconnected.connect(remove_player_info)
+	Lobby.child_exiting_tree.connect(remove_player_info)
 
 @export_group("Configuration")
 @export var _player_infos_container: Control

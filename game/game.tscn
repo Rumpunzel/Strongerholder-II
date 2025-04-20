@@ -10,8 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://etrru1v1aeft" path="res://game/agent_spawner.tscn" id="9_j8tme"]
 [ext_resource type="PackedScene" uid="uid://rmev082m4bw0" path="res://user_interface/user_interface.tscn" id="10_j8tme"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("_agent_spawner")]
+[node name="Game" type="Node" node_paths=PackedStringArray("_level_spawner", "_player_ghost_spawner", "_agent_spawner")]
 script = ExtResource("1_l8g03")
+_level_spawner = NodePath("LevelSpawner")
+_player_ghost_spawner = NodePath("PlayerGhostSpawner")
 _agent_spawner = NodePath("AgentSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
 
@@ -23,10 +25,11 @@ metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 
 [node name="PauseMenu" parent="." instance=ExtResource("2_j8tme")]
 
+[node name="PlayerGhostSpawner" parent="." instance=ExtResource("8_l8g03")]
+
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://bmwhs3lwb74ue")
 spawn_path = NodePath(".")
-spawn_limit = 1
 script = ExtResource("9_4cobl")
 _default_level = ExtResource("8_ee6o4")
 metadata/_custom_type_script = "uid://ct2kte5v780cm"
@@ -35,8 +38,6 @@ metadata/_custom_type_script = "uid://ct2kte5v780cm"
 script = ExtResource("6_b686c")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
-
-[node name="PlayerGhostSpawner" parent="." instance=ExtResource("8_l8g03")]
 
 [node name="AgentSpawner" parent="." instance=ExtResource("9_j8tme")]
 

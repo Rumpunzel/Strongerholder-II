@@ -13,7 +13,6 @@ extends PanelContainer
 @export var _player_name: Label
 
 func _update_player_info() -> void:
-	print("there")
 	name = "%d" % player.player_id
 	_player_name.text = player.player_name
 	var ghost_sprites: AnimatedTexture = _ghost_sprite.texture

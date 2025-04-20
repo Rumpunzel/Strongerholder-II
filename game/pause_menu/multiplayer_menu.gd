@@ -12,7 +12,6 @@ extends VBoxContainer
 
 func _ready() -> void:
 	update_player_name(Lobby.get_local_player().player_name)
-	
 	Multiplayer.game_hosted.connect(_on_game_hosted)
 	Lobby.player_info_changed.connect(_on_player_info_changed)
 
@@ -61,8 +60,6 @@ func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 
 # [Lobby] callbacks
 func _on_player_info_changed(player: Player) -> void:
-	print("here")
-	if not player.is_local_player(): return
 	update_player_name(player.player_name)
 
 func _get_configuration_warnings() -> PackedStringArray:

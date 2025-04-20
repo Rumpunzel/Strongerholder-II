@@ -1,11 +1,12 @@
 @tool
 @icon("uid://djyg1pu0yqd4c")
-extends Spawner
+extends Node
 
 signal game_hosted(ip_address: StringName, port: int)
-signal game_joined(host_player_info: Dictionary)
-signal player_joined(player: Player)
+signal game_joined(host_player_info: Dictionary[StringName, Variant])
+signal player_joined(player_info: Dictionary[StringName, Variant])
 
+signal joining_multiplayer
 signal connected_to_multiplayer
 signal disconnected_from_multiplayer
 
@@ -14,14 +15,8 @@ const DEFAULT_SERVER_IP: StringName = "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS: int = 4
 const HOST_ID: int = 1
 
-func _enter_tree() -> void:
-	spawn_path = get_tree().root.get_path()
-	if Engine.is_editor_hint(): return
-	add_spawnable_scene(Game.GAME_SCENE.resource_path)
-
 func _ready() -> void:
-	super._ready()
-	multiplayer.multiplayer_peer = null
+	_go_offline()
 	multiplayer.peer_connected.connect(_on_player_connected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
@@ -44,11 +39,10 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	var loading_screen_scene: PackedScene = load("uid://dmweuj7kxaxov")
 	var loading_screen: CanvasLayer = loading_screen_scene.instantiate()
 	add_child(loading_screen)
-	
 	await get_tree().process_frame
-	Lobby.remove_local_player()
-	get_tree().unload_current_scene()
-	await get_tree().create_timer(2.0).timeout
+	
+	joining_multiplayer.emit()
+	#await get_tree().create_timer(2.0).timeout
 	await get_tree().process_frame
 	
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
@@ -61,60 +55,43 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	return Error.OK
 
 func disconnect_from_multiplayer() -> void:
+	_go_offline()
 	disconnected_from_multiplayer.emit()
-	multiplayer.multiplayer_peer = null
 	print_debug("Disconnected from multiplayer!")
 
-func is_server() -> bool: return not multiplayer.multiplayer_peer or multiplayer.is_server()
-
-func is_client() -> bool: return not is_server()
-
-static func validate_registering_player_info(player_info: Dictionary[StringName, Variant]) -> void:
-	assert(player_info.has_all([Player.NAME, Player.GHOST_SPRITE_FRAME]))
-	assert(player_info.size() == 2)
+func is_online() -> bool:
+	return not multiplayer.multiplayer_peer is OfflineMultiplayerPeer
 
 @rpc("any_peer", "reliable")
-func _register_player(registering_player_info: Dictionary[StringName, Variant]) -> void:
-	validate_registering_player_info(registering_player_info)
-	var peer_id: int = multiplayer.get_remote_sender_id() if multiplayer.multiplayer_peer else HOST_ID
-	var player_info: Dictionary[StringName, Variant] = _create_player_info(peer_id, registering_player_info)
+func _register_player(player_info: Dictionary[StringName, Variant]) -> void:
+	Player.validate_player_info(player_info)
+	var peer_id: int = multiplayer.get_remote_sender_id() if is_online() else HOST_ID
+	player_info[Player.ID] = peer_id
 	if peer_id == HOST_ID:
 		game_joined.emit(player_info)
 		connected_to_multiplayer.emit()
 		print_debug("Joined Player %s's multiplayer game!" % player_info)
 	else:
-		var player: Player = Player.from_player_info(player_info)
-		player_joined.emit(player)
+		player_joined.emit(player_info)
 		print_debug("Player %s joined multiplayer game!" % player_info)
 
-func _create_registering_player_info(player_name: String = Lobby.local_player_name, ghost_sprite_frame: int = Lobby.local_ghost_sprite_frame) -> Dictionary[StringName, Variant]:
-	var registering_player_info: Dictionary[StringName, Variant] = {
-		Player.NAME: player_name,
-		Player.GHOST_SPRITE_FRAME: ghost_sprite_frame,
-	}
-	validate_registering_player_info(registering_player_info)
-	return registering_player_info
-
-func _create_player_info(peer_id: int, registering_player_info: Dictionary[StringName, Variant]) -> Dictionary[StringName, Variant]:
-	validate_registering_player_info(registering_player_info)
-	var player_info: Dictionary[StringName, Variant] = registering_player_info
-	player_info[Player.ID] = peer_id
-	assert(player_info[Player.ID] == peer_id)
-	Player.validate_player_info(player_info)
-	return player_info
+func _go_offline() -> void:
+	var offline_peer: OfflineMultiplayerPeer = OfflineMultiplayerPeer.new()
+	multiplayer.multiplayer_peer = offline_peer
 
 ## When a peer connects, send them the host info.
 ## This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(peer_id: int) -> void:
-	_register_player.rpc_id(peer_id, _create_registering_player_info())
+	var host_player_info: Dictionary[StringName, Variant] = Player.get_local_player_info()
+	_register_player.rpc_id(peer_id, host_player_info)
 
 func _on_connected_to_server() -> void:
 	print_debug("Connected to multiplayer server!")
 
 func _on_connection_failed() -> void:
-	multiplayer.multiplayer_peer = null
+	_go_offline()
 	print_debug("Connection failed!")
 
 func _on_server_disconnected() -> void:
-	multiplayer.multiplayer_peer = null
+	_go_offline()
 	print_debug("Server disconnected!")

@@ -19,11 +19,11 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 		if not Engine.is_editor_hint(): name = "%d" % new_player_id
 		if new_player_id == player_id: return
 		player_id = new_player_id
+		set_multiplayer_authority(player_id)
 		player_info_changed.emit()
 
 @export var player_name: String:
 	set(new_player_name):
-		print(new_player_name)
 		if new_player_name == player_name: return
 		player_name = new_player_name
 		player_info_changed.emit()
@@ -40,23 +40,31 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 
 @export_group("Configuration")
 
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
-	if not is_local_player(): return
-	player_name = Client.get_value_from_config(_PLAYER_SECTION, NAME, "Player")
-	ghost_sprite_frame = Client.get_value_from_config(_PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
-
-static func create(new_player_id: int, new_player_name: String = "") -> Player:
+static func create(new_player_id: int, new_player_name: String, new_player_ghost_sprite_frame: int) -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
 	new_player.player_id = new_player_id
-	if not new_player_name.is_empty(): new_player.player_name = new_player_name
+	new_player.player_name = new_player_name
+	new_player.ghost_sprite_frame = new_player_ghost_sprite_frame
 	return new_player
+
+static func get_local_player_info() -> Dictionary[StringName, Variant]:
+	var local_player_id: int = Multiplayer.HOST_ID
+	var local_player_name: String = Client.get_value_from_config(_PLAYER_SECTION, NAME, "Player")
+	var local_ghost_sprite_frame: int = Client.get_value_from_config(_PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
+	var player_info: Dictionary[StringName, Variant] = {
+		ID: local_player_id,
+		NAME: local_player_name if not local_player_name.is_empty() else "Player %d" % local_player_id,
+		GHOST_SPRITE_FRAME: local_ghost_sprite_frame,
+	}
+	validate_player_info(player_info)
+	return player_info
 
 static func from_player_info(player_info: Dictionary[StringName, Variant]) -> Player:
 	validate_player_info(player_info)
 	var new_player_id: int = player_info[ID]
 	var new_player_name: String = player_info[NAME]
-	var new_player: Player = Player.create(new_player_id, new_player_name)
+	var new_ghost_sprite_frame: int = player_info[GHOST_SPRITE_FRAME]
+	var new_player: Player = Player.create(new_player_id, new_player_name, new_ghost_sprite_frame)
 	return new_player
 
 static func validate_player_info(player_info: Dictionary[StringName, Variant]) -> void:
@@ -64,8 +72,10 @@ static func validate_player_info(player_info: Dictionary[StringName, Variant]) -
 	assert(player_info.size() == 3)
 
 func is_local_player() -> bool:
-	if not multiplayer: return true
-	if not multiplayer.multiplayer_peer: return true
+	## If oustide the tree while being added by [Lobby], [mulitplayer] is unavailable
+	if not multiplayer:
+		assert(not is_inside_tree())
+		return false
 	return multiplayer.get_unique_id() == player_id
 
 func get_player_info() -> Dictionary[StringName, Variant]:
@@ -76,9 +86,6 @@ func get_player_info() -> Dictionary[StringName, Variant]:
 	}
 	validate_player_info(player_info)
 	return player_info
-
-func _on_player_name_changed(new_player_name: String) -> void:
-	player_name = new_player_name
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

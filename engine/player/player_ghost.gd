@@ -74,13 +74,13 @@ var _character_path: NodePath:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not Multiplayer.is_server(): return
+	if not multiplayer.is_server(): return
 	if not character: return
 	_state_machine.update(delta)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not Multiplayer.is_server(): return
+	if not multiplayer.is_server(): return
 	if not character: return
 	_state_machine.physics_update(delta)
 	interaction_area.transform = character.transform

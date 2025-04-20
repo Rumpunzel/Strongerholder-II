@@ -14,17 +14,20 @@ signal character_unhaunted(unhaunted_character: Character)
 
 var _player_ghosts: Dictionary[Player, PlayerGhost] = {}
 
-func _ready() -> void:
-	super._ready()
-	if Engine.is_editor_hint(): return
-	if Multiplayer.is_client(): return
-	
+func start_synching_players() -> void:
+	assert(multiplayer.is_server())
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		create_player_ghost(connected_player)
 	
 	Lobby.player_connected.connect(create_player_ghost)
 	Lobby.player_disconnected.connect(remove_player_ghost)
+
+func stop_synching_players() -> void:
+	remove_all_spawned_nodes()
+	
+	Lobby.player_connected.disconnect(create_player_ghost)
+	Lobby.player_disconnected.disconnect(remove_player_ghost)
 
 func create_player_ghost(player: Player, character: Character = _player_ghost_character_profile.create(Transform3D())) -> void:
 	assert(player)

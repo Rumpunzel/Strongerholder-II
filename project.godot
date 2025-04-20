@@ -22,8 +22,8 @@ Client="*res://client/client.gd"
 Multiplayer="*res://client/multiplayer/multiplayer.gd"
 Lobby="*res://client/lobby/lobby.gd"
 Serializer="*res://client/serialization/serializer.gd"
-ToastParty="*res://addons/toastparty/toast-autoload.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+ToastParty="*res://addons/toastparty/toast-autoload.gd"
 
 [debug]
 

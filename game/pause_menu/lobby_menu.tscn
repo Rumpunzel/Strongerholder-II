@@ -5,7 +5,7 @@
 
 [node name="LobbyMenu" type="PanelContainer" node_paths=PackedStringArray("_player_infos_container")]
 script = ExtResource("1_7xmpv")
-_player_infos_container = NodePath("")
+_player_infos_container = NodePath("MarginContainer/VBoxContainer/PlayerInfos")
 _player_info_scene = ExtResource("1_7eg3o")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

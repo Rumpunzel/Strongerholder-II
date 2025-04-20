@@ -16,13 +16,12 @@ signal player_info_changed(player: Player)
 func _enter_tree() -> void:
 	spawn_path = get_path()
 	spawn_function = _spawn_player
-	if Engine.is_editor_hint(): return
-	add_spawnable_scene(Player.PLAYER_SCENE.resource_path)
-	child_entered_tree.connect(_on_child_entered_tree)
 
 func _ready() -> void:
 	super._ready()
 	if Engine.is_editor_hint(): return
+	_create_local_player()
+	
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
@@ -30,8 +29,6 @@ func _ready() -> void:
 	Multiplayer.player_joined.connect(_on_player_joined)
 	Multiplayer.game_joined.connect(_on_game_joined)
 	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
-	
-	_create_local_player()
 
 func get_connected_players() -> Array[Player]:
 	var players: Array[Player] = []
@@ -54,16 +51,17 @@ func get_local_player() -> Player:
 	assert(local_player)
 	return local_player
 
-func _spawn_player(player: Player) -> void:
-	assert(Multiplayer.is_server())
-	player.set_multiplayer_authority(player.player_id)
-	add_child(player, true)
+func _spawn_player(player_info: Dictionary[StringName, Variant]) -> Player:
+	Player.validate_player_info(player_info)
+	var player: Player = Player.from_player_info(player_info)
+	player.player_info_changed.connect(player_info_changed.emit.bind(player))
 	player_connected.emit(player)
 	print_debug("Added player: %s" % player.get_player_info())
+	return player
 
 func _create_local_player() -> void:
 	assert(get_child_count() == 0)
-	_spawn_player(Player.create(Multiplayer.HOST_ID))
+	spawn(Player.get_local_player_info())
 
 func _remove_all_players(removal_reason: RemovalReason) -> void:
 	for player: Player in get_children():
@@ -71,24 +69,15 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 			assert(removal_reason == RemovalReason.SERVER_DISCONNECTED)
 			printerr("Lost connection to host!")
 			continue
-		if player.is_local_player():
+		if player.is_local_player() and not removal_reason == RemovalReason.JOINING_GAME:
 			continue
 		_remove_player(player)
 
 func _remove_player(player: Player) -> void:
 	assert(player)
-	player.player_info_changed.disconnect(_on_player_info_changed)
+	player.player_info_changed.disconnect(player_info_changed.emit)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
-
-func _on_player_info_changed(player_info: Dictionary[StringName, Variant]) -> void:
-	Player.validate_player_info(player_info)
-	var player_id: int = player_info[Player.ID]
-	var for_player: Player = get_player(player_id)
-	if not for_player: return
-	var player_name: String = player_info[Player.NAME]
-	for_player.player_name = player_name
-	print_debug("Changed name of player with id %d to: %s" % [player_id, player_name])
 
 func _on_disconnected_from_multiplayer() -> void:
 	_remove_all_players(RemovalReason.PLAYER_DISCONNECTED)
@@ -96,8 +85,10 @@ func _on_disconnected_from_multiplayer() -> void:
 func _on_joining_multiplayer() -> void:
 	_remove_all_players(RemovalReason.JOINING_GAME)
 
-func _on_player_joined(player: Player) -> void:
-	_spawn_player(player)
+func _on_player_joined(player_info: Dictionary[StringName, Variant]) -> void:
+	if not multiplayer.is_server(): return
+	Player.validate_player_info(player_info)
+	spawn(player_info)
 
 func _on_game_joined(host_player_info: Dictionary) -> void:
 	print("host_player_info: %s" % host_player_info)
@@ -113,15 +104,3 @@ func _on_player_disconnected(peer_id: int) -> void:
 
 func _on_server_disconnected() -> void:
 	_remove_all_players(RemovalReason.SERVER_DISCONNECTED)
-
-func _on_child_entered_tree(node: Node) -> void:
-	assert(node is Player)
-	var player: Player = node
-	player.player_info_changed.connect(player_info_changed.emit.bind(player))
-	# Only need to do this on the client
-	if not Multiplayer.is_client(): return
-	assert(player.name.is_valid_int())
-	var peer_id_from_name: int = int(player.name)
-	player.player_id = peer_id_from_name
-	player.set_multiplayer_authority(player.player_id)
-	print("player_id: %d" % peer_id_from_name)

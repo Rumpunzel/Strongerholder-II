@@ -6,9 +6,8 @@ extends Spawner
 @export_group("Configuration")
 @export var _default_level: PackedScene
 
-func _ready() -> void:
-	#if Engine.is_editor_hint():
-	var level: Level = _default_level.instantiate()
+func spawn_level(scene: PackedScene = _default_level) -> void:
+	var level: Level = scene.instantiate()
 	add_child(level)
 
 func _get_configuration_warnings() -> PackedStringArray:

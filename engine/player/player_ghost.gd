@@ -6,6 +6,9 @@ extends Node
 signal character_haunted(haunted_character: Character, haunting_character: Character)
 signal character_unhaunted(unhaunted_character: Character)
 
+const PLAYER_ID: StringName = "player_id"
+const CHARACTER_PATH: StringName = "character_path"
+
 const PLAYER_GHOST_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
 
 const _ACTIVE_CAMERA_PRIORITY: int = 16
@@ -16,18 +19,21 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 	set(new_player):
 		assert(new_player)
 		player = new_player
+		set_multiplayer_authority(player.get_multiplayer_authority())
 		name = player.name
 		input_reader.player = player
-		interaction_area.set_enabled(player.is_local_player())
+		interaction_area.set_enabled(get_multiplayer_authority())
 		_camera.current = player.is_local_player() and character
 
 @export var character: Character:
 	set(new_character):
 		if character:
+			character.set_multiplayer_authority(Multiplayer.HOST_ID)
 			haunt_phantom_camera.erase_follow_targets(character)
 			haunt_phantom_camera.erase_look_at_targets(character)
 			_state_machine.stop()
 		character = new_character
+		character.set_multiplayer_authority(player.get_multiplayer_authority())
 		if not is_node_ready(): await ready
 		interaction_area.character = character
 		default_phantom_camera.follow_target = character
@@ -40,7 +46,8 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		character.name = name
 		haunt_phantom_camera.follow_targets = [character]
 		haunt_phantom_camera.look_at_targets = [character]
-		await get_tree().process_frame
+		if not is_multiplayer_authority(): return
+		#await get_tree().process_frame
 		_state_machine.start()
 
 @export_group("Configuration")
@@ -51,36 +58,15 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 @export var _state_machine: PlayerStateMachine
 @export var _camera: Camera3D
 
-## This is used for serialization purposes; serves otherwise no purpose
-var _player_id: int:
-	get: return player.player_id if player else -1
-	set(new_player_id):
-		if new_player_id == _player_id: return
-		if new_player_id <= 0:
-			player = null
-			return
-		player = Lobby.get_player(new_player_id)
-
-## This is used for serialization purposes; serves otherwise no purpose
-var _character_path: NodePath:
-	get: return character.get_path() if character and character.is_inside_tree() else NodePath()
-	set(new_character_path):
-		if new_character_path == _character_path: return
-		if new_character_path.is_empty():
-			character = null
-			return
-		await get_tree().process_frame
-		character = get_node(new_character_path)
-
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not multiplayer.is_server(): return
+	if not is_multiplayer_authority(): return
 	if not character: return
 	_state_machine.update(delta)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not multiplayer.is_server(): return
+	if not is_multiplayer_authority(): return
 	if not character: return
 	_state_machine.physics_update(delta)
 	interaction_area.transform = character.transform
@@ -92,6 +78,10 @@ static func create(for_player: Player, new_character: Character) -> PlayerGhost:
 	new_player_ghost.player = for_player
 	new_player_ghost.character = new_character
 	return new_player_ghost
+
+static func validate_player_ghost_data(player_ghost_data: Dictionary[StringName, Variant]) -> void:
+	assert(player_ghost_data.has_all([PLAYER_ID, CHARACTER_PATH]))
+	assert(player_ghost_data.size() == 2)
 
 func get_active_camera_priority() -> int:
 	return _ACTIVE_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY

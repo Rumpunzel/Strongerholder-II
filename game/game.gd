@@ -24,6 +24,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if key_event.is_released() and key_event.keycode == KEY_F1: start_new_game()
 
 func start_new_game() -> void:
+	assert(multiplayer.is_server())
 	pause_game()
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
@@ -31,18 +32,21 @@ func start_new_game() -> void:
 	
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
-	#_player_ghost_spawner.start_synching_players()
+	_player_ghost_spawner.start_synching_players()
 
 func load_game() -> Error:
+	assert(multiplayer.is_server())
 	var error: Error = Serializer.load_world_state()
 	return error
 
 func continue_game() -> void:
+	assert(multiplayer.is_server())
 	var error: Error = load_game()
 	if error == Error.ERR_FILE_NOT_FOUND:
 		start_new_game()
 
 func stop_game() -> void:
+	assert(multiplayer.is_server())
 	print_debug("Stopping game...")
 	multiplayer.server_disconnected.disconnect(_on_disconnected_from_multiplayer)
 	Multiplayer.joining_multiplayer.disconnect(_on_joining_multiplayer)

@@ -73,6 +73,7 @@ SerializersProperties="All nodes responsible for serializing persistent property
 Spawners=""
 Characters=""
 CharacterSpawnPoints=""
+PlayerSpawnPoints=""
 
 [input]
 

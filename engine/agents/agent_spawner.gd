@@ -16,6 +16,7 @@ func _ready() -> void:
 	spawn_function = _spawn_agent
 
 func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
+	assert(multiplayer.is_server())
 	var all_character_spawn_points: Array[Node] = get_tree().get_nodes_in_group("CharacterSpawnPoints")
 	for character_spawn_point: CharacterSpawnPoint in all_character_spawn_points:
 		var character_data: Dictionary[StringName, Variant] = character_spawn_point.get_character_data()
@@ -23,6 +24,7 @@ func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
 	return _agents
 
 func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
+	assert(multiplayer.is_server())
 	var character: Character = _character_spawner.spawn(character_data)
 	var agent_data: Dictionary[StringName, Variant] = {
 		Agent.CHARACTER_PATH: character.get_path(),
@@ -31,6 +33,7 @@ func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
 	spawn(agent_data)
 
 func remove_agent(character: Character) -> void:
+	assert(multiplayer.is_server())
 	var agent_to_remove: Agent = _agents[character]
 	assert(agent_to_remove.character == character)
 	_agents.erase(character)
@@ -42,6 +45,7 @@ func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:
 	var character_path: NodePath = agent_data[Agent.CHARACTER_PATH]
 	var character: Character = get_node(character_path)
 	var agent: Agent = Agent.create(character)
+	_agents[character] = agent
 	agent_created.emit(agent)
 	return agent
 

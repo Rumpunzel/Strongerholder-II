@@ -7,7 +7,7 @@ extends Node
 	set(new_player):
 		assert(new_player)
 		player = new_player
-		set_multiplayer_authority(player.player_id)
+		set_process(player.is_multiplayer_authority())
 
 @export_group("Configuration")
 @export var _interaction_area: InteractionArea
@@ -18,13 +18,13 @@ var interaction_input: StringName = ""
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	if not player.is_local_player(): return
+	if not is_multiplayer_authority(): return
 	# Only collect input if this is the local [Player]
 	_collect_input()
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if not player.is_local_player(): return
+	if not is_multiplayer_authority(): return
 	# Only collect input if this is the local [Player]
 	_collect_input()
 

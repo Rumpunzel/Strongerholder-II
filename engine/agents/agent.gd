@@ -3,6 +3,8 @@
 class_name Agent
 extends Node
 
+const CHARACTER_PATH: StringName = "character_path"
+
 const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 
 @export var character: Character:
@@ -42,6 +44,10 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_state_machine.physics_update(delta)
+
+static func validate_agent_data(agent_data: Dictionary[StringName, Variant]) -> void:
+	assert(agent_data.has_all([CHARACTER_PATH]))
+	assert(agent_data.size() == 1)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

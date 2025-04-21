@@ -7,6 +7,7 @@ signal game_paused
 signal game_unpaused
 
 @export_group("Configuration")
+@export var _default_level: PackedScene
 @export var _level_spawner: LevelSpawner
 @export var _player_ghost_spawner: PlayerGhostSpawner
 @export var _agent_spawner: AgentSpawner
@@ -28,9 +29,9 @@ func start_new_game() -> void:
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.connected_to_multiplayer.connect(_on_connected_to_multiplayer)
 	
-	_level_spawner.spawn_level()
+	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
-	_player_ghost_spawner.start_synching_players()
+	#_player_ghost_spawner.start_synching_players()
 
 func load_game() -> Error:
 	var error: Error = Serializer.load_world_state()
@@ -80,6 +81,7 @@ func _on_disconnected_from_multiplayer() -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
+	if not _default_level: warnings.append("Missing default level scene.")
 	if not _level_spawner: warnings.append("Missing LevelSpawner reference.")
 	if not _player_ghost_spawner: warnings.append("Missing PlayerGhostSpawner reference.")
 	if not _agent_spawner: warnings.append("Missing AgentSpawner reference.")

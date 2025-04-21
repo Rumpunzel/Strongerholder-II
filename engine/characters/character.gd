@@ -3,6 +3,9 @@
 class_name Character
 extends CharacterBody3D
 
+const CHARACTER_PROFILE_PATH: StringName = "character_profile_path"
+const SPAWN_LOCATION: StringName = "spawn_location"
+
 @export var character_profile: CharacterProfile:
 	set(new_character):
 		if character_profile:
@@ -75,6 +78,10 @@ func _physics_process(delta: float) -> void:
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / character_profile.move_speed, velocity.y / _gravity, velocity.z / character_profile.move_speed)
 	if character_model: character_model.play_animation(_normalized_velocity)
+
+static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
+	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
+	assert(character_data.size() == 2)
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta

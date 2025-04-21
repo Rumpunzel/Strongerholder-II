@@ -3,18 +3,27 @@ class_name LobbyMenu
 extends PanelContainer
 
 func _ready() -> void:
+	visible = Multiplayer.is_online()
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		create_player_info(connected_player)
-	
+	Multiplayer.connected_to_multiplayer.connect(open_menu)
+	Multiplayer.disconnected_from_multiplayer.connect(close_menu)
 	Lobby.player_connected.connect(create_player_info)
-	Lobby.child_exiting_tree.connect(remove_player_info)
 
 @export_group("Configuration")
 @export var _player_infos_container: Control
 @export var _player_info_scene: PackedScene
 
 var _player_infos: Dictionary[Player, PlayerInfo] = {}
+
+func open_menu() -> void:
+	if visible: return
+	show()
+
+func close_menu() -> void:
+	if not visible: return
+	hide()
 
 func create_player_info(player: Player) -> void:
 	assert(player)

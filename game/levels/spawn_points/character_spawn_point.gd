@@ -29,6 +29,14 @@ func spawn_character() -> Character:
 	_characters_spawned += 1
 	return character
 
+func get_character_data() -> Dictionary[StringName, Variant]:
+	var character_data: Dictionary[StringName, Variant] = {
+		Character.CHARACTER_PROFILE_PATH: character_profile.resource_path,
+		Character.SPAWN_LOCATION: transform,
+	}
+	Character.validate_character_data(character_data)
+	return character_data
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	return warnings

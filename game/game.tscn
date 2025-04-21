@@ -12,6 +12,7 @@
 
 [node name="Game" type="Node" node_paths=PackedStringArray("_level_spawner", "_player_ghost_spawner", "_agent_spawner")]
 script = ExtResource("1_l8g03")
+_default_level = ExtResource("8_ee6o4")
 _level_spawner = NodePath("LevelSpawner")
 _player_ghost_spawner = NodePath("PlayerGhostSpawner")
 _agent_spawner = NodePath("AgentSpawner")
@@ -28,10 +29,8 @@ metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 [node name="PlayerGhostSpawner" parent="." instance=ExtResource("8_l8g03")]
 
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://bmwhs3lwb74ue")
 spawn_path = NodePath(".")
 script = ExtResource("9_4cobl")
-_default_level = ExtResource("8_ee6o4")
 metadata/_custom_type_script = "uid://ct2kte5v780cm"
 
 [node name="NodeSerializer" type="Node" parent="LevelSpawner" node_paths=PackedStringArray("_spawner")]

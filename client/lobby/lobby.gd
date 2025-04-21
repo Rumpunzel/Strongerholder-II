@@ -15,11 +15,12 @@ signal player_info_changed(player: Player)
 
 func _enter_tree() -> void:
 	spawn_path = get_path()
-	spawn_function = _spawn_player
 
 func _ready() -> void:
 	super._ready()
 	if Engine.is_editor_hint(): return
+	spawn_function = _spawn_player
+	
 	_create_local_player()
 	
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)

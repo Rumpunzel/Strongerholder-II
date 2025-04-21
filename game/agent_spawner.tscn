@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://cq6kkww3vmo8b" path="res://game/character_spawner.tscn" id="2_n4wt1"]
 
 [node name="AgentSpawner" type="MultiplayerSpawner" node_paths=PackedStringArray("_character_spawner")]
-_spawnable_scenes = PackedStringArray("uid://bbjgxgkshjet6")
 spawn_path = NodePath(".")
 script = ExtResource("1_n4wt1")
 _character_spawner = NodePath("CharacterSpawner")
 metadata/_custom_type_script = "uid://cv80krf8r7fls"
 
 [node name="CharacterSpawner" parent="." instance=ExtResource("2_n4wt1")]
+_spawnable_scenes = PackedStringArray()

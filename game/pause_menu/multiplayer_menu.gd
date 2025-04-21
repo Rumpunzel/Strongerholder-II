@@ -61,6 +61,7 @@ func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 
 # [Lobby] callbacks
 func _on_player_info_changed(player: Player) -> void:
+	if not player.is_local_player(): return
 	update_player_name(player.player_name)
 
 func _get_configuration_warnings() -> PackedStringArray:

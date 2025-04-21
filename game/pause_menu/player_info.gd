@@ -7,6 +7,7 @@ extends PanelContainer
 		player = new_player
 		_update_player_info()
 		player.player_info_changed.connect(_update_player_info)
+		player.tree_exited.connect(queue_free)
 
 @export_group("Configuration")
 @export var _host_indicator: Control

@@ -9,8 +9,6 @@ signal character_haunted(haunted_character: Character, haunting_character: Chara
 signal character_unhaunted(unhaunted_character: Character)
 
 @export_group("Configuration")
-@export var _character_spawner: CharacterSpawner
-@export var _player_ghost_character_profile: CharacterProfile
 
 var _player_ghosts: Dictionary[Player, PlayerGhost] = {}
 
@@ -39,11 +37,9 @@ func spawn_player_ghost(player: Player) -> void:
 	var character_spawn_point: CharacterSpawnPoint = all_player_spawn_points.front()
 	assert(character_spawn_point)
 	var character_data: Dictionary[StringName, Variant] = character_spawn_point.get_character_data()
-	var character: Character = _character_spawner.spawn(character_data)
-	assert(character)
 	var player_ghost_data: Dictionary[StringName, Variant] = {
 		PlayerGhost.PLAYER_ID: player.player_id,
-		PlayerGhost.CHARACTER_PATH: character.get_path(),
+		PlayerGhost.CHARACTER_DATA: character_data,
 	}
 	PlayerGhost.validate_player_ghost_data(player_ghost_data)
 	spawn(player_ghost_data)
@@ -53,25 +49,18 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 	var player_id: int = player_ghost_data[PlayerGhost.PLAYER_ID]
 	var player: Player = Lobby.get_player(player_id)
 	assert(player)
-	var character_path: NodePath = player_ghost_data[PlayerGhost.CHARACTER_PATH]
-	var character: Character = get_node(character_path)
-	assert(character)
-	var player_ghost: PlayerGhost = PlayerGhost.create(player, character)
-	player.tree_exited.connect(remove_player_ghost.bind(player))
+	var character_data: Dictionary[StringName, Variant] = player_ghost_data[PlayerGhost.CHARACTER_DATA]
+	var player_ghost: PlayerGhost = PlayerGhost.create(player, character_data)
+	player.tree_exiting.connect(remove_player_ghost.bind(player_ghost))
 	_player_ghosts[player] = player_ghost
 	player_ghost_created.emit(player_ghost)
 	return player_ghost
 
-func remove_player_ghost(player: Player) -> void:
+func remove_player_ghost(player_ghost: PlayerGhost) -> void:
 	assert(multiplayer.is_server())
-	var player_ghost_to_remove: PlayerGhost = _player_ghosts[player]
-	assert(player_ghost_to_remove.player == player)
-	_player_ghosts.erase(player)
-	player_ghost_to_remove.character.queue_free()
-	player_ghost_to_remove.queue_free()
+	_player_ghosts.erase(player_ghost.player)
+	player_ghost.queue_free()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
-	if not _character_spawner: warnings.append("Missing CharacterSpawner reference.")
-	if not _player_ghost_character_profile: warnings.append("Missing player ghost CharacterProfile.")
 	return warnings

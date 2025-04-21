@@ -16,7 +16,10 @@ var _pause_requested: bool = false
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if _pause_requested and not Multiplayer.is_online() and not get_tree().paused: _pause_game()
+	if Multiplayer.is_online():
+		if get_tree().paused: _unpause_game()
+	else:
+		if _pause_requested and not get_tree().paused: _pause_game()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -29,6 +32,7 @@ func start_new_game() -> void:
 	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.connected_to_multiplayer.connect(_on_connected_to_multiplayer)
+	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
 	
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
@@ -75,6 +79,7 @@ func _unpause_game() -> void:
 
 func _on_joining_multiplayer() -> void:
 	stop_game()
+	_unpause_game()
 
 func _on_connected_to_multiplayer() -> void:
 	_unpause_game()

@@ -3,7 +3,7 @@
 class_name Agent
 extends Node
 
-const CHARACTER_PATH: StringName = "character_path"
+const CHARACTER_DATA: StringName = "character_data"
 
 const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 
@@ -12,9 +12,9 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export_group("Configuration")
 @export var _state_machine: AgentStateMachine
 
-static func create(existing_character: Character) -> Agent:
+static func create(character_data: Dictionary[StringName, Variant]) -> Agent:
 	var new_agent: Agent = AGENT_SCENE.instantiate()
-	new_agent.character = existing_character
+	new_agent.character.apply_character_data(character_data)
 	return new_agent
 
 func _ready() -> void:
@@ -30,7 +30,7 @@ func _physics_process(delta: float) -> void:
 	_state_machine.physics_update(delta)
 
 static func validate_agent_data(agent_data: Dictionary[StringName, Variant]) -> void:
-	assert(agent_data.has_all([CHARACTER_PATH]))
+	assert(agent_data.has_all([CHARACTER_DATA]))
 	assert(agent_data.size() == 1)
 
 func _get_configuration_warnings() -> PackedStringArray:

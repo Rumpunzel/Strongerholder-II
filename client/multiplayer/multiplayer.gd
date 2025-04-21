@@ -35,28 +35,23 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
-	
 	var loading_screen_scene: PackedScene = load("uid://dmweuj7kxaxov")
 	var loading_screen: CanvasLayer = loading_screen_scene.instantiate()
 	add_child(loading_screen)
-	await get_tree().process_frame
-	
 	joining_multiplayer.emit()
-	#await get_tree().create_timer(2.0).timeout
-	await get_tree().process_frame
 	
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error
 	multiplayer.multiplayer_peer = client_peer
-	
+	connected_to_multiplayer.emit()
 	loading_screen.queue_free()
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
 func disconnect_from_multiplayer() -> void:
-	_go_offline()
 	disconnected_from_multiplayer.emit()
+	_go_offline()
 	print_debug("Disconnected from multiplayer!")
 
 func is_online() -> bool:

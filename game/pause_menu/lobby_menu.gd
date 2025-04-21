@@ -3,6 +3,7 @@ class_name LobbyMenu
 extends PanelContainer
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	visible = Multiplayer.is_online()
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
@@ -29,7 +30,7 @@ func create_player_info(player: Player) -> void:
 	assert(player)
 	var new_player_info: PlayerInfo = _player_info_scene.instantiate()
 	new_player_info.player = player
-	player.tree_exited.connect(remove_player_info.bind(player))
+	player.tree_exiting.connect(remove_player_info.bind(player))
 	_player_infos[player] = new_player_info
 	_player_infos_container.add_child(new_player_info, true)
 

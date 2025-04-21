@@ -57,15 +57,6 @@ var _is_on_floor: bool = true
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-## This is used for serialization purposes; serves otherwise no purpose
-var _character_profile_path: String:
-	get: return character_profile.resource_path if character_profile else ""
-	set(new_character_profile_path):
-		if new_character_profile_path == _character_profile_path: return
-		if character_profile or _character_profile_path.is_empty(): return
-		assert(_character_profile_path.is_absolute_path())
-		character_profile = load(_character_profile_path)
-
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	_check_processing()
@@ -82,6 +73,12 @@ func _physics_process(delta: float) -> void:
 static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
 	assert(character_data.size() == 2)
+
+func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
+	validate_character_data(character_data)
+	var character_profile_path: String = character_data[CHARACTER_PROFILE_PATH]
+	character_profile = load(character_profile_path)
+	transform = character_data[SPAWN_LOCATION]
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta

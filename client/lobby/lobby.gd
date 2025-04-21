@@ -9,8 +9,6 @@ enum RemovalReason {
 }
 
 signal player_connected(player: Player)
-signal player_disconnected(player: Player)
-
 signal player_info_changed(player: Player)
 
 func _enter_tree() -> void:
@@ -69,20 +67,17 @@ func _remove_all_players(removal_reason: RemovalReason) -> void:
 			assert(removal_reason == RemovalReason.SERVER_DISCONNECTED)
 			printerr("Lost connection to host!")
 			continue
-		if player.is_local_player() and not removal_reason == RemovalReason.JOINING_GAME:
-			continue
-		_remove_player(player)
+		_remove_player(player, removal_reason)
 
-func _remove_player(player: Player) -> void:
+func _remove_player(player: Player, removal_reason: RemovalReason) -> void:
 	assert(player)
+	if player.is_local_player() and not removal_reason == RemovalReason.JOINING_GAME: return
 	player.player_info_changed.disconnect(player_info_changed.emit)
-	remove_child(player)
-	player.queue_free()
+	#player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
 
 func _on_disconnected_from_multiplayer() -> void:
 	_remove_all_players(RemovalReason.PLAYER_DISCONNECTED)
-	_create_local_player()
 
 func _on_joining_multiplayer() -> void:
 	_remove_all_players(RemovalReason.JOINING_GAME)
@@ -100,10 +95,8 @@ func _on_player_disconnected(peer_id: int) -> void:
 	if not disconnected_player:
 		printerr("Host disconnected!")
 		return
-	_remove_player(disconnected_player)
-	player_disconnected.emit(disconnected_player)
+	_remove_player(disconnected_player, RemovalReason.PLAYER_DISCONNECTED)
 	print_debug("Player with player_id %d disconnected!" % peer_id)
 
 func _on_server_disconnected() -> void:
 	_remove_all_players(RemovalReason.SERVER_DISCONNECTED)
-	_create_local_player()

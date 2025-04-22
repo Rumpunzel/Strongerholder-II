@@ -2,6 +2,8 @@
 class_name MainNode
 extends Node
 
+signal config_updated(value: Variant, section: String, key: String)
+
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
 var _config: ConfigFile = _load_config_file()
@@ -15,6 +17,7 @@ func update_value_in_config(value: Variant, section: String, key: String) -> Err
 	assert(not key.is_empty())
 	assert(_config)
 	_config.set_value(section, key, value)
+	config_updated.emit(section, key, value)
 	return _update_config_file()
 
 func update_values_in_config(config_entries: Array[ConfigEntry]) -> Error:
@@ -22,6 +25,7 @@ func update_values_in_config(config_entries: Array[ConfigEntry]) -> Error:
 	assert(_config)
 	for config_entry: ConfigEntry in config_entries:
 		_config.set_value(config_entry.section, config_entry.key, config_entry.value)
+		config_updated.emit(config_entry.section, config_entry.key, config_entry.value)
 	return _update_config_file()
 
 func get_value_from_config(section: String, key: String, default_value: Variant = null) -> Variant:

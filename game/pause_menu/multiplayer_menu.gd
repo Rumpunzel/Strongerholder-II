@@ -12,9 +12,11 @@ extends VBoxContainer
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	update_player_name(Lobby.get_local_player().player_name)
+	var local_player_name: String = Client.get_value_from_config(Player.PLAYER_SECTION, Player.NAME, "")
+	update_player_name(local_player_name)
 	Multiplayer.game_hosted.connect(_on_game_hosted)
 	Lobby.player_info_changed.connect(_on_player_info_changed)
+	Client.config_updated.connect(_on_config_updated)
 
 func reset_menu() -> void:
 	_join_button.disabled = false
@@ -59,10 +61,13 @@ func _on_host_toggled(hosting: bool) -> void:
 func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:
 	_host_ip_address_button.text = host_ip_address
 
-# [Lobby] callbacks
-func _on_player_info_changed(player: Player) -> void:
-	if not player.is_local_player(): return
-	update_player_name(player.player_name)
+# [Client] callbacks
+func _on_config_updated(value: Variant, section: String, key: String) -> void:
+	if section != Player.PLAYER_SECTION: return
+	if key != Player.NAME: return
+	assert(value is String)
+	var player_name: String = value
+	update_player_name(player_name)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

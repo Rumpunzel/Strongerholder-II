@@ -57,7 +57,6 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 	return player_ghost
 
 func remove_player_ghost(player_ghost: PlayerGhost) -> void:
-	assert(multiplayer.is_server())
 	_player_ghosts.erase(player_ghost.player)
 	player_ghost.queue_free()
 

@@ -7,13 +7,19 @@ signal game_joined(host_player_info: Dictionary[StringName, Variant])
 signal player_joined(player_info: Dictionary[StringName, Variant])
 
 signal joining_multiplayer
+signal stopped_hosting_game
+signal left_game
+
 signal connected_to_multiplayer
 signal disconnected_from_multiplayer
+signal singleplayer_started
 
 const PORT: int = 7000
 const DEFAULT_SERVER_IP: StringName = "127.0.0.1" # IPv4 localhost
 const MAX_CONNECTIONS: int = 4
 const HOST_ID: int = 1
+
+var _loading_screen_scene: PackedScene = preload("uid://dmweuj7kxaxov")
 
 func _ready() -> void:
 	_go_offline()
@@ -35,11 +41,10 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	assert(ip_address.is_valid_ip_address())
-	var loading_screen_scene: PackedScene = load("uid://dmweuj7kxaxov")
-	var loading_screen: CanvasLayer = loading_screen_scene.instantiate()
+	var loading_screen: CanvasLayer = _loading_screen_scene.instantiate()
 	add_child(loading_screen)
 	joining_multiplayer.emit()
-	
+	await get_tree().process_frame
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error
@@ -49,10 +54,15 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	print_debug("Joined multiplayer game @ %s:%d!" % [ip_address, port])
 	return Error.OK
 
-func disconnect_from_multiplayer() -> void:
-	disconnected_from_multiplayer.emit()
+func stop_hosting_game() -> void:
+	stopped_hosting_game.emit()
 	_go_offline()
-	print_debug("Disconnected from multiplayer!")
+	print_debug("Stopped hosting multiplayer game!")
+
+func leave_game() -> void:
+	left_game.emit()
+	_go_offline()
+	print_debug("Left multiplayer game!")
 
 func is_online() -> bool:
 	return not multiplayer.multiplayer_peer is OfflineMultiplayerPeer
@@ -71,8 +81,14 @@ func _register_player(player_info: Dictionary[StringName, Variant]) -> void:
 		print_debug("Player %s joined multiplayer game!" % player_info)
 
 func _go_offline() -> void:
+	var loading_screen: CanvasLayer = _loading_screen_scene.instantiate()
+	add_child(loading_screen)
+	if is_online(): disconnected_from_multiplayer.emit()
 	var offline_peer: OfflineMultiplayerPeer = OfflineMultiplayerPeer.new()
 	multiplayer.multiplayer_peer = offline_peer
+	await get_tree().process_frame
+	singleplayer_started.emit()
+	loading_screen.queue_free()
 
 ## When a peer connects, send them the host info.
 ## This allows transfer of all desired data for each player, not only the unique ID.

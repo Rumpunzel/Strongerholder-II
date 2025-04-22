@@ -6,7 +6,7 @@ extends Synchronizer
 signal player_info_changed
 
 ## Config
-const _PLAYER_SECTION: StringName = "player"
+const PLAYER_SECTION: StringName = "player"
 
 const ID: StringName = "player_id"
 const NAME: StringName = "player_name"
@@ -28,7 +28,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 		player_name = new_player_name
 		player_info_changed.emit()
 		if not is_local_player(): return
-		Client.update_value_in_config(player_name, _PLAYER_SECTION, NAME)
+		Client.update_value_in_config(player_name, PLAYER_SECTION, NAME)
 
 @export var ghost_sprite_frame: int = 0:
 	set(new_ghost_sprite_frame):
@@ -36,9 +36,12 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 		ghost_sprite_frame = new_ghost_sprite_frame
 		player_info_changed.emit()
 		if not is_local_player(): return
-		Client.update_value_in_config(ghost_sprite_frame, _PLAYER_SECTION, GHOST_SPRITE_FRAME)
+		Client.update_value_in_config(ghost_sprite_frame, PLAYER_SECTION, GHOST_SPRITE_FRAME)
 
 @export_group("Configuration")
+
+func _ready() -> void:
+	Lobby.player_connected.emit(self)
 
 static func create(new_player_id: int, new_player_name: String, new_player_ghost_sprite_frame: int) -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
@@ -49,8 +52,8 @@ static func create(new_player_id: int, new_player_name: String, new_player_ghost
 
 static func get_local_player_info() -> Dictionary[StringName, Variant]:
 	var local_player_id: int = Multiplayer.HOST_ID
-	var local_player_name: String = Client.get_value_from_config(_PLAYER_SECTION, NAME, "Player")
-	var local_ghost_sprite_frame: int = Client.get_value_from_config(_PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
+	var local_player_name: String = Client.get_value_from_config(PLAYER_SECTION, NAME, "")
+	var local_ghost_sprite_frame: int = Client.get_value_from_config(PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
 	var player_info: Dictionary[StringName, Variant] = {
 		ID: local_player_id,
 		NAME: local_player_name if not local_player_name.is_empty() else "Player %d" % local_player_id,
@@ -72,6 +75,7 @@ static func validate_player_info(player_info: Dictionary[StringName, Variant]) -
 	assert(player_info.size() == 3)
 
 func is_local_player() -> bool:
+	if not Multiplayer.is_online(): return true
 	if not is_inside_tree(): return Multiplayer.multiplayer.get_unique_id() == player_id
 	return multiplayer.get_unique_id() == player_id
 

@@ -14,6 +14,12 @@ signal game_unpaused
 
 var _pause_requested: bool = false
 
+func _ready() -> void:
+	Multiplayer.singleplayer_started.connect(_on_singleplayer_started)
+	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
+	Multiplayer.left_game.connect(_on_left_game)
+	multiplayer.server_disconnected.connect(_on_left_game)
+
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if Multiplayer.is_online():
@@ -29,12 +35,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func start_new_game() -> void:
 	assert(multiplayer.is_server())
-	pause_game()
-	multiplayer.server_disconnected.connect(_on_disconnected_from_multiplayer)
-	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
-	Multiplayer.connected_to_multiplayer.connect(_on_connected_to_multiplayer)
-	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
-	
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
 	_player_ghost_spawner.start_synching_players()
@@ -53,11 +53,7 @@ func continue_game() -> void:
 func stop_game() -> void:
 	assert(multiplayer.is_server())
 	print_debug("Stopping game...")
-	multiplayer.server_disconnected.disconnect(_on_disconnected_from_multiplayer)
-	Multiplayer.joining_multiplayer.disconnect(_on_joining_multiplayer)
-	Multiplayer.connected_to_multiplayer.disconnect(_on_connected_to_multiplayer)
-	
-	_level_spawner.remove_all_spawned_nodes()
+	_level_spawner.unload_level()
 	_agent_spawner.remove_all_spawned_nodes()
 	_player_ghost_spawner.stop_synching_players()
 
@@ -78,16 +74,14 @@ func _unpause_game() -> void:
 	game_unpaused.emit()
 	print_debug("Game unpaused!")
 
+func _on_singleplayer_started() -> void:
+	continue_game()
+
 func _on_joining_multiplayer() -> void:
 	stop_game()
-	_unpause_game()
 
-func _on_connected_to_multiplayer() -> void:
-	_unpause_game()
-
-func _on_disconnected_from_multiplayer() -> void:
+func _on_left_game() -> void:
 	stop_game()
-	continue_game()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

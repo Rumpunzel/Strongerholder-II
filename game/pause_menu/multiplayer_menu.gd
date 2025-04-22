@@ -15,7 +15,6 @@ func _ready() -> void:
 	var local_player_name: String = Client.get_value_from_config(Player.PLAYER_SECTION, Player.NAME, "")
 	update_player_name(local_player_name)
 	Multiplayer.game_hosted.connect(_on_game_hosted)
-	Lobby.player_info_changed.connect(_on_player_info_changed)
 	Client.config_updated.connect(_on_config_updated)
 
 func reset_menu() -> void:
@@ -41,7 +40,7 @@ func _on_join_toggled(joining: bool) -> void:
 		var ip_address_to_join: StringName = _ip_address.text
 		if ip_address_to_join.is_empty(): ip_address_to_join = Multiplayer.DEFAULT_SERVER_IP
 		Multiplayer.join_game(ip_address_to_join)
-	else: Multiplayer.disconnect_from_multiplayer()
+	else: Multiplayer.leave_game()
 
 func _on_ip_address_text_changed(new_ip_address: StringName) -> void:
 	_join_button.disabled = not new_ip_address.is_empty() and not new_ip_address.is_valid_ip_address()
@@ -55,7 +54,7 @@ func _on_host_toggled(hosting: bool) -> void:
 	_join_button.disabled = hosting
 	_ip_address.editable = not hosting
 	if hosting: Multiplayer.host_game()
-	else: Multiplayer.disconnect_from_multiplayer()
+	else: Multiplayer.stop_hosting_game()
 
 # [Multiplayer] callbacks
 func _on_game_hosted(host_ip_address: StringName, _port: int) -> void:

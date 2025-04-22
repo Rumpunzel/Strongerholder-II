@@ -30,13 +30,17 @@ func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
 	Agent.validate_agent_data(agent_data)
 	spawn(agent_data)
 
+func remove_all_agent() -> void:
+	assert(multiplayer.is_server())
+	for character: Character in _agents:
+		remove_agent(character)
+
 func remove_agent(character: Character) -> void:
 	assert(multiplayer.is_server())
 	var agent_to_remove: Agent = _agents[character]
 	assert(agent_to_remove.character == character)
 	_agents.erase(character)
 	agent_to_remove.queue_free()
-	character.queue_free()
 
 func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:
 	Agent.validate_agent_data(agent_data)

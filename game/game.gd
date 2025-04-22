@@ -22,6 +22,7 @@ func _process(_delta: float) -> void:
 		if _pause_requested and not get_tree().paused: _pause_game()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	if event is InputEventKey:
 		var key_event: InputEventKey = event
 		if key_event.is_released() and key_event.keycode == KEY_F1: start_new_game()

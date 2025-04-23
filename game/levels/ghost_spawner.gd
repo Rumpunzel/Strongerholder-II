@@ -60,6 +60,7 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 
 func remove_player_ghost(player_ghost: PlayerGhost) -> void:
 	_player_ghosts.erase(player_ghost.player)
+	remove_child(player_ghost)
 	player_ghost.queue_free()
 
 func _get_configuration_warnings() -> PackedStringArray:

@@ -42,6 +42,7 @@ func remove_agent(character: Character) -> void:
 	var agent_to_remove: Agent = _agents[character]
 	assert(agent_to_remove.character == character)
 	_agents.erase(character)
+	remove_child(agent_to_remove)
 	agent_to_remove.queue_free()
 
 func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:

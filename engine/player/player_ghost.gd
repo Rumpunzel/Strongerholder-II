@@ -33,6 +33,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 @export var _camera: Camera3D
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	if not is_multiplayer_authority(): return
 	_state_machine.start()
 

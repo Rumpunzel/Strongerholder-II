@@ -22,7 +22,9 @@ func load_level(level_scene_path: String) -> void:
 func unload_level() -> void:
 	assert(multiplayer.is_server())
 	assert(_level)
+	remove_child(_level)
 	_level.queue_free()
+	_level = null
 
 func _spawn_level(level_scene_path: String) -> Level:
 	assert(not _level)

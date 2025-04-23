@@ -12,6 +12,9 @@ func _ready() -> void:
 	toggle_mode = true
 	toggled.connect(_on_toggled)
 
+func update_button() -> void:
+	text = toggled_text if button_pressed else _untoggled_text
+	icon = toggled_icon if button_pressed else _untoggled_icon
+
 func _on_toggled(toggled_on: bool) -> void:
-	text = toggled_text if toggled_on else _untoggled_text
-	icon = toggled_icon if toggled_on else _untoggled_icon
+	update_button()

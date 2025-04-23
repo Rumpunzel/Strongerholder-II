@@ -8,13 +8,10 @@ func _enter_tree() -> void:
 	spawn_path = get_path()
 	if Engine.is_editor_hint(): return
 	spawn_function = _spawn_player
-	
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	#multiplayer.server_disconnected.connect(_on_server_disconnected)
-	
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.player_joined.connect(_on_player_joined)
-	#Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
+	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
 	Multiplayer.singleplayer_started.connect(_on_singleplayer_started)
 
 func _ready() -> void:

@@ -44,7 +44,7 @@ func get_local_player() -> Player:
 func _spawn_player(player_info: Dictionary[StringName, Variant]) -> Player:
 	Player.validate_player_info(player_info)
 	var player: Player = Player.from_player_info(player_info)
-	print_debug("Spawed player: %s" % player.get_player_info())
+	print_debug("Spawned player: %s" % player.get_player_info())
 	return player
 
 func _create_local_player() -> void:

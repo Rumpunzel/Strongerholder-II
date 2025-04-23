@@ -14,6 +14,7 @@ func _ready() -> void:
 		visible = edited_scene == self or edited_scene == owner
 		return
 	visible = get_tree().paused
+	Client.game_paused.connect(open_menu)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return
@@ -27,11 +28,13 @@ func _unhandled_input(event: InputEvent) -> void:
 func open_menu() -> void:
 	if visible: return
 	show()
+	Client.pause_game()
 	opened.emit()
 
 func close_menu() -> void:
 	if not visible: return
 	hide()
+	Client.unpause_game()
 	closed.emit()
 
 func _on_continue_pressed() -> void:

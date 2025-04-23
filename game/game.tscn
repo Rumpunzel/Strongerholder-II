@@ -29,12 +29,6 @@ metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 [node name="World" type="Node" parent="."]
 process_mode = 1
 
-[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="World"]
-_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
-spawn_path = NodePath(".")
-script = ExtResource("6_j8tme")
-metadata/_custom_type_script = "uid://853l0h1bjf04"
-
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="World"]
 spawn_path = NodePath(".")
 script = ExtResource("9_4cobl")
@@ -55,6 +49,8 @@ script = ExtResource("6_b686c")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
-[connection signal="game_paused" from="." to="PauseMenu" method="open_menu"]
-[connection signal="closed" from="PauseMenu" to="." method="unpause_game"]
-[connection signal="opened" from="PauseMenu" to="." method="pause_game"]
+[node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="World"]
+_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
+spawn_path = NodePath(".")
+script = ExtResource("6_j8tme")
+metadata/_custom_type_script = "uid://853l0h1bjf04"

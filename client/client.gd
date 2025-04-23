@@ -2,11 +2,22 @@
 class_name MainNode
 extends Node
 
+signal game_paused
+signal game_unpaused
+
 signal config_updated(value: Variant, section: String, key: String)
 
 const CONFIG_FILE_PATH: StringName = "res://config.cfg" # "user://config.cfg"
 
 var _config: ConfigFile = _load_config_file()
+
+var _pause_requested: bool = false
+
+func _process(_delta: float) -> void:
+	if Multiplayer.is_online():
+		if get_tree().paused: _unpause_game()
+	else:
+		if _pause_requested and not get_tree().paused: _pause_game()
 
 func quit_game() -> void:
 	Serializer.save_world_state()
@@ -37,6 +48,21 @@ func get_values_from_config(section: String, keys: Array[String], default_value:
 		var value: Variant = _config.get_value(section, key, default_value)
 		values[key] = value
 	return values
+
+func pause_game() -> void:
+	_pause_requested = true
+
+func unpause_game() -> void:
+	_unpause_game()
+	_pause_requested = false
+
+func _pause_game() -> void:
+	get_tree().paused = true
+	game_paused.emit()
+
+func _unpause_game() -> void:
+	get_tree().paused = false
+	game_unpaused.emit()
 
 func _update_config_file() -> Error:
 	# Save it to a file (overwrite if already exists).

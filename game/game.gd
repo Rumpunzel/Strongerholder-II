@@ -3,34 +3,16 @@
 class_name Game
 extends Node
 
-signal game_paused
-signal game_unpaused
-
 @export_group("Configuration")
 @export var _default_level: PackedScene
 @export var _level_spawner: LevelSpawner
 @export var _agent_spawner: AgentSpawner
-
-var _pause_requested: bool = false
 
 func _ready() -> void:
 	Multiplayer.singleplayer_started.connect(_on_singleplayer_started)
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.left_game.connect(_on_left_game)
 	multiplayer.server_disconnected.connect(_on_left_game)
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if Multiplayer.is_online():
-		if get_tree().paused: _unpause_game()
-	else:
-		if _pause_requested and not get_tree().paused: _pause_game()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint(): return
-	if event is InputEventKey:
-		var key_event: InputEventKey = event
-		if key_event.is_released() and key_event.keycode == KEY_F1: start_new_game()
 
 func start_new_game() -> void:
 	assert(multiplayer.is_server())
@@ -53,23 +35,6 @@ func stop_game() -> void:
 	print_debug("Stopping game...")
 	_level_spawner.unload_level()
 	_agent_spawner.remove_all_agent()
-
-func pause_game() -> void:
-	_pause_requested = true
-
-func unpause_game() -> void:
-	_unpause_game()
-	_pause_requested = false
-
-func _pause_game() -> void:
-	get_tree().paused = true
-	game_paused.emit()
-	print_debug("Game paused...")
-
-func _unpause_game() -> void:
-	get_tree().paused = false
-	game_unpaused.emit()
-	print_debug("Game unpaused!")
 
 func _on_singleplayer_started() -> void:
 	continue_game()

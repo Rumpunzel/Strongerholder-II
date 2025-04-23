@@ -11,3 +11,7 @@ func update_available_actions(available_actions: Array[CharacterInteraction]) ->
 func _clear_all_input_prompts() -> void:
 	for input_prompt: InputPrompt in get_children():
 		input_prompt.hide_prompt()
+
+func _on_available_actions_changed(available_actions: Array[CharacterInteraction]) -> void:
+	#if not player.is_local_player(): return
+	update_available_actions(available_actions)

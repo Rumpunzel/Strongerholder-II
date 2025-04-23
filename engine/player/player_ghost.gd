@@ -61,10 +61,6 @@ func get_active_camera_priority() -> int:
 func get_default_camera_priority() -> int:
 	return _DEFAULT_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY
 
-func _on_interaction_area_available_actions_changed(available_actions: Array[CharacterInteraction]) -> void:
-	if not player.is_local_player(): return
-	#HUD.update_available_actions(available_actions)
-
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not character: warnings.append("Missing Character reference.")

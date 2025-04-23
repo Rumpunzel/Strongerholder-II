@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvt1s3i2xw5s6"]
+[gd_scene load_steps=9 format=3 uid="uid://bvt1s3i2xw5s6"]
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://game/game.gd" id="1_l8g03"]
-[ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://game/hud/hud.gd" id="2_3vho3"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://game/pause_menu/pause_menu.tscn" id="2_j8tme"]
 [ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://client/serialization/node_serializer.gd" id="6_b686c"]
 [ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://game/levels/ghost_spawner.gd" id="6_j8tme"]
@@ -17,10 +16,6 @@ _level_spawner = NodePath("LevelSpawner")
 _player_ghost_spawner = NodePath("PlayerGhostSpawner")
 _agent_spawner = NodePath("AgentSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
-
-[node name="HUD" type="CanvasLayer" parent="."]
-script = ExtResource("2_3vho3")
-metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 
 [node name="UserInterface" parent="." instance=ExtResource("10_j8tme")]
 

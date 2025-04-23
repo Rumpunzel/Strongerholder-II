@@ -56,6 +56,7 @@ func _remove_all_players() -> void:
 
 func _remove_player(player: Player) -> void:
 	assert(player)
+	remove_child(player)
 	player.queue_free()
 	print_debug("Removed player: %s!" % player.get_player_info())
 

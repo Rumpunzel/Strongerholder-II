@@ -32,7 +32,7 @@ func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
 
 func remove_all_agent() -> void:
 	assert(multiplayer.is_server())
-	for character: Character in _agents:
+	for character: Character in _agents.keys():
 		remove_agent(character)
 
 func remove_agent(character: Character) -> void:

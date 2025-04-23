@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://cpw5mv8f3f0o2" path="res://user_interface/clipboard_button.gd" id="3_iouuv"]
 
 [node name="MultiplayerMenu" type="VBoxContainer" node_paths=PackedStringArray("_player_name", "_join_button", "_ip_address", "_host_button", "_host_ip_address_button")]
-custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 offset_bottom = 101.0
 script = ExtResource("1_k1c65")

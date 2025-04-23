@@ -60,8 +60,8 @@ func stop_hosting_game() -> void:
 	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:
-	left_game.emit()
 	_go_offline()
+	left_game.emit()
 	print_debug("Left multiplayer game!")
 
 func is_online() -> bool:

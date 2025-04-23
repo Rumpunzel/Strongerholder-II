@@ -9,7 +9,6 @@ signal game_unpaused
 @export_group("Configuration")
 @export var _default_level: PackedScene
 @export var _level_spawner: LevelSpawner
-@export var _player_ghost_spawner: PlayerGhostSpawner
 @export var _agent_spawner: AgentSpawner
 
 var _pause_requested: bool = false
@@ -37,7 +36,6 @@ func start_new_game() -> void:
 	assert(multiplayer.is_server())
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
-	_player_ghost_spawner.start_synching_players()
 
 func load_game() -> Error:
 	assert(multiplayer.is_server())
@@ -54,8 +52,7 @@ func stop_game() -> void:
 	assert(multiplayer.is_server())
 	print_debug("Stopping game...")
 	_level_spawner.unload_level()
-	_agent_spawner.remove_all_spawned_nodes()
-	_player_ghost_spawner.stop_synching_players()
+	_agent_spawner.remove_all_agent()
 
 func pause_game() -> void:
 	_pause_requested = true
@@ -87,6 +84,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not _default_level: warnings.append("Missing default level scene.")
 	if not _level_spawner: warnings.append("Missing LevelSpawner reference.")
-	if not _player_ghost_spawner: warnings.append("Missing PlayerGhostSpawner reference.")
 	if not _agent_spawner: warnings.append("Missing AgentSpawner reference.")
 	return warnings

@@ -16,20 +16,13 @@ func _ready() -> void:
 	super._ready()
 	if Engine.is_editor_hint(): return
 	spawn_function = _spawn_player_ghost
-
-func start_synching_players() -> void:
-	assert(multiplayer.is_server())
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		spawn_player_ghost(connected_player)
 	Lobby.player_connected.connect(spawn_player_ghost)
 
-func stop_synching_players() -> void:
-	assert(multiplayer.is_server())
-	remove_all_spawned_nodes()
-	Lobby.player_connected.disconnect(spawn_player_ghost)
-
 func spawn_player_ghost(player: Player) -> void:
+	if not multiplayer.is_server(): return
 	assert(multiplayer.is_server())
 	assert(player)
 	var all_player_spawn_points: Array[Node] = get_tree().get_nodes_in_group("PlayerSpawnPoints")

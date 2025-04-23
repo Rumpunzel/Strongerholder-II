@@ -2,15 +2,18 @@
 class_name LobbyMenu
 extends PanelContainer
 
+func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
+	Multiplayer.connected_to_multiplayer.connect(open_menu)
+	Multiplayer.disconnected_from_multiplayer.connect(close_menu)
+	Lobby.player_connected.connect(create_player_info)
+
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	visible = Multiplayer.is_online()
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		create_player_info(connected_player)
-	Multiplayer.connected_to_multiplayer.connect(open_menu)
-	Multiplayer.disconnected_from_multiplayer.connect(close_menu)
-	Lobby.player_connected.connect(create_player_info)
 
 @export_group("Configuration")
 @export var _player_infos_container: Control

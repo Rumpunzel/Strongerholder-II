@@ -9,10 +9,12 @@ signal agent_created(agent: Agent)
 
 var _agents: Dictionary[Character, Agent] = {}
 
-func _ready() -> void:
-	super._ready()
+func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	spawn_function = _spawn_agent
+
+func _ready() -> void:
+	super._ready()
 
 func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
 	assert(multiplayer.is_server())

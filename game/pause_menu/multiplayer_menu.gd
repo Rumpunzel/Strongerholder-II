@@ -10,12 +10,15 @@ extends VBoxContainer
 @export var _host_button: Button
 @export var _host_ip_address_button: Button
 
+func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
+	Multiplayer.game_hosted.connect(_on_game_hosted)
+	Client.config_updated.connect(_on_config_updated)
+
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	var local_player_name: String = Client.get_value_from_config(Player.PLAYER_SECTION, Player.NAME, "")
 	update_player_name(local_player_name)
-	Multiplayer.game_hosted.connect(_on_game_hosted)
-	Client.config_updated.connect(_on_config_updated)
 
 func reset_menu() -> void:
 	_join_button.disabled = false

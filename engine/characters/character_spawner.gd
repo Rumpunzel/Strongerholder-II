@@ -5,9 +5,12 @@ extends Spawner
 
 @export_group("Configuration")
 
+func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
+	spawn_function = _spawn_character
+
 func _ready() -> void:
 	super._ready()
-	spawn_function = _spawn_character
 
 func _spawn_character(character_data: Dictionary[StringName, Variant]) -> Character:
 	Character.validate_character_data(character_data)

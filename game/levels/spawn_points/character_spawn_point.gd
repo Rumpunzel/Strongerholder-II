@@ -14,8 +14,10 @@ extends Marker3D
 
 var _characters_spawned: int = 0
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	add_to_group(role)
+
+func _ready() -> void:
 	if Engine.is_editor_hint():
 		var character_model: CharacterModel = character_profile.create_character_model()
 		if _editor_material: character_model.apply_material_override(_editor_material)

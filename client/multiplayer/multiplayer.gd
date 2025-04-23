@@ -23,6 +23,7 @@ var _loading_screen_scene: PackedScene = preload("uid://dmweuj7kxaxov")
 
 func _ready() -> void:
 	_go_offline()
+func _enter_tree() -> void:
 	multiplayer.peer_connected.connect(_on_player_connected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)

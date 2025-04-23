@@ -7,19 +7,26 @@ extends Spawner
 
 var _level: Level
 
-func _ready() -> void:
-	super._ready()
+func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	spawn_function = _spawn_level
+
+func _ready() -> void:
+	super._ready()
+
+func load_level(level_scene_path: String) -> void:
+	assert(multiplayer.is_server())
+	assert(not _level)
+	spawn(level_scene_path)
 
 func unload_level() -> void:
 	assert(multiplayer.is_server())
 	assert(_level)
 	_level.queue_free()
 
-func _spawn_level(scene_path: String) -> Level:
+func _spawn_level(level_scene_path: String) -> Level:
 	assert(not _level)
-	var level_scene: PackedScene = load(scene_path)
+	var level_scene: PackedScene = load(level_scene_path)
 	_level = level_scene.instantiate()
 	return _level
 

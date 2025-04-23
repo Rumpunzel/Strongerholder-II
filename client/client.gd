@@ -13,6 +13,9 @@ var _config: ConfigFile = _load_config_file()
 
 var _pause_requested: bool = false
 
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 func _process(_delta: float) -> void:
 	if Multiplayer.is_online():
 		if get_tree().paused: _unpause_game()

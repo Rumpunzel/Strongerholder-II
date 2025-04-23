@@ -6,18 +6,19 @@ extends Node
 @export_group("Configuration")
 @export var _default_level: PackedScene
 @export var _level_spawner: LevelSpawner
+@export var _player_ghost_spawner: PlayerGhostSpawner
 @export var _agent_spawner: AgentSpawner
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	Multiplayer.singleplayer_started.connect(_on_singleplayer_started)
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.left_game.connect(_on_left_game)
-	multiplayer.server_disconnected.connect(_on_left_game)
 
 func start_new_game() -> void:
 	assert(multiplayer.is_server())
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
+	_player_ghost_spawner.start_synching_players()
 
 func load_game() -> Error:
 	assert(multiplayer.is_server())
@@ -33,11 +34,13 @@ func continue_game() -> void:
 func stop_game() -> void:
 	assert(multiplayer.is_server())
 	print_debug("Stopping game...")
-	_level_spawner.unload_level()
+	_player_ghost_spawner.stop_synching_players()
 	_agent_spawner.remove_all_agent()
+	_level_spawner.unload_level()
 
 func _on_singleplayer_started() -> void:
 	continue_game()
+	Client.pause_game()
 
 func _on_joining_multiplayer() -> void:
 	stop_game()
@@ -49,5 +52,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not _default_level: warnings.append("Missing default level scene.")
 	if not _level_spawner: warnings.append("Missing LevelSpawner reference.")
+	if not _player_ghost_spawner: warnings.append("Missing PlayerGhostSpawner reference.")
 	if not _agent_spawner: warnings.append("Missing AgentSpawner reference.")
 	return warnings

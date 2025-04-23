@@ -3,9 +3,6 @@
 class_name PlayerGhost
 extends Node
 
-signal character_haunted(haunted_character: Character, haunting_character: Character)
-signal character_unhaunted(unhaunted_character: Character)
-
 const PLAYER_ID: StringName = "player_id"
 const CHARACTER_DATA: StringName = "character_data"
 

@@ -3,6 +3,9 @@
 class_name Character
 extends CharacterBody3D
 
+signal haunted(haunted_character: Character, haunting_character: Character)
+signal unhaunted(unhaunted_character: Character, unhaunting_character: Character)
+
 const CHARACTER_PROFILE_PATH: StringName = "character_profile_path"
 const SPAWN_LOCATION: StringName = "spawn_location"
 
@@ -73,6 +76,12 @@ func _physics_process(delta: float) -> void:
 static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
 	assert(character_data.size() == 2)
+
+func haunt(haunting_character: Character) -> void:
+	haunted.emit(self, haunting_character)
+
+func unhaunt(unhaunting_character: Character) -> void:
+	unhaunted.emit(self, unhaunting_character)
 
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	validate_character_data(character_data)

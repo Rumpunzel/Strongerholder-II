@@ -5,9 +5,6 @@ extends Spawner
 
 signal player_ghost_created(player_ghost: PlayerGhost)
 
-signal character_haunted(haunted_character: Character, haunting_character: Character)
-signal character_unhaunted(unhaunted_character: Character)
-
 @export_group("Configuration")
 
 var _player_ghosts: Dictionary[Player, PlayerGhost] = {}

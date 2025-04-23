@@ -7,3 +7,5 @@ const HAUNTING: StringName = "haunting_character"
 const HAUNTED: StringName = "haunted_character"
 
 var agent: Agent
+
+func get_character() -> Character: return agent.character

@@ -2,7 +2,7 @@ class_name DefaultAgentState
 extends AgentState
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
-	#Game.character_haunted.connect(_on_character_haunted)
+	get_character().haunted.connect(_on_character_haunted)
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
@@ -15,7 +15,7 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	pass#Game.character_haunted.disconnect(_on_character_haunted)
+	get_character().haunted.disconnect(_on_character_haunted)
 
 func _on_character_haunted(haunted_character: Character, haunting_character: Character) -> void:
 	if haunted_character != agent.character: return

@@ -2,6 +2,12 @@
 class_name LobbyMenu
 extends PanelContainer
 
+@export_group("Configuration")
+@export var _player_infos_container: Control
+@export var _player_info_scene: PackedScene
+
+var _player_infos: Dictionary[Player, PlayerInfo] = {}
+
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	Multiplayer.connected_to_multiplayer.connect(open_menu)
@@ -9,17 +15,13 @@ func _enter_tree() -> void:
 	Lobby.player_connected.connect(create_player_info)
 
 func _ready() -> void:
-	if Engine.is_editor_hint(): return
+	if Engine.is_editor_hint():
+		create_player_info(Player.create(1, "Player", 6))
+		return
 	visible = Multiplayer.is_online()
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
 		create_player_info(connected_player)
-
-@export_group("Configuration")
-@export var _player_infos_container: Control
-@export var _player_info_scene: PackedScene
-
-var _player_infos: Dictionary[Player, PlayerInfo] = {}
 
 func open_menu() -> void:
 	if visible: return

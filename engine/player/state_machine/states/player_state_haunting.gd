@@ -19,7 +19,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.append_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_active_camera_priority()
-	player_ghost.character_haunted.emit(_haunted_character, _haunting_character)
+	_haunted_character.haunt(_haunting_character)
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
@@ -48,7 +48,7 @@ func exit() -> void:
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.erase_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
-	player_ghost.character_unhaunted.emit(_haunted_character)
+	_haunted_character.unhaunt(_haunting_character)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()

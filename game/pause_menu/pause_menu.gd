@@ -1,6 +1,6 @@
 @tool
 @icon("uid://bec8d0jsuhm7n")
-class_name MainMenu
+class_name PauseMenu
 extends CanvasLayer
 
 signal opened
@@ -9,10 +9,7 @@ signal closed
 @export_group("Configuration")
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		var edited_scene: Node = EditorInterface.get_edited_scene_root()
-		visible = edited_scene == self or edited_scene == owner
-		return
+	if Engine.is_editor_hint(): return
 	visible = get_tree().paused
 	Client.game_paused.connect(open_menu)
 
@@ -33,8 +30,8 @@ func open_menu() -> void:
 
 func close_menu() -> void:
 	if not visible: return
-	hide()
 	Client.unpause_game()
+	hide()
 	closed.emit()
 
 func _on_continue_pressed() -> void:

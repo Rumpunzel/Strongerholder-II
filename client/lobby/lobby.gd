@@ -41,6 +41,7 @@ func get_local_player() -> Player:
 func _spawn_player(player_info: Dictionary[StringName, Variant]) -> Player:
 	Player.validate_player_info(player_info)
 	var player: Player = Player.from_player_info(player_info)
+	player.ready.connect(player_connected.emit.bind(player))
 	print_debug("Spawned player: %s" % player.get_player_info())
 	return player
 

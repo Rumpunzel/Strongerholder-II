@@ -40,9 +40,6 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 
 @export_group("Configuration")
 
-func _ready() -> void:
-	Lobby.player_connected.emit(self)
-
 static func create(new_player_id: int, new_player_name: String, new_player_ghost_sprite_frame: int) -> Player:
 	var new_player: Player = PLAYER_SCENE.instantiate()
 	new_player.player_id = new_player_id

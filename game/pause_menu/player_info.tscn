@@ -2,66 +2,25 @@
 
 [ext_resource type="Texture2D" uid="uid://c2wvnh8ic30hw" path="res://protoype_assets/dont_starve_ghosts/weregoose.webp" id="1_8pquh"]
 [ext_resource type="Script" uid="uid://cep0umg7ktxy8" path="res://game/pause_menu/player_info.gd" id="1_cwx72"]
-[ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_07ddp"]
-[ext_resource type="Texture2D" uid="uid://c2olc2cnhywxg" path="res://protoype_assets/dont_starve_ghosts/walter.webp" id="3_o2msc"]
-[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.webp" id="4_1yh0r"]
-[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.webp" id="5_avt4h"]
-[ext_resource type="Texture2D" uid="uid://fbi7b3fjuu06" path="res://protoype_assets/dont_starve_ghosts/wilson.webp" id="6_v377k"]
-[ext_resource type="Texture2D" uid="uid://dmderss6o8inu" path="res://protoype_assets/dont_starve_ghosts/winona.webp" id="7_8midl"]
-[ext_resource type="Texture2D" uid="uid://c35lady1vtf7h" path="res://protoype_assets/dont_starve_ghosts/wolfgang.webp" id="8_8agsk"]
-[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.webp" id="9_65w1b"]
-[ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="10_p72el"]
-[ext_resource type="Texture2D" uid="uid://bvuy0s8b8ywrw" path="res://protoype_assets/dont_starve_ghosts/wortox.webp" id="11_tykel"]
-[ext_resource type="Texture2D" uid="uid://rku3rl1yv06c" path="res://protoype_assets/dont_starve_ghosts/wurt.webp" id="12_yf40m"]
-[ext_resource type="Texture2D" uid="uid://b4cu6lky6yink" path="res://protoype_assets/dont_starve_ghosts/wanda.webp" id="13_0nujp"]
-[ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="14_77v27"]
-[ext_resource type="Texture2D" uid="uid://dttbm8uiw4atv" path="res://protoype_assets/dont_starve_ghosts/webber.webp" id="15_e4aic"]
-[ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.webp" id="16_nh46e"]
-[ext_resource type="Texture2D" uid="uid://ccvkhvasoi8ux" path="res://protoype_assets/dont_starve_ghosts/weremoose.webp" id="18_mn5jn"]
-[ext_resource type="Texture2D" uid="uid://cdxowlqn1k3p" path="res://protoype_assets/dont_starve_ghosts/wes.webp" id="19_fwwv0"]
-[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.webp" id="20_gjt6c"]
-
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_xvj7c"]
-frames = 19
-pause = true
-speed_scale = 0.0
-frame_0/texture = ExtResource("2_07ddp")
-frame_1/texture = ExtResource("3_o2msc")
-frame_1/duration = 1.0
-frame_2/texture = ExtResource("13_0nujp")
-frame_2/duration = 1.0
-frame_3/texture = ExtResource("14_77v27")
-frame_3/duration = 1.0
-frame_4/texture = ExtResource("15_e4aic")
-frame_4/duration = 1.0
-frame_5/texture = ExtResource("16_nh46e")
-frame_5/duration = 1.0
-frame_6/texture = ExtResource("1_8pquh")
-frame_6/duration = 1.0
-frame_7/texture = ExtResource("18_mn5jn")
-frame_7/duration = 1.0
-frame_8/texture = ExtResource("19_fwwv0")
-frame_8/duration = 1.0
-frame_9/texture = ExtResource("20_gjt6c")
-frame_9/duration = 1.0
-frame_10/texture = ExtResource("4_1yh0r")
-frame_10/duration = 1.0
-frame_11/texture = ExtResource("5_avt4h")
-frame_11/duration = 1.0
-frame_12/texture = ExtResource("6_v377k")
-frame_12/duration = 1.0
-frame_13/texture = ExtResource("7_8midl")
-frame_13/duration = 1.0
-frame_14/texture = ExtResource("8_8agsk")
-frame_14/duration = 1.0
-frame_15/texture = ExtResource("9_65w1b")
-frame_15/duration = 1.0
-frame_16/texture = ExtResource("10_p72el")
-frame_16/duration = 1.0
-frame_17/texture = ExtResource("11_tykel")
-frame_17/duration = 1.0
-frame_18/texture = ExtResource("12_yf40m")
-frame_18/duration = 1.0
+[ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="2_o2msc"]
+[ext_resource type="Texture2D" uid="uid://c2olc2cnhywxg" path="res://protoype_assets/dont_starve_ghosts/walter.webp" id="3_1yh0r"]
+[ext_resource type="Texture2D" uid="uid://b4cu6lky6yink" path="res://protoype_assets/dont_starve_ghosts/wanda.webp" id="4_avt4h"]
+[ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="5_v377k"]
+[ext_resource type="Texture2D" uid="uid://dttbm8uiw4atv" path="res://protoype_assets/dont_starve_ghosts/webber.webp" id="6_8midl"]
+[ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.webp" id="7_8agsk"]
+[ext_resource type="Texture2D" uid="uid://dmvw6blvqe5op" path="res://protoype_assets/dont_starve_ghosts/werebeaver.webp" id="8_65w1b"]
+[ext_resource type="Texture2D" uid="uid://ccvkhvasoi8ux" path="res://protoype_assets/dont_starve_ghosts/weremoose.webp" id="10_p72el"]
+[ext_resource type="Texture2D" uid="uid://cdxowlqn1k3p" path="res://protoype_assets/dont_starve_ghosts/wes.webp" id="11_tykel"]
+[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.webp" id="12_yf40m"]
+[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.webp" id="13_0nujp"]
+[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.webp" id="14_77v27"]
+[ext_resource type="Texture2D" uid="uid://fbi7b3fjuu06" path="res://protoype_assets/dont_starve_ghosts/wilson.webp" id="15_e4aic"]
+[ext_resource type="Texture2D" uid="uid://dmderss6o8inu" path="res://protoype_assets/dont_starve_ghosts/winona.webp" id="16_nh46e"]
+[ext_resource type="Texture2D" uid="uid://c35lady1vtf7h" path="res://protoype_assets/dont_starve_ghosts/wolfgang.webp" id="17_mn5jn"]
+[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.webp" id="18_fwwv0"]
+[ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="19_gjt6c"]
+[ext_resource type="Texture2D" uid="uid://bvuy0s8b8ywrw" path="res://protoype_assets/dont_starve_ghosts/wortox.webp" id="20_xvj7c"]
+[ext_resource type="Texture2D" uid="uid://rku3rl1yv06c" path="res://protoype_assets/dont_starve_ghosts/wurt.webp" id="21_mw03d"]
 
 [node name="PlayerInfo" type="PanelContainer" node_paths=PackedStringArray("_host_indicator", "_local_indicator", "_ghost_sprite", "_player_name")]
 custom_minimum_size = Vector2(96, 96)
@@ -73,6 +32,7 @@ _host_indicator = NodePath("Host")
 _local_indicator = NodePath("Local")
 _ghost_sprite = NodePath("GhostSprite")
 _player_name = NodePath("MarginContainer/PanelContainer/PlayerName")
+_ghost_variation_portraits = Array[Texture]([ExtResource("2_o2msc"), ExtResource("3_1yh0r"), ExtResource("4_avt4h"), ExtResource("5_v377k"), ExtResource("6_8midl"), ExtResource("7_8agsk"), ExtResource("8_65w1b"), ExtResource("1_8pquh"), ExtResource("10_p72el"), ExtResource("11_tykel"), ExtResource("12_yf40m"), ExtResource("13_0nujp"), ExtResource("14_77v27"), ExtResource("15_e4aic"), ExtResource("16_nh46e"), ExtResource("17_mn5jn"), ExtResource("18_fwwv0"), ExtResource("19_gjt6c"), ExtResource("20_xvj7c"), ExtResource("21_mw03d")])
 
 [node name="Host" type="ReferenceRect" parent="."]
 layout_mode = 2
@@ -89,7 +49,7 @@ editor_only = false
 [node name="GhostSprite" type="TextureRect" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-texture = SubResource("AnimatedTexture_xvj7c")
+texture = ExtResource("1_8pquh")
 expand_mode = 2
 stretch_mode = 6
 

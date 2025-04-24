@@ -6,8 +6,18 @@ extends CharacterBody3D
 signal haunted(haunted_character: Character, haunting_character: Character)
 signal unhaunted(unhaunted_character: Character, unhaunting_character: Character)
 
+const VARIATION: StringName = "variation"
 const CHARACTER_PROFILE_PATH: StringName = "character_profile_path"
 const SPAWN_LOCATION: StringName = "spawn_location"
+
+## Determines the varation of the [CharacterModel]
+## If [code]<0[/code] a random [CharacterModel] will be used
+@export var variation: int = -1:
+	set(new_variation):
+		if new_variation == variation: return
+		variation = new_variation
+		if not character_model: return
+		character_model = character_profile.create_character_model(variation)
 
 @export var character_profile: CharacterProfile:
 	set(new_character):
@@ -27,7 +37,7 @@ const SPAWN_LOCATION: StringName = "spawn_location"
 		add_to_group(character_profile.get_group_name())
 		collision_layer = character_profile.collision_layer
 		collision_mask = character_profile.collision_mask
-		character_model = character_profile.create_character_model()
+		character_model = character_profile.create_character_model(variation)
 		heads_up_anchor = character_profile.create_heads_up_anchor()
 		if not is_node_ready(): await ready
 		character_profile.collision_shape.configure_collision_shape(_collision_shape)
@@ -40,10 +50,11 @@ const SPAWN_LOCATION: StringName = "spawn_location"
 var character_model: CharacterModel:
 	set(new_character_model):
 		if character_model:
+			remove_child(character_model)
 			character_model.queue_free()
 		character_model = new_character_model
 		if not character_model: return
-		add_child.call_deferred(character_model, true)
+		add_child(character_model, true)
 
 var heads_up_anchor: HeadsUpAnchor:
 	set(new_heads_up_anchor):
@@ -51,7 +62,7 @@ var heads_up_anchor: HeadsUpAnchor:
 			heads_up_anchor.queue_free()
 		heads_up_anchor = new_heads_up_anchor
 		if not heads_up_anchor: return
-		add_child.call_deferred(heads_up_anchor, true)
+		add_child(heads_up_anchor, true)
 
 var look_target: Vector3 = Vector3.BACK
 
@@ -77,8 +88,8 @@ func _process(delta: float) -> void:
 	if character_model: character_model.play_animation(_normalized_velocity, _is_on_floor)
 
 static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
-	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
-	assert(character_data.size() == 2)
+	assert(character_data.has_all([VARIATION, CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
+	assert(character_data.size() == 3)
 
 @rpc("any_peer", "call_local")
 func apply_velocity(velocity_to_apply: Vector3) -> void:
@@ -102,6 +113,7 @@ func unhaunt(unhaunted_character_path: NodePath) -> void:
 
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	validate_character_data(character_data)
+	variation = character_data[VARIATION]
 	var character_profile_path: String = character_data[CHARACTER_PROFILE_PATH]
 	character_profile = load(character_profile_path)
 	transform = character_data[SPAWN_LOCATION]

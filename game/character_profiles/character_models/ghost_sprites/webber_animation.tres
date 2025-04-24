@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://dbq41i8fobvy5"]
+
+[ext_resource type="Texture2D" uid="uid://dttbm8uiw4atv" path="res://protoype_assets/dont_starve_ghosts/webber.webp" id="5_x4b8g"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_x4b8g")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

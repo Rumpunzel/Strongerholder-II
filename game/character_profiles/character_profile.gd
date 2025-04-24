@@ -28,8 +28,7 @@ enum Groups {
 
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
 
-@export var _character_model: PackedScene
-@export var _random_character_models: Array[PackedScene]
+@export var _character_model_variations: Array[PackedScene]
 
 @export_group("Collision", "collision")
 @export_flags_3d_physics var collision_layer: int = 2
@@ -40,20 +39,22 @@ enum Groups {
 @export var _character_scene: PackedScene = preload("uid://cvj6b1m2b65hd")
 @export var _heads_up_anchor_scene: PackedScene = preload("uid://cpmcbnpcemt61")
 
-func create(spawn_transform: Transform3D) -> Character:
-	# XOR operator; either specific character_profile XOR a random character_profile
-	assert(_character_model != null != not _random_character_models.is_empty())
+func create(variation: int, spawn_transform: Transform3D) -> Character:
 	var character: Character = _character_scene.instantiate()
+	character.variation = variation
 	character.character_profile = self
 	character.transform = spawn_transform
 	return character
 
-func create_character_model() -> CharacterModel:
-	# XOR operator; either specific character_profile XOR a random character_profile
-	assert(_character_model != null != not _random_character_models.is_empty())
-	if _character_model: return _character_model.instantiate()
-	var random_character_model: PackedScene = _random_character_models.pick_random()
-	return random_character_model.instantiate()
+func create_character_model(variation: int) -> CharacterModel:
+	assert(not _character_model_variations.is_empty())
+	var character_model: PackedScene
+	if variation < 0:
+		character_model = _character_model_variations.pick_random()
+	else:
+		assert(variation < _character_model_variations.size())
+		character_model = _character_model_variations[variation]
+	return character_model.instantiate()
 
 func create_heads_up_anchor() -> HeadsUpAnchor:
 	var heads_up_anchor: HeadsUpAnchor = _heads_up_anchor_scene.instantiate()
@@ -66,9 +67,7 @@ func get_group_name() -> StringName:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
-	if not _character_model and _random_character_models.is_empty(): warnings.append("Missing CharacterModel scene.")
-	# XOR operator; either specific character_profile XOR a random character_profile
-	if _character_model != null != not _random_character_models.is_empty(): warnings.append("Either CharacterModel XOR a random CharacterModel.")
+	if _character_model_variations.is_empty(): warnings.append("Missing CharacterModel scene.")
 	if not _character_scene: warnings.append("Missing Character scene.")
 	if not _heads_up_anchor_scene: warnings.append("Missing Character scene.")
 	return warnings

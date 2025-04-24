@@ -21,6 +21,9 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath(".:_normalized_velocity")
 properties/4/spawn = true
 properties/4/replication_mode = 1
+properties/5/path = NodePath(".:variation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape", "_hit_box") groups=["Characters"]]
 collision_layer = 2

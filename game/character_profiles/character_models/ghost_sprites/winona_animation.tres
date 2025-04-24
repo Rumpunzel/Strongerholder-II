@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://dqi5wis2vh8fd"]
+
+[ext_resource type="Texture2D" uid="uid://dmderss6o8inu" path="res://protoype_assets/dont_starve_ghosts/winona.webp" id="14_5lfjk"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_5lfjk")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

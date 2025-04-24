@@ -1,11 +1,31 @@
-[gd_resource type="Resource" script_class="CharacterProfile" load_steps=11 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="CharacterProfile" load_steps=31 format=3 uid="uid://dy6kyxtiog1ac"]
 
-[ext_resource type="PackedScene" uid="uid://bf4cxhr3kab7j" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost.tscn" id="1_b8jju"]
+[ext_resource type="PackedScene" uid="uid://b4xn7w6bjqy21" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_0.tscn" id="1_mpc0u"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="1_s4khq"]
+[ext_resource type="PackedScene" uid="uid://blbstfsxnrk65" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_1.tscn" id="2_imtv8"]
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/characters/heads_up_anchor.tscn" id="2_m7bob"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/character_profiles/character_profile.gd" id="3_6mhvl"]
+[ext_resource type="PackedScene" uid="uid://k23w18qcspr2" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_2.tscn" id="3_e0uus"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="3_pj10w"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/haunted_material.tres" id="4_dua0m"]
+[ext_resource type="PackedScene" uid="uid://bgxshg4el0dgu" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_3.tscn" id="4_oo4sv"]
+[ext_resource type="PackedScene" uid="uid://cyj5uaua2najt" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_4.tscn" id="5_lp73j"]
 [ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://game/character_profiles/defaults/default_interaction_area_shape.tres" id="5_s4khq"]
+[ext_resource type="PackedScene" uid="uid://ddb31683llcr3" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_5.tscn" id="6_72axs"]
+[ext_resource type="PackedScene" uid="uid://skwbm4iru10f" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_6.tscn" id="7_x1abp"]
+[ext_resource type="PackedScene" uid="uid://br8vw2kpnyb84" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_7.tscn" id="8_4jc6t"]
+[ext_resource type="PackedScene" uid="uid://df72s4w03mbgw" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_8.tscn" id="9_6630n"]
+[ext_resource type="PackedScene" uid="uid://dg2nlc7cywl8h" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_9.tscn" id="10_im7q1"]
+[ext_resource type="PackedScene" uid="uid://oxoki5figlpx" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_10.tscn" id="11_2g6jq"]
+[ext_resource type="PackedScene" uid="uid://7orud77e8qqo" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_11.tscn" id="12_rfnmg"]
+[ext_resource type="PackedScene" uid="uid://cjp5ymkl8fmqi" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_12.tscn" id="13_1jtwd"]
+[ext_resource type="PackedScene" uid="uid://uvb1y8hli5mm" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_13.tscn" id="14_l3yqw"]
+[ext_resource type="PackedScene" uid="uid://1hjawuch75jv" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_14.tscn" id="15_mjwvc"]
+[ext_resource type="PackedScene" uid="uid://ce3liggvlcvt6" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_15.tscn" id="16_x2366"]
+[ext_resource type="PackedScene" uid="uid://b2koom2yx6wv" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_16.tscn" id="17_tjqmf"]
+[ext_resource type="PackedScene" uid="uid://bpaeojhdcjdd0" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_17.tscn" id="18_g8qeu"]
+[ext_resource type="PackedScene" uid="uid://cmivvtmqfo7dr" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_18.tscn" id="19_cp5vb"]
+[ext_resource type="PackedScene" uid="uid://bheyuyttq2f13" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_19.tscn" id="20_pgphv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pj10w"]
 radius = 0.25
@@ -40,11 +60,11 @@ deceleration = 16.0
 turn_rate = 12.0
 collision_shape = SubResource("Resource_aj5ki")
 hit_box_shape = SubResource("Resource_mcvja")
+haunted_material = ExtResource("4_dua0m")
 hit_box_layer = 1048576
 interaction_area_shape = ExtResource("5_s4khq")
 heads_up_display_offset = Vector3(0, 2.25, 0)
-_character_model = ExtResource("1_b8jju")
-_random_character_models = Array[PackedScene]([])
+_character_model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
 collision_layer = 65536
 collision_mask = 1
 _character_scene = ExtResource("1_s4khq")

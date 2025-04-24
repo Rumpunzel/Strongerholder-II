@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bf4cxhr3kab7j"]
+[gd_scene load_steps=7 format=3 uid="uid://1hjawuch75jv"]
 
-[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://game/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_2ku6h"]
-[ext_resource type="SpriteFrames" uid="uid://dt4dia143js2f" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost.tres" id="2_x1kbq"]
+[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://game/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_da2gv"]
+[ext_resource type="SpriteFrames" uid="uid://dqi5wis2vh8fd" path="res://game/character_profiles/character_models/ghost_sprites/winona_animation.tres" id="2_da2gv"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_tree.tres" id="3_glsfa"]
 
 [sub_resource type="Animation" id="Animation_qte8h"]
 length = 0.001
@@ -83,21 +84,8 @@ _data = {
 &"float": SubResource("Animation_88aim")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_faw76"]
-animation = &"float"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xqo7j"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_faw76"]
-states/Start/position = Vector2(109, 80)
-states/float/node = SubResource("AnimationNodeAnimation_faw76")
-states/float/position = Vector2(337, 106)
-transitions = ["Start", "float", SubResource("AnimationNodeStateMachineTransition_xqo7j")]
-
-[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animated_sprite", "_animation_tree")]
-script = ExtResource("1_2ku6h")
-_animated_sprite = NodePath("AnimatedSprite3D")
+[node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animation_tree")]
+script = ExtResource("1_da2gv")
 _animation_tree = NodePath("AnimationTree")
 metadata/_custom_type_script = "uid://f7j5ijitqy25"
 
@@ -105,16 +93,15 @@ metadata/_custom_type_script = "uid://f7j5ijitqy25"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 pixel_size = 0.003
 billboard = 1
-sprite_frames = ExtResource("2_x1kbq")
-frame = 6
+sprite_frames = ExtResource("2_da2gv")
 speed_scale = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_qte8h")
 }
-autoplay = "float"
+autoplay = "RESET"
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeStateMachine_faw76")
+tree_root = ExtResource("3_glsfa")
 anim_player = NodePath("../AnimationPlayer")

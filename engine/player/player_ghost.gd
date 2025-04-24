@@ -21,6 +21,7 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		input_reader.player = player
 		interaction_area.set_enabled(get_multiplayer_authority())
 		_camera.current = player.is_local_player()
+		player.player_info_changed.connect(_on_player_info_changed)
 
 @export_group("Configuration")
 @export var character: Character
@@ -60,6 +61,9 @@ func get_active_camera_priority() -> int:
 
 func get_default_camera_priority() -> int:
 	return _DEFAULT_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY
+
+func _on_player_info_changed() -> void:
+	character.variation = player.ghost_sprite_frame
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

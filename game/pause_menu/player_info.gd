@@ -5,6 +5,7 @@ extends PanelContainer
 @export var player: Player:
 	set(new_player):
 		player = new_player
+		if Engine.is_editor_hint(): return
 		_update_player_info()
 		player.player_info_changed.connect(_update_player_info)
 
@@ -13,17 +14,18 @@ extends PanelContainer
 @export var _local_indicator: Control
 @export var _ghost_sprite: TextureRect
 @export var _player_name: Label
+@export var _ghost_variation_portraits: Array[Texture]
 
 func _update_player_info() -> void:
 	name = "%d" % player.player_id
 	_host_indicator.visible = player.player_id == Multiplayer.HOST_ID
 	_local_indicator.visible = player.is_local_player()
-	var ghost_sprites: AnimatedTexture = _ghost_sprite.texture
-	ghost_sprites.current_frame = player.ghost_sprite_frame
+	_ghost_sprite.texture = _ghost_variation_portraits[player.ghost_sprite_frame]
 	_player_name.text = player.player_name
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
+	if _ghost_variation_portraits.is_empty(): warnings.append("Missing ghost variation portraits.")
 	if not _ghost_sprite: warnings.append("Missing ghost sprite.")
 	if not _player_name: warnings.append("Missing player name.")
 	return warnings

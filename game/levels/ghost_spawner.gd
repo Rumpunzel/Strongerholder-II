@@ -49,6 +49,7 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 	var player: Player = Lobby.get_player(player_id)
 	assert(player)
 	var character_data: Dictionary[StringName, Variant] = player_ghost_data[PlayerGhost.CHARACTER_DATA]
+	character_data[Character.VARIATION] = player.ghost_sprite_frame
 	var player_ghost: PlayerGhost = PlayerGhost.create(player, character_data)
 	player.tree_exiting.connect(remove_player_ghost.bind(player_ghost))
 	_player_ghosts[player] = player_ghost

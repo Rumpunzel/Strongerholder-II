@@ -44,8 +44,7 @@ func _on_load_pressed() -> void:
 	Serializer.load_world_state()
 
 func _on_randomize_ghost_pressed() -> void:
-	#Game.random_ghost_requested.emit()
-	pass
+	Lobby.get_local_player().ghost_sprite_frame = randi() % 20
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	Client.quit_game()

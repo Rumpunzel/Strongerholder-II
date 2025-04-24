@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://bdn7qt54b45sp"]
+
+[ext_resource type="Texture2D" uid="uid://dmvw6blvqe5op" path="res://protoype_assets/dont_starve_ghosts/werebeaver.webp" id="1_bp1ym"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_bp1ym")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

@@ -29,3 +29,4 @@ _initial_state = ExtResource("4_pe618")
 metadata/_custom_type_script = "uid://d1mglynl0s74y"
 
 [node name="Character" parent="." instance=ExtResource("5_pe618")]
+variation = -1

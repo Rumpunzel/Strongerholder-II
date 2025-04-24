@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://befccmh8x4cgf"]
+
+[ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.webp" id="6_6vtvc"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_6vtvc")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

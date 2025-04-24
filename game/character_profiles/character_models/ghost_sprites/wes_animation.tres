@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://cw721535o7g4p"]
+
+[ext_resource type="Texture2D" uid="uid://cdxowlqn1k3p" path="res://protoype_assets/dont_starve_ghosts/wes.webp" id="9_vhwha"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_vhwha")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

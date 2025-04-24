@@ -1,0 +1,13 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=3 format=3 uid="uid://onoyjqqbwxgn"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_faw76"]
+animation = &"float"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xqo7j"]
+advance_mode = 2
+
+[resource]
+states/Start/position = Vector2(109, 80)
+states/float/node = SubResource("AnimationNodeAnimation_faw76")
+states/float/position = Vector2(337, 106)
+transitions = ["Start", "float", SubResource("AnimationNodeStateMachineTransition_xqo7j")]

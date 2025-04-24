@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://game/character_profiles/character_profile.gd" id="3_6mhvl"]
 [ext_resource type="PackedScene" uid="uid://k23w18qcspr2" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_2.tscn" id="3_e0uus"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="3_pj10w"]
-[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/haunted_material.tres" id="4_dua0m"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="4_dua0m"]
 [ext_resource type="PackedScene" uid="uid://bgxshg4el0dgu" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_3.tscn" id="4_oo4sv"]
 [ext_resource type="PackedScene" uid="uid://cyj5uaua2najt" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_4.tscn" id="5_lp73j"]
 [ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://game/character_profiles/defaults/default_interaction_area_shape.tres" id="5_s4khq"]

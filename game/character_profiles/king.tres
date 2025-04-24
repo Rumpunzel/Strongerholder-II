@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b55tt1yijxn7r" path="res://game/character_profiles/character_models/king.tscn" id="3_0kn5r"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://game/character_profiles/defaults/default_collision_shape.tres" id="3_c8byr"]
 [ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://game/character_profiles/defaults/default_hit_box_shape.tres" id="4_4iqrm"]
-[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/haunted_material.tres" id="5_tk10t"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="5_tk10t"]
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="6_tyc7q"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d0vdr"]

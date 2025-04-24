@@ -55,8 +55,8 @@ var heads_up_anchor: HeadsUpAnchor:
 
 var look_target: Vector3 = Vector3.BACK
 
-var _normalized_velocity: Vector3 = Vector3.ZERO
 var _is_on_floor: bool = true
+var _normalized_velocity: Vector3 = Vector3.ZERO
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -71,7 +71,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / character_profile.move_speed, velocity.y / _gravity, velocity.z / character_profile.move_speed)
-	if character_model: character_model.play_animation(_normalized_velocity)
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	if character_model: character_model.play_animation(_normalized_velocity, _is_on_floor)
 
 static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
@@ -83,9 +86,9 @@ func apply_velocity(velocity_to_apply: Vector3) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func haunt(haunted_character_path: NodePath) -> void:
-	visible = false
 	var haunted_character: Character = get_node(haunted_character_path)
 	assert(haunted_character)
+	visible = false
 	haunted_character.character_model.apply_material_overlay(character_profile.haunted_material)
 	haunted.emit(haunted_character, self)
 
@@ -93,8 +96,8 @@ func haunt(haunted_character_path: NodePath) -> void:
 func unhaunt(unhaunted_character_path: NodePath) -> void:
 	var unhaunted_character: Character = get_node(unhaunted_character_path)
 	assert(unhaunted_character)
-	unhaunted_character.character_model.apply_material_overlay(null)
 	visible = true
+	unhaunted_character.character_model.apply_material_overlay(null)
 	unhaunted.emit(unhaunted_character, self)
 
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:

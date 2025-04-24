@@ -19,4 +19,4 @@ func exit() -> void:
 
 func _on_character_haunted(haunted_character: Character, haunting_character: Character) -> void:
 	if haunted_character != agent.character: return
-	finished.emit(AgentStateHaunted.new(haunted_character, haunting_character))
+	finished.emit(AgentStateHaunted.new(haunted_character.get_path(), haunting_character.get_path()))

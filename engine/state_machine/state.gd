@@ -46,7 +46,7 @@ func serialize() -> Dictionary[StringName, Variant]:
 	if _previous_state_script: serialized_state[PREVIOUS_STATE_SCRIPT] = _previous_state_script.resource_path
 	return serialized_state
 
-func deserialize(_serialized_state: Dictionary[StringName, Variant], _state_machine: StateMachine) -> State:
+func deserialize(_serialized_state: Dictionary[StringName, Variant]) -> State:
 	return self
 
 func _get_configuration_warnings() -> PackedStringArray:

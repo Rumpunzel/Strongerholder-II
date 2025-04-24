@@ -28,4 +28,4 @@ func exit() -> void:
 func _on_haunt_timer_timeout() -> void:
 	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
-	finished.emit(PlayerStateHaunting.new(available_action.target, get_character()))
+	finished.emit(PlayerStateHaunting.new(available_action.target.get_path(), get_character().get_path()))

@@ -14,8 +14,8 @@ var _serialized_state: Dictionary[StringName, Variant]:
 		stop()
 		var new_sate: State = State.from_serialized_state(new_serialized_state)
 		#if not is_node_ready(): await ready
-		_set_state(new_sate.deserialize(new_serialized_state, self))
-		_get_state().enter(self)
+		_set_state(new_sate.deserialize(new_serialized_state))
+		start()
 
 func script_is_valid_state(script: Script) -> bool:
 	if script.get_global_name() == "State": return true
@@ -23,6 +23,7 @@ func script_is_valid_state(script: Script) -> bool:
 	return false
 
 func start() -> void:
+	if not is_node_ready(): await ready
 	_get_state().enter(self)
 
 ## Called by the state machine on the engine's main loop tick.

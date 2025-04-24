@@ -19,14 +19,17 @@ static func create(character_data: Dictionary[StringName, Variant]) -> Agent:
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
+	if not is_multiplayer_authority(): return
 	_state_machine.start()
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
+	if not is_multiplayer_authority(): return
 	_state_machine.update(delta)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
+	if not is_multiplayer_authority(): return
 	_state_machine.physics_update(delta)
 
 static func validate_agent_data(agent_data: Dictionary[StringName, Variant]) -> void:

@@ -32,7 +32,6 @@ _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
 
 [node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://ckcrpkujohkql")
 spawn_path = NodePath(".")
 script = ExtResource("6_j8tme")
 metadata/_custom_type_script = "uid://853l0h1bjf04"

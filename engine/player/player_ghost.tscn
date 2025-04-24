@@ -118,8 +118,6 @@ collision_mask = 1
 character_profile = ExtResource("11_cs6u8")
 
 [node name="InteractionArea" parent="Ghost" node_paths=PackedStringArray("character", "characters_to_ignore_areas_from") instance=ExtResource("9_46i1k")]
-monitoring = false
-monitorable = false
 character = NodePath("..")
 characters_to_ignore_areas_from = Array[NodePath]([NodePath("..")])
 

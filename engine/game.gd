@@ -17,6 +17,7 @@ enum GameStatus {
 var _game_status: GameStatus = GameStatus.NONE
 
 func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
 	Multiplayer.singleplayer_started.connect(_on_singleplayer_started)
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.left_game.connect(_on_left_game)
@@ -26,6 +27,7 @@ func start_new_game() -> void:
 	assert(_game_status == GameStatus.NONE)
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
+	if Engine.is_editor_hint(): return
 	_player_ghost_spawner.start_synching_players()
 	_game_status = GameStatus.RUNNING
 

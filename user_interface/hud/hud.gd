@@ -2,6 +2,10 @@
 class_name HUD
 extends CanvasLayer
 
+func _ready() -> void:
+	if not is_multiplayer_authority():
+		hide()
+
 func update_available_actions(available_actions: Array[CharacterInteraction]) -> void:
 	_clear_all_input_prompts()
 	for available_action: CharacterInteraction in available_actions:
@@ -13,5 +17,4 @@ func _clear_all_input_prompts() -> void:
 		input_prompt.hide_prompt()
 
 func _on_available_actions_changed(available_actions: Array[CharacterInteraction]) -> void:
-	#if not player.is_local_player(): return
 	update_available_actions(available_actions)

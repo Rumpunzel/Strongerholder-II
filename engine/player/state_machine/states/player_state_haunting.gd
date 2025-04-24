@@ -14,12 +14,11 @@ func _init(
 	_haunting_character = haunting_character
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
-	_haunting_character.visible = false
 	interaction_area.characters_to_ignore_areas_from.append(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.append_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_active_camera_priority()
-	_haunted_character.haunt.rpc(_haunting_character.get_path())
+	_haunting_character.haunt.rpc(_haunted_character.get_path())
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
@@ -43,12 +42,11 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	_haunting_character.visible = true
 	interaction_area.characters_to_ignore_areas_from.erase(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.erase_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
-	_haunted_character.unhaunt.rpc(_haunting_character.get_path())
+	_haunting_character.unhaunt.rpc(_haunted_character.get_path())
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()

@@ -15,7 +15,7 @@ static func gather_all_geometry_instances_on(node: Node) -> Array[MeshInstance3D
 		geometry_instances.append_array(gather_all_geometry_instances_on(child))
 	return geometry_instances
 
-func play_animation(normalized_velocity: Vector3) -> void:
+func play_animation(normalized_velocity: Vector3, _is_on_floor: bool) -> void:
 	if not _state_machine: return
 	if normalized_velocity:
 		_state_machine.travel("Walk")

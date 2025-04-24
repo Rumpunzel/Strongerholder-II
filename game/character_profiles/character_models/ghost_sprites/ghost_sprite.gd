@@ -11,7 +11,7 @@ func _ready() -> void:
 	_random_ghost()
 	#Game.random_ghost_requested.connect(_random_ghost)
 
-func play_animation(_normalized_velocity: Vector3) -> void:
+func play_animation(_normalized_velocity: Vector3, _is_on_floor: bool) -> void:
 	pass
 
 func _random_ghost() -> void:

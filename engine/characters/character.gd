@@ -82,18 +82,20 @@ func apply_velocity(velocity_to_apply: Vector3) -> void:
 	velocity = velocity_to_apply
 
 @rpc("any_peer", "call_local", "reliable")
-func haunt(haunting_character_path: NodePath) -> void:
-	var haunting_character: Character = get_node(haunting_character_path)
-	assert(haunting_character)
-	character_model.apply_material_overlay(character_profile.haunted_material)
-	haunted.emit(self, haunting_character)
+func haunt(haunted_character_path: NodePath) -> void:
+	visible = false
+	var haunted_character: Character = get_node(haunted_character_path)
+	assert(haunted_character)
+	haunted_character.character_model.apply_material_overlay(character_profile.haunted_material)
+	haunted.emit(haunted_character, self)
 
 @rpc("any_peer", "call_local", "reliable")
-func unhaunt(unhaunting_character_path: NodePath) -> void:
-	var unhaunting_character: Character = get_node(unhaunting_character_path)
-	assert(unhaunting_character)
-	character_model.apply_material_overlay(null)
-	unhaunted.emit(self, unhaunting_character)
+func unhaunt(unhaunted_character_path: NodePath) -> void:
+	var unhaunted_character: Character = get_node(unhaunted_character_path)
+	assert(unhaunted_character)
+	unhaunted_character.character_model.apply_material_overlay(null)
+	visible = true
+	unhaunted.emit(unhaunted_character, self)
 
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	validate_character_data(character_data)

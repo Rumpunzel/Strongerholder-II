@@ -8,12 +8,15 @@ extends StateMachine
 @onready var _state: AgentState = _initial_state.new()
 
 func _get_state() -> AgentState:
-	_state.agent = _agent
+	if _state: _setup_state()
 	return _state
 
 func _set_state(state: State) -> void:
 	assert(state is AgentState)
 	_state = state
+	_state.agent = _agent
+
+func _setup_state() -> void:
 	_state.agent = _agent
 
 func _get_configuration_warnings() -> PackedStringArray:

@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgxshg4el0dgu"]
+[gd_scene load_steps=8 format=3 uid="uid://bgxshg4el0dgu"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://game/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_u8kfk"]
+[ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="2_5wunf"]
 [ext_resource type="SpriteFrames" uid="uid://c3gp1lcq7io2i" path="res://game/character_profiles/character_models/ghost_sprites/warly_animation.tres" id="2_u8kfk"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_tree.tres" id="3_0hnj3"]
 
@@ -86,6 +87,7 @@ _data = {
 
 [node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animation_tree")]
 script = ExtResource("1_u8kfk")
+portrait_override = ExtResource("2_5wunf")
 _animation_tree = NodePath("AnimationTree")
 metadata/_custom_type_script = "uid://f7j5ijitqy25"
 

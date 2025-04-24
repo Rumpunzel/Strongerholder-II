@@ -3,6 +3,8 @@
 class_name CharacterModel
 extends Node3D
 
+@export var portrait_override: Texture
+
 @export_group("Configuration")
 @export var _animation_tree: AnimationTree
 

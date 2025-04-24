@@ -9,6 +9,7 @@ enum Groups {
 }
 
 @export var name: String
+@export var portrait: Texture
 @export_color_no_alpha var color: Color
 @export var group: Groups = Groups.PEOPLE
 

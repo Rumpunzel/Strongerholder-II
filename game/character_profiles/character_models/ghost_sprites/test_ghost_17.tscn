@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpaeojhdcjdd0"]
+[gd_scene load_steps=8 format=3 uid="uid://bpaeojhdcjdd0"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://game/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_4bscy"]
 [ext_resource type="SpriteFrames" uid="uid://i8j4ie7ccvu8" path="res://game/character_profiles/character_models/ghost_sprites/wormwood_animation.tres" id="2_4bscy"]
+[ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="2_gvq6h"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://game/character_profiles/character_models/ghost_sprites/test_ghost_tree.tres" id="3_1d2wd"]
 
 [sub_resource type="Animation" id="Animation_qte8h"]
@@ -86,6 +87,7 @@ _data = {
 
 [node name="TestGhost" type="Node3D" node_paths=PackedStringArray("_animation_tree")]
 script = ExtResource("1_4bscy")
+portrait_override = ExtResource("2_gvq6h")
 _animation_tree = NodePath("AnimationTree")
 metadata/_custom_type_script = "uid://f7j5ijitqy25"
 

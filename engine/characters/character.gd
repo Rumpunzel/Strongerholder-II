@@ -118,6 +118,11 @@ func apply_character_data(character_data: Dictionary[StringName, Variant]) -> vo
 	character_profile = load(character_profile_path)
 	transform = character_data[SPAWN_LOCATION]
 
+func get_portrait() -> Texture:
+	if character_model.portrait_override:
+		return character_model.portrait_override
+	return character_profile.portrait
+
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta
 

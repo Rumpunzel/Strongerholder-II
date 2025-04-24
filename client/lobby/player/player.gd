@@ -19,6 +19,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 		if not Engine.is_editor_hint(): name = "%d" % new_player_id
 		if new_player_id == player_id: return
 		player_id = new_player_id
+		if Engine.is_editor_hint(): return
 		set_multiplayer_authority(player_id)
 		player_info_changed.emit()
 
@@ -26,6 +27,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 	set(new_player_name):
 		if new_player_name == player_name: return
 		player_name = new_player_name
+		if Engine.is_editor_hint(): return
 		player_info_changed.emit()
 		if not is_local_player(): return
 		Client.update_value_in_config(player_name, PLAYER_SECTION, NAME)
@@ -34,6 +36,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 	set(new_ghost_sprite_frame):
 		if new_ghost_sprite_frame == ghost_sprite_frame: return
 		ghost_sprite_frame = new_ghost_sprite_frame
+		if Engine.is_editor_hint(): return
 		player_info_changed.emit()
 		if not is_local_player(): return
 		Client.update_value_in_config(ghost_sprite_frame, PLAYER_SECTION, GHOST_SPRITE_FRAME)

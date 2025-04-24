@@ -2,8 +2,6 @@
 class_name AgentStateHaunted
 extends AgentState
 
-const HAUNTED_MATERIAL: Material = preload("uid://cmbf2wnye66jw")
-
 var _haunted_character: Character
 var _haunting_character: Character
 
@@ -18,7 +16,6 @@ func _init(
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted_character)
 	assert(_haunting_character)
-	_haunted_character.character_model.apply_material_overlay(HAUNTED_MATERIAL)
 	_haunted_character.unhaunted.connect(_on_character_unhaunted)
 	super.enter(state_machine, previous_state)
 
@@ -29,7 +26,6 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	_haunted_character.character_model.apply_material_overlay(null)
 	_haunted_character.unhaunted.disconnect(_on_character_unhaunted)
 
 func serialize() -> Dictionary[StringName, Variant]:

@@ -77,10 +77,22 @@ static func validate_character_data(character_data: Dictionary[StringName, Varia
 	assert(character_data.has_all([CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
 	assert(character_data.size() == 2)
 
-func haunt(haunting_character: Character) -> void:
+@rpc("any_peer", "call_local")
+func apply_velocity(velocity_to_apply: Vector3) -> void:
+	velocity = velocity_to_apply
+
+@rpc("any_peer", "call_local", "reliable")
+func haunt(haunting_character_path: NodePath) -> void:
+	var haunting_character: Character = get_node(haunting_character_path)
+	assert(haunting_character)
+	character_model.apply_material_overlay(character_profile.haunted_material)
 	haunted.emit(self, haunting_character)
 
-func unhaunt(unhaunting_character: Character) -> void:
+@rpc("any_peer", "call_local", "reliable")
+func unhaunt(unhaunting_character_path: NodePath) -> void:
+	var unhaunting_character: Character = get_node(unhaunting_character_path)
+	assert(unhaunting_character)
+	character_model.apply_material_overlay(null)
 	unhaunted.emit(self, unhaunting_character)
 
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:

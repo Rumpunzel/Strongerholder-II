@@ -21,6 +21,8 @@ enum Groups {
 @export_category("CharacterModel")
 @export var collision_shape: CharacterAreaShape = preload("uid://d27l7tjgj4lrb")
 @export var hit_box_shape: CharacterAreaShape = preload("uid://718wpxdsx3bo")
+@export var haunted_material: Material = preload("uid://cmbf2wnye66jw")
+
 @export_flags_3d_physics var hit_box_layer: int = 32
 @export var interaction_area_shape: CharacterAreaShape = preload("uid://3vtg05cuw32e")
 

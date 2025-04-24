@@ -26,7 +26,7 @@ func get_interaction_input() -> StringName: return input_reader.interaction_inpu
 func get_available_action() -> CharacterInteraction: return interaction_area.available_action
 
 func apply_input_direction(delta: float, to_character: Character = get_character()) -> void:
-	if not to_character: return
+	assert(to_character)
 	var move_speed: float = to_character.character_profile.move_speed
 	var acceleration: float = to_character.character_profile.acceleration * delta
 	var deceleration: float = to_character.character_profile.deceleration * delta
@@ -39,6 +39,9 @@ func apply_input_direction(delta: float, to_character: Character = get_character
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration)
 		velocity.z = move_toward(velocity.z, 0.0, deceleration)
-	to_character.velocity = velocity
+	if to_character.is_multiplayer_authority():
+		to_character.apply_velocity(velocity)
+	else:
+		to_character.apply_velocity.rpc(velocity)
 
 # TODO: Pathfinding

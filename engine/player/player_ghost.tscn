@@ -7,12 +7,12 @@
 [ext_resource type="Script" uid="uid://o0v0yokcefkd" path="res://engine/player/state_machine/states/player_state_default.gd" id="4_irqko"]
 [ext_resource type="Script" uid="uid://baud71gvivp52" path="res://client/serialization/properties_serializer.gd" id="5_cs6u8"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="6_jlh3c"]
-[ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://game/hud/hud.gd" id="7_cs6u8"]
+[ext_resource type="Script" uid="uid://cmsnxge6cujxg" path="res://user_interface/hud/hud.gd" id="7_cs6u8"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="7_r3pxx"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="8_mvbif"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="9_46i1k"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="10_irqko"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://game/character_profiles/ghost.tres" id="11_cs6u8"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/character_profiles/ghost.tres" id="11_cs6u8"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath("InputReader:direction_input")
@@ -22,7 +22,7 @@ properties/1/path = NodePath("InputReader:interaction_input")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 properties/2/path = NodePath("StateMachine:_serialized_state")
-properties/2/spawn = true
+properties/2/spawn = false
 properties/2/replication_mode = 2
 
 [sub_resource type="Resource" id="Resource_shdhw"]

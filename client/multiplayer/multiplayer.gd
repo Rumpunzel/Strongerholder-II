@@ -48,6 +48,7 @@ func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> 
 	return Error.OK
 
 func join_game(ip_address: StringName, port: int = PORT) -> Error:
+	# TODO: check if hosts exists
 	assert(ip_address.is_valid_ip_address())
 	var loading_screen: CanvasLayer = _loading_screen_scene.instantiate()
 	add_child(loading_screen)

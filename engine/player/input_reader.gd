@@ -28,7 +28,8 @@ func _process(_delta: float) -> void:
 	# Only collect input if this is the local [Player]
 	_collect_input()
 
-static func read_movement_input() -> Vector2:
+func read_movement_input() -> Vector2:
+	if get_viewport().is_input_handled(): return Vector2.ZERO
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 func get_camera_adjusted_direction_input() -> Vector2:

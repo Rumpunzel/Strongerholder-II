@@ -14,6 +14,8 @@ func _init(
 	_haunting_character = haunting_character
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
+	assert(_haunted_character)
+	assert(_haunting_character)
 	interaction_area.characters_to_ignore_areas_from.append(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.append_follow_targets(_haunted_character)
@@ -35,6 +37,8 @@ func update(_delta: float) -> void:
 		#_haunt_timer.stop()
 
 func physics_update(delta: float) -> void:
+	assert(_haunted_character)
+	assert(_haunting_character)
 	var direction_input: Vector2 = get_direction_input()
 	_haunted_character.apply_input_direction.rpc(direction_input, delta)
 	_haunting_character.transform = _haunted_character.transform
@@ -43,6 +47,8 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
+	assert(_haunted_character)
+	assert(_haunting_character)
 	interaction_area.characters_to_ignore_areas_from.erase(_haunted_character)
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.erase_follow_targets(_haunted_character)
@@ -50,6 +56,8 @@ func exit() -> void:
 	_haunting_character.unhaunt.rpc(_haunted_character.get_path())
 
 func serialize() -> Dictionary[StringName, Variant]:
+	assert(_haunted_character)
+	assert(_haunting_character)
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()
 	serialized_state[HAUNTED] = _haunted_character.get_path()
 	serialized_state[HAUNTING] = _haunting_character.get_path()
@@ -61,6 +69,8 @@ func deserialize(serialized_state: Dictionary[StringName, Variant], state_machin
 	var haunting_character_node_path: NodePath = serialized_state[HAUNTING]
 	state._haunted_character = state_machine.get_node(haunted_character_node_path)
 	state._haunting_character = state_machine.get_node(haunting_character_node_path)
+	assert(state._haunted_character)
+	assert(state._haunting_character)
 	return state
 
 func _on_haunt_timer_timeout() -> void:

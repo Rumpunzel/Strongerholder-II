@@ -1,4 +1,4 @@
-class_name DefaultPlayerState
+class_name PlayerStateDefault
 extends PlayerState
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
@@ -26,4 +26,4 @@ func exit() -> void:
 func _on_haunt_timer_timeout() -> void:
 	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
-	finished.emit(HauntingPlayerState.new(available_action.target, get_character()))
+	finished.emit(PlayerStateHaunting.new(available_action.target, get_character()))

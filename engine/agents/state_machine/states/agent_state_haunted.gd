@@ -1,5 +1,5 @@
 @icon("uid://cyxw8it04sxg5")
-class_name HauntedAgentState
+class_name AgentStateHaunted
 extends AgentState
 
 const HAUNTED_MATERIAL: Material = preload("uid://cmbf2wnye66jw")
@@ -38,8 +38,8 @@ func serialize() -> Dictionary[StringName, Variant]:
 	serialized_state[HAUNTING] = _haunting_character.get_path()
 	return serialized_state
 
-func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> HauntedAgentState:
-	var state: HauntedAgentState = super.deserialize(serialized_state, state_machine)
+func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> AgentStateHaunted:
+	var state: AgentStateHaunted = super.deserialize(serialized_state, state_machine)
 	var haunted_character_node_path: NodePath = serialized_state[HAUNTED]
 	var haunting_character_node_path: NodePath = serialized_state[HAUNTING]
 	state._haunted_character = state_machine.get_node(haunted_character_node_path)
@@ -48,4 +48,4 @@ func deserialize(serialized_state: Dictionary[StringName, Variant], state_machin
 
 func _on_character_unhaunted(unhaunted_character: Character, _unhaunting_character: Character) -> void:
 	if unhaunted_character != agent.character: return
-	finished.emit(DefaultAgentState.new())
+	finished.emit(AgentStateDefault.new())

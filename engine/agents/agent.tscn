@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cs7if1mfalxq5" path="res://engine/agents/agent.gd" id="1_u7v0r"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_qws77"]
 [ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://engine/agents/state_machine/agent_state_machine.gd" id="3_00iam"]
-[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://engine/agents/state_machine/states/default_agent_state.gd" id="4_pe618"]
+[ext_resource type="Script" uid="uid://d12y800yphwle" path="res://engine/agents/state_machine/states/agent_state_default.gd" id="4_pe618"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="5_pe618"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]

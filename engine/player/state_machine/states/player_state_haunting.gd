@@ -1,5 +1,5 @@
 @icon("uid://bacbwgwwmvm5i")
-class_name HauntingPlayerState
+class_name PlayerStateHaunting
 extends PlayerState
 
 var _haunted_character: Character
@@ -19,13 +19,13 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.append_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_active_camera_priority()
-	_haunted_character.haunt(_haunting_character)
+	_haunted_character.haunt.rpc(_haunting_character.get_path())
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()
 	if interaction_input == "unhaunt":
-		finished.emit(DefaultPlayerState.new())
+		finished.emit(PlayerStateDefault.new())
 		return
 	var available_action: CharacterInteraction = get_available_action()
 	if not available_action: return
@@ -48,7 +48,7 @@ func exit() -> void:
 	interaction_area.reevaluate_hit_boxes_in_area()
 	haunt_phantom_camera.erase_follow_targets(_haunted_character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
-	_haunted_character.unhaunt(_haunting_character)
+	_haunted_character.unhaunt.rpc(_haunting_character.get_path())
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()
@@ -56,8 +56,8 @@ func serialize() -> Dictionary[StringName, Variant]:
 	serialized_state[HAUNTING] = _haunting_character.get_path()
 	return serialized_state
 
-func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> HauntingPlayerState:
-	var state: HauntingPlayerState = super.deserialize(serialized_state, state_machine)
+func deserialize(serialized_state: Dictionary[StringName, Variant], state_machine: StateMachine) -> PlayerStateHaunting:
+	var state: PlayerStateHaunting = super.deserialize(serialized_state, state_machine)
 	var haunted_character_node_path: NodePath = serialized_state[HAUNTED]
 	var haunting_character_node_path: NodePath = serialized_state[HAUNTING]
 	state._haunted_character = state_machine.get_node(haunted_character_node_path)
@@ -67,4 +67,4 @@ func deserialize(serialized_state: Dictionary[StringName, Variant], state_machin
 func _on_haunt_timer_timeout() -> void:
 	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
-	finished.emit(HauntingPlayerState.new(available_action.target, _haunting_character))
+	finished.emit(PlayerStateHaunting.new(available_action.target, _haunting_character))

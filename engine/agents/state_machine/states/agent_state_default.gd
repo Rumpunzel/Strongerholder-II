@@ -1,4 +1,4 @@
-class_name DefaultAgentState
+class_name AgentStateDefault
 extends AgentState
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
@@ -19,4 +19,4 @@ func exit() -> void:
 
 func _on_character_haunted(haunted_character: Character, haunting_character: Character) -> void:
 	if haunted_character != agent.character: return
-	finished.emit(HauntedAgentState.new(haunted_character, haunting_character))
+	finished.emit(AgentStateHaunted.new(haunted_character, haunting_character))

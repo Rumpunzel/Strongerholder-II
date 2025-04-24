@@ -71,7 +71,7 @@ func _update_config_file() -> Error:
 	# Save it to a file (overwrite if already exists).
 	var error: Error = _config.save(CONFIG_FILE_PATH)
 	if error == OK: print_debug("Saved config!")
-	else: printerr("Could not save config file due to Error %s" % error)
+	else: push_error("Could not save config file due to Error %s" % error)
 	return error
 
 static func _load_config_file() -> ConfigFile:
@@ -85,7 +85,7 @@ static func _load_config_file() -> ConfigFile:
 	var error: Error = config.load(CONFIG_FILE_PATH)
 	# If the file didn't load, ignore it.
 	if error != OK:
-		printerr("Could not load config file due to Error %s" % error)
+		push_error("Could not load config file due to Error %s" % error)
 		return null
 	print_debug("Loaded config!")
 	return config
@@ -94,7 +94,7 @@ static func _create_default_config_file() -> Error:
 	var default_config: ConfigFile = ConfigFile.new()
 	var error: Error = default_config.save(CONFIG_FILE_PATH)
 	if error == OK: print_debug("Saved default config!")
-	else: printerr("Could not save default config file due to Error %s" % error)
+	else: push_error("Could not save default config file due to Error %s" % error)
 	return error
 
 class ConfigEntry:

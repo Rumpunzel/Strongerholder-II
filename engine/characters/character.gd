@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / character_profile.move_speed, velocity.y / _gravity, velocity.z / character_profile.move_speed)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if character_model: character_model.play_animation(_normalized_velocity, _is_on_floor)
 
@@ -91,9 +91,19 @@ static func validate_character_data(character_data: Dictionary[StringName, Varia
 	assert(character_data.has_all([VARIATION, CHARACTER_PROFILE_PATH, SPAWN_LOCATION]))
 	assert(character_data.size() == 3)
 
+## Used to move the character without pathfinding
 @rpc("any_peer", "call_local")
-func apply_velocity(velocity_to_apply: Vector3) -> void:
-	velocity = velocity_to_apply
+func apply_input_direction(direction_input: Vector2, delta: float) -> void:
+	var move_speed: float = character_profile.move_speed
+	var acceleration: float = character_profile.acceleration * delta
+	var deceleration: float = character_profile.deceleration * delta
+	if direction_input:
+		var adjusted_direction_input: Vector2 = direction_input
+		velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
+		velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, deceleration)
+		velocity.z = move_toward(velocity.z, 0.0, deceleration)
 
 @rpc("any_peer", "call_local", "reliable")
 func haunt(haunted_character_path: NodePath) -> void:

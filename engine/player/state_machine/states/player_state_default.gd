@@ -15,7 +15,9 @@ func update(_delta: float) -> void:
 		#_haunt_timer.stop()
 
 func physics_update(delta: float) -> void:
-	apply_input_direction(delta)
+	var character: Character = get_character()
+	var direction_input: Vector2 = get_direction_input()
+	character.apply_input_direction.rpc(direction_input, delta)
 
 func handle_input(_event: InputEvent) -> void:
 	pass

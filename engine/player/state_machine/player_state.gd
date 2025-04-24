@@ -24,21 +24,3 @@ func get_default_camera_priority() -> int: return player_ghost.get_default_camer
 func get_direction_input() -> Vector2: return input_reader.get_camera_adjusted_direction_input()
 func get_interaction_input() -> StringName: return input_reader.interaction_input
 func get_available_action() -> CharacterInteraction: return interaction_area.available_action
-
-func apply_input_direction(delta: float, to_character: Character = get_character()) -> void:
-	assert(to_character)
-	var move_speed: float = to_character.character_profile.move_speed
-	var acceleration: float = to_character.character_profile.acceleration * delta
-	var deceleration: float = to_character.character_profile.deceleration * delta
-	var velocity: Vector3 = to_character.velocity
-	var direction_input: Vector2 = get_direction_input()
-	if direction_input:
-		var adjusted_direction_input: Vector2 = direction_input
-		velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
-		velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, deceleration)
-		velocity.z = move_toward(velocity.z, 0.0, deceleration)
-	to_character.apply_velocity.rpc(velocity)
-
-# TODO: Pathfinding

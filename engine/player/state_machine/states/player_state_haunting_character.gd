@@ -15,6 +15,7 @@ func _init(haunted_path: NodePath = NodePath()) -> void:
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	character.visible = false
+	character.disable_physics()
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
 	interaction_area.add_hit_box_to_ignore(_haunted)
@@ -51,6 +52,7 @@ func exit() -> void:
 	haunt_phantom_camera.erase_follow_targets(_haunted.character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
 	_haunted.unhaunt.rpc()
+	character.enable_physics()
 	character.visible = true
 
 func serialize() -> Dictionary[StringName, Variant]:

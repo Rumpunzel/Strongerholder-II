@@ -115,6 +115,14 @@ func apply_character_data(character_data: Dictionary[StringName, Variant]) -> vo
 	profile = load(character_profile_path)
 	transform = character_data[SPAWN_TRANSFORM]
 
+func enable_physics() -> void:
+	set_physics_process(true)
+	set_process(true)
+
+func disable_physics() -> void:
+	set_physics_process(false)
+	set_process(false)
+
 func get_portrait() -> Texture:
 	if model.portrait_override:
 		return model.portrait_override

@@ -51,9 +51,9 @@ static func create(for_available_action: CharacterInteraction) -> InputPrompt:
 
 func _process(_delta: float) -> void:
 	var viewport_camera: Camera3D = get_viewport().get_camera_3d()
-	var heads_up_anchor: HeadsUpAnchor = available_action.get_heads_up_anchor()
-	visible = not viewport_camera.is_position_behind(heads_up_anchor.global_position)
-	position = viewport_camera.unproject_position(heads_up_anchor.global_position) - Vector2(size.x, size.y / 2.0)
+	var heads_up_anchor: Vector3 = available_action.get_heads_up_anchor()
+	visible = not viewport_camera.is_position_behind(heads_up_anchor)
+	position = viewport_camera.unproject_position(heads_up_anchor) - Vector2(size.x, size.y / 2.0)
 	_current_prompt.button_pressed = available_action.is_action_pressed()
 
 func hide_prompt() -> void:

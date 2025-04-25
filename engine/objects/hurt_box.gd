@@ -27,9 +27,9 @@ func get_model() -> Model:
 	assert(false, "HurtBox.get_model is 'virtual' and needs to be overriden!")
 	return null
 
-func get_heads_up_anchor() -> HeadsUpAnchor:
+func get_heads_up_anchor() -> Vector3:
 	assert(false, "HurtBox.get_heads_up_anchor is 'virtual' and needs to be overriden!")
-	return null
+	return Vector3.ZERO
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

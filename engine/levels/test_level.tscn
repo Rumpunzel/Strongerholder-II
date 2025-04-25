@@ -61,7 +61,7 @@ character_profile = ExtResource("6_ck0y7")
 metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 
 [node name="FishSpawnPoint" type="Marker3D" parent="SpawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
 script = ExtResource("7_c445m")
 thing_profile = ExtResource("8_oyy5j")
 metadata/_custom_type_script = "uid://fokksh7u76ju"

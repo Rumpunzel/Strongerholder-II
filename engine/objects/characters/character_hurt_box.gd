@@ -17,8 +17,8 @@ func get_body() -> Character:
 func get_model() -> Model:
 	return character.model
 
-func get_heads_up_anchor() -> HeadsUpAnchor:
-	return character.heads_up_anchor
+func get_heads_up_anchor() -> Vector3:
+	return character.get_heads_up_anchor()
 
 func _on_character_profile_changed() -> void:
 	update_hitbox()

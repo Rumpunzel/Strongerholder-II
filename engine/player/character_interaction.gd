@@ -23,7 +23,7 @@ func is_action_just_pressed() -> bool:
 func is_action_just_released() -> bool:
 	return Input.is_action_just_released(type.input_action)
  
-func get_heads_up_anchor() -> HeadsUpAnchor:
+func get_heads_up_anchor() -> Vector3:
 	return target.get_heads_up_anchor()
 
 func get_input_events() -> Array[InputEvent]:

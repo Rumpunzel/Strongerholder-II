@@ -23,12 +23,21 @@ const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
 @export var profile: ThingProfile:
 	set(new_profile):
 		profile = new_profile
-		if not profile: return
+		if not profile:
+			assert(Engine.is_editor_hint())
+			model = null
+			_collision_shape.shape = null
+			_collision_shape.position = Vector3.ZERO
+			_collision_shape.rotation_degrees = Vector3.ZERO
+			profile_changed.emit()
+			return
+		mass = profile.mass
 		model = profile.create_model(variation)
-		heads_up_anchor = profile.create_heads_up_anchor()
 		profile.collision_shape.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
-		if Engine.is_editor_hint(): return
+		if Engine.is_editor_hint():
+			add_child(profile.create_heads_up_anchor())
+			return
 		name = profile.name
 		add_to_group(profile.get_group_name())
 
@@ -43,14 +52,6 @@ var model: Model:
 		model = new_model
 		if not model: return
 		add_child(model, true)
-
-var heads_up_anchor: HeadsUpAnchor:
-	set(new_heads_up_anchor):
-		if heads_up_anchor:
-			heads_up_anchor.queue_free()
-		heads_up_anchor = new_heads_up_anchor
-		if not heads_up_anchor: return
-		add_child(heads_up_anchor, true)
 
 var _is_on_floor: bool = true
 var _normalized_velocity: Vector3 = Vector3.ZERO
@@ -117,6 +118,9 @@ func get_portrait() -> Texture:
 	if model.portrait_override:
 		return model.portrait_override
 	return profile.portrait
+
+func get_heads_up_anchor() -> Vector3:
+	return position + profile.heads_up_display_offset
 
 #func _apply_gravity(delta: float) -> void:
 	#velocity.y -= _gravity * delta

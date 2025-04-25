@@ -3,7 +3,7 @@
 class_name Character
 extends CharacterBody3D
 
-signal character_profile_changed
+signal profile_changed
 
 const VARIATION: StringName = "variation"
 const PROFILE_PATH: StringName = "profile_path"
@@ -23,13 +23,22 @@ const CHARACTER_SCENE: PackedScene = preload("uid://cvj6b1m2b65hd")
 @export var profile: CharacterProfile:
 	set(new_character_profile):
 		profile = new_character_profile
-		if not profile: return
+		if not profile:
+			assert(Engine.is_editor_hint())
+			model = null
+			_collision_shape.shape = null
+			_collision_shape.position = Vector3.ZERO
+			_collision_shape.rotation_degrees = Vector3.ZERO
+			profile_changed.emit()
+			return
+		model = profile.create_model(variation)
+		profile.collision_shape.configure_collision_shape(_collision_shape)
+		profile_changed.emit()
+		if Engine.is_editor_hint():
+			add_child(profile.create_heads_up_anchor())
+			return
 		name = profile.name
 		add_to_group(profile.get_group_name())
-		model = profile.create_model(variation)
-		heads_up_anchor = profile.create_heads_up_anchor()
-		profile.collision_shape.configure_collision_shape(_collision_shape)
-		character_profile_changed.emit()
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
@@ -42,14 +51,6 @@ var model: Model:
 		model = new_model
 		if not model: return
 		add_child(model, true)
-
-var heads_up_anchor: HeadsUpAnchor:
-	set(new_heads_up_anchor):
-		if heads_up_anchor:
-			heads_up_anchor.queue_free()
-		heads_up_anchor = new_heads_up_anchor
-		if not heads_up_anchor: return
-		add_child(heads_up_anchor, true)
 
 var look_target: Vector3 = Vector3.BACK
 
@@ -118,6 +119,9 @@ func get_portrait() -> Texture:
 	if model.portrait_override:
 		return model.portrait_override
 	return profile.portrait
+
+func get_heads_up_anchor() -> Vector3:
+	return position + profile.heads_up_display_offset
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta

@@ -9,6 +9,12 @@ extends HurtBox
 
 func update_hitbox() -> void:
 	assert(thing)
+	if not thing.profile:
+		assert(Engine.is_editor_hint())
+		_collision_shape.shape = null
+		_collision_shape.position = Vector3.ZERO
+		_collision_shape.rotation_degrees = Vector3.ZERO
+		return
 	thing.profile.hit_box_shape.configure_collision_shape(_collision_shape)
 
 func get_body() -> Thing:
@@ -17,8 +23,8 @@ func get_body() -> Thing:
 func get_model() -> Model:
 	return thing.model
 
-func get_heads_up_anchor() -> HeadsUpAnchor:
-	return thing.heads_up_anchor
+func get_heads_up_anchor() -> Vector3:
+	return thing.get_heads_up_anchor()
 
 func _on_profile_changed() -> void:
 	update_hitbox()

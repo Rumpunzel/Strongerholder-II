@@ -5,6 +5,7 @@ extends Resource
 
 @export var _shape: Shape3D
 @export var _offset: Vector3
+@export var _rotation_degrees: Vector3
 @export var _automatic_ground_offset: bool = true
 
 func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
@@ -12,6 +13,7 @@ func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
 	assert(_shape)
 	collision_shape.shape = _shape
 	collision_shape.position = _offset
+	collision_shape.rotation_degrees = _rotation_degrees
 	if _automatic_ground_offset: collision_shape.position.y = get_ground_offset(_shape)
 
 static func get_ground_offset(for_shape: Shape3D) -> float:

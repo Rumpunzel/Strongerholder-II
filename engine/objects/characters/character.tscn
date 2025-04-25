@@ -50,6 +50,6 @@ metadata/_custom_type_script = "uid://047sfnl1r5sv"
 [node name="CharacterHurtBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_5i04j")]
 character = NodePath("..")
 
-[connection signal="character_profile_changed" from="." to="CharacterHurtBox" method="_on_character_profile_changed"]
+[connection signal="profile_changed" from="." to="CharacterHurtBox" method="_on_character_profile_changed"]
 [connection signal="haunted" from="CharacterHurtBox" to="." method="_on_haunted"]
 [connection signal="unhaunted" from="CharacterHurtBox" to="." method="_on_unhaunted"]

@@ -24,12 +24,13 @@ const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
 	set(new_profile):
 		profile = new_profile
 		if not profile: return
-		name = profile.name
-		add_to_group(profile.get_group_name())
 		model = profile.create_model(variation)
 		heads_up_anchor = profile.create_heads_up_anchor()
 		profile.collision_shape.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
+		if Engine.is_editor_hint(): return
+		name = profile.name
+		add_to_group(profile.get_group_name())
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D

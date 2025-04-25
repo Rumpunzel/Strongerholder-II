@@ -25,6 +25,7 @@ collision_mask = 7
 input_ray_pickable = false
 script = ExtResource("1_7qwap")
 _collision_shape = NodePath("CollisionShape3D")
+metadata/_custom_type_script = "uid://d1rn5h1erxn03"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 

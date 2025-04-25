@@ -1,5 +1,5 @@
 @icon("uid://bacbwgwwmvm5i")
-class_name PlayerStateHaunting
+class_name PlayerStateHauntingThing
 extends PlayerState
 
 # Data dictionary keys
@@ -7,7 +7,7 @@ const HAUNTED: StringName = "haunted"
 
 var _haunted_path: NodePath
 
-var _haunted: CharacterHurtBox
+var _haunted: ThingHurtBox
 
 ## Default parameters are required for deserialization to work
 func _init(haunted_path: NodePath = NodePath()) -> void:
@@ -18,7 +18,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
 	interaction_area.add_hurt_box_to_ignore(_haunted)
-	haunt_phantom_camera.append_follow_targets(_haunted.character)
+	haunt_phantom_camera.append_follow_targets(_haunted.thing)
 	haunt_phantom_camera.priority = get_active_camera_priority()
 	_haunted.haunt.rpc(character.get_path())
 	super.enter(state_machine, previous_state)
@@ -28,7 +28,7 @@ func update(_delta: float) -> void:
 	if interaction_input == "unhaunt":
 		finished.emit(PlayerStateDefault.new())
 		return
-	var available_action: CharacterInteraction = get_available_action()
+	var available_action: Interaction = get_available_action()
 	if not available_action: return
 	if available_action.is_action_just_pressed():
 		_on_haunt_timer_timeout()
@@ -39,8 +39,8 @@ func update(_delta: float) -> void:
 func physics_update(delta: float) -> void:
 	assert(_haunted)
 	var direction_input: Vector2 = get_direction_input()
-	_haunted.character.apply_input_direction.rpc(direction_input, delta)
-	character.transform = _haunted.character.transform
+	#_haunted.character.apply_input_direction.rpc(direction_input, delta)
+	character.transform = _haunted.thing.transform
 
 func handle_input(_event: InputEvent) -> void:
 	pass
@@ -48,7 +48,7 @@ func handle_input(_event: InputEvent) -> void:
 func exit() -> void:
 	assert(_haunted)
 	interaction_area.remove_hurt_box_to_ignore(_haunted)
-	haunt_phantom_camera.erase_follow_targets(_haunted.character)
+	haunt_phantom_camera.erase_follow_targets(_haunted.thing)
 	haunt_phantom_camera.priority = get_default_camera_priority()
 	_haunted.unhaunt.rpc()
 	character.visible = true
@@ -59,12 +59,10 @@ func serialize() -> Dictionary[StringName, Variant]:
 	serialized_state[HAUNTED] = _haunted_path
 	return serialized_state
 
-func deserialize(serialized_state: Dictionary[StringName, Variant]) -> PlayerStateHaunting:
+func deserialize(serialized_state: Dictionary[StringName, Variant]) -> PlayerStateHauntingThing:
 	super.deserialize(serialized_state)
 	_haunted_path = serialized_state[HAUNTED]
 	return self
 
 func _on_haunt_timer_timeout() -> void:
-	var available_action: CharacterInteraction = get_available_action()
-	assert(available_action)
-	finished.emit(PlayerStateHaunting.new(available_action.target.get_path()))
+	_haunt()

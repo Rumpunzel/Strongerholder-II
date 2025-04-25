@@ -4,7 +4,7 @@ class_name InteractionArea
 extends Area3D
 
 signal current_interactable_changed(current_interactable: HurtBox)
-signal available_actions_changed(available_actions: Array[CharacterInteraction])
+signal available_actions_changed(available_actions: Array[Interaction])
 
 @export var character: Character:
 	set(new_character):
@@ -28,10 +28,10 @@ var current_interactable: HurtBox:
 		available_action = _create_interaction(current_interactable)
 		current_interactable.get_model().apply_material_overlay(_highlight_material)
 
-var available_action: CharacterInteraction:
+var available_action: Interaction:
 	set(new_current_interactable):
 		available_action = new_current_interactable
-		var available_actions: Array[CharacterInteraction] = []
+		var available_actions: Array[Interaction] = []
 		if available_action: available_actions.append(available_action)
 		available_actions_changed.emit(available_actions)
 
@@ -60,12 +60,19 @@ func remove_hurt_box_to_ignore(hurt_box: HurtBox) -> void:
 func _is_ignored(hurt_box: HurtBox) -> bool:
 	return _hurt_boxes_to_ignore.has(hurt_box)
 
-func _create_interaction(for_hurt_box: HurtBox) -> CharacterInteraction:
-	return CharacterInteraction.new(
-		character,
-		for_hurt_box,
-		preload("uid://cuoqy5wkfjika"),
-	)
+var _haunt_action: Action = preload("uid://cuoqy5wkfjika")
+
+func _create_interaction(for_hurt_box: HurtBox) -> Interaction:
+	if not for_hurt_box: return Interaction.new(character, _haunt_action)
+	if for_hurt_box is CharacterHurtBox: return _create_charcter_interaction(for_hurt_box as CharacterHurtBox)
+	if for_hurt_box is ThingHurtBox: return _create_thing_interaction(for_hurt_box as ThingHurtBox)
+	return null
+
+func _create_charcter_interaction(for_hurt_box: CharacterHurtBox) -> CharacterInteraction:
+	return CharacterInteraction.new(character, for_hurt_box, _haunt_action)
+
+func _create_thing_interaction(for_hurt_box: ThingHurtBox) -> ThingInteraction:
+	return ThingInteraction.new(character, for_hurt_box, _haunt_action)
 
 func _on_area_entered(area: Area3D) -> void:
 	if not area is HurtBox: return

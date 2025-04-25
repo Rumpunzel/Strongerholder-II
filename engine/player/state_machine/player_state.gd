@@ -19,4 +19,20 @@ func get_default_camera_priority() -> int: return player_ghost.get_default_camer
 
 func get_direction_input() -> Vector2: return input_reader.get_camera_adjusted_direction_input()
 func get_interaction_input() -> StringName: return input_reader.interaction_input
-func get_available_action() -> CharacterInteraction: return interaction_area.available_action
+func get_available_action() -> Interaction: return interaction_area.available_action
+
+func _haunt() -> void:
+	var available_action: Interaction = get_available_action()
+	assert(available_action)
+	if available_action is CharacterInteraction: _haunt_character(available_action as CharacterInteraction)
+	elif available_action is ThingInteraction: _haunt_thing(available_action as ThingInteraction)
+
+func _haunt_character(action: CharacterInteraction) -> void:
+	assert(action)
+	assert(action is CharacterInteraction)
+	finished.emit(PlayerStateHauntingCharacter.new(action.target.get_path()))
+
+func _haunt_thing(action: ThingInteraction) -> void:
+	assert(action)
+	assert(action is ThingInteraction)
+	finished.emit(PlayerStateHauntingThing.new(action.target.get_path()))

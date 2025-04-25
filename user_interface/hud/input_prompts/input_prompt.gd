@@ -8,7 +8,7 @@ const INPUT_PROMPT_SCENE: PackedScene = preload("uid://d3ufd1hkx3mvi")
 @export_group("Configuration")
 @export var _timer: Timer
 
-var available_action: CharacterInteraction:
+var available_action: Interaction:
 	set(new_available_action):
 		available_action = new_available_action
 		if not available_action:
@@ -43,7 +43,7 @@ var _input_event_index: int = 0:
 			"InputEventShortcut": push_warning("InputEventShortcut is not yet implemented!")
 			_: push_error("InputEvent type for %s not supported!" % input_event)
 
-static func create(for_available_action: CharacterInteraction) -> InputPrompt:
+static func create(for_available_action: Interaction) -> InputPrompt:
 	assert(for_available_action)
 	var new_input_prompt: InputPrompt = INPUT_PROMPT_SCENE.instantiate()
 	new_input_prompt.available_action = for_available_action
@@ -63,6 +63,6 @@ func _on_timer_timeout() -> void:
 	_input_event_index += 1
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = [ ]
+	var warnings: PackedStringArray = []
 	if not _timer: warnings.append("Missing Timer reference.")
 	return warnings

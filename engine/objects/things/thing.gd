@@ -132,7 +132,7 @@ func get_heads_up_anchor() -> Vector3:
 	#var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	#transform = transform.interpolate_with(transform_looking_into_direction, profile.turn_rate * delta)
 
-func _on_haunted() -> void:
+func _on_haunted(_haunting: Character) -> void:
 	model.apply_material_overlay(profile.haunted_material)
 
 func _on_unhaunted() -> void:

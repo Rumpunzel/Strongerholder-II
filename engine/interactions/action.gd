@@ -1,5 +1,5 @@
-@icon("uid://duyxd2niq7cle")
-class_name CharacterInteraction2
+@icon("uid://bn8jblme2siv6")
+class_name Action
 extends Resource
 
 @export var name: String

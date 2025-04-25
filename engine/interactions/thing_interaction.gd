@@ -2,16 +2,16 @@
 class_name ThingInteraction
 extends Interaction
 
-var target: ThingHurtBox
+var target: ThingHitBox
 
 func _init(
 	new_source: Character,
-	new_target: ThingHurtBox,
+	new_target: ThingHitBox,
 	new_action: Action,
 ) -> void:
 	source = new_source
 	target = new_target
 	action = new_action
  
-func get_target() -> ThingHurtBox:
+func get_target() -> ThingHitBox:
 	return target

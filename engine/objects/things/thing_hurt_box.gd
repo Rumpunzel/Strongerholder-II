@@ -1,7 +1,7 @@
 @tool
 @icon("uid://bv63hb5gynt8d")
-class_name ThingHurtBox
-extends HurtBox
+class_name ThingHitBox
+extends HitBox
 
 @export var thing: Thing
 

@@ -7,7 +7,7 @@ const HAUNTED: StringName = "haunted"
 
 var _haunted_path: NodePath
 
-var _haunted: CharacterHurtBox
+var _haunted: CharacterHitBox
 
 ## Default parameters are required for deserialization to work
 func _init(haunted_path: NodePath = NodePath()) -> void:
@@ -17,7 +17,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	character.visible = false
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
-	interaction_area.add_hurt_box_to_ignore(_haunted)
+	interaction_area.add_hit_box_to_ignore(_haunted)
 	haunt_phantom_camera.append_follow_targets(_haunted.character)
 	haunt_phantom_camera.priority = get_active_camera_priority()
 	_haunted.haunt.rpc(character.get_path())
@@ -47,7 +47,7 @@ func handle_input(_event: InputEvent) -> void:
 
 func exit() -> void:
 	assert(_haunted)
-	interaction_area.remove_hurt_box_to_ignore(_haunted)
+	interaction_area.remove_hit_box_to_ignore(_haunted)
 	haunt_phantom_camera.erase_follow_targets(_haunted.character)
 	haunt_phantom_camera.priority = get_default_camera_priority()
 	_haunted.unhaunt.rpc()

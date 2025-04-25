@@ -14,6 +14,7 @@ size = Vector3(3, 3, 4)
 script = ExtResource("6_tyc7q")
 _shape = SubResource("BoxShape3D_d0vdr")
 _offset = Vector3(0, 0, 1)
+_rotation_degrees = Vector3(0, 0, 0)
 _automatic_ground_offset = true
 metadata/_custom_type_script = "uid://cfq64v34pot8s"
 

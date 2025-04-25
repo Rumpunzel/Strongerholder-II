@@ -63,12 +63,12 @@ _interaction_area = NodePath("../Ghost/InteractionArea")
 _camera = NodePath("../TopDownCamera")
 metadata/_custom_type_script = "uid://dqdyomt3y3nx8"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player_ghost", "_input_reader", "_character", "_hurt_box", "_interaction_area", "_default_phantom_camera", "_haunt_phantom_camera")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player_ghost", "_input_reader", "_character", "_hit_box", "_interaction_area", "_default_phantom_camera", "_haunt_phantom_camera")]
 script = ExtResource("3_kwn24")
 _player_ghost = NodePath("..")
 _input_reader = NodePath("../InputReader")
 _character = NodePath("../Ghost")
-_hurt_box = NodePath("../Ghost/CharacterHurtBox")
+_hit_box = NodePath("../Ghost/CharacterHitBox")
 _interaction_area = NodePath("../Ghost/InteractionArea")
 _default_phantom_camera = NodePath("../DefaultCamera")
 _haunt_phantom_camera = NodePath("../HauntCamera")
@@ -127,7 +127,7 @@ profile = ExtResource("11_cs6u8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("CapsuleShape3D_pj10w")
 
-[node name="CharacterHurtBox" parent="Ghost" index="2"]
+[node name="CharacterHitBox" parent="Ghost" index="2"]
 collision_layer = 1048576
 
 [node name="InteractionArea" parent="Ghost" node_paths=PackedStringArray("character") instance=ExtResource("9_46i1k")]

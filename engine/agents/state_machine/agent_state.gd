@@ -4,4 +4,4 @@ extends State
 
 var agent: Agent
 var character: Character
-var hurt_box: CharacterHurtBox
+var hit_box: CharacterHitBox

@@ -10,13 +10,13 @@ var _haunting_path: NodePath
 var _haunting: Character
 
 ## Default parameters are required for deserialization to work
-func _init(haunting_path: NodePath = NodePath(),) -> void:
+func _init(haunting_path: NodePath = NodePath(), ) -> void:
 	_haunting_path = haunting_path
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunting = state_machine.get_node(_haunting_path)
 	assert(_haunting)
-	hurt_box.unhaunted.connect(_on_unhaunted)
+	hit_box.unhaunted.connect(_on_unhaunted)
 	super.enter(state_machine, previous_state)
 
 func update(_delta: float) -> void:
@@ -26,7 +26,7 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	hurt_box.unhaunted.disconnect(_on_unhaunted)
+	hit_box.unhaunted.disconnect(_on_unhaunted)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	assert(_haunting)

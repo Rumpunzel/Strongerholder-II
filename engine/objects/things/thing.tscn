@@ -39,9 +39,9 @@ script = ExtResource("3_16bwq")
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
-[node name="ThingHurtBox" parent="." node_paths=PackedStringArray("thing") instance=ExtResource("4_pi2rr")]
+[node name="ThingHitBox" parent="." node_paths=PackedStringArray("thing") instance=ExtResource("4_pi2rr")]
 thing = NodePath("..")
 
-[connection signal="profile_changed" from="." to="ThingHurtBox" method="_on_profile_changed"]
-[connection signal="haunted" from="ThingHurtBox" to="." method="_on_haunted"]
-[connection signal="unhaunted" from="ThingHurtBox" to="." method="_on_unhaunted"]
+[connection signal="profile_changed" from="." to="ThingHitBox" method="_on_profile_changed"]
+[connection signal="haunted" from="ThingHitBox" to="." method="_on_haunted"]
+[connection signal="unhaunted" from="ThingHitBox" to="." method="_on_unhaunted"]

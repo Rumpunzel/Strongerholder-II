@@ -5,7 +5,7 @@ extends State
 var player_ghost: PlayerGhost
 var input_reader: InputReader
 var character: Character
-var hurt_box: CharacterHurtBox
+var hit_box: CharacterHitBox
 var interaction_area: InteractionArea
 var default_phantom_camera: PhantomCamera3D
 var haunt_phantom_camera: PhantomCamera3D

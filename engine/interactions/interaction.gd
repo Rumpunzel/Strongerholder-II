@@ -25,9 +25,9 @@ func get_input_events() -> Array[InputEvent]:
 	return InputMap.action_get_events(action.input_action)
 
 func get_heads_up_anchor() -> Vector3:
-	var interaction_target: HurtBox = get_target()
+	var interaction_target: HitBox = get_target()
 	if not interaction_target: return source.get_heads_up_anchor()
 	return interaction_target.get_heads_up_anchor()
 
-func get_target() -> HurtBox:
+func get_target() -> HitBox:
 	return null

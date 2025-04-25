@@ -13,6 +13,7 @@ enum GameStatus {
 @export var _level_spawner: LevelSpawner
 @export var _player_ghost_spawner: PlayerGhostSpawner
 @export var _agent_spawner: AgentSpawner
+@export var _thing_spawner: ThingSpawner
 
 var _game_status: GameStatus = GameStatus.NONE
 
@@ -27,6 +28,7 @@ func start_new_game() -> void:
 	assert(_game_status == GameStatus.NONE)
 	_level_spawner.spawn(_default_level.resource_path)
 	_agent_spawner.spawn_all_from_spawn_spoints()
+	_thing_spawner.spawn_all_from_spawn_spoints()
 	if Engine.is_editor_hint(): return
 	_player_ghost_spawner.start_synching_players()
 	_game_status = GameStatus.RUNNING
@@ -49,7 +51,8 @@ func stop_game() -> void:
 	assert(multiplayer.is_server())
 	print_debug("Stopping game...")
 	_player_ghost_spawner.stop_synching_players()
-	_agent_spawner.remove_all_agent()
+	_agent_spawner.remove_all_agents()
+	_thing_spawner.remove_all_things()
 	_level_spawner.unload_level()
 	_game_status = GameStatus.NONE
 
@@ -69,4 +72,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not _level_spawner: warnings.append("Missing LevelSpawner reference.")
 	if not _player_ghost_spawner: warnings.append("Missing PlayerGhostSpawner reference.")
 	if not _agent_spawner: warnings.append("Missing AgentSpawner reference.")
+	if not _thing_spawner: warnings.append("Missing ThingSpawner reference.")
 	return warnings

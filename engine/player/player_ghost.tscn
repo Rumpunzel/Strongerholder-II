@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="8_mvbif"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="9_46i1k"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="10_irqko"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/character_profiles/ghost.tres" id="11_cs6u8"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/characters/ghosts/ghost.tres" id="11_cs6u8"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
 properties/0/path = NodePath("InputReader:direction_input")

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ThingProfile" load_steps=9 format=3 uid="uid://buicitfb4e20w"]
+
+[ext_resource type="PackedScene" uid="uid://bmu3ibo7uud8j" path="res://data/things/fish/fish_1_a_2.tscn" id="1_hpr2k"]
+[ext_resource type="PackedScene" uid="uid://bbqq46f2p8k0v" path="res://data/things/fish/fish_1_b_2.tscn" id="2_dnlk6"]
+[ext_resource type="PackedScene" uid="uid://cdy48nd51271h" path="res://data/things/fish/fish_1_d_2.tscn" id="3_l6kfr"]
+[ext_resource type="PackedScene" uid="uid://cfqqo6n7v0fli" path="res://data/things/fish/fish_1_e_2.tscn" id="4_bo3md"]
+[ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://data/characters/defaults/default_collision_shape.tres" id="5_7xajp"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="6_dvj1l"]
+[ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://data/characters/defaults/default_hit_box_shape.tres" id="7_w4exb"]
+[ext_resource type="Script" uid="uid://dkumiyoi57n5x" path="res://engine/objects/things/thing_profile.gd" id="8_l001u"]
+
+[resource]
+script = ExtResource("8_l001u")
+group = 0
+density = 0.0
+name = "Fish"
+color = Color(0, 0, 0, 1)
+collision_shape = ExtResource("5_7xajp")
+hit_box_shape = ExtResource("7_w4exb")
+haunted_material = ExtResource("6_dvj1l")
+heads_up_display_offset = Vector3(0, 2, 0)
+_model_variations = Array[PackedScene]([ExtResource("1_hpr2k"), ExtResource("2_dnlk6"), ExtResource("3_l6kfr"), ExtResource("4_bo3md")])
+metadata/_custom_type_script = "uid://dkumiyoi57n5x"

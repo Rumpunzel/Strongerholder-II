@@ -8,8 +8,6 @@ extends Node3D
 @export_group("Configuration")
 @export var _animation_tree: AnimationTree
 
-@onready var _state_machine: AnimationNodeStateMachinePlayback = _animation_tree["parameters/playback"]
-
 static func gather_all_geometry_instances_on(node: Node) -> Array[MeshInstance3D]:
 	var geometry_instances: Array[MeshInstance3D] = [ ]
 	for child: Node in node.get_children():
@@ -18,7 +16,9 @@ static func gather_all_geometry_instances_on(node: Node) -> Array[MeshInstance3D
 	return geometry_instances
 
 func play_animation(normalized_velocity: Vector3, _is_on_floor: bool) -> void:
-	if not _state_machine: return
+	if not _animation_tree: return
+	var _state_machine: AnimationNodeStateMachinePlayback = _animation_tree["parameters/playback"]
+	assert(_state_machine)
 	if normalized_velocity:
 		_state_machine.travel("Walk")
 		_animation_tree.set("parameters/Walk/blend_position", normalized_velocity.length_squared())

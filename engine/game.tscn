@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvt1s3i2xw5s6"]
+[gd_scene load_steps=10 format=3 uid="uid://bvt1s3i2xw5s6"]
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://engine/game.gd" id="1_l8g03"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://user_interface/pause_menu/pause_menu.tscn" id="2_j8tme"]
@@ -6,15 +6,17 @@
 [ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://engine/levels/ghost_spawner.gd" id="6_j8tme"]
 [ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://engine/levels/test_level.tscn" id="8_ee6o4"]
 [ext_resource type="Script" uid="uid://ct2kte5v780cm" path="res://engine/levels/level_spawner.gd" id="9_4cobl"]
+[ext_resource type="Script" uid="uid://dtegkhffyvsvk" path="res://engine/objects/things/thing_spawner.gd" id="9_eadau"]
 [ext_resource type="PackedScene" uid="uid://rmev082m4bw0" path="res://user_interface/user_interface.tscn" id="10_j8tme"]
 [ext_resource type="Script" uid="uid://cv80krf8r7fls" path="res://engine/agents/agent_spawner.gd" id="10_qf6n1"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("_level_spawner", "_player_ghost_spawner", "_agent_spawner")]
+[node name="Game" type="Node" node_paths=PackedStringArray("_level_spawner", "_player_ghost_spawner", "_agent_spawner", "_thing_spawner")]
 script = ExtResource("1_l8g03")
 _default_level = ExtResource("8_ee6o4")
 _level_spawner = NodePath("LevelSpawner")
 _player_ghost_spawner = NodePath("PlayerGhostSpawner")
 _agent_spawner = NodePath("AgentSpawner")
+_thing_spawner = NodePath("ThingSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
 
 [node name="UserInterface" parent="." instance=ExtResource("10_j8tme")]
@@ -42,6 +44,16 @@ script = ExtResource("10_qf6n1")
 metadata/_custom_type_script = "uid://cv80krf8r7fls"
 
 [node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
+script = ExtResource("6_b686c")
+_spawner = NodePath("..")
+metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+
+[node name="ThingSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath(".")
+script = ExtResource("9_eadau")
+metadata/_custom_type_script = "uid://dtegkhffyvsvk"
+
+[node name="NodeSerializer" type="Node" parent="ThingSpawner" node_paths=PackedStringArray("_spawner")]
 script = ExtResource("6_b686c")
 _spawner = NodePath("..")
 metadata/_custom_type_script = "uid://dpnh7ub3toyd6"

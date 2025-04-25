@@ -6,7 +6,7 @@ extends RigidBody3D
 signal profile_changed
 
 const VARIATION: StringName = "variation"
-const THING_PROFILE_PATH: StringName = "profile_path"
+const PROFILE_PATH: StringName = "profile_path"
 const SPAWN_TRANSFORM: StringName = "spawn_transform"
 
 const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
@@ -78,17 +78,17 @@ static func create(new_variation: int, new_profile: ThingProfile, new_spawn_tran
 	new_thing.transform = new_spawn_transform
 	return new_thing
 
-static func from_character_data(thing_data: Dictionary[StringName, Variant]) -> Thing:
+static func from_thing_data(thing_data: Dictionary[StringName, Variant]) -> Thing:
 	validate_thing_data(thing_data)
 	var new_variation: int = thing_data[VARIATION]
-	var new_profile_path: String = thing_data[THING_PROFILE_PATH]
+	var new_profile_path: String = thing_data[PROFILE_PATH]
 	var new_profile: ThingProfile = load(new_profile_path)
 	assert(new_profile)
 	var new_spawn_transform: Transform3D = thing_data[SPAWN_TRANSFORM]
 	return create(new_variation, new_profile, new_spawn_transform)
 
 static func validate_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
-	assert(thing_data.has_all([VARIATION, THING_PROFILE_PATH, SPAWN_TRANSFORM]))
+	assert(thing_data.has_all([VARIATION, PROFILE_PATH, SPAWN_TRANSFORM]))
 	assert(thing_data.size() == 3)
 
 ## Used to move the character without pathfinding
@@ -108,7 +108,7 @@ static func validate_thing_data(thing_data: Dictionary[StringName, Variant]) -> 
 func apply_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
 	validate_thing_data(thing_data)
 	variation = thing_data[VARIATION]
-	var profile_path: String = thing_data[THING_PROFILE_PATH]
+	var profile_path: String = thing_data[PROFILE_PATH]
 	profile = load(profile_path)
 	transform = thing_data[SPAWN_TRANSFORM]
 

@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://engine/levels/level.gd" id="1_ywn5t"]
-[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/character_profiles/ghost.tres" id="4_q1hu1"]
-[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/character_profiles/king.tres" id="5_kudci"]
-[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://data/character_profiles/rogue.tres" id="6_ck0y7"]
+[ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/characters/ghosts/ghost.tres" id="4_q1hu1"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/characters/people/king.tres" id="5_kudci"]
+[ext_resource type="Resource" uid="uid://d18sc738vkuku" path="res://data/characters/people/rogue.tres" id="6_ck0y7"]
+[ext_resource type="Script" uid="uid://fokksh7u76ju" path="res://engine/levels/spawn_points/thing_spawn_point.gd" id="7_c445m"]
+[ext_resource type="Resource" uid="uid://buicitfb4e20w" path="res://data/things/fish/fish.tres" id="8_oyy5j"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
 [ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://engine/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
 
@@ -50,12 +52,16 @@ metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
 script = ExtResource("10_bpeee")
 character_profile = ExtResource("5_kudci")
-spawn_limit = 1
 metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 
 [node name="RogueSpawnPoint" type="Marker3D" parent="SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
 script = ExtResource("10_bpeee")
 character_profile = ExtResource("6_ck0y7")
-spawn_limit = 1
 metadata/_custom_type_script = "uid://da7xwt7wct3ms"
+
+[node name="FishSpawnPoint" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+script = ExtResource("7_c445m")
+thing_profile = ExtResource("8_oyy5j")
+metadata/_custom_type_script = "uid://fokksh7u76ju"

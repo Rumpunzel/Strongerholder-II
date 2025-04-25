@@ -6,7 +6,7 @@ extends CharacterBody3D
 signal character_profile_changed
 
 const VARIATION: StringName = "variation"
-const CHARACTER_PROFILE_PATH: StringName = "character_profile_path"
+const PROFILE_PATH: StringName = "profile_path"
 const SPAWN_TRANSFORM: StringName = "spawn_transform"
 
 const CHARACTER_SCENE: PackedScene = preload("uid://cvj6b1m2b65hd")
@@ -83,14 +83,14 @@ static func create(new_variation: int, new_character_profile: CharacterProfile, 
 static func from_character_data(character_data: Dictionary[StringName, Variant]) -> Character:
 	validate_character_data(character_data)
 	var new_variation: int = character_data[VARIATION]
-	var new_character_profile_path: String = character_data[CHARACTER_PROFILE_PATH]
+	var new_character_profile_path: String = character_data[PROFILE_PATH]
 	var new_character_profile: CharacterProfile = load(new_character_profile_path)
 	assert(new_character_profile)
 	var new_spawn_transform: Transform3D = character_data[SPAWN_TRANSFORM]
 	return create(new_variation, new_character_profile, new_spawn_transform)
 
 static func validate_character_data(character_data: Dictionary[StringName, Variant]) -> void:
-	assert(character_data.has_all([VARIATION, CHARACTER_PROFILE_PATH, SPAWN_TRANSFORM]))
+	assert(character_data.has_all([VARIATION, PROFILE_PATH, SPAWN_TRANSFORM]))
 	assert(character_data.size() == 3)
 
 ## Used to move the character without pathfinding
@@ -110,7 +110,7 @@ func apply_input_direction(direction_input: Vector2, delta: float) -> void:
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	validate_character_data(character_data)
 	variation = character_data[VARIATION]
-	var character_profile_path: String = character_data[CHARACTER_PROFILE_PATH]
+	var character_profile_path: String = character_data[PROFILE_PATH]
 	profile = load(character_profile_path)
 	transform = character_data[SPAWN_TRANSFORM]
 

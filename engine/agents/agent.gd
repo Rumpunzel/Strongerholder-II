@@ -12,11 +12,6 @@ const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
 @export_group("Configuration")
 @export var _state_machine: AgentStateMachine
 
-static func create(character_data: Dictionary[StringName, Variant]) -> Agent:
-	var new_agent: Agent = AGENT_SCENE.instantiate()
-	new_agent.character.apply_character_data(character_data)
-	return new_agent
-
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	if not is_multiplayer_authority(): return
@@ -31,6 +26,11 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	if not is_multiplayer_authority(): return
 	_state_machine.physics_update(delta)
+
+static func create(character_data: Dictionary[StringName, Variant]) -> Agent:
+	var new_agent: Agent = AGENT_SCENE.instantiate()
+	new_agent.character.apply_character_data(character_data)
+	return new_agent
 
 static func validate_agent_data(agent_data: Dictionary[StringName, Variant]) -> void:
 	assert(agent_data.has_all([CHARACTER_DATA]))

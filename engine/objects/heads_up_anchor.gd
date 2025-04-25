@@ -3,6 +3,7 @@
 class_name HeadsUpAnchor
 extends Marker3D
 
+const HEADS_UP_ANCHOR_SCENE: PackedScene = preload("uid://cpmcbnpcemt61")
 const HUD_PLACEHOLDER_SCENE: PackedScene = preload("uid://c3ggesrya61ic")
 
 @export var _root_node: Node3D
@@ -20,6 +21,11 @@ func _enter_tree() -> void:
 	if not _global_placeholder and EditorInterface.get_edited_scene_root() != _root_node: return
 	_hud_placeholder = HUD_PLACEHOLDER_SCENE.instantiate()
 	add_child(_hud_placeholder, false, Node.INTERNAL_MODE_FRONT)
+
+static func create(offset: Vector3) -> HeadsUpAnchor:
+	var new_heads_up_anchor: HeadsUpAnchor = HEADS_UP_ANCHOR_SCENE.instantiate()
+	new_heads_up_anchor.position = offset
+	return new_heads_up_anchor
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

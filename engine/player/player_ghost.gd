@@ -18,7 +18,6 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 		player = new_player
 		set_multiplayer_authority(player.get_multiplayer_authority())
 		name = player.name
-		input_reader.player = player
 		_camera.current = player.is_local_player()
 		player.player_info_changed.connect(_on_player_info_changed)
 

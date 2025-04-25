@@ -3,44 +3,30 @@
 class_name InteractionArea
 extends Area3D
 
-signal hit_box_entered(hit_box: HitBox)
-signal hit_box_exited(hit_box: HitBox)
-
-signal current_interactable_changed(current_interactable: HitBox)
+signal current_interactable_changed(current_interactable: HurtBox)
 signal available_actions_changed(available_actions: Array[CharacterInteraction])
 
 @export var character: Character:
 	set(new_character):
-		if character and characters_to_ignore_areas_from.has(character):
-			characters_to_ignore_areas_from.erase(character)
+		assert(new_character)
 		character = new_character
-		reevaluate_hit_boxes_in_area()
-		if not character:
-			set_enabled(false)
-			return
-		characters_to_ignore_areas_from.append(character)
-		if not character.character_profile:
-			_collision_shape.shape = null
-			_collision_shape.position = Vector3.ZERO
-			return
-		character.character_profile.interaction_area_shape.configure_collision_shape(_collision_shape)
-
-@export var characters_to_ignore_areas_from: Array[Character] = []
+		character.profile.interaction_area_shape.configure_collision_shape(_collision_shape)
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
 @export var _highlight_material: Material
 
-var current_interactable: HitBox:
+var current_interactable: HurtBox:
 	set(new_current_interactable):
-		if current_interactable: current_interactable.apply_material_overlay(null)
+		if new_current_interactable == current_interactable: return
+		if current_interactable: current_interactable.get_model().apply_material_overlay(null)
 		current_interactable = new_current_interactable
 		current_interactable_changed.emit(current_interactable)
 		if not current_interactable:
 			available_action = null
 			return
-		available_action = _create_character_interaction(current_interactable)
-		current_interactable.apply_material_overlay(_highlight_material)
+		available_action = _create_interaction(current_interactable)
+		current_interactable.get_model().apply_material_overlay(_highlight_material)
 
 var available_action: CharacterInteraction:
 	set(new_current_interactable):
@@ -49,98 +35,60 @@ var available_action: CharacterInteraction:
 		if available_action: available_actions.append(available_action)
 		available_actions_changed.emit(available_actions)
 
-var _hit_boxes_in_area: Array[HitBox] = []
-var _ignored_hit_boxes_in_area: Array[HitBox] = []
+var _hurt_boxes_in_area: Array[HurtBox] = []
+var _hurt_boxes_to_ignore: Array[HurtBox] = []
 
-func nearest_hit_box_in_area() -> HitBox:
-	var nearest_hit_box: HitBox = null
-	var distance_to_nearest_hit_box: float = INF
-	for near_hit_box: HitBox in _hit_boxes_in_area:
-		if not nearest_hit_box_in_area or _collision_shape.position.distance_squared_to(near_hit_box.position) < distance_to_nearest_hit_box:
-			nearest_hit_box = near_hit_box
-	return nearest_hit_box
+func nearest_hurt_box_in_area() -> HurtBox:
+	var nearest_hurt_box: HurtBox = null
+	var distance_to_nearest_hurt_box: float = INF
+	for hurt_box: HurtBox in _hurt_boxes_in_area:
+		if _is_ignored(hurt_box): continue
+		if not nearest_hurt_box or _collision_shape.position.distance_squared_to(hurt_box.position) < distance_to_nearest_hurt_box:
+			nearest_hurt_box = hurt_box
+	return nearest_hurt_box
 
-func reevaluate_hit_boxes_in_area() -> void:
-	var hit_boxes_in_area: Array[HitBox] = []
-	var ignored_hit_boxes_in_area: Array[HitBox] = []
-	
-	var removed_hit_boxes_in_area: Array[HitBox] = _remove_ignored_hit_boxes_in_area(hit_boxes_in_area, ignored_hit_boxes_in_area)
-	var added_hit_boxes_in_area: Array[HitBox] = _add_unignored_hit_boxes_in_area(hit_boxes_in_area, ignored_hit_boxes_in_area)
-	
-	_hit_boxes_in_area = hit_boxes_in_area
-	_ignored_hit_boxes_in_area = ignored_hit_boxes_in_area
-	
-	for hit_box: HitBox in removed_hit_boxes_in_area:
-		hit_box_exited.emit(hit_box)
-	for hit_box: HitBox in added_hit_boxes_in_area:
-		hit_box_entered.emit(hit_box)
+func add_hurt_box_to_ignore(hurt_box: HurtBox) -> void:
+	assert(not _hurt_boxes_to_ignore.has(hurt_box))
+	_hurt_boxes_to_ignore.append(hurt_box)
+	if current_interactable == hurt_box: current_interactable = nearest_hurt_box_in_area()
 
-func set_enabled(enabled: bool) -> void:
-	monitoring = enabled
-	monitorable = enabled
-	_collision_shape.disabled = not enabled
+func remove_hurt_box_to_ignore(hurt_box: HurtBox) -> void:
+	assert(_hurt_boxes_to_ignore.has(hurt_box))
+	_hurt_boxes_to_ignore.erase(hurt_box)
+	if not current_interactable: current_interactable = nearest_hurt_box_in_area()
 
-func _remove_ignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_hit_boxes_in_area: Array[HitBox]) -> Array[HitBox]:
-	var removed_hit_boxes_in_area: Array[HitBox] = []
-	for hit_box: HitBox in _hit_boxes_in_area:
-		if not _is_ignored(hit_box):
-			hit_boxes_in_area.append(hit_box)
-		else:
-			ignored_hit_boxes_in_area.append(hit_box)
-			removed_hit_boxes_in_area.append(hit_box)
-	return removed_hit_boxes_in_area
+func _is_ignored(hurt_box: HurtBox) -> bool:
+	return _hurt_boxes_to_ignore.has(hurt_box)
 
-func _add_unignored_hit_boxes_in_area(hit_boxes_in_area: Array[HitBox], ignored_hit_boxes_in_area: Array[HitBox]) -> Array[HitBox]:
-	var added_hit_boxes_in_area: Array[HitBox] = []
-	for hit_box: HitBox in _ignored_hit_boxes_in_area:
-		if not _is_ignored(hit_box):
-			hit_boxes_in_area.append(hit_box)
-			added_hit_boxes_in_area.append(hit_box)
-		else:
-			ignored_hit_boxes_in_area.append(hit_box)
-	return added_hit_boxes_in_area
-
-func _is_ignored(hit_box: HitBox) -> bool:
-	return characters_to_ignore_areas_from.has(hit_box.character)
-
-func _create_character_interaction(for_hit_box: HitBox) -> CharacterInteraction:
+func _create_interaction(for_hurt_box: HurtBox) -> CharacterInteraction:
 	return CharacterInteraction.new(
 		character,
-		for_hit_box.character,
+		for_hurt_box,
 		preload("uid://cuoqy5wkfjika"),
 	)
 
-func _on_hit_box_entered(hit_box: HitBox) -> void:
-	if current_interactable: return
-	current_interactable = hit_box
-
-func _on_hit_box_exited(hit_box: HitBox) -> void:
-	if hit_box != current_interactable: return
-	current_interactable = nearest_hit_box_in_area()
-
 func _on_area_entered(area: Area3D) -> void:
-	if not area is HitBox: return
-	var hit_box: HitBox = area
-	if _is_ignored(hit_box):
-		_ignored_hit_boxes_in_area.append(hit_box)
-		return
+	if not area is HurtBox: return
+	var hurt_box: HurtBox = area
+	if hurt_box.get_body() == character: return
 	var index_to_insert: int = 0
-	for index: int in _hit_boxes_in_area.size():
-		var hit_box_in_are: HitBox = _hit_boxes_in_area[index]
-		if _collision_shape.position.distance_squared_to(hit_box.position) > _collision_shape.position.distance_squared_to(hit_box_in_are.position):
+	for index: int in _hurt_boxes_in_area.size():
+		var hurt_box_in_area: Node3D = _hurt_boxes_in_area[index]
+		if _collision_shape.position.distance_squared_to(hurt_box.position) > _collision_shape.position.distance_squared_to(hurt_box_in_area.position):
 			index_to_insert = index
 			break
-	_hit_boxes_in_area.insert(index_to_insert, area)
-	hit_box_entered.emit(area)
+	_hurt_boxes_in_area.insert(index_to_insert, hurt_box)
+	if _is_ignored(hurt_box): return
+	if current_interactable: return
+	current_interactable = hurt_box
 
 func _on_area_exited(area: Area3D) -> void:
-	if not area is HitBox: return
-	var hit_box: HitBox = area
-	if _is_ignored(hit_box):
-		_ignored_hit_boxes_in_area.erase(hit_box)
-		return
-	_hit_boxes_in_area.erase(hit_box)
-	hit_box_exited.emit(hit_box)
+	if not area is HurtBox: return
+	var hurt_box: HurtBox = area
+	if hurt_box.get_body() == character: return
+	_hurt_boxes_in_area.erase(hurt_box)
+	if _is_ignored(hurt_box): return
+	if current_interactable == hurt_box: current_interactable = nearest_hurt_box_in_area()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

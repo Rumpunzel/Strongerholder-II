@@ -15,7 +15,6 @@ func update(_delta: float) -> void:
 		#_haunt_timer.stop()
 
 func physics_update(delta: float) -> void:
-	var character: Character = get_character()
 	var direction_input: Vector2 = get_direction_input()
 	character.apply_input_direction.rpc(direction_input, delta)
 
@@ -28,4 +27,4 @@ func exit() -> void:
 func _on_haunt_timer_timeout() -> void:
 	var available_action: CharacterInteraction = get_available_action()
 	assert(available_action)
-	finished.emit(PlayerStateHaunting.new(available_action.target.get_path(), get_character().get_path()))
+	finished.emit(PlayerStateHaunting.new(available_action.target.get_path()))

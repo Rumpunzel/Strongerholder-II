@@ -1,7 +1,7 @@
 @tool
 @icon("uid://c8lah4qxw5f0v")
 class_name GhostSprite
-extends CharacterModel
+extends Model
 
 @export_group("Configuration")
 

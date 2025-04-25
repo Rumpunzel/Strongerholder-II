@@ -1,6 +1,6 @@
 @tool
 @icon("uid://cpbv0myc0qfxb")
-class_name CharacterModel
+class_name Model
 extends Node3D
 
 @export var portrait_override: Texture

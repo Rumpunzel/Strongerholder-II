@@ -67,7 +67,7 @@ static func from_player_info(player_info: Dictionary[StringName, Variant]) -> Pl
 	var new_player_id: int = player_info[ID]
 	var new_player_name: String = player_info[NAME]
 	var new_ghost_sprite_frame: int = player_info[GHOST_SPRITE_FRAME]
-	var new_player: Player = Player.create(new_player_id, new_player_name, new_ghost_sprite_frame)
+	var new_player: Player = create(new_player_id, new_player_name, new_ghost_sprite_frame)
 	return new_player
 
 static func validate_player_info(player_info: Dictionary[StringName, Variant]) -> void:

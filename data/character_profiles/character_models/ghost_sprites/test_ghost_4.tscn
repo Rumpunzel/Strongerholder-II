@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cyj5uaua2najt"]
 
-[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://data/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_ur4si"]
+[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_ur4si"]
 [ext_resource type="Texture2D" uid="uid://dttbm8uiw4atv" path="res://protoype_assets/dont_starve_ghosts/webber.webp" id="2_321l3"]
 [ext_resource type="SpriteFrames" uid="uid://dbq41i8fobvy5" path="res://data/character_profiles/character_models/ghost_sprites/webber_animation.tres" id="2_ur4si"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_tree.tres" id="3_o50cj"]

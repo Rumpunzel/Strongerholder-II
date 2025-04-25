@@ -2,12 +2,10 @@
 class_name PlayerState
 extends State
 
-# Data dictionary keys
-const HAUNTED: StringName = "haunted_character"
-const HAUNTING: StringName = "haunting_character"
-
 var player_ghost: PlayerGhost
 var input_reader: InputReader
+var character: Character
+var hurt_box: CharacterHurtBox
 var interaction_area: InteractionArea
 var default_phantom_camera: PhantomCamera3D
 var haunt_phantom_camera: PhantomCamera3D
@@ -15,8 +13,6 @@ var haunt_phantom_camera: PhantomCamera3D
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:
 	pass
-
-func get_character() -> Character: return player_ghost.character
 
 func get_active_camera_priority() -> int: return player_ghost.get_active_camera_priority()
 func get_default_camera_priority() -> int: return player_ghost.get_default_camera_priority()

@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://cvj6b1m2b65hd"]
 
-[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://engine/characters/character.gd" id="1_f5t6j"]
+[ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://engine/objects/characters/character.gd" id="1_f5t6j"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_b3pdv"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://client/serialization/synchronizer_serializer.gd" id="3_42yey"]
-[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://engine/characters/hit_box.tscn" id="4_5i04j"]
+[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://engine/objects/characters/character_hurt_box.tscn" id="4_5i04j"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")
@@ -25,14 +25,13 @@ properties/5/path = NodePath(".:variation")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape", "_hit_box") groups=["Characters"]]
-collision_layer = 2
-collision_mask = 3
+[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape") groups=["Characters"]]
+collision_layer = 4
+collision_mask = 7
 input_ray_pickable = false
 velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_f5t6j")
 _collision_shape = NodePath("CollisionShape3D")
-_hit_box = NodePath("HitBox")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -48,6 +47,9 @@ _synchronizer = NodePath("..")
 type = 64
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
-[node name="HitBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_5i04j")]
-collision_mask = 0
+[node name="CharacterHurtBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_5i04j")]
 character = NodePath("..")
+
+[connection signal="character_profile_changed" from="." to="CharacterHurtBox" method="_on_character_profile_changed"]
+[connection signal="haunted" from="CharacterHurtBox" to="." method="_on_haunted"]
+[connection signal="unhaunted" from="CharacterHurtBox" to="." method="_on_unhaunted"]

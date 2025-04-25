@@ -1,6 +1,6 @@
 @tool
 @icon("uid://cyrqlm5mdw05a")
-class_name CharacterAreaShape
+class_name AreaShape
 extends Resource
 
 @export var _shape: Shape3D

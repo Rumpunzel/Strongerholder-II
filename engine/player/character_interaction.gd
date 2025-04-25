@@ -2,12 +2,12 @@
 class_name CharacterInteraction
 
 var source: Character
-var target: Character
+var target: HurtBox
 var type: CharacterInteraction2
 
 func _init(
 	new_source: Character,
-	new_target: Character,
+	new_target: HurtBox,
 	new_type: CharacterInteraction2,
 ) -> void:
 	source = new_source
@@ -24,7 +24,7 @@ func is_action_just_released() -> bool:
 	return Input.is_action_just_released(type.input_action)
  
 func get_heads_up_anchor() -> HeadsUpAnchor:
-	return target.heads_up_anchor
+	return target.get_heads_up_anchor()
 
 func get_input_events() -> Array[InputEvent]:
 	return InputMap.action_get_events(type.input_action)

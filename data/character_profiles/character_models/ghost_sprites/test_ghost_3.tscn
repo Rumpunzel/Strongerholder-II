@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bgxshg4el0dgu"]
 
-[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://data/character_profiles/character_models/ghost_sprites/ghost_sprite.gd" id="1_u8kfk"]
+[ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_u8kfk"]
 [ext_resource type="Texture2D" uid="uid://cs44x2xxudif7" path="res://protoype_assets/dont_starve_ghosts/warly.webp" id="2_5wunf"]
 [ext_resource type="SpriteFrames" uid="uid://c3gp1lcq7io2i" path="res://data/character_profiles/character_models/ghost_sprites/warly_animation.tres" id="2_u8kfk"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_tree.tres" id="3_0hnj3"]

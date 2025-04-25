@@ -1,12 +1,10 @@
-[gd_resource type="Resource" script_class="CharacterProfile" load_steps=31 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="CharacterProfile" load_steps=29 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://b4xn7w6bjqy21" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_0.tscn" id="1_mpc0u"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="1_s4khq"]
 [ext_resource type="PackedScene" uid="uid://blbstfsxnrk65" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_1.tscn" id="2_imtv8"]
-[ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/characters/heads_up_anchor.tscn" id="2_m7bob"]
-[ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://engine/characters/character_profile.gd" id="3_6mhvl"]
+[ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://engine/objects/characters/character_profile.gd" id="3_6mhvl"]
 [ext_resource type="PackedScene" uid="uid://k23w18qcspr2" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_2.tscn" id="3_e0uus"]
-[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/characters/character_area_shape.gd" id="3_pj10w"]
+[ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/objects/area_shape.gd" id="3_pj10w"]
 [ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="4_dua0m"]
 [ext_resource type="PackedScene" uid="uid://bgxshg4el0dgu" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_3.tscn" id="4_oo4sv"]
 [ext_resource type="PackedScene" uid="uid://cyj5uaua2najt" path="res://data/character_profiles/character_models/ghost_sprites/test_ghost_4.tscn" id="5_lp73j"]
@@ -51,22 +49,17 @@ metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
 [resource]
 script = ExtResource("3_6mhvl")
-name = "Ghost"
-color = Color(0, 0, 0, 1)
 group = 1
 move_speed = 6.0
 acceleration = 16.0
 deceleration = 16.0
 turn_rate = 12.0
+interaction_area_shape = ExtResource("5_s4khq")
+name = "Ghost"
+color = Color(0, 0, 0, 1)
 collision_shape = SubResource("Resource_aj5ki")
 hit_box_shape = SubResource("Resource_mcvja")
 haunted_material = ExtResource("4_dua0m")
-hit_box_layer = 1048576
-interaction_area_shape = ExtResource("5_s4khq")
 heads_up_display_offset = Vector3(0, 2.25, 0)
-_character_model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
-collision_layer = 65536
-collision_mask = 1
-_character_scene = ExtResource("1_s4khq")
-_heads_up_anchor_scene = ExtResource("2_m7bob")
+_model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

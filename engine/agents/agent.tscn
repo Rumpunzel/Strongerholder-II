@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_qws77"]
 [ext_resource type="Script" uid="uid://d1mglynl0s74y" path="res://engine/agents/state_machine/agent_state_machine.gd" id="3_00iam"]
 [ext_resource type="Script" uid="uid://d12y800yphwle" path="res://engine/agents/state_machine/states/agent_state_default.gd" id="4_pe618"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/characters/character.tscn" id="5_pe618"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="5_pe618"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qws77"]
 properties/0/path = NodePath("StateMachine:_serialized_state")
@@ -22,10 +22,14 @@ replication_config = SubResource("SceneReplicationConfig_qws77")
 script = ExtResource("2_qws77")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_agent")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_agent", "_character", "_hurt_box")]
 script = ExtResource("3_00iam")
 _agent = NodePath("..")
+_character = NodePath("../Character")
+_hurt_box = NodePath("../Character/CharacterHurtBox")
 _initial_state = ExtResource("4_pe618")
 metadata/_custom_type_script = "uid://d1mglynl0s74y"
 
 [node name="Character" parent="." instance=ExtResource("5_pe618")]
+
+[editable path="Character"]

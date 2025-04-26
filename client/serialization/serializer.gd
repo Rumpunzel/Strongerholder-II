@@ -1,4 +1,5 @@
 @icon("uid://lafgp3e7lvc3")
+class_name Serializer
 extends Node
 
 signal saving_started
@@ -14,26 +15,27 @@ const SAVE_FILE_PATH: StringName = "res://test.save" # "user://savegame.save"
 
 var _queued_intangible_data: Dictionary[NodePath, Dictionary] = { }
 
-func has_save_file(save_file_path: StringName = SAVE_FILE_PATH) -> bool:
+static func has_save_file(save_file_path: StringName = SAVE_FILE_PATH) -> bool:
 	return FileAccess.file_exists(save_file_path)
 
-func encode_data(value: Variant, full_objects: bool = false) -> String:
+static func encode_data(value: Variant, full_objects: bool = false) -> String:
 	return JSON.stringify(JSON.from_native(value, full_objects))
 
-func decode_data(string: String, allow_objects: bool = false) -> Variant:
+static func decode_data(string: String, allow_objects: bool = false) -> Variant:
 	return JSON.to_native(JSON.parse_string(string), allow_objects)
 
-func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Dictionary[Variant, Array]:
-	var merged_dictionary: Dictionary[Variant, Array] = { }
-	for dictionary: Dictionary[Variant, Array] in dictionaries:
-		assert(dictionary is Dictionary[Variant, Array])
-		for key: Variant in dictionary:
+static func merge_array_dictionaries(dictionaries: Array[Dictionary]) -> Dictionary[StringName, Array]:
+	var merged_dictionary: Dictionary[StringName, Array] = { }
+	for dictionary: Dictionary[StringName, Array] in dictionaries:
+		assert(dictionary is Dictionary[StringName, Array])
+		for key: StringName in dictionary:
 			var merged_arrays: Array = merged_dictionary.get_or_add(key, [ ])
 			var array_to_merge: Array = dictionary[key]
 			merged_arrays.append_array(array_to_merge)
+			merged_dictionary[key] = merged_arrays
 	return merged_dictionary
 
-func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override: bool = false) -> void:
+static func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Type, override: bool = false) -> void:
 	assert(node)
 	if node is PropertiesSerializer:
 		var properties_serializer: PropertiesSerializer = node
@@ -45,9 +47,9 @@ func mark_all_child_serializers_for(node: Node, as_type: PropertiesSerializer.Ty
 func save_world_state(save_file_path: StringName = SAVE_FILE_PATH) -> Error:
 	assert(save_file_path.is_absolute_path())
 	saving_started.emit()
-	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
 	var collected_data: Dictionary[StringName, Dictionary] = collect_data()
 	var serialized_game_state: String = encode_data(collected_data)
+	var save_file: FileAccess = FileAccess.open(save_file_path, FileAccess.WRITE)
 	save_file.store_line(serialized_game_state)
 	saving_finished.emit()
 	return Error.OK
@@ -70,9 +72,11 @@ func collect_data() -> Dictionary[StringName, Dictionary]:
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersProperties")
 	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
 	var properties_data: Dictionary[int, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
+	# var intangible_data: Dictionary[NodePath, Dictionary] = properties_data.get(PropertiesSerializer.Type.INTANGIBLE, {} as Dictionary[NodePath, Dictionary])
+	# properties_data[PropertiesSerializer.Type.INTANGIBLE] = intangible_data.merged(_queued_intangible_data)
 	return {
 		NODES: node_data,
-		PROPERTIES: properties_data.merged(_queued_intangible_data),
+		PROPERTIES: properties_data,
 	}
 
 func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
@@ -82,8 +86,6 @@ func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 	var node_data: Dictionary[NodePath, Dictionary] = collected_data[NODES]
 	assert(node_data is Dictionary[NodePath, Dictionary])
 	restore_nodes(node_data)
-	
-	await get_tree().process_frame
 	
 	var properties_data: Dictionary[int, Dictionary] = collected_data[PROPERTIES]
 	assert(properties_data is Dictionary[int, Dictionary])
@@ -105,11 +107,11 @@ func restore_properties_in_restoration_order(properties_data: Dictionary[int, Di
 		var collected_properties: Dictionary[NodePath, Dictionary] = properties_data[restoration_orer]
 		assert(collected_properties is Dictionary[NodePath, Dictionary])
 		print_debug("Started restoring properties for restoration_order: %d" % restoration_orer)
-		_restore_properties(collected_properties)
+		_restore_properties(collected_properties, restoration_orer)
 		print_debug("Finished restoring properties for restoration_order: %d" % restoration_orer)
 	if not _queued_intangible_data.is_empty(): print_debug("Queued %d intangible data..." % _queued_intangible_data.size())
 
-func _restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> void:
+func _restore_properties(properties_data: Dictionary[NodePath, Dictionary], serializer_type: PropertiesSerializer.Type) -> void:
 	for properties_serializer_path: NodePath in properties_data:
 		var collected_properties: Dictionary[NodePath, Variant] = properties_data[properties_serializer_path]
 		assert(collected_properties is Dictionary[NodePath, Variant])
@@ -120,7 +122,6 @@ func _restore_properties(properties_data: Dictionary[NodePath, Dictionary]) -> v
 			properties_serializer.restore_state(collected_properties)
 			continue
 		
-		var serializer_type: PropertiesSerializer.Type = properties_serializer.type
 		match serializer_type:
 			PropertiesSerializer.Type.NORMAL:
 				# This is an error and should be looked at if it occurs after development
@@ -143,8 +144,6 @@ func _on_node_added(node: Node) -> void:
 	if not _queued_intangible_data.has(node_path): return
 	var collected_properties: Dictionary[NodePath, Variant] = _queued_intangible_data[node_path]
 	assert(collected_properties is Dictionary[NodePath, Variant])
-	
-	await get_tree().process_frame
 	
 	var properties_serializer: PropertiesSerializer = node
 	properties_serializer.restore_state(collected_properties)

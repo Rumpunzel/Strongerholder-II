@@ -13,11 +13,11 @@ var _serialized_state: Dictionary[StringName, Variant]:
 	set(new_serialized_state):
 		stop()
 		var new_sate: State = State.from_serialized_state(new_serialized_state)
-		#if not is_node_ready(): await ready
 		set_state(new_sate.deserialize(new_serialized_state))
 		start()
 
 func _ready() -> void:
+	if get_state(): return
 	var initial_state: State = _initial_state.new()
 	set_state(initial_state)
 

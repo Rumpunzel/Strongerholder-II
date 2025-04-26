@@ -31,13 +31,13 @@ const CHARACTER_SCENE: PackedScene = preload("uid://cvj6b1m2b65hd")
 			_collision_shape.rotation_degrees = Vector3.ZERO
 			profile_changed.emit()
 			return
+		if variation < 0: variation = profile.get_random_variation()
 		model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
 		if Engine.is_editor_hint():
 			add_child(profile.create_heads_up_anchor())
 			return
-		name = profile.name
 		add_to_group(profile.get_group_name())
 
 @export_group("Configuration")
@@ -58,6 +58,15 @@ var _is_on_floor: bool = true
 var _normalized_velocity: Vector3 = Vector3.ZERO
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+## This is used for serialization purposes; serves otherwise no purpose
+@warning_ignore("unused_private_class_variable")
+var _profile_path: String:
+	get: return profile.resource_path
+	set(new_profile_path):
+		if profile and new_profile_path == profile.resource_path: return
+		assert(not profile)
+		profile = load(new_profile_path)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return

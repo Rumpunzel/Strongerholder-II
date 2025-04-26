@@ -69,7 +69,6 @@ func exit() -> void:
 	_haunt_camera.queue_free()
 
 func serialize() -> Dictionary[StringName, Variant]:
-	assert(_haunted)
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()
 	serialized_state[HAUNTED] = _haunted_path
 	return serialized_state

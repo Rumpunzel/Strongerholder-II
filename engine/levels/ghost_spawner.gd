@@ -3,8 +3,6 @@
 class_name PlayerGhostSpawner
 extends Spawner
 
-signal player_ghost_created(player_ghost: PlayerGhost)
-
 @export_group("Configuration")
 
 var _player_ghosts: Dictionary[Player, PlayerGhost] = {}
@@ -20,18 +18,25 @@ func start_synching_players() -> void:
 	assert(multiplayer.is_server())
 	var connected_players: Array[Player] = Lobby.get_connected_players()
 	for connected_player: Player in connected_players:
-		spawn_player_ghost(connected_player)
+		var spawning_queued: bool = spawn_player_ghost(connected_player)
+		if spawning_queued: return
 	Lobby.player_connected.connect(spawn_player_ghost)
 
 func stop_synching_players() -> void:
 	assert(multiplayer.is_server())
-	if Lobby.player_connected.is_connected(spawn_player_ghost):
-		Lobby.player_connected.disconnect(spawn_player_ghost)
+	_remove_all_player_ghosts()
+	#if Lobby.player_connected.is_connected(spawn_player_ghost):
+	Lobby.player_connected.disconnect(spawn_player_ghost)
 
-func spawn_player_ghost(player: Player) -> void:
+## @returns [code]true[/code] if spawning is queued for later
+func spawn_player_ghost(player: Player) -> bool:
 	assert(multiplayer.is_server())
 	assert(player)
 	var all_player_spawn_points: Array[Node] = get_tree().get_nodes_in_group("PlayerSpawnPoints")
+	## Level not yet loaded, queue spawning for later
+	if all_player_spawn_points.is_empty():
+		get_tree().node_added.connect(_on_node_added)
+		return true
 	assert(all_player_spawn_points.size() == 1)
 	var character_spawn_point: CharacterSpawnPoint = all_player_spawn_points.front()
 	assert(character_spawn_point)
@@ -42,6 +47,7 @@ func spawn_player_ghost(player: Player) -> void:
 	}
 	PlayerGhost.validate_player_ghost_data(player_ghost_data)
 	spawn(player_ghost_data)
+	return false
 
 func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> PlayerGhost:
 	PlayerGhost.validate_player_ghost_data(player_ghost_data)
@@ -51,15 +57,26 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 	var character_data: Dictionary[StringName, Variant] = player_ghost_data[PlayerGhost.CHARACTER_DATA]
 	character_data[Character.VARIATION] = player.ghost_sprite_frame
 	var player_ghost: PlayerGhost = PlayerGhost.create(player, character_data)
-	player.tree_exiting.connect(remove_player_ghost.bind(player_ghost))
-	_player_ghosts[player] = player_ghost
-	player_ghost_created.emit(player_ghost)
+	assert(not _player_ghosts.has(player))
+	_player_ghosts[player_ghost.player] = player_ghost
+	player.tree_exiting.connect(_remove_player_ghost.bind(player))
 	return player_ghost
 
-func remove_player_ghost(player_ghost: PlayerGhost) -> void:
-	_player_ghosts.erase(player_ghost.player)
-	remove_child(player_ghost)
-	player_ghost.queue_free()
+func _remove_all_player_ghosts() -> void:
+	for player: Player in _player_ghosts.keys():
+		_remove_player_ghost(player)
+
+func _remove_player_ghost(player: Player) -> void:
+	var player_ghost_to_remove: PlayerGhost = _player_ghosts[player]
+	_player_ghosts.erase(player)
+	remove_child(player_ghost_to_remove)
+	player_ghost_to_remove.queue_free()
+	player.tree_exiting.disconnect(_remove_player_ghost.bind(player))
+
+func _on_node_added(node: Node) -> void:
+	if not node.is_in_group("PlayerSpawnPoints"): return
+	get_tree().node_added.disconnect(_on_node_added)
+	start_synching_players()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

@@ -14,7 +14,7 @@ func _ready() -> void:
 
 ## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 func collect_properties() -> Dictionary[NodePath, Variant]:
-	return _synchronizer.collect_properties().merged(super.collect_properties())
+	return _synchronizer.collect_properties(self).merged(super.collect_properties())
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

@@ -2,58 +2,44 @@
 
 [ext_resource type="Script" uid="uid://bgi8dhegxjea2" path="res://engine/game.gd" id="1_l8g03"]
 [ext_resource type="PackedScene" uid="uid://5sd2jgms4uso" path="res://user_interface/pause_menu/pause_menu.tscn" id="2_j8tme"]
-[ext_resource type="Script" uid="uid://dpnh7ub3toyd6" path="res://client/serialization/node_serializer.gd" id="6_b686c"]
+[ext_resource type="Script" uid="uid://d12oj323k2wmw" path="res://client/serialization/serializer.gd" id="3_i022p"]
+[ext_resource type="PackedScene" uid="uid://drxjik1sm7twx" path="res://engine/levels/level_spawner.tscn" id="6_i022p"]
 [ext_resource type="Script" uid="uid://853l0h1bjf04" path="res://engine/levels/ghost_spawner.gd" id="6_j8tme"]
 [ext_resource type="PackedScene" uid="uid://bmwhs3lwb74ue" path="res://engine/levels/test_level.tscn" id="8_ee6o4"]
-[ext_resource type="Script" uid="uid://ct2kte5v780cm" path="res://engine/levels/level_spawner.gd" id="9_4cobl"]
-[ext_resource type="Script" uid="uid://dtegkhffyvsvk" path="res://engine/objects/things/thing_spawner.gd" id="9_eadau"]
+[ext_resource type="PackedScene" uid="uid://c46ivy3ilmclp" path="res://engine/agents/agent_spawner.tscn" id="8_i022p"]
+[ext_resource type="PackedScene" uid="uid://beahmsvyce16w" path="res://engine/objects/things/thing_spawner.tscn" id="9_eadau"]
 [ext_resource type="PackedScene" uid="uid://rmev082m4bw0" path="res://user_interface/user_interface.tscn" id="10_j8tme"]
-[ext_resource type="Script" uid="uid://cv80krf8r7fls" path="res://engine/agents/agent_spawner.gd" id="10_qf6n1"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("_level_spawner", "_player_ghost_spawner", "_agent_spawner", "_thing_spawner")]
+[node name="Game" type="Node" node_paths=PackedStringArray("_serializer", "_level_spawner", "_thing_spawner", "_agent_spawner", "_player_ghost_spawner")]
 script = ExtResource("1_l8g03")
 _default_level = ExtResource("8_ee6o4")
+_serializer = NodePath("Serializer")
 _level_spawner = NodePath("LevelSpawner")
-_player_ghost_spawner = NodePath("PlayerGhostSpawner")
-_agent_spawner = NodePath("AgentSpawner")
 _thing_spawner = NodePath("ThingSpawner")
+_agent_spawner = NodePath("AgentSpawner")
+_player_ghost_spawner = NodePath("PlayerGhostSpawner")
 metadata/_custom_type_script = "uid://bgi8dhegxjea2"
+
+[node name="Serializer" type="Node" parent="."]
+script = ExtResource("3_i022p")
+metadata/_custom_type_script = "uid://d12oj323k2wmw"
 
 [node name="UserInterface" parent="." instance=ExtResource("10_j8tme")]
 
 [node name="PauseMenu" parent="." instance=ExtResource("2_j8tme")]
 
-[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath(".")
-script = ExtResource("9_4cobl")
-metadata/_custom_type_script = "uid://ct2kte5v780cm"
+[node name="LevelSpawner" parent="." instance=ExtResource("6_i022p")]
 
-[node name="NodeSerializer" type="Node" parent="LevelSpawner" node_paths=PackedStringArray("_spawner")]
-script = ExtResource("6_b686c")
-_spawner = NodePath("..")
-metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+[node name="ThingSpawner" parent="." instance=ExtResource("9_eadau")]
+
+[node name="AgentSpawner" parent="." instance=ExtResource("8_i022p")]
 
 [node name="PlayerGhostSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath(".")
 script = ExtResource("6_j8tme")
 metadata/_custom_type_script = "uid://853l0h1bjf04"
 
-[node name="AgentSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath(".")
-script = ExtResource("10_qf6n1")
-metadata/_custom_type_script = "uid://cv80krf8r7fls"
-
-[node name="NodeSerializer" type="Node" parent="AgentSpawner" node_paths=PackedStringArray("_spawner")]
-script = ExtResource("6_b686c")
-_spawner = NodePath("..")
-metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
-
-[node name="ThingSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath(".")
-script = ExtResource("9_eadau")
-metadata/_custom_type_script = "uid://dtegkhffyvsvk"
-
-[node name="NodeSerializer" type="Node" parent="ThingSpawner" node_paths=PackedStringArray("_spawner")]
-script = ExtResource("6_b686c")
-_spawner = NodePath("..")
-metadata/_custom_type_script = "uid://dpnh7ub3toyd6"
+[connection signal="saving_finished" from="Serializer" to="PauseMenu" method="_on_saving_finished"]
+[connection signal="load_requested" from="PauseMenu" to="." method="load_game"]
+[connection signal="new_game_requested" from="PauseMenu" to="." method="start_new_game"]
+[connection signal="save_requested" from="PauseMenu" to="." method="save_game"]

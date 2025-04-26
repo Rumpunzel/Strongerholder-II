@@ -32,13 +32,13 @@ const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
 			profile_changed.emit()
 			return
 		mass = profile.mass
+		variation = profile.get_random_variation()
 		model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
 		if Engine.is_editor_hint():
 			add_child(profile.create_heads_up_anchor())
 			return
-		name = profile.name
 		add_to_group(profile.get_group_name())
 
 @export_group("Configuration")
@@ -52,6 +52,15 @@ var model: Model:
 		model = new_model
 		if not model: return
 		add_child(model, true)
+
+## This is used for serialization purposes; serves otherwise no purpose
+@warning_ignore("unused_private_class_variable")
+var _profile_path: String:
+	get: return profile.resource_path
+	set(new_profile_path):
+		if profile and new_profile_path == profile.resource_path: return
+		assert(not profile)
+		profile = load(new_profile_path)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return

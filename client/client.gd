@@ -23,7 +23,6 @@ func _process(_delta: float) -> void:
 		if _pause_requested and not get_tree().paused: _pause_game()
 
 func quit_game() -> void:
-	Serializer.save_world_state()
 	get_tree().quit()
 
 func update_value_in_config(value: Variant, section: String, key: String) -> Error:

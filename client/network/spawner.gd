@@ -2,8 +2,6 @@
 class_name Spawner
 extends MultiplayerSpawner
 
-@onready var spawn_node: Node = get_node(spawn_path)
-
 func _ready() -> void:
 	add_to_group("Spawners")
 
@@ -16,6 +14,7 @@ func get_spawnable_scene_paths() -> Array[String]:
 	return spawnable_scene_paths
 
 func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
+	var spawn_node: Node = get_node(spawn_path)
 	var spawned_nodes: Dictionary[StringName, Array] = { }
 	var spawnable_scene_paths: Array[String] = get_spawnable_scene_paths()
 	for node: Node in spawn_node.get_children():
@@ -27,6 +26,7 @@ func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
 	return spawned_nodes
 
 func remove_all_spawned_nodes() -> Array[NodePath]:
+	var spawn_node: Node = get_node(spawn_path)
 	var nodes_freed: Array[NodePath] = [ ]
 	var spawnable_scene_paths: Array[String] = get_spawnable_scene_paths()
 	for node: Node in spawn_node.get_children():

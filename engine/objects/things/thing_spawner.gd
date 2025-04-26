@@ -36,12 +36,21 @@ func remove_thing(thing: Thing) -> void:
 	remove_child(thing)
 	thing.queue_free()
 
+func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
+	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
+	var spawned_things: Dictionary[StringName, Array] = {}
+	spawned_things[Thing.THING_SCENE.resource_path] = _things.map(func(thing: Thing) -> NodePath: return thing.get_path())
+	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_things])
+
 func _spawn_thing(thing_data: Dictionary[StringName, Variant]) -> Thing:
 	Thing.validate_thing_data(thing_data)
-	var thing: Thing = Thing.from_thing_data(thing_data)
-	_things.append(thing)
-	thing_created.emit(thing)
-	return thing
+	return Thing.from_thing_data(thing_data)
+
+func _on_child_entered_tree(node: Node) -> void:
+	if not node is Thing: return
+	assert(not _things.has(node))
+	_things.append(node)
+	thing_created.emit(node)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

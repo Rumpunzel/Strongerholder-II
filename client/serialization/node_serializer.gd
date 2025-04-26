@@ -32,14 +32,11 @@ func restore_state(collected_nodes: Dictionary[StringName, Array]) -> void:
 	var nodes_freed: Array[NodePath] = _spawner.remove_all_spawned_nodes()
 	print_debug("Removed %s for %s" % [nodes_freed, _spawner.get_path()])
 	
-	await get_tree().process_frame
-	
 	var nodes_restored: Array[NodePath] = [ ]
 	for node_scene_path: StringName in collected_nodes:
-		var node_paths: Array[NodePath] = collected_nodes[node_scene_path]
 		var scene_to_spawn: PackedScene = load(node_scene_path)
 		assert(scene_to_spawn is PackedScene)
-		for node_path: NodePath in node_paths:
+		for node_path: NodePath in collected_nodes[node_scene_path]:
 			var node_to_spawn: Node = scene_to_spawn.instantiate()
 			var parent_node_path: NodePath = node_path.slice(0, -1)
 			var parent_node: Node = get_node(parent_node_path)

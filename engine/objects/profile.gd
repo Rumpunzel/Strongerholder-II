@@ -21,14 +21,15 @@ extends Resource
 @export_category("")
 @export_group("Configuration")
 
+func get_random_variation() -> int:
+	assert(not _model_variations.is_empty())
+	return randi() % _model_variations.size()
+
 func create_model(variation: int) -> Model:
 	assert(not _model_variations.is_empty())
-	var model: PackedScene
-	if variation < 0:
-		model = _model_variations.pick_random()
-	else:
-		assert(variation < _model_variations.size())
-		model = _model_variations[variation]
+	assert(variation >= 0)
+	assert(variation < _model_variations.size())
+	var model: PackedScene = _model_variations[variation]
 	return model.instantiate()
 
 func configure_collision_shape(collision_shape: CollisionShape3D) -> void:

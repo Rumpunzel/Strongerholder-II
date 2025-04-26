@@ -6,15 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://coieakxsf086s" path="res://engine/objects/things/thing_hit_box.tscn" id="4_pi2rr"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1myve"]
-properties/0/path = NodePath(".:name")
+properties/0/path = NodePath(".:variation")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:variation")
+properties/1/path = NodePath(".:transform")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath(".:transform")
+properties/2/path = NodePath(".:_profile_path")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 2
 
 [node name="Thing" type="RigidBody3D" node_paths=PackedStringArray("_collision_shape") groups=["Things"]]
 collision_layer = 4
@@ -26,12 +26,12 @@ metadata/_custom_type_script = "uid://d1rn5h1erxn03"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
-[node name="ObjectSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="ThingSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_1myve")
 script = ExtResource("2_plyi5")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
-[node name="SynchronizerSerializer" type="Node" parent="ObjectSynchronizer" node_paths=PackedStringArray("_synchronizer")]
+[node name="SynchronizerSerializer" type="Node" parent="ThingSynchronizer" node_paths=PackedStringArray("_synchronizer")]
 script = ExtResource("3_16bwq")
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"

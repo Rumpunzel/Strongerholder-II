@@ -45,13 +45,22 @@ func remove_agent(character: Character) -> void:
 	remove_child(agent_to_remove)
 	agent_to_remove.queue_free()
 
+func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
+	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
+	var spawned_agents: Dictionary[StringName, Array] = {}
+	spawned_agents[Agent.AGENT_SCENE.resource_path] = _agents.values().map(func(agent: Agent) -> NodePath: return agent.get_path())
+	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_agents])
+
 func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:
 	Agent.validate_agent_data(agent_data)
 	var character_data: Dictionary[StringName, Variant] = agent_data[Agent.CHARACTER_DATA]
-	var agent: Agent = Agent.create(character_data)
+	return Agent.create(character_data)
+
+func _on_child_entered_tree(node: Node) -> void:
+	if not node is Agent: return
+	var agent: Agent = node
 	_agents[agent.character] = agent
 	agent_created.emit(agent)
-	return agent
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

@@ -26,6 +26,9 @@ var available_interaction: Interaction:
 func handle_input(event: InputEvent) -> void:
 	get_state().handle_input(event)
 
+func handle_interactable(current_interactable: HitBox) -> void:
+	available_interaction = get_state().handle_interactable(current_interactable)
+
 func get_state() -> PlayerState:
 	return _state
 
@@ -35,7 +38,7 @@ func set_state(state: State) -> void:
 	_state.set_state_machine(self)
 
 func _on_current_interactable_changed(current_interactable: HitBox) -> void:
-	available_interaction = get_state().handle_interactable(current_interactable)
+	handle_interactable(current_interactable)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

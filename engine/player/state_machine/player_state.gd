@@ -9,7 +9,7 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func handle_interactable(current_interactable: HitBox) -> Interaction:
-	if not current_interactable: return Interaction.new(get_state_machine().character, _haunt_action)
+	if not current_interactable: return null # Interaction.new(get_state_machine().character, _haunt_action)
 	if current_interactable is CharacterHitBox: return _create_charcter_interaction(current_interactable as CharacterHitBox)
 	if current_interactable is ThingHitBox: return _create_thing_interaction(current_interactable as ThingHitBox)
 	return null

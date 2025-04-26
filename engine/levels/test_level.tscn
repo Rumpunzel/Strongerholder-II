@@ -68,7 +68,7 @@ thing_profile = ExtResource("8_oyy5j")
 metadata/_custom_type_script = "uid://fokksh7u76ju"
 
 [node name="LogSpawnPoint" type="Marker3D" parent="SpawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 4)
 script = ExtResource("7_c445m")
 thing_profile = ExtResource("10_058wk")
 metadata/_custom_type_script = "uid://fokksh7u76ju"

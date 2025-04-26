@@ -26,7 +26,8 @@ func spawn_all_from_spawn_spoints() -> Array[Thing]:
 
 func remove_all_things() -> void:
 	assert(multiplayer.is_server())
-	for thing: Thing in _things:
+	while not _things.is_empty():
+		var thing: Thing = _things.pop_back()
 		remove_thing(thing)
 
 func remove_thing(thing: Thing) -> void:

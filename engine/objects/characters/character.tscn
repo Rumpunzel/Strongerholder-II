@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cwu2dwpvcrl3s" path="res://engine/objects/characters/character.gd" id="1_f5t6j"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_b3pdv"]
 [ext_resource type="Script" uid="uid://047sfnl1r5sv" path="res://client/serialization/synchronizer_serializer.gd" id="3_42yey"]
-[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://engine/objects/characters/character_hurt_box.tscn" id="4_5i04j"]
+[ext_resource type="PackedScene" uid="uid://bmk3aay8c7045" path="res://engine/objects/characters/character_hit_box.tscn" id="4_5i04j"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3fwhk"]
 properties/0/path = NodePath(".:name")

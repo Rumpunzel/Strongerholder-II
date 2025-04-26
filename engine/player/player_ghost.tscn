@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ckcrpkujohkql"]
+[gd_scene load_steps=18 format=3 uid="uid://ckcrpkujohkql"]
 
 [ext_resource type="Script" uid="uid://blq77gvr6c2qt" path="res://engine/player/player_ghost.gd" id="1_rp0et"]
 [ext_resource type="Script" uid="uid://crm43jylxmjbd" path="res://client/network/synchronizer.gd" id="2_d7fgu"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="8_mvbif"]
 [ext_resource type="PackedScene" uid="uid://bf0f7saxrfwrp" path="res://engine/player/interaction_area.tscn" id="9_46i1k"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="10_irqko"]
+[ext_resource type="PackedScene" uid="uid://dlla8034gqdsb" path="res://engine/player/haunt_camera.tscn" id="10_jlh3c"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/characters/ghosts/ghost.tres" id="11_cs6u8"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0vpi"]
@@ -30,14 +31,6 @@ script = ExtResource("7_r3pxx")
 duration = 1.0
 transition = 0
 ease = 2
-
-[sub_resource type="Resource" id="Resource_04p45"]
-script = ExtResource("7_r3pxx")
-duration = 0.5
-transition = 10
-ease = 0
-
-[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_801mx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pj10w"]
 radius = 0.25
@@ -61,7 +54,7 @@ _interaction_area = NodePath("../Ghost/InteractionArea")
 _camera = NodePath("../TopDownCamera")
 metadata/_custom_type_script = "uid://dqdyomt3y3nx8"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_ghost", "input_reader", "character", "hit_box", "interaction_area", "default_phantom_camera", "haunt_phantom_camera")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_ghost", "input_reader", "character", "hit_box", "interaction_area", "default_phantom_camera")]
 script = ExtResource("3_kwn24")
 player_ghost = NodePath("..")
 input_reader = NodePath("../InputReader")
@@ -69,7 +62,7 @@ character = NodePath("../Ghost")
 hit_box = NodePath("../Ghost/CharacterHitBox")
 interaction_area = NodePath("../Ghost/InteractionArea")
 default_phantom_camera = NodePath("../DefaultCamera")
-haunt_phantom_camera = NodePath("../HauntCamera")
+haunt_phantom_camera_scene = ExtResource("10_jlh3c")
 _initial_state = ExtResource("4_irqko")
 metadata/_custom_type_script = "uid://hcr7qut3ys1y"
 
@@ -95,21 +88,10 @@ tween_on_load = false
 follow_offset = Vector3(16, 24, 16)
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
-[node name="HauntCamera" type="Node3D" parent="." node_paths=PackedStringArray("follow_targets")]
-transform = Transform3D(0.707105, -0.514496, 0.485071, 2.98022e-08, 0.685994, 0.727607, -0.707105, -0.514496, 0.485071, 16.4851, 24.7276, 16.4851)
-top_level = true
-script = ExtResource("6_jlh3c")
-follow_mode = 3
-follow_targets = [NodePath("../Ghost")]
-look_at_mode = 3
-tween_resource = SubResource("Resource_04p45")
-tween_on_load = false
-follow_offset = Vector3(16, 24, 16)
-
 [node name="TopDownCamera" type="Camera3D" parent="."]
 physics_interpolation_mode = 1
 transform = Transform3D(0.707107, -0.514496, 0.485071, 2.98023e-08, 0.685994, 0.727607, -0.707107, -0.514496, 0.485071, 16, 24, 16)
-attributes = SubResource("CameraAttributesPhysical_801mx")
+fov = 37.8493
 
 [node name="PhantomCameraHost" type="Node" parent="TopDownCamera"]
 process_priority = 300

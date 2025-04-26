@@ -8,6 +8,7 @@ const HAUNTED: StringName = "haunted"
 var _haunted_path: NodePath
 
 var _haunted: CharacterHitBox
+var _haunt_camera: PhantomCamera3D
 
 ## Default parameters are required for deserialization to work
 func _init(haunted_path: NodePath = NodePath()) -> void:
@@ -22,8 +23,8 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted)
 	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunted.haunt.rpc(character.get_path())
-	get_haunt_phantom_camera().append_follow_targets(_haunted.character)
-	get_haunt_phantom_camera().priority = get_active_camera_priority()
+	_haunt_camera = _create_haunt_camera()
+	_haunt_camera.append_follow_targets(_haunted.character)
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()
@@ -57,8 +58,7 @@ func exit() -> void:
 	var character: Character = get_character()
 	character.enable_physics()
 	character.visible = true
-	get_haunt_phantom_camera().priority = get_default_camera_priority()
-	get_haunt_phantom_camera().erase_follow_targets(_haunted.character)
+	_haunt_camera.queue_free()
 
 func serialize() -> Dictionary[StringName, Variant]:
 	assert(_haunted)

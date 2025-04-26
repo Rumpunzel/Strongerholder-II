@@ -11,7 +11,8 @@ signal available_interactions_changed(available_interactions: Array[Interaction]
 @export var hit_box: CharacterHitBox
 @export var interaction_area: InteractionArea
 @export var default_phantom_camera: PhantomCamera3D
-@export var haunt_phantom_camera: PhantomCamera3D
+
+@export var haunt_phantom_camera_scene: PackedScene
 
 var available_interaction: Interaction:
 	set(new_available_interaction):
@@ -46,5 +47,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not input_reader: warnings.append("Missing InputReader reference.")
 	if not interaction_area: warnings.append("Missing InteractionArea reference.")
 	if not default_phantom_camera: warnings.append("Missing default PhantomCamera3D reference.")
-	if not haunt_phantom_camera: warnings.append("Missing haunt PhantomCamera3D reference.")
+	if not haunt_phantom_camera_scene: warnings.append("Missing haunt phantom camera scene.")
 	return warnings + super._get_configuration_warnings()

@@ -23,7 +23,6 @@ func get_hit_box() ->  CharacterHitBox: return get_state_machine().hit_box
 func get_interaction_area() ->  InteractionArea: return get_state_machine().interaction_area
 func get_available_interaction() -> Interaction: return get_state_machine().available_interaction
 func get_default_phantom_camera() ->  PhantomCamera3D: return get_state_machine().default_phantom_camera
-func get_haunt_phantom_camera() ->  PhantomCamera3D: return get_state_machine().haunt_phantom_camera
 
 func get_active_camera_priority() -> int: return get_state_machine().player_ghost.get_active_camera_priority()
 func get_default_camera_priority() -> int: return get_state_machine().player_ghost.get_default_camera_priority()
@@ -60,3 +59,10 @@ func _haunt_thing(interaction: ThingInteraction) -> void:
 	assert(interaction)
 	assert(interaction is ThingInteraction)
 	finished.emit(PlayerStateHauntingThing.new(interaction.target.get_path()))
+
+func _create_haunt_camera() -> PhantomCamera3D:
+	var state_machine: PlayerStateMachine = get_state_machine()
+	var haunt_camera: PhantomCamera3D = state_machine.haunt_phantom_camera_scene.instantiate()
+	haunt_camera.priority = get_active_camera_priority()
+	state_machine.add_child(haunt_camera)
+	return haunt_camera

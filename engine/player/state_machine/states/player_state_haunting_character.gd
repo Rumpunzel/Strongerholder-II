@@ -17,14 +17,15 @@ func _init(haunted_path: NodePath = NodePath()) -> void:
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	super.enter(state_machine, previous_state)
 	var character: Character = get_character()
-	character.visible = false
-	character.disable_physics()
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
+	character.visible = false
+	character.disable_physics()
 	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunted.haunt.rpc(character.get_path())
 	_haunt_camera = _create_haunt_camera()
 	_haunt_camera.append_follow_targets(_haunted.character)
+	_haunt_camera.append_look_at_target(_haunted.character)
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()

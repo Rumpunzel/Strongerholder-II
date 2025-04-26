@@ -21,7 +21,7 @@ var available_interaction: Interaction:
 		if available_interaction: available_interactions.append(available_interaction)
 		available_interactions_changed.emit(available_interactions)
 
-@onready var _state: PlayerState = _initial_state.new()
+var _state: PlayerState
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(event: InputEvent) -> void:
@@ -31,6 +31,7 @@ func handle_interactable(current_interactable: HitBox) -> void:
 	available_interaction = get_state().handle_interactable(current_interactable)
 
 func get_state() -> PlayerState:
+	#if _state: _state.set_state_machine(self)
 	return _state
 
 func set_state(state: State) -> void:

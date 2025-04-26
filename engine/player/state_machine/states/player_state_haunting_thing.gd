@@ -17,14 +17,18 @@ func _init(haunted_path: NodePath = NodePath()) -> void:
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	super.enter(state_machine, previous_state)
 	var character: Character = get_character()
-	character.visible = false
-	character.disable_physics()
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
+	var haunted_thing: Thing = _haunted.thing
+	assert(haunted_thing)
+	character.visible = false
+	character.transform = haunted_thing.transform
 	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunted.haunt.rpc(character.get_path())
+	haunted_thing.add_constant_torque(Vector3.UP)
 	_haunt_camera = _create_haunt_camera()
-	_haunt_camera.append_follow_targets(_haunted.thing)
+	_haunt_camera.append_follow_targets(haunted_thing)
+	_haunt_camera.append_look_at_target(haunted_thing)
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()
@@ -44,8 +48,10 @@ func physics_update(delta: float) -> void:
 	var direction_input: Vector2 = get_direction_input()
 	var character: Character = get_character()
 	var haunted_thing: Thing = _haunted.thing
-	#_haunted.character.apply_input_direction.rpc(direction_input, delta)
-	character.transform = _haunted.thing.transform
+	var distance_force: Vector3 = character.get_heads_up_anchor() - haunted_thing.position
+	var adjusted_direction_input: Vector2 = direction_input / maxf(distance_force.length(), 1.0)
+	character.apply_input_direction.rpc(adjusted_direction_input, delta)
+	haunted_thing.apply_input_direction.rpc(adjusted_direction_input, distance_force)
 
 func handle_input(_event: InputEvent) -> void:
 	pass
@@ -53,10 +59,12 @@ func handle_input(_event: InputEvent) -> void:
 func exit() -> void:
 	super.exit()
 	assert(_haunted)
-	get_interaction_area().remove_hit_box_to_ignore(_haunted)
-	_haunted.unhaunt.rpc()
 	var character: Character = get_character()
-	character.enable_physics()
+	var haunted_thing: Thing = _haunted.thing
+	assert(haunted_thing)
+	get_interaction_area().remove_hit_box_to_ignore(_haunted)
+	haunted_thing.add_constant_torque(Vector3.ZERO)
+	_haunted.unhaunt.rpc()
 	character.visible = true
 	_haunt_camera.queue_free()
 

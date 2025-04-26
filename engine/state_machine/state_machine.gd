@@ -17,6 +17,10 @@ var _serialized_state: Dictionary[StringName, Variant]:
 		set_state(new_sate.deserialize(new_serialized_state))
 		start()
 
+func _ready() -> void:
+	var initial_state: State = _initial_state.new()
+	set_state(initial_state)
+
 func script_is_valid_state(script: Script) -> bool:
 	if script.get_global_name() == "State": return true
 	if script_is_valid_state(script.get_base_script()): return true

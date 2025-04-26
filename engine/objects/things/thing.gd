@@ -61,17 +61,9 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	#_is_on_floor = is_on_floor()
-	#if not _is_on_floor: _apply_gravity(delta)
-	#move_and_slide()
-	#_look_forward(delta)
-	#_normalized_velocity = Vector3(velocity.x / profile.move_speed, velocity.y / _gravity, velocity.z / profile.move_speed)
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
-	if model: model.play_animation(_normalized_velocity, _is_on_floor)
+#func _process(_delta: float) -> void:
+	#if Engine.is_editor_hint(): return
+	#if model: model.play_animation(_normalized_velocity, _is_on_floor)
 
 static func create(new_variation: int, new_profile: ThingProfile, new_spawn_transform: Transform3D) -> Thing:
 	var new_thing: Thing = THING_SCENE.instantiate()
@@ -93,19 +85,11 @@ static func validate_thing_data(thing_data: Dictionary[StringName, Variant]) -> 
 	assert(thing_data.has_all([VARIATION, PROFILE_PATH, SPAWN_TRANSFORM]))
 	assert(thing_data.size() == 3)
 
-## Used to move the character without pathfinding
-#@rpc("any_peer", "call_local")
-#func apply_input_direction(direction_input: Vector2, delta: float) -> void:
-	#var move_speed: float = profile.move_speed
-	#var acceleration: float = profile.acceleration * delta
-	#var deceleration: float = profile.deceleration * delta
-	#if direction_input:
-		#var adjusted_direction_input: Vector2 = direction_input
-		#velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
-		#velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
-	#else:
-		#velocity.x = move_toward(velocity.x, 0.0, deceleration)
-		#velocity.z = move_toward(velocity.z, 0.0, deceleration)
+@rpc("any_peer", "call_local")
+func apply_input_direction(direction_input: Vector2, force: Vector3) -> void:
+	var torque_input: Vector3 = Vector3(direction_input.x, 0.0, direction_input.y)
+	apply_central_force(force)
+	apply_torque(torque_input)
 
 func apply_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
 	validate_thing_data(thing_data)
@@ -121,16 +105,6 @@ func get_portrait() -> Texture:
 
 func get_heads_up_anchor() -> Vector3:
 	return position + profile.heads_up_display_offset
-
-#func _apply_gravity(delta: float) -> void:
-	#velocity.y -= _gravity * delta
-#
-#func _look_forward(delta: float) -> void:
-	#look_target = position + velocity
-	#look_target.y = position.y
-	#if look_target.is_equal_approx(transform.origin): return
-	#var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
-	#transform = transform.interpolate_with(transform_looking_into_direction, profile.turn_rate * delta)
 
 func _on_haunted(_haunting: Character) -> void:
 	model.apply_material_overlay(profile.haunted_material)

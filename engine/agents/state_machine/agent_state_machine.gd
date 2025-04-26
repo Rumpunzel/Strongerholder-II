@@ -7,9 +7,10 @@ extends StateMachine
 @export var character: Character
 @export var hit_box: CharacterHitBox
 
-@onready var _state: AgentState = _initial_state.new()
+var _state: AgentState
 
 func get_state() -> AgentState:
+	#if _state: _state.set_state_machine(self)
 	return _state
 
 func set_state(state: State) -> void:

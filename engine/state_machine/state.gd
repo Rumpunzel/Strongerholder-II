@@ -37,7 +37,9 @@ func physics_update(_delta: float) -> void:
 
 ## Called by the state machine before changing the active state.
 func exit() -> void:
-	finished.disconnect(get_state_machine().transition_to_next_state)
+	var state_machine: StateMachine = get_state_machine()
+	if finished.is_connected(state_machine.transition_to_next_state):
+		finished.disconnect(state_machine.transition_to_next_state)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var state_script: GDScript = get_script()

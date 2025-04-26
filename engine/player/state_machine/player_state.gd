@@ -62,7 +62,10 @@ func _haunt_thing(interaction: ThingInteraction) -> void:
 
 func _create_haunt_camera() -> PhantomCamera3D:
 	var state_machine: PlayerStateMachine = get_state_machine()
+	var character: Character = get_character()
 	var haunt_camera: PhantomCamera3D = state_machine.haunt_phantom_camera_scene.instantiate()
+	haunt_camera.append_follow_targets(character)
+	haunt_camera.append_look_at_target(character)
 	haunt_camera.priority = get_active_camera_priority()
 	state_machine.add_child(haunt_camera)
 	return haunt_camera

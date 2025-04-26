@@ -94,16 +94,15 @@ static func validate_character_data(character_data: Dictionary[StringName, Varia
 	assert(character_data.has_all([VARIATION, PROFILE_PATH, SPAWN_TRANSFORM]))
 	assert(character_data.size() == 3)
 
-## Used to move the character without pathfinding
+## Used to move the [Character] without pathfinding
 @rpc("any_peer", "call_local")
 func apply_input_direction(direction_input: Vector2, delta: float) -> void:
 	var move_speed: float = profile.move_speed
 	var acceleration: float = profile.acceleration * delta
 	var deceleration: float = profile.deceleration * delta
 	if direction_input:
-		var adjusted_direction_input: Vector2 = direction_input
-		velocity.x = move_toward(velocity.x, adjusted_direction_input.x * move_speed, acceleration)
-		velocity.z = move_toward(velocity.z, adjusted_direction_input.y * move_speed, acceleration)
+		velocity.x = move_toward(velocity.x, direction_input.x * move_speed, acceleration)
+		velocity.z = move_toward(velocity.z, direction_input.y * move_speed, acceleration)
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration)
 		velocity.z = move_toward(velocity.z, 0.0, deceleration)

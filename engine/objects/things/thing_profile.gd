@@ -8,9 +8,6 @@ enum Groups {
 }
 @export var group: Groups = Groups.ITEMS
 
-@export_category("Attributes")
-@export_custom(PROPERTY_HINT_RANGE, "0.001,1000.0,exp,suffix:kg") var mass: float = 1.0
-
 @export_category("")
 @export_group("Configuration")
 

@@ -28,6 +28,7 @@ turn_rate = 12.0
 interaction_area_shape = SubResource("Resource_4wmkl")
 name = "King"
 color = Color(0, 0, 0, 1)
+mass = 75.0
 haunted_material = ExtResource("5_tk10t")
 heads_up_display_offset = Vector3(0, 2.25, 0)
 _collision_shape = ExtResource("3_c8byr")

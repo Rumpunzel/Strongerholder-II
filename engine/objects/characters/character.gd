@@ -67,6 +67,7 @@ func _physics_process(delta: float) -> void:
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
 	move_and_slide()
+	_handle_collisions()
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / profile.move_speed, velocity.y / _gravity, velocity.z / profile.move_speed)
 
@@ -132,6 +133,15 @@ func get_heads_up_anchor() -> Vector3:
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta
+
+func _handle_collisions() -> void:
+	for collision_index: int in get_slide_collision_count():
+		var collision: KinematicCollision3D  = get_slide_collision(collision_index)
+		var collider: PhysicsBody3D = collision.get_collider()
+		var collision_position: Vector3 = collision.get_position()
+		if collider is RigidBody3D:
+			var rigid_body: RigidBody3D = collider
+			rigid_body.apply_impulse(-collision.get_normal() * profile.mass)
 
 func _look_forward(delta: float) -> void:
 	look_target = position + velocity

@@ -48,7 +48,7 @@ func physics_update(delta: float) -> void:
 	var direction_input: Vector2 = get_direction_input()
 	var character: Character = get_character()
 	var haunted_thing: Thing = _haunted.thing
-	var distance_force: Vector3 = character.get_heads_up_anchor() - haunted_thing.position
+	var distance_force: Vector3 = character.profile.mass * (character.get_heads_up_anchor() - haunted_thing.position)
 	var adjusted_direction_input: Vector2 = direction_input / maxf(distance_force.length(), 1.0)
 	character.apply_input_direction.rpc(adjusted_direction_input, delta)
 	haunted_thing.apply_input_direction.rpc(adjusted_direction_input, distance_force)

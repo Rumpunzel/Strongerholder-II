@@ -7,6 +7,9 @@ extends Resource
 @export var portrait: Texture
 @export_color_no_alpha var color: Color
 
+@export_category("Attributes")
+@export_custom(PROPERTY_HINT_RANGE, "0.001,1000.0,exp,suffix:kg") var mass: float = 75.0
+
 @export_category("Model")
 @export var haunted_material: Material = preload("uid://cmbf2wnye66jw")
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)

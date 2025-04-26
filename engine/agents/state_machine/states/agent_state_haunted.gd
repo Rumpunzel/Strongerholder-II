@@ -14,10 +14,10 @@ func _init(haunting_path: NodePath = NodePath(), ) -> void:
 	_haunting_path = haunting_path
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
+	super.enter(state_machine, previous_state)
 	_haunting = state_machine.get_node(_haunting_path)
 	assert(_haunting)
-	hit_box.unhaunted.connect(_on_unhaunted)
-	super.enter(state_machine, previous_state)
+	get_hit_box().unhaunted.connect(_on_unhaunted)
 
 func update(_delta: float) -> void:
 	pass
@@ -26,7 +26,8 @@ func handle_input(_event: InputEvent) -> void:
 	pass
 
 func exit() -> void:
-	hit_box.unhaunted.disconnect(_on_unhaunted)
+	super.exit()
+	get_hit_box().unhaunted.disconnect(_on_unhaunted)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	assert(_haunting)

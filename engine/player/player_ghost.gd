@@ -23,8 +23,6 @@ const _INACTIVE_CAMERA_PRIORITY: int = 0
 
 @export_group("Configuration")
 @export var character: Character
-@export var input_reader: InputReader
-@export var interaction_area: InteractionArea
 @export var _state_machine: PlayerStateMachine
 @export var _camera: Camera3D
 
@@ -66,8 +64,6 @@ func _on_player_info_changed() -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not character: warnings.append("Missing Character reference.")
-	if not interaction_area: warnings.append("Missing InteractionArea reference.")
-	if not input_reader: warnings.append("Missing InputReader reference.")
 	if not _state_machine: warnings.append("Missing PlayerStateMachine reference.")
 	if not _camera: warnings.append("Missing Camera3D reference.")
 	return warnings

@@ -22,11 +22,11 @@ replication_config = SubResource("SceneReplicationConfig_qws77")
 script = ExtResource("2_qws77")
 metadata/_custom_type_script = "uid://crm43jylxmjbd"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_agent", "_character", "_hit_box")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("agent", "character", "hit_box")]
 script = ExtResource("3_00iam")
-_agent = NodePath("..")
-_character = NodePath("../Character")
-_hit_box = NodePath("../Character/CharacterHitBox")
+agent = NodePath("..")
+character = NodePath("../Character")
+hit_box = NodePath("../Character/CharacterHitBox")
 _initial_state = ExtResource("4_pe618")
 metadata/_custom_type_script = "uid://d1mglynl0s74y"
 

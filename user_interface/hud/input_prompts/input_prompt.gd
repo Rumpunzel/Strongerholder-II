@@ -8,13 +8,13 @@ const INPUT_PROMPT_SCENE: PackedScene = preload("uid://d3ufd1hkx3mvi")
 @export_group("Configuration")
 @export var _timer: Timer
 
-var available_action: Interaction:
-	set(new_available_action):
-		available_action = new_available_action
-		if not available_action:
+var available_interaction: Interaction:
+	set(new_available_interaction):
+		available_interaction = new_available_interaction
+		if not available_interaction:
 			input_events.clear()
 			return
-		input_events = available_action.get_input_events()
+		input_events = available_interaction.get_input_events()
 
 var input_events: Array[InputEvent]:
 	set(new_input_events):
@@ -43,18 +43,18 @@ var _input_event_index: int = 0:
 			"InputEventShortcut": push_warning("InputEventShortcut is not yet implemented!")
 			_: push_error("InputEvent type for %s not supported!" % input_event)
 
-static func create(for_available_action: Interaction) -> InputPrompt:
-	assert(for_available_action)
+static func create(for_available_interaction: Interaction) -> InputPrompt:
+	assert(for_available_interaction)
 	var new_input_prompt: InputPrompt = INPUT_PROMPT_SCENE.instantiate()
-	new_input_prompt.available_action = for_available_action
+	new_input_prompt.available_interaction = for_available_interaction
 	return new_input_prompt
 
 func _process(_delta: float) -> void:
 	var viewport_camera: Camera3D = get_viewport().get_camera_3d()
-	var heads_up_anchor: Vector3 = available_action.get_heads_up_anchor()
+	var heads_up_anchor: Vector3 = available_interaction.get_heads_up_anchor()
 	visible = not viewport_camera.is_position_behind(heads_up_anchor)
 	position = viewport_camera.unproject_position(heads_up_anchor) - Vector2(size.x, size.y / 2.0)
-	_current_prompt.button_pressed = available_action.is_action_pressed()
+	_current_prompt.button_pressed = available_interaction.is_action_pressed()
 
 func hide_prompt() -> void:
 	queue_free()

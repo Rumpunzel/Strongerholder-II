@@ -43,11 +43,9 @@ ease = 0
 radius = 0.25
 height = 1.5
 
-[node name="PlayerGhost" type="Node" node_paths=PackedStringArray("character", "input_reader", "interaction_area", "_state_machine", "_camera")]
+[node name="PlayerGhost" type="Node" node_paths=PackedStringArray("character", "_state_machine", "_camera")]
 script = ExtResource("1_rp0et")
 character = NodePath("Ghost")
-input_reader = NodePath("InputReader")
-interaction_area = NodePath("Ghost/InteractionArea")
 _state_machine = NodePath("StateMachine")
 _camera = NodePath("TopDownCamera")
 metadata/_custom_type_script = "uid://blq77gvr6c2qt"
@@ -63,15 +61,15 @@ _interaction_area = NodePath("../Ghost/InteractionArea")
 _camera = NodePath("../TopDownCamera")
 metadata/_custom_type_script = "uid://dqdyomt3y3nx8"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_player_ghost", "_input_reader", "_character", "_hit_box", "_interaction_area", "_default_phantom_camera", "_haunt_phantom_camera")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_ghost", "input_reader", "character", "hit_box", "interaction_area", "default_phantom_camera", "haunt_phantom_camera")]
 script = ExtResource("3_kwn24")
-_player_ghost = NodePath("..")
-_input_reader = NodePath("../InputReader")
-_character = NodePath("../Ghost")
-_hit_box = NodePath("../Ghost/CharacterHitBox")
-_interaction_area = NodePath("../Ghost/InteractionArea")
-_default_phantom_camera = NodePath("../DefaultCamera")
-_haunt_phantom_camera = NodePath("../HauntCamera")
+player_ghost = NodePath("..")
+input_reader = NodePath("../InputReader")
+character = NodePath("../Ghost")
+hit_box = NodePath("../Ghost/CharacterHitBox")
+interaction_area = NodePath("../Ghost/InteractionArea")
+default_phantom_camera = NodePath("../DefaultCamera")
+haunt_phantom_camera = NodePath("../HauntCamera")
 _initial_state = ExtResource("4_irqko")
 metadata/_custom_type_script = "uid://hcr7qut3ys1y"
 
@@ -134,6 +132,7 @@ collision_layer = 1048576
 collision_mask = 32
 character = NodePath("..")
 
-[connection signal="available_actions_changed" from="Ghost/InteractionArea" to="HUD" method="_on_available_actions_changed"]
+[connection signal="available_interactions_changed" from="StateMachine" to="HUD" method="_on_available_interactions_changed"]
+[connection signal="current_interactable_changed" from="Ghost/InteractionArea" to="StateMachine" method="_on_current_interactable_changed"]
 
 [editable path="Ghost"]

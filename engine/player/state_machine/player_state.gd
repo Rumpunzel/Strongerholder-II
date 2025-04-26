@@ -2,37 +2,61 @@
 class_name PlayerState
 extends State
 
-var player_ghost: PlayerGhost
-var input_reader: InputReader
-var character: Character
-var hit_box: CharacterHitBox
-var interaction_area: InteractionArea
-var default_phantom_camera: PhantomCamera3D
-var haunt_phantom_camera: PhantomCamera3D
+var _state_machine: PlayerStateMachine
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:
 	pass
 
-func get_active_camera_priority() -> int: return player_ghost.get_active_camera_priority()
-func get_default_camera_priority() -> int: return player_ghost.get_default_camera_priority()
+func handle_interactable(current_interactable: HitBox) -> Interaction:
+	if not current_interactable: return Interaction.new(get_state_machine().character, _haunt_action)
+	if current_interactable is CharacterHitBox: return _create_charcter_interaction(current_interactable as CharacterHitBox)
+	if current_interactable is ThingHitBox: return _create_thing_interaction(current_interactable as ThingHitBox)
+	return null
 
-func get_direction_input() -> Vector2: return input_reader.get_camera_adjusted_direction_input()
-func get_interaction_input() -> StringName: return input_reader.interaction_input
-func get_available_action() -> Interaction: return interaction_area.available_action
+func get_state_machine() -> PlayerStateMachine: return _state_machine
+
+func get_player_ghost() ->  PlayerGhost: return get_state_machine().player_ghost
+func get_input_reader() ->  InputReader: return get_state_machine().input_reader
+func get_character() ->  Character: return get_state_machine().character
+func get_hit_box() ->  CharacterHitBox: return get_state_machine().hit_box
+func get_interaction_area() ->  InteractionArea: return get_state_machine().interaction_area
+func get_available_interaction() -> Interaction: return get_state_machine().available_interaction
+func get_default_phantom_camera() ->  PhantomCamera3D: return get_state_machine().default_phantom_camera
+func get_haunt_phantom_camera() ->  PhantomCamera3D: return get_state_machine().haunt_phantom_camera
+
+func get_active_camera_priority() -> int: return get_state_machine().player_ghost.get_active_camera_priority()
+func get_default_camera_priority() -> int: return get_state_machine().player_ghost.get_default_camera_priority()
+
+func get_direction_input() -> Vector2: return get_state_machine().input_reader.get_camera_adjusted_direction_input()
+func get_interaction_input() -> StringName: return get_state_machine().input_reader.interaction_input
+
+func set_state_machine(state_machine: StateMachine) -> void:
+	assert(state_machine is PlayerStateMachine)
+	_state_machine = state_machine
+
+func set_available_interaction(interaction: Interaction) -> void: get_state_machine().available_interaction = interaction
+
+var _haunt_action: Action = preload("uid://cuoqy5wkfjika")
+
+func _create_charcter_interaction(current_interactable: CharacterHitBox) -> CharacterInteraction:
+	return CharacterInteraction.new(get_state_machine().character, current_interactable, _haunt_action)
+
+func _create_thing_interaction(current_interactable: ThingHitBox) -> ThingInteraction:
+	return ThingInteraction.new(get_state_machine().character, current_interactable, _haunt_action)
 
 func _haunt() -> void:
-	var available_action: Interaction = get_available_action()
-	assert(available_action)
-	if available_action is CharacterInteraction: _haunt_character(available_action as CharacterInteraction)
-	elif available_action is ThingInteraction: _haunt_thing(available_action as ThingInteraction)
+	var available_interaction: Interaction = get_available_interaction()
+	assert(available_interaction)
+	if available_interaction is CharacterInteraction: _haunt_character(available_interaction as CharacterInteraction)
+	elif available_interaction is ThingInteraction: _haunt_thing(available_interaction as ThingInteraction)
 
-func _haunt_character(action: CharacterInteraction) -> void:
-	assert(action)
-	assert(action is CharacterInteraction)
-	finished.emit(PlayerStateHauntingCharacter.new(action.target.get_path()))
+func _haunt_character(interaction: CharacterInteraction) -> void:
+	assert(interaction)
+	assert(interaction is CharacterInteraction)
+	finished.emit(PlayerStateHauntingCharacter.new(interaction.target.get_path()))
 
-func _haunt_thing(action: ThingInteraction) -> void:
-	assert(action)
-	assert(action is ThingInteraction)
-	finished.emit(PlayerStateHauntingThing.new(action.target.get_path()))
+func _haunt_thing(interaction: ThingInteraction) -> void:
+	assert(interaction)
+	assert(interaction is ThingInteraction)
+	finished.emit(PlayerStateHauntingThing.new(interaction.target.get_path()))

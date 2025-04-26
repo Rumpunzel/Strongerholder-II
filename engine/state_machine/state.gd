@@ -24,7 +24,8 @@ static func from_serialized_state(serialized_state: Dictionary[StringName, Varia
 ## The [param data] parameter is a dictionary with arbitrary data the state can use to initialize itself.
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	if previous_state: _previous_state_script = previous_state.get_script()
-	finished.connect(state_machine._transition_to_next_state)
+	set_state_machine(state_machine)
+	finished.connect(get_state_machine().transition_to_next_state)
 
 ## Called by the state machine on the engine's main loop tick.
 func update(_delta: float) -> void:
@@ -36,7 +37,7 @@ func physics_update(_delta: float) -> void:
 
 ## Called by the state machine before changing the active state.
 func exit() -> void:
-	pass
+	finished.disconnect(get_state_machine().transition_to_next_state)
 
 func serialize() -> Dictionary[StringName, Variant]:
 	var state_script: GDScript = get_script()
@@ -48,6 +49,13 @@ func serialize() -> Dictionary[StringName, Variant]:
 
 func deserialize(_serialized_state: Dictionary[StringName, Variant]) -> State:
 	return self
+
+func get_state_machine() -> StateMachine:
+	assert(false, "State._get_state_machine is 'virtual' and needs to be overriden!")
+	return null
+
+func set_state_machine(_state_machine: StateMachine) -> void:
+	assert(false, "State._set_state_machine is 'virtual' and needs to be overriden!")
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

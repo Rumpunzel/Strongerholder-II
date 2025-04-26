@@ -4,7 +4,6 @@ class_name InteractionArea
 extends Area3D
 
 signal current_interactable_changed(current_interactable: HitBox)
-signal available_actions_changed(available_actions: Array[Interaction])
 
 @export var character: Character:
 	set(new_character):
@@ -22,18 +21,8 @@ var current_interactable: HitBox:
 		if current_interactable: current_interactable.get_model().apply_material_overlay(null)
 		current_interactable = new_current_interactable
 		current_interactable_changed.emit(current_interactable)
-		if not current_interactable:
-			available_action = null
-			return
-		available_action = _create_interaction(current_interactable)
+		if not current_interactable: return
 		current_interactable.get_model().apply_material_overlay(_highlight_material)
-
-var available_action: Interaction:
-	set(new_current_interactable):
-		available_action = new_current_interactable
-		var available_actions: Array[Interaction] = []
-		if available_action: available_actions.append(available_action)
-		available_actions_changed.emit(available_actions)
 
 var _hit_boxes_in_area: Array[HitBox] = []
 var _hit_boxes_to_ignore: Array[HitBox] = []
@@ -59,20 +48,6 @@ func remove_hit_box_to_ignore(hit_box: HitBox) -> void:
 
 func _is_ignored(hit_box: HitBox) -> bool:
 	return _hit_boxes_to_ignore.has(hit_box)
-
-var _haunt_action: Action = preload("uid://cuoqy5wkfjika")
-
-func _create_interaction(for_hit_box: HitBox) -> Interaction:
-	if not for_hit_box: return Interaction.new(character, _haunt_action)
-	if for_hit_box is CharacterHitBox: return _create_charcter_interaction(for_hit_box as CharacterHitBox)
-	if for_hit_box is ThingHitBox: return _create_thing_interaction(for_hit_box as ThingHitBox)
-	return null
-
-func _create_charcter_interaction(for_hit_box: CharacterHitBox) -> CharacterInteraction:
-	return CharacterInteraction.new(character, for_hit_box, _haunt_action)
-
-func _create_thing_interaction(for_hit_box: ThingHitBox) -> ThingInteraction:
-	return ThingInteraction.new(character, for_hit_box, _haunt_action)
 
 func _on_area_entered(area: Area3D) -> void:
 	if not area is HitBox: return

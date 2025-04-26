@@ -33,7 +33,7 @@ const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
 			return
 		mass = profile.mass
 		model = profile.create_model(variation)
-		profile.collision_shape.configure_collision_shape(_collision_shape)
+		profile.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
 		if Engine.is_editor_hint():
 			add_child(profile.create_heads_up_anchor())
@@ -52,11 +52,6 @@ var model: Model:
 		model = new_model
 		if not model: return
 		add_child(model, true)
-
-var _is_on_floor: bool = true
-var _normalized_velocity: Vector3 = Vector3.ZERO
-
-var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return

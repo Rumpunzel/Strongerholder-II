@@ -12,6 +12,7 @@ func _enter_tree() -> void:
 	add_to_group(role)
 
 func get_character_data() -> Dictionary[StringName, Variant]:
+	assert(thing_profile)
 	var thing_data: Dictionary[StringName, Variant] = {
 		Thing.VARIATION: variation,
 		Thing.PROFILE_PATH: thing_profile.resource_path,

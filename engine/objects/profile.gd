@@ -8,12 +8,11 @@ extends Resource
 @export_color_no_alpha var color: Color
 
 @export_category("Model")
-@export var collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb")
-@export var hit_box_shape: AreaShape = preload("uid://718wpxdsx3bo")
 @export var haunted_material: Material = preload("uid://cmbf2wnye66jw")
-
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
 
+@export var _collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb")
+@export var _hit_box_shape: AreaShape = preload("uid://718wpxdsx3bo")
 @export var _model_variations: Array[PackedScene]
 
 @export_category("")
@@ -28,6 +27,14 @@ func create_model(variation: int) -> Model:
 		assert(variation < _model_variations.size())
 		model = _model_variations[variation]
 	return model.instantiate()
+
+func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
+	assert(_collision_shape)
+	_collision_shape.configure_collision_shape(collision_shape)
+
+func configure_hit_box(hit_box: CollisionShape3D) -> void:
+	if not _hit_box_shape: configure_collision_shape(hit_box)
+	else: _hit_box_shape.configure_collision_shape(hit_box)
 
 func create_heads_up_anchor() -> HeadsUpAnchor:
 	return HeadsUpAnchor.create(heads_up_display_offset)

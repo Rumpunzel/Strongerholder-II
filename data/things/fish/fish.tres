@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ThingProfile" load_steps=12 format=3 uid="uid://buicitfb4e20w"]
+[gd_resource type="Resource" script_class="ThingProfile" load_steps=10 format=3 uid="uid://buicitfb4e20w"]
 
 [ext_resource type="PackedScene" uid="uid://bmu3ibo7uud8j" path="res://data/things/fish/fish_1_a_2.tscn" id="1_hpr2k"]
 [ext_resource type="PackedScene" uid="uid://bbqq46f2p8k0v" path="res://data/things/fish/fish_1_b_2.tscn" id="2_dnlk6"]
@@ -20,27 +20,15 @@ _rotation_degrees = Vector3(90, 0, 0)
 _automatic_ground_offset = false
 metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u5ehe"]
-radius = 0.1
-height = 0.5
-
-[sub_resource type="Resource" id="Resource_bo3md"]
-script = ExtResource("5_u5ehe")
-_shape = SubResource("CapsuleShape3D_u5ehe")
-_offset = Vector3(0, 0, 0)
-_rotation_degrees = Vector3(90, 0, 0)
-_automatic_ground_offset = false
-metadata/_custom_type_script = "uid://cfq64v34pot8s"
-
 [resource]
 script = ExtResource("8_l001u")
 group = 0
 mass = 0.1
 name = "Fish"
 color = Color(0, 0, 0, 1)
-collision_shape = SubResource("Resource_dnlk6")
-hit_box_shape = SubResource("Resource_bo3md")
 haunted_material = ExtResource("6_dvj1l")
 heads_up_display_offset = Vector3(0, 1, 0)
+_collision_shape = SubResource("Resource_dnlk6")
+_hit_box_shape = SubResource("Resource_dnlk6")
 _model_variations = Array[PackedScene]([ExtResource("1_hpr2k"), ExtResource("2_dnlk6"), ExtResource("3_l6kfr"), ExtResource("4_bo3md")])
 metadata/_custom_type_script = "uid://dkumiyoi57n5x"

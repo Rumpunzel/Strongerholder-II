@@ -15,7 +15,7 @@ func update_hitbox() -> void:
 		_collision_shape.position = Vector3.ZERO
 		_collision_shape.rotation_degrees = Vector3.ZERO
 		return
-	thing.profile.hit_box_shape.configure_collision_shape(_collision_shape)
+	thing.profile.configure_hit_box(_collision_shape)
 
 func get_body() -> Thing:
 	return thing

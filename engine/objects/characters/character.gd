@@ -32,7 +32,7 @@ const CHARACTER_SCENE: PackedScene = preload("uid://cvj6b1m2b65hd")
 			profile_changed.emit()
 			return
 		model = profile.create_model(variation)
-		profile.collision_shape.configure_collision_shape(_collision_shape)
+		profile.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
 		if Engine.is_editor_hint():
 			add_child(profile.create_heads_up_anchor())

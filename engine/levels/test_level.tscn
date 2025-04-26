@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=13 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://engine/levels/level.gd" id="1_ywn5t"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/characters/ghosts/ghost.tres" id="4_q1hu1"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://fokksh7u76ju" path="res://engine/levels/spawn_points/thing_spawn_point.gd" id="7_c445m"]
 [ext_resource type="Resource" uid="uid://buicitfb4e20w" path="res://data/things/fish/fish.tres" id="8_oyy5j"]
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
+[ext_resource type="Resource" uid="uid://cbl5ggrubf4we" path="res://data/things/log/log.tres" id="10_058wk"]
 [ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://engine/levels/spawn_points/character_spawn_point.gd" id="10_bpeee"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
@@ -64,4 +65,10 @@ metadata/_custom_type_script = "uid://da7xwt7wct3ms"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
 script = ExtResource("7_c445m")
 thing_profile = ExtResource("8_oyy5j")
+metadata/_custom_type_script = "uid://fokksh7u76ju"
+
+[node name="LogSpawnPoint" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+script = ExtResource("7_c445m")
+thing_profile = ExtResource("10_058wk")
 metadata/_custom_type_script = "uid://fokksh7u76ju"

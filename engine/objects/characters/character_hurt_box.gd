@@ -9,7 +9,7 @@ extends HitBox
 
 func update_hitbox() -> void:
 	assert(character)
-	character.profile.hit_box_shape.configure_collision_shape(_collision_shape)
+	character.profile.configure_hit_box(_collision_shape)
 
 func get_body() -> Character:
 	return character

@@ -31,7 +31,6 @@ func handle_interactable(current_interactable: HitBox) -> void:
 	available_interaction = get_state().handle_interactable(current_interactable)
 
 func get_state() -> PlayerState:
-	#if _state: _state.set_state_machine(self)
 	return _state
 
 func set_state(state: State) -> void:

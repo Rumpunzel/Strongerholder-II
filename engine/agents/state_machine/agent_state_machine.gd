@@ -10,7 +10,6 @@ extends StateMachine
 var _state: AgentState
 
 func get_state() -> AgentState:
-	#if _state: _state.set_state_machine(self)
 	return _state
 
 func set_state(state: State) -> void:

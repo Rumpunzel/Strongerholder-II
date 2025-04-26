@@ -81,10 +81,8 @@ static func validate_thing_data(thing_data: Dictionary[StringName, Variant]) -> 
 	assert(thing_data.size() == 3)
 
 @rpc("any_peer", "call_local")
-func apply_input_direction(direction_input: Vector2, force: Vector3) -> void:
-	var torque_input: Vector3 = Vector3(direction_input.x, 0.0, direction_input.y)
-	apply_central_force(force)
-	apply_torque(torque_input)
+func apply_input_force(input_force: Vector3) -> void:
+	apply_central_force(input_force)
 
 func apply_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
 	validate_thing_data(thing_data)

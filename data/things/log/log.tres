@@ -11,7 +11,7 @@ radius = 0.25
 [sub_resource type="Resource" id="Resource_uw3v0"]
 script = ExtResource("2_wd3bf")
 _shape = SubResource("CylinderShape3D_08lp2")
-_offset = Vector3(0, 0.25, 0)
+_offset = Vector3(0, 0, 0)
 _rotation_degrees = Vector3(90, 90, 0)
 _automatic_ground_offset = false
 metadata/_custom_type_script = "uid://cfq64v34pot8s"

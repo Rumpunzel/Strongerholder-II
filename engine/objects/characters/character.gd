@@ -138,10 +138,11 @@ func _handle_collisions() -> void:
 	for collision_index: int in get_slide_collision_count():
 		var collision: KinematicCollision3D  = get_slide_collision(collision_index)
 		var collider: PhysicsBody3D = collision.get_collider()
-		var collision_position: Vector3 = collision.get_position()
 		if collider is RigidBody3D:
+			var collision_position: Vector3 = collision.get_position()
 			var rigid_body: RigidBody3D = collider
-			rigid_body.apply_impulse(-collision.get_normal() * profile.mass)
+			var force_multiplyer: float = profile.mass * rigid_body.mass / 128.0
+			rigid_body.apply_impulse(-collision.get_normal() * force_multiplyer, collision_position - rigid_body.transform.origin)
 
 func _look_forward(delta: float) -> void:
 	look_target = position + velocity

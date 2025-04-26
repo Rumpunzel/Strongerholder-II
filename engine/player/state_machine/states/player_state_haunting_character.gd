@@ -19,13 +19,15 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	var character: Character = get_character()
 	_haunted = state_machine.get_node(_haunted_path)
 	assert(_haunted)
+	var haunted_character: Character = _haunted.character
+	assert(haunted_character)
 	character.visible = false
 	character.disable_physics()
 	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunted.haunt.rpc(character.get_path())
 	_haunt_camera = _create_haunt_camera()
-	_haunt_camera.append_follow_targets(_haunted.character)
-	_haunt_camera.append_look_at_target(_haunted.character)
+	_haunt_camera.append_follow_targets(haunted_character)
+	_haunt_camera.append_look_at_target(haunted_character)
 
 func update(_delta: float) -> void:
 	var interaction_input: StringName = get_interaction_input()
@@ -45,6 +47,7 @@ func physics_update(delta: float) -> void:
 	var direction_input: Vector2 = get_direction_input()
 	var character: Character = get_character()
 	var haunted_character: Character = _haunted.character
+	assert(haunted_character)
 	haunted_character.apply_input_direction.rpc(direction_input, delta)
 	character.transform = haunted_character.transform
 
@@ -57,7 +60,10 @@ func exit() -> void:
 	get_interaction_area().remove_hit_box_to_ignore(_haunted)
 	_haunted.unhaunt.rpc()
 	var character: Character = get_character()
+	var haunted_character: Character = _haunted.character
+	assert(haunted_character)
 	character.enable_physics()
+	character.velocity = haunted_character.velocity
 	character.visible = true
 	_haunt_camera.queue_free()
 

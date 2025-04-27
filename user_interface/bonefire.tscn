@@ -1,0 +1,31 @@
+[gd_scene load_steps=9 format=3 uid="uid://o2ptkc7aahbs"]
+
+[ext_resource type="Texture2D" uid="uid://8ani3mlehmfn" path="res://protoype_assets/bonefire/frame_0_delay-0.1s.png" id="1_26ldu"]
+[ext_resource type="Texture2D" uid="uid://c28a4brxo63so" path="res://protoype_assets/bonefire/frame_1_delay-0.1s.png" id="2_s0q7x"]
+[ext_resource type="Texture2D" uid="uid://miff77tbws85" path="res://protoype_assets/bonefire/frame_2_delay-0.1s.png" id="3_m3fdn"]
+[ext_resource type="Texture2D" uid="uid://bkrjddpkhk0lj" path="res://protoype_assets/bonefire/frame_3_delay-0.1s.png" id="4_q1r70"]
+[ext_resource type="Texture2D" uid="uid://5f1g3qnmgmgr" path="res://protoype_assets/bonefire/frame_4_delay-0.1s.png" id="5_444ag"]
+[ext_resource type="Texture2D" uid="uid://cqfogjlsbwlqj" path="res://protoype_assets/bonefire/frame_5_delay-0.1s.png" id="6_x6l6f"]
+[ext_resource type="Texture2D" uid="uid://bgjmcb04v358t" path="res://protoype_assets/bonefire/frame_6_delay-0.1s.png" id="7_ngt77"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_ax6at"]
+frames = 7
+speed_scale = 10.0
+frame_0/texture = ExtResource("1_26ldu")
+frame_1/texture = ExtResource("2_s0q7x")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_m3fdn")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_q1r70")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_444ag")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("6_x6l6f")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("7_ngt77")
+frame_6/duration = 1.0
+
+[node name="Bonefire" type="TextureRect"]
+texture = SubResource("AnimatedTexture_ax6at")
+expand_mode = 2
+stretch_mode = 5

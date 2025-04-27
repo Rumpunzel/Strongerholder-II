@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://5sd2jgms4uso"]
+[gd_scene load_steps=10 format=3 uid="uid://5sd2jgms4uso"]
 
 [ext_resource type="Script" uid="uid://yu3m6ywkwlvf" path="res://user_interface/pause_menu/pause_menu.gd" id="1_h4gok"]
 [ext_resource type="PackedScene" uid="uid://csmae7j3a5gs4" path="res://user_interface/pause_menu/game_info.tscn" id="2_wsp0d"]
 [ext_resource type="Script" uid="uid://lt4t275g8dsp" path="res://user_interface/info/title_label.gd" id="3_4wkd6"]
+[ext_resource type="PackedScene" uid="uid://o2ptkc7aahbs" path="res://user_interface/bonefire.tscn" id="3_tkajo"]
 [ext_resource type="PackedScene" uid="uid://bi3mr4sjccywj" path="res://user_interface/pause_menu/multiplayer_menu.tscn" id="4_xkrjr"]
 
 [sub_resource type="Gradient" id="Gradient_ofb81"]
@@ -51,9 +52,15 @@ theme_override_constants/margin_bottom = 64
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Title" type="Label" parent="PanelContainer/Menu/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/Menu/VBoxContainer"]
 layout_mode = 2
-text = "Strongerholder"
+
+[node name="Bonefire" parent="PanelContainer/Menu/VBoxContainer/HBoxContainer" instance=ExtResource("3_tkajo")]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/Menu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Bonefire"
 label_settings = SubResource("LabelSettings_ru3py")
 horizontal_alignment = 1
 script = ExtResource("3_4wkd6")

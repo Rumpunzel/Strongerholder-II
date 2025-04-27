@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Strongerholder"
+config/name="Bonefire"
 config/version="Development"
 run/main_scene="uid://bvt1s3i2xw5s6"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://helmet.png"
+config/icon="uid://bgjmcb04v358t"
 
 [autoload]
 

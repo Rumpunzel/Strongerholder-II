@@ -20,15 +20,12 @@ func spawn_all_from_spawn_spoints() -> Array[Thing]:
 	assert(multiplayer.is_server())
 	var all_thing_spawn_points: Array[Node] = get_tree().get_nodes_in_group("ThingSpawnPoints")
 	for thing_spawn_point: ThingSpawnPoint in all_thing_spawn_points:
-		var thing_data: Dictionary[StringName, Variant] = thing_spawn_point.get_character_data()
-		spawn(thing_data)
+		spawn(thing_spawn_point.get_thing_data())
 	return _things
 
 func remove_all_things() -> void:
 	assert(multiplayer.is_server())
-	while not _things.is_empty():
-		var thing: Thing = _things.pop_back()
-		remove_thing(thing)
+	remove_all_spawned_nodes()
 
 func remove_thing(thing: Thing) -> void:
 	assert(multiplayer.is_server())
@@ -36,11 +33,19 @@ func remove_thing(thing: Thing) -> void:
 	remove_child(thing)
 	thing.queue_free()
 
-func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
-	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
-	var spawned_things: Dictionary[StringName, Array] = {}
-	spawned_things[PackedScenes.THING_SCENE.resource_path] = _things.map(func(thing: Thing) -> NodePath: return thing.get_path())
-	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_things])
+func get_all_node_data() -> Array[Variant]:
+	var things_data: Array[Variant] = []
+	for thing: Thing in _things:
+		things_data.append(thing.to_thing_data())
+	return things_data
+
+func _remove_all_data_nodes() -> Array[NodePath]:
+	var removed_things_paths: Array[NodePath] = []
+	while not _things.is_empty():
+		var thing: Thing = _things.pop_back()
+		removed_things_paths.append(thing.get_path())
+		remove_thing(thing)
+	return removed_things_paths
 
 func _spawn_thing(thing_data: Dictionary[StringName, Variant]) -> Thing:
 	Thing.validate_thing_data(thing_data)

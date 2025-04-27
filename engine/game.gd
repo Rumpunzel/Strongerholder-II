@@ -45,10 +45,6 @@ func _enter_tree() -> void:
 	Multiplayer.game_joined.connect(_on_game_joined)
 	Multiplayer.left_game.connect(_on_left_game)
 
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
-	Multiplayer.start_singleplayer()
-
 func start_new_game() -> void:
 	assert(multiplayer.is_server())
 	print_debug("Starting new game...")
@@ -87,8 +83,8 @@ func load_game() -> Error:
 		GameStatus.ON_SERVER: push_error("Trying to load a game while connected to server!")
 		_: push_error("GameStatus %s not implemented!" % _game_status)
 	assert(_game_status == GameStatus.NONE)
-	_player_ghost_spawner.start_synching_players()
 	var error: Error = _serializer.load_world_state()
+	_player_ghost_spawner.start_synching_players()
 	if error == Error.OK: _game_status = GameStatus.RUNNING
 	return error
 

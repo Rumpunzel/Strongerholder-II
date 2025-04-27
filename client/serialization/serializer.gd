@@ -70,13 +70,13 @@ func load_world_state(save_file_path: StringName = SAVE_FILE_PATH) -> Error:
 func collect_data() -> Dictionary[StringName, Dictionary]:
 	var node_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersNodes")
 	var properties_serializers: Array[Node] = get_tree().get_nodes_in_group("SerializersProperties")
-	var node_data: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_node_data(node_serializers)
-	var properties_data: Dictionary[int, Dictionary] = PropertiesSerializer.collect_properties_data(properties_serializers)
+	var nodes: Dictionary[NodePath, Dictionary] = NodeSerializer.collect_all_nodes(node_serializers)
+	var properties: Dictionary[int, Dictionary] = PropertiesSerializer.collect_all_properties(properties_serializers)
 	# var intangible_data: Dictionary[NodePath, Dictionary] = properties_data.get(PropertiesSerializer.Type.INTANGIBLE, {} as Dictionary[NodePath, Dictionary])
 	# properties_data[PropertiesSerializer.Type.INTANGIBLE] = intangible_data.merged(_queued_intangible_data)
 	return {
-		NODES: node_data,
-		PROPERTIES: properties_data,
+		NODES: nodes,
+		PROPERTIES: properties,
 	}
 
 func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
@@ -93,8 +93,8 @@ func restore_state(collected_data: Dictionary[StringName, Dictionary]) -> void:
 
 func restore_nodes(node_data: Dictionary[NodePath, Dictionary]) -> void:
 	for node_serializer_path: NodePath in node_data:
-		var collected_nodes: Dictionary[StringName, Array] = node_data[node_serializer_path]
-		assert(collected_nodes is Dictionary[StringName, Array])
+		var collected_nodes: Dictionary[NodeSerializer.SpawnType, Variant] = node_data[node_serializer_path]
+		assert(collected_nodes is Dictionary[NodeSerializer.SpawnType, Variant])
 		var node_serializer: NodeSerializer = get_node(node_serializer_path)
 		assert(node_serializer)
 		node_serializer.restore_state(collected_nodes)
@@ -143,6 +143,7 @@ func _on_node_added(node: Node) -> void:
 	await node.ready
 	var node_path: NodePath = node.get_path()
 	if not _queued_intangible_data.has(node_path): return
+	print_debug("Started restoring intagle data for queued node %s!" % node_path)
 	var collected_properties: Dictionary[NodePath, Variant] = _queued_intangible_data[node_path]
 	assert(collected_properties is Dictionary[NodePath, Variant])
 	

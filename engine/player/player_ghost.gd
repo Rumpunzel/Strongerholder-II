@@ -50,6 +50,17 @@ static func validate_player_ghost_data(player_ghost_data: Dictionary[StringName,
 	assert(player_ghost_data.has_all([PLAYER_ID, CHARACTER_DATA]))
 	assert(player_ghost_data.size() == 2)
 
+func to_player_ghost_data() -> Dictionary[StringName, Variant]:
+	assert(player)
+	assert(character)
+	var character_data: Dictionary[StringName, Variant] = character.to_character_data()
+	var player_ghost_data: Dictionary[StringName, Variant] = {
+		PLAYER_ID: player.player_id,
+		CHARACTER_DATA: character_data,
+	}
+	validate_player_ghost_data(player_ghost_data)
+	return player_ghost_data
+
 func get_active_camera_priority() -> int:
 	return _ACTIVE_CAMERA_PRIORITY if player.is_local_player() else _INACTIVE_CAMERA_PRIORITY
 

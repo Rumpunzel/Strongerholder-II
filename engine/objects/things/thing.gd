@@ -15,6 +15,7 @@ const SPAWN_TRANSFORM: StringName = "spawn_transform"
 	set(new_variation):
 		if new_variation == variation: return
 		variation = new_variation
+		if not profile: return
 		if not model: return
 		model = profile.create_model(variation)
 
@@ -51,15 +52,6 @@ var model: Model:
 		if not model: return
 		add_child(model, true)
 
-## This is used for serialization purposes; serves otherwise no purpose
-@warning_ignore("unused_private_class_variable")
-var _profile_path: String:
-	get: return profile.resource_path
-	set(new_profile_path):
-		if profile and new_profile_path == profile.resource_path: return
-		assert(not profile)
-		profile = load(new_profile_path)
-
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 
@@ -89,7 +81,21 @@ func apply_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
 	variation = thing_data[VARIATION]
 	var profile_path: String = thing_data[PROFILE_PATH]
 	profile = load(profile_path)
-	transform = thing_data[SPAWN_TRANSFORM]
+	PhysicsServer3D.body_set_state(
+		get_rid(),
+		PhysicsServer3D.BODY_STATE_TRANSFORM,
+		thing_data[SPAWN_TRANSFORM],
+	)
+
+func to_thing_data() -> Dictionary[StringName, Variant]:
+	assert(profile)
+	var thing_data: Dictionary[StringName, Variant] = {
+		VARIATION: variation,
+		PROFILE_PATH: profile.resource_path,
+		SPAWN_TRANSFORM: transform,
+	}
+	validate_thing_data(thing_data)
+	return thing_data
 
 func get_portrait() -> Texture:
 	if model.portrait_override:

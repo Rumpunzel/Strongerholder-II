@@ -22,16 +22,21 @@ func load_level(level_scene_path: String) -> void:
 func unload_level() -> void:
 	assert(multiplayer.is_server())
 	assert(_level)
+	remove_all_spawned_nodes()
+
+func get_all_node_data() -> Array[Variant]:
+	var level_data: Array[Variant] = []
+	if _level: level_data.append(_level.scene_file_path)
+	return level_data
+
+func _remove_all_data_nodes() -> Array[NodePath]:
+	if not _level: return []
+	assert(_level)
+	var level_path: NodePath = _level.get_path()
 	remove_child(_level)
 	_level.queue_free()
 	_level = null
-
-func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
-	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
-	var spawned_levels: Dictionary[StringName, Array] = {}
-	if _level: spawned_levels[_level.scene_file_path] = [_level.get_path()]
-	var merged_spawned_nodes: Variant = Serializer.merge_array_dictionaries([spawned_nodes, spawned_levels])
-	return merged_spawned_nodes
+	return [level_path]
 
 func _spawn_level(level_scene_path: String) -> Level:
 	assert(not _level)

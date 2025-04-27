@@ -20,8 +20,7 @@ func spawn_all_from_spawn_spoints() -> Dictionary[Character, Agent]:
 	assert(multiplayer.is_server())
 	var all_character_spawn_points: Array[Node] = get_tree().get_nodes_in_group("CharacterSpawnPoints")
 	for character_spawn_point: CharacterSpawnPoint in all_character_spawn_points:
-		var character_data: Dictionary[StringName, Variant] = character_spawn_point.get_character_data()
-		spawn_agent(character_data)
+		spawn_agent(character_spawn_point.get_character_data())
 	return _agents
 
 func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
@@ -34,22 +33,26 @@ func spawn_agent(character_data: Dictionary[StringName, Variant]) -> void:
 
 func remove_all_agents() -> void:
 	assert(multiplayer.is_server())
-	for character: Character in _agents.keys():
-		remove_agent(character)
+	remove_all_spawned_nodes()
 
-func remove_agent(character: Character) -> void:
+func remove_agent(agent: Agent) -> void:
 	assert(multiplayer.is_server())
-	var agent_to_remove: Agent = _agents[character]
-	assert(agent_to_remove.character == character)
-	_agents.erase(character)
-	remove_child(agent_to_remove)
-	agent_to_remove.queue_free()
+	_agents.erase(agent.character)
+	remove_child(agent)
+	agent.queue_free()
 
-func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
-	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
-	var spawned_agents: Dictionary[StringName, Array] = {}
-	spawned_agents[PackedScenes.AGENT_SCENE.resource_path] = _agents.values().map(func(agent: Agent) -> NodePath: return agent.get_path())
-	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_agents])
+func get_all_node_data() -> Array[Variant]:
+	var agents_data: Array[Variant] = []
+	for agent: Agent in _agents.values():
+		agents_data.append(agent.to_agent_data())
+	return agents_data
+
+func _remove_all_data_nodes() -> Array[NodePath]:
+	var removed_agent_paths: Array[NodePath] = []
+	for agent: Agent in _agents.values():
+		removed_agent_paths.append(agent.get_path())
+		remove_agent(agent)
+	return removed_agent_paths
 
 func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:
 	Agent.validate_agent_data(agent_data)

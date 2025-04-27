@@ -31,6 +31,10 @@ func _enter_tree() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
+func _ready() -> void:
+	if not get_viewport().is_node_ready(): await get_viewport().ready
+	_start_singleplayer()
+
 func host_game(ip_address: StringName = DEFAULT_SERVER_IP, port: int = PORT) -> Error:
 	var server_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = server_peer.create_server(port, MAX_CONNECTIONS)
@@ -46,7 +50,6 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 	# TODO: check if hosts exists
 	assert(ip_address.is_valid_ip_address())
 	joining_multiplayer.emit()
-	await get_tree().process_frame
 	var client_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 	var error: Error = client_peer.create_client(ip_address, port)
 	if error: return error
@@ -58,11 +61,11 @@ func join_game(ip_address: StringName, port: int = PORT) -> Error:
 func stop_hosting_game() -> void:
 	assert(is_online())
 	stopped_hosting_game.emit()
-	start_singleplayer(SERVER)
+	_start_singleplayer(SERVER)
 	print_debug("Stopped hosting multiplayer game!")
 
 func leave_game() -> void:
-	start_singleplayer(CLIENT)
+	_start_singleplayer(CLIENT)
 	print_debug("Left multiplayer game!")
 
 func is_online() -> bool:
@@ -81,7 +84,7 @@ func _register_player(player_info: Dictionary[StringName, Variant]) -> void:
 		player_joined.emit(player_info)
 		print_debug("Player %s joined multiplayer game!" % player_info)
 
-func start_singleplayer(multiplayer_status: int = NONE) -> void:
+func _start_singleplayer(multiplayer_status: int = NONE) -> void:
 	if is_online(): disconnected_from_multiplayer.emit()
 	var offline_peer: OfflineMultiplayerPeer = OfflineMultiplayerPeer.new()
 	multiplayer.multiplayer_peer = offline_peer
@@ -98,9 +101,9 @@ func _on_connected_to_server() -> void:
 	print_debug("Connected to multiplayer server!")
 
 func _on_connection_failed() -> void:
-	start_singleplayer(CLIENT)
+	_start_singleplayer(CLIENT)
 	print_debug("Connection failed!")
 
 func _on_server_disconnected() -> void:
-	start_singleplayer(CLIENT)
+	_start_singleplayer(CLIENT)
 	print_debug("Server disconnected!")

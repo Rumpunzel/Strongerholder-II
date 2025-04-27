@@ -34,6 +34,15 @@ static func validate_agent_data(agent_data: Dictionary[StringName, Variant]) -> 
 	assert(agent_data.has_all([CHARACTER_DATA]))
 	assert(agent_data.size() == 1)
 
+func to_agent_data() -> Dictionary[StringName, Variant]:
+	assert(character)
+	var character_data: Dictionary[StringName, Variant] = character.to_character_data()
+	var agent_data: Dictionary[StringName, Variant] = {
+		CHARACTER_DATA: character_data,
+	}
+	validate_agent_data(agent_data)
+	return agent_data
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not _state_machine: warnings.append("Missing AgentStateMachine reference.")

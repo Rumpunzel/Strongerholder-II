@@ -15,6 +15,7 @@ const SPAWN_TRANSFORM: StringName = "spawn_transform"
 	set(new_variation):
 		if new_variation == variation: return
 		variation = new_variation
+		if not profile: return
 		if not model: return
 		model = profile.create_model(variation)
 
@@ -56,15 +57,6 @@ var _is_on_floor: bool = true
 var _normalized_velocity: Vector3 = Vector3.ZERO
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-## This is used for serialization purposes; serves otherwise no purpose
-@warning_ignore("unused_private_class_variable")
-var _profile_path: String:
-	get: return profile.resource_path
-	set(new_profile_path):
-		if profile and new_profile_path == profile.resource_path: return
-		assert(not profile)
-		profile = load(new_profile_path)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
@@ -114,6 +106,16 @@ func apply_character_data(character_data: Dictionary[StringName, Variant]) -> vo
 	var character_profile_path: String = character_data[PROFILE_PATH]
 	profile = load(character_profile_path)
 	transform = character_data[SPAWN_TRANSFORM]
+
+func to_character_data() -> Dictionary[StringName, Variant]:
+	assert(profile)
+	var character_data: Dictionary[StringName, Variant] = {
+		VARIATION: variation,
+		PROFILE_PATH: profile.resource_path,
+		SPAWN_TRANSFORM: transform,
+	}
+	validate_character_data(character_data)
+	return character_data
 
 func enable_physics() -> void:
 	set_physics_process(true)

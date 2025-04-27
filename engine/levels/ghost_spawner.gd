@@ -25,8 +25,8 @@ func start_synching_players() -> void:
 func stop_synching_players() -> void:
 	assert(multiplayer.is_server())
 	_remove_all_player_ghosts()
-	#if Lobby.player_connected.is_connected(spawn_player_ghost):
-	Lobby.player_connected.disconnect(spawn_player_ghost)
+	if Lobby.player_connected.is_connected(spawn_player_ghost):
+		Lobby.player_connected.disconnect(spawn_player_ghost)
 
 ## @returns [code]true[/code] if spawning is queued for later
 func spawn_player_ghost(player: Player) -> bool:
@@ -49,6 +49,19 @@ func spawn_player_ghost(player: Player) -> bool:
 	spawn(player_ghost_data)
 	return false
 
+func get_all_node_data() -> Array[Variant]:
+	var player_ghosts_data: Array[Variant] = []
+	for player_ghost: PlayerGhost in _player_ghosts.values():
+		player_ghosts_data.append(player_ghost.to_player_ghost_data())
+	return player_ghosts_data
+
+func _remove_all_data_nodes() -> Array[NodePath]:
+	var removed_player_ghost_paths: Array[NodePath] = []
+	for player_ghost: PlayerGhost in _player_ghosts.values():
+		removed_player_ghost_paths.append(player_ghost.get_path())
+		_remove_player_ghost(player_ghost)
+	return removed_player_ghost_paths
+
 func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> PlayerGhost:
 	PlayerGhost.validate_player_ghost_data(player_ghost_data)
 	var player_id: int = player_ghost_data[PlayerGhost.PLAYER_ID]
@@ -59,19 +72,18 @@ func _spawn_player_ghost(player_ghost_data: Dictionary[StringName, Variant]) -> 
 	var player_ghost: PlayerGhost = PlayerGhost.create(player, character_data)
 	assert(not _player_ghosts.has(player))
 	_player_ghosts[player_ghost.player] = player_ghost
-	player.tree_exiting.connect(_remove_player_ghost.bind(player))
+	player.tree_exiting.connect(_remove_player_ghost.bind(player_ghost))
 	return player_ghost
 
 func _remove_all_player_ghosts() -> void:
-	for player: Player in _player_ghosts.keys():
-		_remove_player_ghost(player)
+	remove_all_spawned_nodes()
 
-func _remove_player_ghost(player: Player) -> void:
-	var player_ghost_to_remove: PlayerGhost = _player_ghosts[player]
+func _remove_player_ghost(player_ghost: PlayerGhost) -> void:
+	var player: Player = player_ghost.player
 	_player_ghosts.erase(player)
-	remove_child(player_ghost_to_remove)
-	player_ghost_to_remove.queue_free()
-	player.tree_exiting.disconnect(_remove_player_ghost.bind(player))
+	player.tree_exiting.disconnect(_remove_player_ghost.bind(player_ghost))
+	remove_child(player_ghost)
+	player_ghost.queue_free()
 
 func _on_node_added(node: Node) -> void:
 	if not node.is_in_group("PlayerSpawnPoints"): return

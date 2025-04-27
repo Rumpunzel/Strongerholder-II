@@ -29,18 +29,18 @@ var restoriation_order: int:
 func _ready() -> void:
 	add_to_group("SerializersProperties")
 
-## Collects all properties data
+## Collects all properties
 ## @returns a [Dictionary] with [int]s representing the restoration orde to a [Dictionary] [NodePath]s of the responsible [PropertiesSerializer] to the properties data
-static func collect_properties_data(properties_serializers: Array[Node]) -> Dictionary[int, Dictionary]:
-	var properties_data: Dictionary[int, Dictionary] = { }
+static func collect_all_properties(properties_serializers: Array[Node]) -> Dictionary[int, Dictionary]:
+	var properties: Dictionary[int, Dictionary] = { }
 	for properties_serializer: PropertiesSerializer in properties_serializers:
 		# Properties are collected in a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
-		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
 		var restoration_order: int = properties_serializer.restoriation_order
-		var properties_data_for_restoration_order: Dictionary[NodePath, Dictionary] = properties_data.get_or_add(restoration_order, { } as Dictionary[NodePath, Dictionary])
+		var properties_data_for_restoration_order: Dictionary[NodePath, Dictionary] = properties.get_or_add(restoration_order, { } as Dictionary[NodePath, Dictionary])
+		var collected_properties: Dictionary[NodePath, Variant] = properties_serializer.collect_properties()
 		properties_data_for_restoration_order[properties_serializer.get_path()] = collected_properties
-		properties_data[restoration_order] = properties_data_for_restoration_order
-	return properties_data
+		properties[restoration_order] = properties_data_for_restoration_order
+	return properties
 
 ## @returns a [Dictionary] with the parameter as [NodePath] to the value as a [Variant]
 func collect_properties() -> Dictionary[NodePath, Variant]:

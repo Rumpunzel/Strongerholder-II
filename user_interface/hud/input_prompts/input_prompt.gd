@@ -50,6 +50,7 @@ static func create(for_available_interaction: Interaction) -> InputPrompt:
 	return new_input_prompt
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
 	var viewport_camera: Camera3D = get_viewport().get_camera_3d()
 	var heads_up_anchor: Vector3 = available_interaction.get_heads_up_anchor()
 	visible = not viewport_camera.is_position_behind(heads_up_anchor)

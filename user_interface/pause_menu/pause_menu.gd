@@ -14,10 +14,19 @@ signal closed
 @export var _new_game_button: Button
 @export var _save_button: Button
 @export var _load_button: Button
+@export var _animation_player: AnimationPlayer
+
+var _menu_root: Control
+var _tween: Tween
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
+	for child: Node in get_children():
+		if child is Control:
+			_menu_root = child
+			break
 	visible = get_tree().paused
+	_menu_root.modulate.a = 0.0 if get_tree().paused else 1.0
 	Multiplayer.joining_multiplayer.connect(_on_joining_multiplayer)
 	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
 	Client.game_paused.connect(open_menu)
@@ -41,14 +50,22 @@ func open_menu() -> void:
 	if visible: return
 	get_tree().call_group("HUD", "hide")
 	show()
+	if _tween: _tween.kill()
+	_tween = get_tree().create_tween()
+	_tween.tween_property(_menu_root, "modulate:a", 1.0, 0.1)
+	_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	Client.pause_game()
 	opened.emit()
 
 func close_menu() -> void:
 	if not visible: return
 	Client.unpause_game()
-	hide()
-	get_tree().call_group("HUD", "show")
+	if _tween: _tween.kill()
+	_tween = get_tree().create_tween()
+	_tween.tween_property(_menu_root, "modulate:a", 0.0, 0.25)
+	_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_tween.tween_callback(hide)
+	_tween.tween_callback(get_tree().call_group.bind("HUD", "show"))
 	closed.emit()
 
 func reset_menu() -> void:
@@ -85,10 +102,14 @@ func _on_joining_multiplayer() -> void:
 func _on_disconnected_from_multiplayer() -> void:
 	reset_menu()
 
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = []
-	return warnings
-
 # [Serializer] callbacks
 func _on_saving_finished() -> void:
 	_load_button.disabled = not Serializer.has_save_file(Serializer.SAVE_FILE_PATH)
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	if not _new_game_button: warnings.append("Missing new game button reference.")
+	if not _save_button: warnings.append("Missing save button reference.")
+	if not _load_button: warnings.append("Missing load button reference.")
+	if not _animation_player: warnings.append("Missing AnimationPlayer reference.")
+	return warnings

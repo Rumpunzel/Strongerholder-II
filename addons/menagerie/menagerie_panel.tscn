@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxs2pxpsmsfud"]
+
+[ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
+
+[node name="Menagerie" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_4mtjh")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+current_tab = 0
+
+[node name="Characters" type="Control" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Structures" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Things" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2

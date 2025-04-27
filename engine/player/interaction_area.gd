@@ -18,11 +18,13 @@ signal current_interactable_changed(current_interactable: HitBox)
 var current_interactable: HitBox:
 	set(new_current_interactable):
 		if new_current_interactable == current_interactable: return
-		if current_interactable: current_interactable.get_model().apply_material_overlay(null)
+		if current_interactable and is_multiplayer_authority():
+			current_interactable.get_model().apply_material_overlay(null)
 		current_interactable = new_current_interactable
 		current_interactable_changed.emit(current_interactable)
 		if not current_interactable: return
-		current_interactable.get_model().apply_material_overlay(_highlight_material)
+		if is_multiplayer_authority():
+			current_interactable.get_model().apply_material_overlay(_highlight_material)
 
 var _hit_boxes_in_area: Array[HitBox] = []
 var _hit_boxes_to_ignore: Array[HitBox] = []

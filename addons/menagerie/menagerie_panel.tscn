@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxs2pxpsmsfud"]
+[gd_scene load_steps=7 format=3 uid="uid://bxs2pxpsmsfud"]
 
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
 [ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_view.gd" id="2_ne48i"]
 [ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="2_s01o1"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/characters/people/king.tres" id="3_ne48i"]
+[ext_resource type="Script" uid="uid://bwg0781tlquj5" path="res://addons/menagerie/preview_camera.gd" id="5_4i0gh"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_s01o1"]
 viewport_path = NodePath("SubViewport")
@@ -113,7 +114,10 @@ size = Vector2i(1920, 1080)
 variation = 0
 profile = ExtResource("3_ne48i")
 
-[node name="Camera3D" type="Camera3D" parent="SubViewport"]
-transform = Transform3D(0.719352, -0.467191, 0.514067, 0, 0.740042, 0.672561, -0.694646, -0.483808, 0.532351, 1.30805, 2.62063, 1.88326)
+[node name="Camera3D" type="Camera3D" parent="SubViewport" node_paths=PackedStringArray("_character")]
+transform = Transform3D(0.719352, -0.467191, 0.514067, 0, 0.740042, 0.672561, -0.694646, -0.483808, 0.532351, 1, 1.75, 2)
+script = ExtResource("5_4i0gh")
+_character = NodePath("../Preview/Character")
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="profile_changed" from="SubViewport/Preview/Character" to="SubViewport/Camera3D" method="_look_at_character"]

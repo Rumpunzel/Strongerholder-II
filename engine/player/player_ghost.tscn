@@ -72,7 +72,7 @@ haunt_phantom_camera_scene = ExtResource("10_jlh3c")
 _initial_state = ExtResource("4_irqko")
 metadata/_custom_type_script = "uid://hcr7qut3ys1y"
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." groups=["HUD"]]
 script = ExtResource("7_cs6u8")
 metadata/_custom_type_script = "uid://cmsnxge6cujxg"
 

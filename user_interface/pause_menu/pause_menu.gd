@@ -39,6 +39,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func open_menu() -> void:
 	if visible: return
+	get_tree().call_group("HUD", "hide")
 	show()
 	Client.pause_game()
 	opened.emit()
@@ -47,6 +48,7 @@ func close_menu() -> void:
 	if not visible: return
 	Client.unpause_game()
 	hide()
+	get_tree().call_group("HUD", "show")
 	closed.emit()
 
 func reset_menu() -> void:
@@ -75,6 +77,7 @@ func _on_quit_confirmation_dialog_confirmed() -> void:
 
 # [Multiplayer] callbacks
 func _on_joining_multiplayer() -> void:
+	close_menu()
 	_new_game_button.disabled = true
 	_save_button.disabled = true
 	_load_button.disabled = true

@@ -75,6 +75,7 @@ CharacterSpawnPoints=""
 PlayerSpawnPoints=""
 Things=""
 ThingSpawnPoints=""
+HUD=""
 
 [input]
 

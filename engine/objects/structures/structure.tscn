@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://yutu4m8jrjxn" path="res://engine/objects/structures/structure_hit_box.tscn" id="2_c1vy7"]
 
 [node name="Structure" type="StaticBody3D" node_paths=PackedStringArray("_collision_shape")]
+collision_layer = 8
 input_ray_pickable = false
 script = ExtResource("1_esc8u")
 _collision_shape = NodePath("CollisionShape3D")

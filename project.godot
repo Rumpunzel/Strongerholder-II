@@ -138,6 +138,7 @@ unhaunt={
 3d_physics/layer_1="World"
 3d_physics/layer_2="Characters"
 3d_physics/layer_3="Things"
+3d_physics/layer_4="Structures"
 3d_physics/layer_5="WorldAreas"
 3d_physics/layer_6="HitBoxes"
 3d_physics/layer_7="HurtBoxes"

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="StructureProfile" load_steps=6 format=3 uid="uid://be0che1vw52o7"]
+
+[ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://data/characters/defaults/default_collision_shape.tres" id="1_acfbe"]
+[ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://data/characters/defaults/default_hit_box_shape.tres" id="2_275g7"]
+[ext_resource type="PackedScene" uid="uid://d2fn7gvcxvkan" path="res://data/structures/buildings/bonfire.tscn" id="3_275g7"]
+[ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="3_ifg41"]
+[ext_resource type="Script" uid="uid://dol8cfhd12nbf" path="res://engine/objects/structures/structure_profile.gd" id="4_4wi01"]
+
+[resource]
+script = ExtResource("4_4wi01")
+group = 0
+name = "Bonefire"
+color = Color(0, 0, 0, 1)
+mass = 75.0
+haunted_material = ExtResource("3_ifg41")
+heads_up_display_offset = Vector3(0, 2, 0)
+_collision_shape = ExtResource("1_acfbe")
+_hit_box_shape = ExtResource("2_275g7")
+_model_variations = Array[PackedScene]([ExtResource("3_275g7")])
+metadata/_custom_type_script = "uid://dol8cfhd12nbf"

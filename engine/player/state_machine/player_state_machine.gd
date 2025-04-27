@@ -23,11 +23,14 @@ var available_interaction: Interaction:
 
 var _state: PlayerState
 
-## Called by the state machine when receiving unhandled input events.
 func handle_input(event: InputEvent) -> void:
+	if _status == Status.STOPPED: return
+	assert(_status == Status.RUNNING)
 	get_state().handle_input(event)
 
 func handle_interactable(current_interactable: HitBox) -> void:
+	if _status == Status.STOPPED: return
+	assert(_status == Status.RUNNING)
 	available_interaction = get_state().handle_interactable(current_interactable)
 
 func get_state() -> PlayerState:

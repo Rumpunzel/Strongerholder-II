@@ -21,10 +21,9 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted)
 	var haunted_character: Character = _haunted.character
 	assert(haunted_character)
-	character.visible = false
-	character.disable_physics()
-	get_interaction_area().add_hit_box_to_ignore(_haunted)
+	character.hide_character.rpc()
 	_haunted.haunt.rpc(character.get_path())
+	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunt_camera = _create_haunt_camera()
 	_haunt_camera.append_follow_targets(haunted_character)
 	_haunt_camera.append_look_at_target(haunted_character)
@@ -57,18 +56,16 @@ func handle_input(_event: InputEvent) -> void:
 func exit() -> void:
 	super.exit()
 	assert(_haunted)
-	get_interaction_area().remove_hit_box_to_ignore(_haunted)
-	_haunted.unhaunt.rpc()
 	var character: Character = get_character()
 	var haunted_character: Character = _haunted.character
 	assert(haunted_character)
-	character.enable_physics()
 	character.velocity = haunted_character.velocity
-	character.visible = true
+	character.unhide_character.rpc()
+	_haunted.unhaunt.rpc()
+	get_interaction_area().remove_hit_box_to_ignore(_haunted)
 	_haunt_camera.queue_free()
 
 func serialize() -> Dictionary[StringName, Variant]:
-	assert(_haunted)
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()
 	serialized_state[HAUNTED] = _haunted_path
 	return serialized_state

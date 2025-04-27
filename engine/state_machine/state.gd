@@ -15,9 +15,7 @@ static func from_serialized_state(serialized_state: Dictionary[StringName, Varia
 	var state_script_path: String = serialized_state[STATE_SCRIPT]
 	var state_script: GDScript = load(state_script_path)
 	var state: State = state_script.new()
-	var previous_state_script_path: String = serialized_state.get(PREVIOUS_STATE_SCRIPT, "")
-	if not previous_state_script_path.is_empty():
-		state._previous_state_script = load(previous_state_script_path)
+	state.deserialize(serialized_state)
 	return state
 
 ## Called by the state machine upon changing the active state.
@@ -49,7 +47,10 @@ func serialize() -> Dictionary[StringName, Variant]:
 	if _previous_state_script: serialized_state[PREVIOUS_STATE_SCRIPT] = _previous_state_script.resource_path
 	return serialized_state
 
-func deserialize(_serialized_state: Dictionary[StringName, Variant]) -> State:
+func deserialize(serialized_state: Dictionary[StringName, Variant]) -> State:
+	var previous_state_script_path: String = serialized_state.get(PREVIOUS_STATE_SCRIPT, "")
+	if not previous_state_script_path.is_empty():
+		_previous_state_script = load(previous_state_script_path)
 	return self
 
 func get_state_machine() -> StateMachine:

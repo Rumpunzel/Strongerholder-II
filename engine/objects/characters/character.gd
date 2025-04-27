@@ -100,6 +100,19 @@ func apply_input_direction(direction_input: Vector2, delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration)
 		velocity.z = move_toward(velocity.z, 0.0, deceleration)
 
+@rpc("any_peer", "call_local")
+func hide_character(keep_physics: bool = false) -> void:
+	assert(visible)
+	visible = false
+	if keep_physics: return
+	_disable_physics()
+
+@rpc("any_peer", "call_local")
+func unhide_character() -> void:
+	assert(not visible)
+	visible = true
+	_enable_physics()
+
 func apply_character_data(character_data: Dictionary[StringName, Variant]) -> void:
 	validate_character_data(character_data)
 	variation = character_data[VARIATION]
@@ -116,14 +129,6 @@ func to_character_data() -> Dictionary[StringName, Variant]:
 	}
 	validate_character_data(character_data)
 	return character_data
-
-func enable_physics() -> void:
-	set_physics_process(true)
-	set_process(true)
-
-func disable_physics() -> void:
-	set_physics_process(false)
-	set_process(false)
 
 func get_portrait() -> Texture:
 	if model.portrait_override:
@@ -152,6 +157,14 @@ func _look_forward(delta: float) -> void:
 	if look_target.is_equal_approx(transform.origin): return
 	var transform_looking_into_direction: Transform3D = transform.looking_at(look_target, Vector3.UP, true)
 	transform = transform.interpolate_with(transform_looking_into_direction, profile.turn_rate * delta)
+
+func _enable_physics() -> void:
+	set_physics_process(true)
+	set_process(true)
+
+func _disable_physics() -> void:
+	set_physics_process(false)
+	set_process(false)
 
 func _on_haunted(_haunting: Character) -> void:
 	model.apply_material_overlay(profile.haunted_material)

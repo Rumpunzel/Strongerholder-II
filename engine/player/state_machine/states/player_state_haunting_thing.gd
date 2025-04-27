@@ -24,7 +24,7 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	_haunted.haunt.rpc(character.get_path())
 	var input_force: Vector3 = character.get_heads_up_anchor() - haunted_thing.position
 	haunted_thing.apply_torque(input_force * character.profile.mass)
-	character.visible = false
+	character.hide_character.rpc(true)
 	character.position = haunted_thing.position
 	get_interaction_area().add_hit_box_to_ignore(_haunted)
 	_haunt_camera = _create_haunt_camera()
@@ -62,10 +62,10 @@ func exit() -> void:
 	var character: Character = get_character()
 	var haunted_thing: Thing = _haunted.thing
 	assert(haunted_thing)
-	get_interaction_area().remove_hit_box_to_ignore(_haunted)
 	character.velocity = haunted_thing.linear_velocity * haunted_thing.mass / character.profile.mass
+	character.unhide_character.rpc()
 	_haunted.unhaunt.rpc()
-	character.visible = true
+	get_interaction_area().remove_hit_box_to_ignore(_haunted)
 	_haunt_camera.queue_free()
 
 func serialize() -> Dictionary[StringName, Variant]:

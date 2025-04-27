@@ -30,7 +30,6 @@ func exit() -> void:
 	get_hit_box().unhaunted.disconnect(_on_unhaunted)
 
 func serialize() -> Dictionary[StringName, Variant]:
-	assert(_haunting)
 	var serialized_state: Dictionary[StringName, Variant] = super.serialize()
 	serialized_state[HAUNTING] = _haunting_path
 	return serialized_state

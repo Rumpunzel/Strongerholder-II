@@ -170,7 +170,7 @@ func _on_haunted(_haunting: Character) -> void:
 	model.apply_material_overlay(profile.haunted_material)
 
 func _on_unhaunted() -> void:
-	model.apply_material_overlay(null)
+	model.remove_material_overlay(profile.haunted_material)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

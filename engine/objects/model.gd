@@ -26,12 +26,24 @@ func play_animation(normalized_velocity: Vector3, _is_on_floor: bool) -> void:
 		_state_machine.travel("Idle")
 
 func apply_material_override(material: Material) -> void:
+	assert(material)
 	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
 		mesh.material_override = material
 
+func remove_material_override(material: Material) -> void:
+	assert(material)
+	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
+		if mesh.material_override == material: mesh.material_override = null
+
 func apply_material_overlay(material: Material) -> void:
+	assert(material)
 	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
 		mesh.material_overlay = material
+
+func remove_material_overlay(material: Material) -> void:
+	assert(material)
+	for mesh: MeshInstance3D in gather_all_geometry_instances_on(self):
+		if mesh.material_override == material: mesh.material_override = null
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

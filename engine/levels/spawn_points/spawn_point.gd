@@ -12,6 +12,7 @@ extends Marker3D
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
+		if variation < 0: variation = get_profile().get_random_variation()
 		var model: Model = get_profile().create_model(variation)
 		if _editor_material: model.apply_material_override(_editor_material)
 		add_child(model)

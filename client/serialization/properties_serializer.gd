@@ -63,6 +63,7 @@ func restore_state(collected_properties: Dictionary[NodePath, Variant]) -> void:
 		var property_node_path: NodePath = NodePath(property_path.get_concatenated_subnames())
 		var property_value: Variant = collected_properties[property_path]
 		node.set_indexed(property_node_path, property_value)
+		assert(node.is_inside_tree())
 		assert(node.get_indexed(property_node_path) == property_value, "property_path %s does not exist in %s" % [property_path, node.get_path()])
 	print_debug("Restored %s properties for %s" % [collected_properties, get_path()])
 

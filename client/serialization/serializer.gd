@@ -140,6 +140,7 @@ func _restore_properties(properties_data: Dictionary[NodePath, Dictionary], seri
 
 func _on_node_added(node: Node) -> void:
 	if _queued_intangible_data.is_empty(): return
+	await node.ready
 	var node_path: NodePath = node.get_path()
 	if not _queued_intangible_data.has(node_path): return
 	var collected_properties: Dictionary[NodePath, Variant] = _queued_intangible_data[node_path]

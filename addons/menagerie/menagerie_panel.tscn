@@ -25,6 +25,7 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
 layout_mode = 2
 current_tab = 0
+clip_tabs = false
 
 [node name="Characters" type="MarginContainer" parent="HSplitContainer/TabContainer"]
 layout_mode = 2
@@ -52,15 +53,21 @@ layout_mode = 2
 [node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
 
-[node name="ModelView" type="TextureRect" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer" node_paths=PackedStringArray("_preview")]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+
+[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "King"
+
+[node name="ModelView" type="TextureRect" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer" node_paths=PackedStringArray("_preview")]
+layout_mode = 2
+size_flags_vertical = 3
 mouse_filter = 0
 texture = SubResource("ViewportTexture_s01o1")
 expand_mode = 2
@@ -68,8 +75,14 @@ stretch_mode = 6
 script = ExtResource("2_ne48i")
 _preview = NodePath("../../../../../SubViewport/Preview")
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -76.0
+offset_bottom = 55.0
+grow_horizontal = 0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_constants/margin_left = 8
@@ -77,17 +90,17 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 text = "Info 2"
 

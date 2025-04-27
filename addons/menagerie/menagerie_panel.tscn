@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxs2pxpsmsfud"]
+[gd_scene load_steps=6 format=3 uid="uid://bxs2pxpsmsfud"]
 
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
+[ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_view.gd" id="2_ne48i"]
+[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="2_s01o1"]
+[ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/characters/people/king.tres" id="3_ne48i"]
 
-[node name="Menagerie" type="PanelContainer"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_s01o1"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Menagerie" type="PanelContainer" node_paths=PackedStringArray("_preview")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,21 +17,90 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_4mtjh")
+_preview = NodePath("SubViewport/Preview")
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
 layout_mode = 2
 current_tab = 0
 
-[node name="Characters" type="Control" parent="TabContainer"]
+[node name="Characters" type="MarginContainer" parent="HSplitContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Structures" type="Control" parent="TabContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/TabContainer/Characters"]
+layout_mode = 2
+
+[node name="Tree" type="Tree" parent="HSplitContainer/TabContainer/Characters/VSplitContainer"]
+layout_mode = 2
+
+[node name="Structures" type="MarginContainer" parent="HSplitContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Things" type="Control" parent="TabContainer"]
+[node name="Things" type="MarginContainer" parent="HSplitContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ModelView" type="TextureRect" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer" node_paths=PackedStringArray("_preview")]
+layout_mode = 2
+mouse_filter = 0
+texture = SubResource("ViewportTexture_s01o1")
+expand_mode = 2
+stretch_mode = 6
+script = ExtResource("2_ne48i")
+_preview = NodePath("../../../../../SubViewport/Preview")
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/PanelContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "Info 2"
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1920, 1080)
+
+[node name="Preview" type="Node3D" parent="SubViewport"]
+
+[node name="Character" parent="SubViewport/Preview" instance=ExtResource("2_s01o1")]
+variation = 0
+profile = ExtResource("3_ne48i")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(0.719352, -0.467191, 0.514067, 0, 0.740042, 0.672561, -0.694646, -0.483808, 0.532351, 1.30805, 2.62063, 1.88326)
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

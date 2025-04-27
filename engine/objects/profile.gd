@@ -3,20 +3,41 @@
 class_name Profile
 extends Resource
 
-@export var name: String
-@export var portrait: Texture
-@export_color_no_alpha var color: Color
-
-@export_category("Attributes")
-@export_custom(PROPERTY_HINT_RANGE, "0.001,1000.0,exp,suffix:kg") var mass: float = 75.0
+@export var name: String:
+	set(new_value):
+		name = new_value
+		changed.emit()
+@export var portrait: Texture:
+	set(new_value):
+		portrait = new_value
+		changed.emit()
+@export_color_no_alpha var color: Color:
+	set(new_value):
+		color = new_value
+		changed.emit()
 
 @export_category("Model")
-@export var haunted_material: Material = preload("uid://cmbf2wnye66jw")
-@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
+@export var haunted_material: Material = preload("uid://cmbf2wnye66jw"):
+	set(new_value):
+		haunted_material = new_value
+		changed.emit()
+@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0):
+	set(new_value):
+		heads_up_display_offset = new_value
+		changed.emit()
 
-@export var _collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb")
-@export var _hit_box_shape: AreaShape = preload("uid://718wpxdsx3bo")
-@export var _model_variations: Array[PackedScene]
+@export var _collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb"):
+	set(new_value):
+		_collision_shape = new_value
+		changed.emit()
+@export var _hit_box_shape: AreaShape = preload("uid://718wpxdsx3bo"):
+	set(new_value):
+		_hit_box_shape = new_value
+		changed.emit()
+@export var _model_variations: Array[PackedScene]:
+	set(new_value):
+		_model_variations = new_value
+		changed.emit()
 
 @export_category("")
 @export_group("Configuration")

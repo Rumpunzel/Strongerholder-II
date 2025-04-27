@@ -23,9 +23,9 @@ metadata/_custom_type_script = "uid://cfq64v34pot8s"
 [resource]
 script = ExtResource("8_l001u")
 group = 0
+mass = 0.5
 name = "Fish"
 color = Color(0, 0, 0, 1)
-mass = 0.5
 haunted_material = ExtResource("6_dvj1l")
 heads_up_display_offset = Vector3(0, 1, 0)
 _collision_shape = SubResource("Resource_dnlk6")

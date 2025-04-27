@@ -7,7 +7,15 @@ enum Groups {
 	ITEMS,
 }
 
-@export var group: Groups = Groups.ITEMS
+@export var group: Groups = Groups.ITEMS:
+	set(new_value):
+		group = new_value
+		changed.emit()
+
+@export_custom(PROPERTY_HINT_RANGE, "0.001,1000.0,exp,suffix:kg") var mass: float = 1.0:
+	set(new_value):
+		mass = new_value
+		changed.emit()
 
 @export_category("")
 @export_group("Configuration")

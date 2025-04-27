@@ -3,10 +3,22 @@
 class_name AreaShape
 extends Resource
 
-@export var _shape: Shape3D
-@export var _offset: Vector3
-@export var _rotation_degrees: Vector3
-@export var _automatic_ground_offset: bool = true
+@export var _shape: Shape3D:
+	set(new_value):
+		_shape = new_value
+		changed.emit()
+@export var _offset: Vector3:
+	set(new_value):
+		_offset = new_value
+		changed.emit()
+@export var _rotation_degrees: Vector3:
+	set(new_value):
+		_rotation_degrees = new_value
+		changed.emit()
+@export var _automatic_ground_offset: bool = true:
+	set(new_value):
+		_automatic_ground_offset = new_value
+		changed.emit()
 
 func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
 	assert(collision_shape)

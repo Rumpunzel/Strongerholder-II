@@ -11,11 +11,12 @@ extends Marker3D
 @export var _editor_material: Material = preload("uid://dilpjt8kd3s4d")
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		if variation < 0: variation = get_profile().get_random_variation()
-		var model: Model = get_profile().create_model(variation)
-		if _editor_material: model.apply_material_override(_editor_material)
-		add_child(model)
+		return
+	var model: Model = get_profile().create_model(variation)
+	if _editor_material: model.apply_material_override(_editor_material)
+	add_child(model)
 
 func get_profile() -> Profile:
 	assert(false, "SpawnPoint.get_model is 'virtual' and needs to be overriden!")

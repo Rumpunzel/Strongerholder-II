@@ -6,13 +6,18 @@ extends Profile
 enum Groups {
 	ITEMS,
 }
+
 @export var group: Groups = Groups.ITEMS
 
 @export_category("")
 @export_group("Configuration")
 
 func create(variation: int, spawn_transform: Transform3D) -> Thing:
-	return Thing.create(variation, self, spawn_transform)
+	var new_thing: Thing = PackedScenes.THING_SCENE.instantiate()
+	new_thing.variation = variation
+	new_thing.profile = self
+	new_thing.transform = spawn_transform
+	return new_thing
 
 func get_group_name() -> StringName:
 	var group_name: StringName = Groups.keys()[group]

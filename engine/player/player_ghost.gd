@@ -6,8 +6,6 @@ extends Node
 const PLAYER_ID: StringName = "player_id"
 const CHARACTER_DATA: StringName = "character_data"
 
-const PLAYER_GHOST_SCENE: PackedScene = preload("uid://ckcrpkujohkql")
-
 const _ACTIVE_CAMERA_PRIORITY: int = 16
 const _DEFAULT_CAMERA_PRIORITY: int = 1
 const _INACTIVE_CAMERA_PRIORITY: int = 0
@@ -43,7 +41,7 @@ func _physics_process(delta: float) -> void:
 
 static func create(for_player: Player, character_data: Dictionary[StringName, Variant]) -> PlayerGhost:
 	assert(for_player)
-	var new_player_ghost: PlayerGhost = PLAYER_GHOST_SCENE.instantiate()
+	var new_player_ghost: PlayerGhost = PackedScenes.PLAYER_GHOST_SCENE.instantiate()
 	new_player_ghost.player = for_player
 	new_player_ghost.character.apply_character_data(character_data)
 	return new_player_ghost

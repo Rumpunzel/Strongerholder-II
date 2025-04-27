@@ -5,8 +5,6 @@ extends Node
 
 const CHARACTER_DATA: StringName = "character_data"
 
-const AGENT_SCENE: PackedScene = preload("uid://bbjgxgkshjet6")
-
 @export var character: Character
 
 @export_group("Configuration")
@@ -28,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	_state_machine.physics_update(delta)
 
 static func create(character_data: Dictionary[StringName, Variant]) -> Agent:
-	var new_agent: Agent = AGENT_SCENE.instantiate()
+	var new_agent: Agent = PackedScenes.AGENT_SCENE.instantiate()
 	new_agent.character.apply_character_data(character_data)
 	return new_agent
 

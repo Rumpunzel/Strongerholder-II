@@ -9,8 +9,6 @@ const VARIATION: StringName = "variation"
 const PROFILE_PATH: StringName = "profile_path"
 const SPAWN_TRANSFORM: StringName = "spawn_transform"
 
-const THING_SCENE: PackedScene = preload("uid://dnxaisin8ueu5")
-
 ## Determines the varation of the [Model]
 ## If [code]<0[/code] a random [Model] will be used
 @export var variation: int = -1:
@@ -69,13 +67,6 @@ func _ready() -> void:
 	#if Engine.is_editor_hint(): return
 	#if model: model.play_animation(_normalized_velocity, _is_on_floor)
 
-static func create(new_variation: int, new_profile: ThingProfile, new_spawn_transform: Transform3D) -> Thing:
-	var new_thing: Thing = THING_SCENE.instantiate()
-	new_thing.variation = new_variation
-	new_thing.profile = new_profile
-	new_thing.transform = new_spawn_transform
-	return new_thing
-
 static func from_thing_data(thing_data: Dictionary[StringName, Variant]) -> Thing:
 	validate_thing_data(thing_data)
 	var new_variation: int = thing_data[VARIATION]
@@ -83,7 +74,7 @@ static func from_thing_data(thing_data: Dictionary[StringName, Variant]) -> Thin
 	var new_profile: ThingProfile = load(new_profile_path)
 	assert(new_profile)
 	var new_spawn_transform: Transform3D = thing_data[SPAWN_TRANSFORM]
-	return create(new_variation, new_profile, new_spawn_transform)
+	return new_profile.create(new_variation, new_spawn_transform)
 
 static func validate_thing_data(thing_data: Dictionary[StringName, Variant]) -> void:
 	assert(thing_data.has_all([VARIATION, PROFILE_PATH, SPAWN_TRANSFORM]))

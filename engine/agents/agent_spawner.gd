@@ -48,7 +48,7 @@ func remove_agent(character: Character) -> void:
 func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
 	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
 	var spawned_agents: Dictionary[StringName, Array] = {}
-	spawned_agents[Agent.AGENT_SCENE.resource_path] = _agents.values().map(func(agent: Agent) -> NodePath: return agent.get_path())
+	spawned_agents[PackedScenes.AGENT_SCENE.resource_path] = _agents.values().map(func(agent: Agent) -> NodePath: return agent.get_path())
 	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_agents])
 
 func _spawn_agent(agent_data: Dictionary[StringName, Variant]) -> Agent:

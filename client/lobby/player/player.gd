@@ -12,8 +12,6 @@ const ID: StringName = "player_id"
 const NAME: StringName = "player_name"
 const GHOST_SPRITE_FRAME: StringName = "ghost_sprite_frame"
 
-const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
-
 @export var player_id: int = Multiplayer.HOST_ID:
 	set(new_player_id):
 		if not Engine.is_editor_hint(): name = "%d" % new_player_id
@@ -44,7 +42,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://bvdlyl1asckv4")
 @export_group("Configuration")
 
 static func create(new_player_id: int, new_player_name: String, new_player_ghost_sprite_frame: int) -> Player:
-	var new_player: Player = PLAYER_SCENE.instantiate()
+	var new_player: Player = PackedScenes.PLAYER_SCENE.instantiate()
 	new_player.player_id = new_player_id
 	new_player.player_name = new_player_name
 	new_player.ghost_sprite_frame = new_player_ghost_sprite_frame

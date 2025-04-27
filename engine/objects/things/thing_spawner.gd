@@ -39,7 +39,7 @@ func remove_thing(thing: Thing) -> void:
 func get_all_spawned_nodes() -> Dictionary[StringName, Array]:
 	var spawned_nodes: Dictionary[StringName, Array] = super.get_all_spawned_nodes()
 	var spawned_things: Dictionary[StringName, Array] = {}
-	spawned_things[Thing.THING_SCENE.resource_path] = _things.map(func(thing: Thing) -> NodePath: return thing.get_path())
+	spawned_things[PackedScenes.THING_SCENE.resource_path] = _things.map(func(thing: Thing) -> NodePath: return thing.get_path())
 	return Serializer.merge_array_dictionaries([spawned_nodes, spawned_things])
 
 func _spawn_thing(thing_data: Dictionary[StringName, Variant]) -> Thing:

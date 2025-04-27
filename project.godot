@@ -50,7 +50,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/menagerie/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/radial_progress/plugin.cfg", "res://addons/toastparty/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-plugin-refresher/plugin.cfg", "res://addons/menagerie/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/radial_progress/plugin.cfg", "res://addons/toastparty/plugin.cfg")
 
 [file_customization]
 
@@ -60,7 +60,11 @@ folder_colors={
 "res://data/": "yellow",
 "res://engine/": "blue",
 "res://protoype_assets/": "teal",
-"res://tools/": "red",
+"res://tools/icons/green/": "green",
+"res://tools/icons/purple/": "purple",
+"res://tools/icons/red/": "red",
+"res://tools/icons/white/": "gray",
+"res://tools/icons/yellow/": "yellow",
 "res://user_interface/": "green"
 }
 

@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxs2pxpsmsfud"]
+[gd_scene load_steps=8 format=3 uid="uid://bxs2pxpsmsfud"]
 
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
 [ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_view.gd" id="2_ne48i"]
-[ext_resource type="PackedScene" uid="uid://cvj6b1m2b65hd" path="res://engine/objects/characters/character.tscn" id="2_s01o1"]
+[ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview.gd" id="3_etge6"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/characters/people/king.tres" id="3_ne48i"]
 [ext_resource type="Script" uid="uid://bwg0781tlquj5" path="res://addons/menagerie/preview_camera.gd" id="5_4i0gh"]
+[ext_resource type="Script" uid="uid://ciovr5f7m5so8" path="res://addons/menagerie/model.gd" id="6_muwvy"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_s01o1"]
 viewport_path = NodePath("SubViewport")
 
-[node name="Menagerie" type="PanelContainer" node_paths=PackedStringArray("_preview")]
+[node name="Menagerie" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,7 +19,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_4mtjh")
-_preview = NodePath("SubViewport/Preview")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
@@ -66,7 +66,7 @@ theme_override_constants/margin_right = 4
 layout_mode = 2
 text = "King"
 
-[node name="ModelView" type="TextureRect" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer" node_paths=PackedStringArray("_preview")]
+[node name="ModelView" type="TextureRect" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
@@ -74,7 +74,6 @@ texture = SubResource("ViewportTexture_s01o1")
 expand_mode = 2
 stretch_mode = 6
 script = ExtResource("2_ne48i")
-_preview = NodePath("../../../../../SubViewport/Preview")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView"]
 layout_mode = 1
@@ -109,15 +108,21 @@ text = "Info 2"
 size = Vector2i(1920, 1080)
 
 [node name="Preview" type="Node3D" parent="SubViewport"]
+script = ExtResource("3_etge6")
 
-[node name="Character" parent="SubViewport/Preview" instance=ExtResource("2_s01o1")]
-variation = 0
+[node name="PreviewModel" type="RigidBody3D" parent="SubViewport/Preview" node_paths=PackedStringArray("_collision_shape")]
+script = ExtResource("6_muwvy")
 profile = ExtResource("3_ne48i")
+_collision_shape = NodePath("CollisionShape3D")
 
-[node name="Camera3D" type="Camera3D" parent="SubViewport" node_paths=PackedStringArray("_character")]
-transform = Transform3D(0.719352, -0.467191, 0.514067, 0, 0.740042, 0.672561, -0.694646, -0.483808, 0.532351, 1, 1.75, 2)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Preview/PreviewModel"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport" node_paths=PackedStringArray("_preview_model")]
+transform = Transform3D(0.894427, -0.120386, 0.430706, 0, 0.963087, 0.269191, -0.447214, -0.240772, 0.861411, 1, 1.75, 2)
 script = ExtResource("5_4i0gh")
-_character = NodePath("../Preview/Character")
+_preview_model = NodePath("../Preview/PreviewModel")
 
-[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
-[connection signal="profile_changed" from="SubViewport/Preview/Character" to="SubViewport/Camera3D" method="_look_at_character"]
+[connection signal="visibility_changed" from="." to="SubViewport/Preview" method="_on_menagerie_visibility_changed"]
+[connection signal="turned_left" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_left"]
+[connection signal="turned_right" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_right"]
+[connection signal="profile_changed" from="SubViewport/Preview/PreviewModel" to="SubViewport/Camera3D" method="_look_at_preview_model"]

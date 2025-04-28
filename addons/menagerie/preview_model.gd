@@ -30,6 +30,7 @@ signal profile_changed
 			_heads_up_anchor.position = Vector3.ZERO
 			profile_changed.emit()
 			return
+		if variation >= profile._model_variations.size(): variation = 0
 		if variation >= 0: model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
 		profile.configure_collision_mesh(_collision_mesh)

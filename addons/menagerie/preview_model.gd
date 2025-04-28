@@ -9,10 +9,8 @@ signal profile_changed
 ## If [code]<0[/code] a random [Model] will be used
 @export var variation: int = -1:
 	set(new_variation):
-		if new_variation == variation: return
 		variation = new_variation
 		if not profile: return
-		if not model: return
 		model = profile.create_model(variation)
 
 @export var profile: Profile:
@@ -32,12 +30,10 @@ signal profile_changed
 			_heads_up_anchor.position = Vector3.ZERO
 			profile_changed.emit()
 			return
-		if variation < 0: variation = profile.get_random_variation()
-		model = profile.create_model(variation)
+		if variation >= 0: model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
 		profile.configure_collision_mesh(_collision_mesh)
 		profile.configure_hit_box_mesh(_hit_box_mesh)
-		print(_collision_mesh.mesh)
 		_heads_up_anchor.position = get_heads_up_anchor()
 		profile_changed.emit()
 
@@ -66,6 +62,12 @@ func get_portrait() -> Texture:
 
 func get_heads_up_anchor() -> Vector3:
 	return position + profile.heads_up_display_offset
+
+func _on_profile_tree_profile_changed(new_profile: Profile) -> void:
+	profile = new_profile
+
+func _on_variation_changed(new_variation: int) -> void:
+	variation = new_variation
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

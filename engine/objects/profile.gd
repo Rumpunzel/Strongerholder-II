@@ -42,10 +42,6 @@ extends Resource
 @export_category("")
 @export_group("Configuration")
 
-func get_random_variation() -> int:
-	assert(not _model_variations.is_empty())
-	return randi() % _model_variations.size()
-
 func create_model(variation: int) -> Model:
 	assert(not _model_variations.is_empty())
 	assert(variation >= 0)
@@ -65,9 +61,17 @@ func configure_collision_mesh(collision_mesh: MeshInstance3D) -> void:
 	assert(collision_mesh)
 	_collision_shape.configure_mesh(collision_mesh)
 
-func configure_hit_mesh(hit_box_mesh: MeshInstance3D) -> void:
+func configure_hit_box_mesh(hit_box_mesh: MeshInstance3D) -> void:
 	if not _hit_box_shape: configure_collision_mesh(hit_box_mesh)
 	else: _hit_box_shape.configure_mesh(hit_box_mesh)
+
+func get_random_variation() -> int:
+	assert(not _model_variations.is_empty())
+	return randi() % _model_variations.size()
+
+func get_group_name() -> StringName:
+	assert(false, "Profile.get_group_name is 'virtual' and needs to be overriden!")
+	return ""
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

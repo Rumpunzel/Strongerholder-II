@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxs2pxpsmsfud"]
+[gd_scene load_steps=9 format=3 uid="uid://bxs2pxpsmsfud"]
 
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
 [ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_view.gd" id="2_ne48i"]
 [ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview.gd" id="3_etge6"]
 [ext_resource type="Resource" uid="uid://ro6wvnf88xbo" path="res://data/characters/people/king.tres" id="3_ne48i"]
 [ext_resource type="Script" uid="uid://bwg0781tlquj5" path="res://addons/menagerie/preview_camera.gd" id="5_4i0gh"]
-[ext_resource type="Script" uid="uid://ciovr5f7m5so8" path="res://addons/menagerie/model.gd" id="6_muwvy"]
+[ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/objects/heads_up_anchor.tscn" id="6_ewiq4"]
+[ext_resource type="Script" uid="uid://ciovr5f7m5so8" path="res://addons/menagerie/preview_model.gd" id="6_muwvy"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_s01o1"]
 viewport_path = NodePath("SubViewport")
@@ -110,12 +111,23 @@ size = Vector2i(1920, 1080)
 [node name="Preview" type="Node3D" parent="SubViewport"]
 script = ExtResource("3_etge6")
 
-[node name="PreviewModel" type="RigidBody3D" parent="SubViewport/Preview" node_paths=PackedStringArray("_collision_shape")]
+[node name="PreviewModel" type="RigidBody3D" parent="SubViewport/Preview" node_paths=PackedStringArray("_collision_shape", "_collision_mesh", "_hit_box_mesh", "_heads_up_anchor")]
 script = ExtResource("6_muwvy")
+variation = 0
 profile = ExtResource("3_ne48i")
 _collision_shape = NodePath("CollisionShape3D")
+_collision_mesh = NodePath("CollisionMesh")
+_hit_box_mesh = NodePath("HitBoxMesh")
+_heads_up_anchor = NodePath("HeadsUpAnchor")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Preview/PreviewModel"]
+
+[node name="CollisionMesh" type="MeshInstance3D" parent="SubViewport/Preview/PreviewModel"]
+
+[node name="HitBoxMesh" type="MeshInstance3D" parent="SubViewport/Preview/PreviewModel"]
+
+[node name="HeadsUpAnchor" parent="SubViewport/Preview/PreviewModel" node_paths=PackedStringArray("_root_node") instance=ExtResource("6_ewiq4")]
+_root_node = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="SubViewport" node_paths=PackedStringArray("_preview_model")]
 transform = Transform3D(0.894427, -0.120386, 0.430706, 0, 0.963087, 0.269191, -0.447214, -0.240772, 0.861411, 1, 1.75, 2)

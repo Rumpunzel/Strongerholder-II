@@ -10,6 +10,7 @@ var _target_rotation: float = 0.0:
 	set(new_target_rotation):
 		_target_rotation = new_target_rotation
 		if _tween: _tween.kill()
+		if not get_tree(): return
 		_tween = get_tree().create_tween()
 		_tween.tween_property(self, "rotation_degrees:y", _target_rotation, _turn_time)
 
@@ -27,3 +28,4 @@ func _on_model_view_turned_right() -> void:
 
 func _on_menagerie_visibility_changed() -> void:
 	visible = owner.visible
+	_target_rotation = 0.0

@@ -61,8 +61,13 @@ func configure_hit_box(hit_box: CollisionShape3D) -> void:
 	if not _hit_box_shape: configure_collision_shape(hit_box)
 	else: _hit_box_shape.configure_collision_shape(hit_box)
 
-func create_heads_up_anchor() -> HeadsUpAnchor:
-	return HeadsUpAnchor.create(heads_up_display_offset)
+func configure_collision_mesh(collision_mesh: MeshInstance3D) -> void:
+	assert(collision_mesh)
+	_collision_shape.configure_mesh(collision_mesh)
+
+func configure_hit_mesh(hit_box_mesh: MeshInstance3D) -> void:
+	if not _hit_box_shape: configure_collision_mesh(hit_box_mesh)
+	else: _hit_box_shape.configure_mesh(hit_box_mesh)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

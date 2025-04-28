@@ -20,14 +20,6 @@ extends Resource
 		_automatic_ground_offset = new_value
 		changed.emit()
 
-func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
-	assert(collision_shape)
-	assert(_shape)
-	collision_shape.shape = _shape
-	collision_shape.position = _offset
-	collision_shape.rotation_degrees = _rotation_degrees
-	if _automatic_ground_offset: collision_shape.position.y = get_ground_offset(_shape)
-
 static func get_ground_offset(for_shape: Shape3D) -> float:
 	assert(for_shape)
 	var ground_offset: float = 0.0
@@ -50,6 +42,22 @@ static func get_ground_offset(for_shape: Shape3D) -> float:
 			ground_offset = sphere_shape.radius
 		"WorldBoundaryShape3D": printerr("WorldBoundaryShape3D is not yet implemented!")
 	return ground_offset
+
+func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
+	assert(_shape)
+	assert(collision_shape)
+	collision_shape.shape = _shape
+	collision_shape.position = _offset
+	collision_shape.rotation_degrees = _rotation_degrees
+	if _automatic_ground_offset: collision_shape.position.y = get_ground_offset(_shape)
+
+func configure_mesh(mesh: MeshInstance3D) -> void:
+	assert(_shape)
+	assert(mesh)
+	mesh.mesh = _shape.get_debug_mesh()
+	mesh.position = _offset
+	mesh.rotation_degrees = _rotation_degrees
+	if _automatic_ground_offset: mesh.position.y = get_ground_offset(_shape)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

@@ -34,9 +34,6 @@ const SPAWN_TRANSFORM: StringName = "spawn_transform"
 		model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
 		profile_changed.emit()
-		if Engine.is_editor_hint():
-			add_child(profile.create_heads_up_anchor())
-			return
 		add_to_group(profile.get_group_name())
 
 @export_group("Configuration")

@@ -15,27 +15,37 @@ signal profile_changed
 		if not model: return
 		model = profile.create_model(variation)
 
-@export var profile: CharacterProfile:
-	set(new_character_profile):
-		profile = new_character_profile
+@export var profile: Profile:
+	set(new_profile):
+		profile = new_profile
 		if not profile:
 			model = null
 			_collision_shape.shape = null
 			_collision_shape.position = Vector3.ZERO
 			_collision_shape.rotation_degrees = Vector3.ZERO
+			_collision_mesh.mesh = null
+			_collision_mesh.position = Vector3.ZERO
+			_collision_mesh.rotation_degrees = Vector3.ZERO
+			_hit_box_mesh.mesh = null
+			_hit_box_mesh.position = Vector3.ZERO
+			_hit_box_mesh.rotation_degrees = Vector3.ZERO
+			_heads_up_anchor.position = Vector3.ZERO
 			profile_changed.emit()
 			return
 		if variation < 0: variation = profile.get_random_variation()
 		model = profile.create_model(variation)
 		profile.configure_collision_shape(_collision_shape)
+		profile.configure_collision_mesh(_collision_mesh)
+		profile.configure_hit_box_mesh(_hit_box_mesh)
+		print(_collision_mesh.mesh)
+		_heads_up_anchor.position = get_heads_up_anchor()
 		profile_changed.emit()
-		if Engine.is_editor_hint():
-			add_child(profile.create_heads_up_anchor())
-			return
-		add_to_group(profile.get_group_name())
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
+@export var _collision_mesh: MeshInstance3D
+@export var _hit_box_mesh: MeshInstance3D
+@export var _heads_up_anchor: HeadsUpAnchor
 
 var model: Model:
 	set(new_model):
@@ -45,9 +55,6 @@ var model: Model:
 		model = new_model
 		if not model: return
 		add_child(model, true)
-
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
 
 func play_animation(normalized_velocity: Vector3, is_on_floor: bool) -> void:
 	model.play_animation(normalized_velocity, is_on_floor)

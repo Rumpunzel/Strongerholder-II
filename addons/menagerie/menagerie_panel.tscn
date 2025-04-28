@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=4 uid="uid://bxs2pxpsmsfud"]
+[gd_scene load_steps=20 format=4 uid="uid://bxs2pxpsmsfud"]
 
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
+[ext_resource type="Script" uid="uid://ns4detjfiotx" path="res://addons/menagerie/profile_tabs.gd" id="2_37sv2"]
 [ext_resource type="Script" uid="uid://brk2kywqvfl68" path="res://addons/menagerie/profile_tree.gd" id="2_ewiq4"]
 [ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_view.gd" id="2_ne48i"]
 [ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview.gd" id="3_etge6"]
@@ -110,19 +111,21 @@ script = ExtResource("1_4mtjh")
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
+[node name="ProfileTabs" type="TabContainer" parent="HSplitContainer"]
 layout_mode = 2
+theme_override_constants/icon_max_width = 32
 current_tab = 0
 clip_tabs = false
+script = ExtResource("2_37sv2")
 
-[node name="Characters" type="MarginContainer" parent="HSplitContainer/TabContainer"]
+[node name="Characters" type="MarginContainer" parent="HSplitContainer/ProfileTabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/TabContainer/Characters"]
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/ProfileTabs/Characters"]
 layout_mode = 2
 
-[node name="ProfileTree" type="Tree" parent="HSplitContainer/TabContainer/Characters/VSplitContainer"]
+[node name="ProfileTree" type="Tree" parent="HSplitContainer/ProfileTabs/Characters/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 column_titles_visible = true
@@ -130,12 +133,12 @@ hide_root = true
 select_mode = 1
 script = ExtResource("2_ewiq4")
 
-[node name="Structures" type="MarginContainer" parent="HSplitContainer/TabContainer"]
+[node name="Structures" type="MarginContainer" parent="HSplitContainer/ProfileTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Things" type="MarginContainer" parent="HSplitContainer/TabContainer"]
+[node name="Things" type="MarginContainer" parent="HSplitContainer/ProfileTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
@@ -218,7 +221,8 @@ text = "Variation"
 
 [node name="VariationSpinBox" type="SpinBox" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-max_value = 0.0
+max_value = 19.0
+value = 18.0
 rounded = true
 allow_greater = true
 allow_lesser = true
@@ -232,6 +236,7 @@ script = ExtResource("3_etge6")
 
 [node name="PreviewModel" type="RigidBody3D" parent="SubViewport/Preview" node_paths=PackedStringArray("_collision_shape", "_collision_mesh", "_hit_box_mesh", "_heads_up_anchor")]
 script = ExtResource("6_muwvy")
+variation = 18
 profile = ExtResource("7_5uc5o")
 _collision_shape = NodePath("CollisionShape3D")
 _collision_mesh = NodePath("CollisionMesh")
@@ -264,10 +269,10 @@ script = ExtResource("5_4i0gh")
 _preview_model = NodePath("../Preview/PreviewModel")
 
 [connection signal="visibility_changed" from="." to="SubViewport/Preview" method="_on_menagerie_visibility_changed"]
-[connection signal="item_activated" from="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" method="_on_item_activated"]
-[connection signal="item_selected" from="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" method="_on_item_selected"]
-[connection signal="profile_changed" from="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VariationSpinBox" method="_on_profile_tree_profile_changed"]
-[connection signal="profile_changed" from="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" to="SubViewport/Preview/PreviewModel" method="_on_profile_tree_profile_changed"]
+[connection signal="item_activated" from="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" method="_on_item_activated"]
+[connection signal="item_selected" from="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" method="_on_item_selected"]
+[connection signal="profile_changed" from="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" to="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VariationSpinBox" method="_on_profile_tree_profile_changed"]
+[connection signal="profile_changed" from="HSplitContainer/ProfileTabs/Characters/VSplitContainer/ProfileTree" to="SubViewport/Preview/PreviewModel" method="_on_profile_tree_profile_changed"]
 [connection signal="turned_left" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_left"]
 [connection signal="turned_right" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_right"]
 [connection signal="toggled" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ShowCollision" to="SubViewport/Preview/PreviewModel/CollisionMesh" method="set_visible"]

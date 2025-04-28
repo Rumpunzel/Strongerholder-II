@@ -9,7 +9,7 @@ signal current_interactable_changed(current_interactable: HitBox)
 	set(new_character):
 		assert(new_character)
 		character = new_character
-		character.profile.interaction_area_shape.configure_collision_shape(_collision_shape)
+		configure_collision_shape(character.profile)
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
@@ -47,6 +47,10 @@ func remove_hit_box_to_ignore(hit_box: HitBox) -> void:
 	assert(_hit_boxes_to_ignore.has(hit_box))
 	_hit_boxes_to_ignore.erase(hit_box)
 	if not current_interactable: current_interactable = nearest_hit_box_in_area()
+
+func configure_collision_shape(character_profile: CharacterProfile) -> void:
+	character_profile.configure_interaction_area_shape(_collision_shape)
+	current_interactable = nearest_hit_box_in_area()
 
 func _is_ignored(hit_box: HitBox) -> bool:
 	return _hit_boxes_to_ignore.has(hit_box)

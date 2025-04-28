@@ -36,12 +36,6 @@ enum Groups {
 		push_force = new_value
 		changed.emit()
 
-@export_category("Model")
-@export var interaction_area_shape: AreaShape = preload("uid://3vtg05cuw32e"):
-	set(new_value):
-		interaction_area_shape = new_value
-		changed.emit()
-
 @export_category("")
 @export_group("Configuration")
 

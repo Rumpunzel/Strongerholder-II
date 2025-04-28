@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterProfile" load_steps=26 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="CharacterProfile" load_steps=25 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://b4xn7w6bjqy21" path="res://data/characters/ghosts/ghost_sprites/test_ghost_0.tscn" id="1_mpc0u"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://data/characters/defaults/default_collision_shape.tres" id="1_qa8e8"]
@@ -9,7 +9,6 @@
 [ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="4_dua0m"]
 [ext_resource type="PackedScene" uid="uid://bgxshg4el0dgu" path="res://data/characters/ghosts/ghost_sprites/test_ghost_3.tscn" id="4_oo4sv"]
 [ext_resource type="PackedScene" uid="uid://cyj5uaua2najt" path="res://data/characters/ghosts/ghost_sprites/test_ghost_4.tscn" id="5_lp73j"]
-[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://data/characters/defaults/default_interaction_area_shape.tres" id="5_s4khq"]
 [ext_resource type="PackedScene" uid="uid://ddb31683llcr3" path="res://data/characters/ghosts/ghost_sprites/test_ghost_5.tscn" id="6_72axs"]
 [ext_resource type="PackedScene" uid="uid://skwbm4iru10f" path="res://data/characters/ghosts/ghost_sprites/test_ghost_6.tscn" id="7_x1abp"]
 [ext_resource type="PackedScene" uid="uid://br8vw2kpnyb84" path="res://data/characters/ghosts/ghost_sprites/test_ghost_7.tscn" id="8_4jc6t"]
@@ -33,13 +32,12 @@ move_speed = 6.0
 acceleration = 16.0
 deceleration = 16.0
 turn_rate = 12.0
-interaction_area_shape = ExtResource("5_s4khq")
+push_force = 750.0
 name = "Ghost"
 color = Color(0, 0, 0, 1)
-mass = 25.0
-haunted_material = ExtResource("4_dua0m")
-heads_up_display_offset = Vector3(0, 2.25, 0)
+_model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
 _collision_shape = ExtResource("1_qa8e8")
 _hit_box_shape = ExtResource("2_kesfn")
-_model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
+heads_up_display_offset = Vector3(0, 2.25, 0)
+haunted_material = ExtResource("4_dua0m")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

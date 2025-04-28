@@ -17,15 +17,10 @@ extends Resource
 		changed.emit()
 
 @export_category("Model")
-@export var haunted_material: Material = preload("uid://cmbf2wnye66jw"):
+@export var _model_variations: Array[PackedScene]:
 	set(new_value):
-		haunted_material = new_value
+		_model_variations = new_value
 		changed.emit()
-@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0):
-	set(new_value):
-		heads_up_display_offset = new_value
-		changed.emit()
-
 @export var _collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb"):
 	set(new_value):
 		_collision_shape = new_value
@@ -34,9 +29,19 @@ extends Resource
 	set(new_value):
 		_hit_box_shape = new_value
 		changed.emit()
-@export var _model_variations: Array[PackedScene]:
+@export var _interaction_area_shape: AreaShape:
 	set(new_value):
-		_model_variations = new_value
+		_interaction_area_shape = new_value
+		changed.emit()
+
+@export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0):
+	set(new_value):
+		heads_up_display_offset = new_value
+		changed.emit()
+
+@export var haunted_material: Material = preload("uid://cmbf2wnye66jw"):
+	set(new_value):
+		haunted_material = new_value
 		changed.emit()
 
 @export_category("")
@@ -57,6 +62,10 @@ func configure_hit_box(hit_box: CollisionShape3D) -> void:
 	if not _hit_box_shape: configure_collision_shape(hit_box)
 	else: _hit_box_shape.configure_collision_shape(hit_box)
 
+func configure_interaction_area_shape(collision_shape: CollisionShape3D) -> void:
+	if not _interaction_area_shape: return
+	_interaction_area_shape.configure_collision_shape(collision_shape)
+
 func configure_collision_mesh(collision_mesh: MeshInstance3D) -> void:
 	assert(collision_mesh)
 	_collision_shape.configure_mesh(collision_mesh)
@@ -64,6 +73,14 @@ func configure_collision_mesh(collision_mesh: MeshInstance3D) -> void:
 func configure_hit_box_mesh(hit_box_mesh: MeshInstance3D) -> void:
 	if not _hit_box_shape: configure_collision_mesh(hit_box_mesh)
 	else: _hit_box_shape.configure_mesh(hit_box_mesh)
+
+func configure_interaction_area_mesh(hit_box_mesh: MeshInstance3D) -> void:
+	if not _interaction_area_shape:
+		hit_box_mesh.mesh = null
+		hit_box_mesh.position = Vector3.ZERO
+		hit_box_mesh.rotation_degrees = Vector3.ZERO
+		return
+	_interaction_area_shape.configure_mesh(hit_box_mesh)
 
 func get_random_variation() -> int:
 	assert(not _model_variations.is_empty())

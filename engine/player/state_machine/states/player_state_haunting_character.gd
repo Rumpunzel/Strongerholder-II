@@ -21,9 +21,11 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(_haunted)
 	var haunted_character: Character = _haunted.character
 	assert(haunted_character)
+	var interaction_area: InteractionArea = get_interaction_area()
 	character.hide_character.rpc()
 	_haunted.haunt.rpc(character.get_path())
-	get_interaction_area().add_hit_box_to_ignore(_haunted)
+	interaction_area.add_hit_box_to_ignore(_haunted)
+	interaction_area.configure_collision_shape(haunted_character.profile)
 	_haunt_camera = _create_haunt_camera()
 	_haunt_camera.append_follow_targets(haunted_character)
 	_haunt_camera.append_look_at_target(haunted_character)
@@ -59,10 +61,12 @@ func exit() -> void:
 	var character: Character = get_character()
 	var haunted_character: Character = _haunted.character
 	assert(haunted_character)
+	var interaction_area: InteractionArea = get_interaction_area()
 	character.velocity = haunted_character.velocity
 	character.unhide_character.rpc()
 	_haunted.unhaunt.rpc()
-	get_interaction_area().remove_hit_box_to_ignore(_haunted)
+	interaction_area.remove_hit_box_to_ignore(_haunted)
+	interaction_area.configure_collision_shape(character.profile)
 	_haunt_camera.queue_free()
 
 func serialize() -> Dictionary[StringName, Variant]:

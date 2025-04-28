@@ -16,7 +16,6 @@ func _enter_tree() -> void:
 	var parent: Node = get_parent()
 	if not _root_node and parent is Node3D:
 		_root_node = parent
-	
 	if not Engine.is_editor_hint(): return
 	if not _global_placeholder and EditorInterface.get_edited_scene_root() != _root_node: return
 	_hud_placeholder = HUD_PLACEHOLDER_SCENE.instantiate()

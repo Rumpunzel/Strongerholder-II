@@ -1,15 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3ggesrya61ic"]
+[gd_scene load_steps=3 format=3 uid="uid://c3ggesrya61ic"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ssxdi"]
 viewport_path = NodePath("SubViewport")
 
+[sub_resource type="LabelSettings" id="LabelSettings_15lxs"]
+font_size = 128
+
 [node name="HUDPlaceholder" type="Sprite3D"]
+pixel_size = 0.001
 billboard = 1
 texture = SubResource("ViewportTexture_ssxdi")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
-size = Vector2i(129, 27)
+size = Vector2i(1000, 180)
 
 [node name="PanelContainer" type="PanelContainer" parent="SubViewport"]
 anchors_preset = 8
@@ -27,11 +31,12 @@ pivot_offset = Vector2(64.5, 13.5)
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
+theme_override_constants/margin_left = 48
 theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 8
+theme_override_constants/margin_right = 48
 theme_override_constants/margin_bottom = 2
 
 [node name="Label" type="Label" parent="SubViewport/PanelContainer/MarginContainer"]
 layout_mode = 2
 text = "UI Placeholder"
+label_settings = SubResource("LabelSettings_15lxs")

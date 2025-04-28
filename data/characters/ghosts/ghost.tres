@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterProfile" load_steps=25 format=3 uid="uid://dy6kyxtiog1ac"]
+[gd_resource type="Resource" script_class="CharacterProfile" load_steps=26 format=3 uid="uid://dy6kyxtiog1ac"]
 
 [ext_resource type="PackedScene" uid="uid://b4xn7w6bjqy21" path="res://data/characters/ghosts/ghost_sprites/test_ghost_0.tscn" id="1_mpc0u"]
 [ext_resource type="Resource" uid="uid://d27l7tjgj4lrb" path="res://data/characters/defaults/default_collision_shape.tres" id="1_qa8e8"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://718wpxdsx3bo" path="res://data/characters/defaults/default_hit_box_shape.tres" id="2_kesfn"]
 [ext_resource type="Script" uid="uid://ddefcwtx6jfym" path="res://engine/objects/characters/character_profile.gd" id="3_6mhvl"]
 [ext_resource type="PackedScene" uid="uid://k23w18qcspr2" path="res://data/characters/ghosts/ghost_sprites/test_ghost_2.tscn" id="3_e0uus"]
+[ext_resource type="Resource" uid="uid://3vtg05cuw32e" path="res://data/characters/defaults/default_interaction_area_shape.tres" id="3_qa8e8"]
 [ext_resource type="Material" uid="uid://cmbf2wnye66jw" path="res://engine/player/materials/haunted_material.tres" id="4_dua0m"]
 [ext_resource type="PackedScene" uid="uid://bgxshg4el0dgu" path="res://data/characters/ghosts/ghost_sprites/test_ghost_3.tscn" id="4_oo4sv"]
 [ext_resource type="PackedScene" uid="uid://cyj5uaua2najt" path="res://data/characters/ghosts/ghost_sprites/test_ghost_4.tscn" id="5_lp73j"]
@@ -38,6 +39,7 @@ color = Color(0, 0, 0, 1)
 _model_variations = Array[PackedScene]([ExtResource("1_mpc0u"), ExtResource("2_imtv8"), ExtResource("3_e0uus"), ExtResource("4_oo4sv"), ExtResource("5_lp73j"), ExtResource("6_72axs"), ExtResource("7_x1abp"), ExtResource("8_4jc6t"), ExtResource("9_6630n"), ExtResource("10_im7q1"), ExtResource("11_2g6jq"), ExtResource("12_rfnmg"), ExtResource("13_1jtwd"), ExtResource("14_l3yqw"), ExtResource("15_mjwvc"), ExtResource("16_x2366"), ExtResource("17_tjqmf"), ExtResource("18_g8qeu"), ExtResource("19_cp5vb"), ExtResource("20_pgphv")])
 _collision_shape = ExtResource("1_qa8e8")
 _hit_box_shape = ExtResource("2_kesfn")
+_interaction_area_shape = ExtResource("3_qa8e8")
 heads_up_display_offset = Vector3(0, 2.25, 0)
 haunted_material = ExtResource("4_dua0m")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

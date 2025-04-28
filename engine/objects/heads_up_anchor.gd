@@ -17,6 +17,10 @@ func _enter_tree() -> void:
 	if not _root_node and parent is Node3D:
 		_root_node = parent
 	if not Engine.is_editor_hint(): return
+	if _hud_placeholder:
+		remove_child(_hud_placeholder)
+		_hud_placeholder.queue_free()
+		_hud_placeholder = null
 	if not _global_placeholder and EditorInterface.get_edited_scene_root() != _root_node: return
 	_hud_placeholder = HUD_PLACEHOLDER_SCENE.instantiate()
 	add_child(_hud_placeholder, false, Node.INTERNAL_MODE_FRONT)

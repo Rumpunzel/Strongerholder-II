@@ -43,6 +43,7 @@ func _change_profile(selected_item: TreeItem) -> void:
 	if _group_items.values().has(selected_item): return
 	var profile_path: String = selected_item.get_metadata(0)
 	var profile: Profile = load(profile_path)
+	EditorInterface.get_inspector().edit(profile)
 	profile_changed.emit(profile)
 
 func _on_item_activated() -> void:

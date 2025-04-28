@@ -23,7 +23,7 @@ shader = ExtResource("6_kqt6r")
 shader_parameter/modelColor = Color(0, 0.6, 0.701961, 0.419608)
 shader_parameter/wireframeColor = Color(0, 0.6, 0.701961, 0.419608)
 shader_parameter/width = 0.0
-shader_parameter/modelOpacity = 0.1
+shader_parameter/modelOpacity = 0.05
 shader_parameter/filtered = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37sv2"]
@@ -63,7 +63,7 @@ shader = ExtResource("6_kqt6r")
 shader_parameter/modelColor = Color(0.992157, 0, 0.247059, 0.419608)
 shader_parameter/wireframeColor = Color(0.992157, 0, 0.247059, 0.419608)
 shader_parameter/width = 0.0
-shader_parameter/modelOpacity = 0.1
+shader_parameter/modelOpacity = 0.025
 shader_parameter/filtered = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgjr1"]
@@ -199,6 +199,16 @@ layout_mode = 2
 layout_mode = 2
 text = "Info 2"
 
+[node name="ShowCollision" type="CheckButton" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Show collision"
+
+[node name="ShowHitBox" type="CheckButton" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Show hitbox"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -260,6 +270,8 @@ _preview_model = NodePath("../Preview/PreviewModel")
 [connection signal="profile_changed" from="HSplitContainer/TabContainer/Characters/VSplitContainer/ProfileTree" to="SubViewport/Preview/PreviewModel" method="_on_profile_tree_profile_changed"]
 [connection signal="turned_left" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_left"]
 [connection signal="turned_right" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView" to="SubViewport/Preview" method="_on_model_view_turned_right"]
+[connection signal="toggled" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ShowCollision" to="SubViewport/Preview/PreviewModel/CollisionMesh" method="set_visible"]
+[connection signal="toggled" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ShowHitBox" to="SubViewport/Preview/PreviewModel/HitBoxMesh" method="set_visible"]
 [connection signal="value_changed" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VariationSpinBox" to="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VariationSpinBox" method="_on_value_changed"]
 [connection signal="variation_changed" from="HSplitContainer/VSplitContainer/PanelContainer/VBoxContainer/ModelView/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VariationSpinBox" to="SubViewport/Preview/PreviewModel" method="_on_variation_changed"]
 [connection signal="profile_changed" from="SubViewport/Preview/PreviewModel" to="SubViewport/Camera3D" method="_look_at_preview_model"]

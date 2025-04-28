@@ -24,14 +24,17 @@ extends Resource
 @export var _collision_shape: AreaShape = preload("uid://d27l7tjgj4lrb"):
 	set(new_value):
 		_collision_shape = new_value
+		if not _collision_shape.changed.is_connected(changed.emit): _collision_shape.changed.connect(changed.emit)
 		changed.emit()
 @export var _hit_box_shape: AreaShape = preload("uid://718wpxdsx3bo"):
 	set(new_value):
 		_hit_box_shape = new_value
+		if not _hit_box_shape.changed.is_connected(changed.emit): _hit_box_shape.changed.connect(changed.emit)
 		changed.emit()
 @export var _interaction_area_shape: AreaShape:
 	set(new_value):
 		_interaction_area_shape = new_value
+		if not _interaction_area_shape.changed.is_connected(changed.emit): _interaction_area_shape.changed.connect(changed.emit)
 		changed.emit()
 
 @export var heads_up_display_offset: Vector3 = Vector3(0.0, 2.0, 0.0):
@@ -42,6 +45,7 @@ extends Resource
 @export var haunted_material: Material = preload("uid://cmbf2wnye66jw"):
 	set(new_value):
 		haunted_material = new_value
+		haunted_material.changed.connect(changed.emit)
 		changed.emit()
 
 @export_category("")

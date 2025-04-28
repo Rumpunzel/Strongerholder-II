@@ -10,7 +10,7 @@ enum Groups {
 
 @export var group: Groups = Groups.BUILDING
 
-@export_category("")
+@export_group("")
 @export_group("Configuration")
 
 func create(variation: int, spawn_transform: Transform3D) -> Structure:

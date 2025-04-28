@@ -25,6 +25,6 @@ color = Color(0, 0, 0, 1)
 _model_variations = Array[PackedScene]([ExtResource("1_08lp2")])
 _collision_shape = SubResource("Resource_uw3v0")
 _hit_box_shape = SubResource("Resource_uw3v0")
-heads_up_display_offset = Vector3(0, 2, 0)
+heads_up_display_offset = Vector3(0, 1.5, 0)
 haunted_material = ExtResource("2_uw3v0")
 metadata/_custom_type_script = "uid://dkumiyoi57n5x"

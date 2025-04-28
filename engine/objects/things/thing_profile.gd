@@ -17,7 +17,7 @@ enum Groups {
 		mass = new_value
 		changed.emit()
 
-@export_category("")
+@export_group("")
 @export_group("Configuration")
 
 func create(variation: int, spawn_transform: Transform3D) -> Thing:

@@ -80,8 +80,8 @@ func _reset_model() -> void:
 	_interaction_area_mesh.rotation_degrees = Vector3.ZERO
 	_interaction_area_mesh.position = Vector3.ZERO
 
-func _on_profile_tree_profile_changed(new_profile: Profile) -> void:
-	profile = new_profile
+func _on_active_profile_changed(active_profile: Profile) -> void:
+	profile = active_profile
 
 func _on_variation_changed(new_variation: int) -> void:
 	variation = new_variation

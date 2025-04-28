@@ -6,6 +6,7 @@ extends Resource
 @export var _shape: Shape3D:
 	set(new_value):
 		_shape = new_value
+		if not _shape.changed.is_connected(changed.emit): _shape.changed.connect(changed.emit)
 		changed.emit()
 @export var _offset: Vector3:
 	set(new_value):
@@ -44,20 +45,36 @@ static func get_ground_offset(for_shape: Shape3D) -> float:
 	return ground_offset
 
 func configure_collision_shape(collision_shape: CollisionShape3D) -> void:
-	assert(_shape)
 	assert(collision_shape)
+	if Engine.is_editor_hint() and not _shape:
+		reset_configuration_shape(collision_shape)
+		return
+	assert(_shape)
 	collision_shape.shape = _shape
 	collision_shape.position = _offset
 	collision_shape.rotation_degrees = _rotation_degrees
 	if _automatic_ground_offset: collision_shape.position.y = get_ground_offset(_shape)
 
+func reset_configuration_shape(collision_shape: CollisionShape3D) -> void:
+	collision_shape.shape = null
+	collision_shape.position = Vector3.ZERO
+	collision_shape.rotation_degrees = Vector3.ZERO
+
 func configure_mesh(mesh: MeshInstance3D) -> void:
-	assert(_shape)
 	assert(mesh)
+	if Engine.is_editor_hint() and not _shape:
+		reset_mesh(mesh)
+		return
+	assert(_shape)
 	mesh.mesh = _shape.get_debug_mesh()
 	mesh.position = _offset
 	mesh.rotation_degrees = _rotation_degrees
 	if _automatic_ground_offset: mesh.position.y = get_ground_offset(_shape)
+
+func reset_mesh(mesh: MeshInstance3D) -> void:
+	mesh.mesh = null
+	mesh.position = Vector3.ZERO
+	mesh.rotation_degrees = Vector3.ZERO
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = [ ]

@@ -10,7 +10,7 @@ extends Node3D
 @export_custom(PROPERTY_HINT_RANGE, "0.0,360.0,suffix:°") var _turn_increment_max: float = 32.0
 @export var _turn_time: float = 0.1
 
-@export_category("Configuration")
+@export_group("Configuration")
 @export var _preview_model: PreviewModel
 @export var _phantom_camera: PhantomCamera3D
 @export var _zoom_slider: Slider

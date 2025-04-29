@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://bgdc0htqg6del"]
+
+[ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview_viewer.gd" id="1_xkxy0"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ume2k"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_fc02p"]
+[ext_resource type="Texture2D" uid="uid://dvesff58juqxj" path="res://protoype_assets/sky_boxes/castel_st_angelo_roof_4k.exr" id="4_td1hk"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_36yco"]
+
+[sub_resource type="Resource" id="Resource_vk6nf"]
+script = ExtResource("3_fc02p")
+duration = 1.0
+transition = 1
+ease = 2
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ttwlx"]
+panorama = ExtResource("4_td1hk")
+
+[sub_resource type="Sky" id="Sky_7lsgj"]
+sky_material = SubResource("PanoramaSkyMaterial_ttwlx")
+
+[sub_resource type="Environment" id="Environment_bgifn"]
+background_mode = 2
+sky = SubResource("Sky_7lsgj")
+sky_rotation = Vector3(0, 1.5708, 0)
+
+[node name="PreviewViewer" type="Node3D" node_paths=PackedStringArray("_phantom_camera", "_phantom_camera_host")]
+script = ExtResource("1_xkxy0")
+_phantom_camera = NodePath("PhantomCamera3D")
+_phantom_camera_host = NodePath("Camera3D/PhantomCameraHost")
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(0.707101, -0.183158, 0.682972, -6.70548e-08, 0.96585, 0.259029, -0.707103, -0.183158, 0.68297, 1.6827, 1.76048, 1.68269)
+top_level = true
+script = ExtResource("2_ume2k")
+priority = 32
+follow_mode = 5
+look_at_mode = 3
+tween_resource = SubResource("Resource_vk6nf")
+follow_offset = Vector3(1, 1.5, 1)
+follow_damping = true
+look_at_damping = true
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+physics_interpolation_mode = 1
+transform = Transform3D(0.707101, -0.183158, 0.682972, -6.70548e-08, 0.96585, 0.259029, -0.707103, -0.183158, 0.68297, 1.68297, 1.75903, 1.68297)
+environment = SubResource("Environment_bgifn")
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("5_36yco")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"

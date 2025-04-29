@@ -1,6 +1,8 @@
 @tool
-@icon("uid://c7i6a86quqfp7")
-extends TextureRect
+@icon("uid://cmkguhmw7vdp1")
+extends Control
+
+signal active_profile_changed(active_profile: Profile)
 
 signal zoomed_out
 signal zoomed_in
@@ -19,3 +21,6 @@ func _gui_input(event: InputEvent) -> void:
 				if Input.is_key_pressed(KEY_CTRL): zoomed_in.emit()
 				else: turned_left.emit()
 		accept_event()
+
+func _on_profile_changed(new_profile: Profile) -> void:
+	active_profile_changed.emit(new_profile)

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cfq64v34pot8s" path="res://engine/objects/area_shape.gd" id="1_slbyd"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_h2bdh"]
-height = 5.0
+height = 4.0
 radius = 3.0
 
 [resource]

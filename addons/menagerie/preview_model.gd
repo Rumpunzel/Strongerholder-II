@@ -16,14 +16,14 @@ signal profile_changed
 
 @export var profile: Profile:
 	set(new_profile):
-		if profile: profile.changed.disconnect(_update_model)
+		if profile: profile.changed.disconnect(_update)
 		profile = new_profile
 		if not profile:
 			_reset_model()
 			profile_changed.emit()
 			return
-		_update_model()
-		profile.changed.connect(_update_model)
+		_update()
+		profile.changed.connect(_update)
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
@@ -52,8 +52,13 @@ func get_portrait() -> Texture:
 func get_heads_up_anchor() -> Vector3:
 	return position + profile.heads_up_display_offset
 
-func _update_model() -> void:
+func _update() -> void:
 	if not is_node_ready(): await ready
+	if profile is ThingProfile:
+		var thing_profile: ThingProfile = profile
+		mass = thing_profile.mass
+	else:
+		mass = 1.0
 	if variation >= profile.get_variation_count(): variation = 0
 	if variation >= 0: _model = profile.create_model(variation)
 	profile.configure_collision_shape(_collision_shape)

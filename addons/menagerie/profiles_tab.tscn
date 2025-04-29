@@ -11,7 +11,6 @@ grow_vertical = 2
 script = ExtResource("1_5qoco")
 title = "ProfileTab"
 profile_column_title = "Profile"
-_portrait_size_max_size = null
 _profiles_tree = NodePath("VBoxContainer/VSplitContainer/Tree")
 metadata/_tab_index = 0
 

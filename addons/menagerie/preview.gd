@@ -12,6 +12,7 @@ extends Node3D
 
 @export_group("Configuration")
 @export var _preview_model: PreviewModel
+@export var _camera_origin: Node3D
 @export var _phantom_camera: PhantomCamera3D
 @export var _zoom_slider: Slider
 
@@ -21,7 +22,7 @@ var _target_rotation: float = 0.0:
 		if _tween: _tween.kill()
 		if not get_tree(): return
 		_tween = get_tree().create_tween()
-		_tween.tween_property(self, "rotation_degrees:y", _target_rotation, _turn_time)
+		_tween.tween_property(_camera_origin, "rotation_degrees:y", _target_rotation, _turn_time)
 
 var _tween: Tween
 
@@ -34,7 +35,7 @@ func _look_at_preview_model() -> void:
 	_phantom_camera.look_at_offset = (character_position + heads_up_anchor) / 2.0
 
 func _calculate_turn_increment() -> float:
-	var turn_modifier: float = 1.0 + fmod(abs(_target_rotation - rotation_degrees.y), 180.0)
+	var turn_modifier: float = 1.0 + fmod(abs(_target_rotation - _camera_origin.rotation_degrees.y), 180.0)
 	return clampf(turn_modifier, _turn_increment_min, _turn_increment_max)
 
 func _on_model_view_zoomed_in() -> void:

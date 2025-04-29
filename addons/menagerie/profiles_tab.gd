@@ -22,7 +22,7 @@ var _group_items: Dictionary[StringName, TreeItem]
 var _profile_items: Dictionary[Profile, TreeItem]
 
 func _ready() -> void:
-	_profiles_tree.set_column_title(Columns.PROFILE, profile_column_title)
+	_profiles_tree.set_column_title(Columns.PROFILE, "%s [Variations]" % profile_column_title)
 	_profiles_tree.set_column_title_alignment(Columns.PROFILE, HORIZONTAL_ALIGNMENT_LEFT)
 	
 	_profiles_tree.set_column_title(Columns.RESOURCE_PATH, "Path")
@@ -79,7 +79,7 @@ func _change_profile(selected_item: TreeItem) -> void:
 	if _group_items.values().has(selected_item): return
 	var profile_path: String = selected_item.get_metadata(Columns.RESOURCE_PATH)
 	var profile: Profile = load(profile_path)
-	EditorInterface.get_inspector().edit(profile)
+	if is_visible_in_tree(): EditorInterface.get_inspector().edit(profile)
 	profile_changed.emit(profile)
 
 func _clear_profiles() -> void:

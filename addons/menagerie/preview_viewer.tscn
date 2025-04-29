@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bgdc0htqg6del"]
+[gd_scene load_steps=12 format=3 uid="uid://bgdc0htqg6del"]
 
 [ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview_viewer.gd" id="1_xkxy0"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ume2k"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_fc02p"]
-[ext_resource type="Texture2D" uid="uid://dvesff58juqxj" path="res://protoype_assets/sky_boxes/castel_st_angelo_roof_4k.exr" id="4_td1hk"]
+[ext_resource type="Material" uid="uid://b42go4ii8cm6" path="res://addons/menagerie/sky_boxes/gloomy_forest.tres" id="4_ume2k"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_36yco"]
+[ext_resource type="Shader" uid="uid://5fwpxyq38r3s" path="res://addons/menagerie/infinite_grid.gdshader" id="6_xkxy0"]
+[ext_resource type="Texture2D" uid="uid://dnm0ga1m5opd4" path="res://icon.svg" id="7_ume2k"]
 
 [sub_resource type="Resource" id="Resource_vk6nf"]
 script = ExtResource("3_fc02p")
@@ -12,19 +14,31 @@ duration = 1.0
 transition = 1
 ease = 2
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ttwlx"]
-panorama = ExtResource("4_td1hk")
-
-[sub_resource type="Sky" id="Sky_7lsgj"]
-sky_material = SubResource("PanoramaSkyMaterial_ttwlx")
+[sub_resource type="Sky" id="Sky_fc02p"]
+sky_material = ExtResource("4_ume2k")
 
 [sub_resource type="Environment" id="Environment_bgifn"]
 background_mode = 2
-sky = SubResource("Sky_7lsgj")
+sky = SubResource("Sky_fc02p")
 sky_rotation = Vector3(0, 1.5708, 0)
 
-[node name="PreviewViewer" type="Node3D" node_paths=PackedStringArray("_phantom_camera", "_phantom_camera_host")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ume2k"]
+render_priority = 0
+shader = ExtResource("6_xkxy0")
+shader_parameter/gridColor = Color(0.988, 0.511, 0, 0.215)
+shader_parameter/checkerColor = Color(0, 0, 0, 0.85)
+shader_parameter/fadeStart = 2.0
+shader_parameter/fadeEnd = 10.0
+shader_parameter/unitSize = 1.0
+shader_parameter/subdivisions = 5
+shader_parameter/majorLineThickness = 1.0
+shader_parameter/minorLineThickness = 2.0
+shader_parameter/minorLineAlpha = 0.7
+shader_parameter/centerOffset = Vector3(0, 0, 0)
+
+[node name="PreviewViewer" type="Node3D" node_paths=PackedStringArray("_camera", "_phantom_camera", "_phantom_camera_host")]
 script = ExtResource("1_xkxy0")
+_camera = NodePath("Camera3D")
 _phantom_camera = NodePath("PhantomCamera3D")
 _phantom_camera_host = NodePath("Camera3D/PhantomCameraHost")
 
@@ -43,7 +57,7 @@ metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
 [node name="Camera3D" type="Camera3D" parent="."]
 physics_interpolation_mode = 1
-transform = Transform3D(0.707101, -0.183158, 0.682972, -6.70548e-08, 0.96585, 0.259029, -0.707103, -0.183158, 0.68297, 1.68297, 1.75903, 1.68297)
+transform = Transform3D(0.707102, -0.246345, 0.662804, 8.94064e-08, 0.937329, 0.348391, -0.707102, -0.246345, 0.662804, 5.63963, 3.93874, 5.63963)
 environment = SubResource("Environment_bgifn")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
@@ -51,3 +65,8 @@ process_priority = 300
 process_physics_priority = 300
 script = ExtResource("5_36yco")
 metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(32, 0, 0, 0, -1.39876e-06, 32, 0, -32, -1.39876e-06, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_ume2k")
+texture = ExtResource("7_ume2k")

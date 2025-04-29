@@ -1,43 +1,27 @@
 shader_type spatial;
+//Simple 3D shader to create a force-field effect inspired by Faultless Defense from Guilty Gear Xrd.
+//In summary, it takes logic used for simple rim lighting and uses it to create the alpha instead.
 
-render_mode unshaded;
+render_mode blend_mix,cull_disabled,diffuse_burley,specular_schlick_ggx;//depth_test_disable;
+uniform vec4 albedo : source_color;
+uniform vec4 emission_color : source_color;
+uniform sampler2D texture_albedo : source_color;
+uniform float emission_amount: hint_range(0.0, 16.0) = 5.0f; 
+uniform float rim_steepness : hint_range(0.0f, 16.0f) = 3.0f; //higher values mean a smaller rim.
+uniform vec3 uv_scale;
+uniform vec3 uv_offset;
 
-uniform vec4 modelColor : source_color;
-uniform vec4 wireframeColor : source_color;
 
-uniform float width : hint_range(0.0, 15.) = 1.;
-uniform float modelOpacity : hint_range(0.0, 1.0) = 1.;
-
-uniform bool filtered = false;
-
-const vec3 vectors[3] = {
-	vec3(1.0, 0.0 ,0.0),
-	vec3(0.0, 1.0 ,0.0),
-	vec3(0.0, 0.0 ,1.0)
-};
-
-varying vec3 baryCoord;
-
-void vertex()
-{
-	baryCoord = vectors[VERTEX_ID % 3];
+void vertex() {
+	UV=UV*uv_scale.xy+uv_offset.xy;
 }
 
 void fragment() {
-	vec3 dBaryCoordX = dFdx(baryCoord);
-	vec3 dBaryCoordY = dFdy(baryCoord);
-	vec3 dBaryCoord  = sqrt(dBaryCoordX*dBaryCoordX + dBaryCoordY*dBaryCoordY);
-
-	vec3 remap = smoothstep(
-		vec3(0.0),
-		dBaryCoord * width,
-		baryCoord
-	);
-
-	remap = filtered ? remap : step(.5, remap);
-
-	float closestEdge = max(max(remap.x, remap.y), remap.z);
-
-	ALBEDO = mix(wireframeColor, modelColor, closestEdge).xyz;
-	ALPHA = mix(1., modelOpacity, closestEdge);
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	EMISSION = emission_color.rgb * emission_amount;
+	float NdotV = dot(NORMAL, VIEW);
+	float rim_light = pow(1.0 - NdotV, rim_steepness);
+	ALPHA = rim_light * emission_color.a / PI;
 }

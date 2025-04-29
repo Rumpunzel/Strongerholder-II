@@ -13,6 +13,7 @@ signal zoom_value_changed(zoom_value: float)
 @export var _turn_time: float = 0.1
 
 @export_group("Configuration")
+@export var _camera: Camera3D
 @export var _phantom_camera: PhantomCamera3D
 @export var _phantom_camera_host: PhantomCameraHost
 
@@ -59,7 +60,10 @@ func _on_model_preview_turned_left() -> void:
 func _on_model_preview_turned_right() -> void:
 	_target_rotation -= _calculate_turn_increment()
 
+func _on_sky_box_changed(new_sky_box: PanoramaSkyMaterial) -> void:
+	_camera.environment.sky.sky_material = new_sky_box
+
 func _on_model_preview_visibility_changed() -> void:
-	visible = owner.visible
+	visible = owner.is_visible_in_tree()
 	if visible: _phantom_camera.set_is_active(_phantom_camera_host, true)
 	_target_rotation = 0.0

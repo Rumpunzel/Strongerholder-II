@@ -3,12 +3,6 @@ extends Control
 
 signal profile_changed(new_profile: Profile)
 
-enum Columns {
-	PROFILE,
-	RESOURCE_PATH,
-	VARATION_COUNT,
-}
-
 @export var title: String = name:
 	set(new_title):
 		title = new_title
@@ -23,11 +17,6 @@ var _group_items: Dictionary[StringName, TreeItem]
 var _profile_items: Dictionary[Profile, TreeItem]
 
 func _ready() -> void:
-	_profiles_tree.set_column_title(Columns.PROFILE, profile_column_title)
-	_profiles_tree.set_column_expand_ratio(Columns.PROFILE, 2)
-	_profiles_tree.set_column_title(Columns.RESOURCE_PATH, "Path")
-	_profiles_tree.set_column_expand_ratio(Columns.RESOURCE_PATH, 4)
-	_profiles_tree.set_column_title(Columns.VARATION_COUNT, "Variations")
 	_clear_profiles()
 	_create_items_for_profiles_in_directory()
 
@@ -48,19 +37,17 @@ func _create_profile_item(profile: Profile, parent_item: TreeItem) -> TreeItem:
 	if icon.get_size().aspect() != 1.0: push_warning("Using a non-square icon for %s" % profile.resource_path)
 	var shortened_path: String = profile.resource_path.trim_prefix(_data_path).trim_prefix("/")
 	var variation_count: int = profile.get_variation_count()
-	profile_item.set_icon(Columns.PROFILE, icon)
-	profile_item.set_icon_max_width(Columns.PROFILE, 32)
-	profile_item.set_text(Columns.PROFILE, profile.name)
-	profile_item.set_text(Columns.RESOURCE_PATH, shortened_path)
-	profile_item.set_metadata(Columns.RESOURCE_PATH, profile.resource_path)
-	if variation_count > 1:
-		profile_item.set_text(Columns.VARATION_COUNT, "%d" % variation_count)
-		profile_item.set_text_alignment(Columns.VARATION_COUNT, HORIZONTAL_ALIGNMENT_CENTER)
-	for column: int in Columns.values():
-		profile_item.set_custom_color(column, profile.color)
+	var item_content: String = profile.name
+	if variation_count > 1: item_content += " [1 - %d]" % variation_count
+	item_content += "\n%s" % shortened_path
+	profile_item.set_icon(0, icon)
+	profile_item.set_icon_max_width(0, 32)
+	profile_item.set_text(0, item_content)
+	profile_item.set_metadata(0, profile.resource_path)
+	profile_item.set_custom_color(0, profile.color)
 	_profile_items[profile] = profile_item
 	_update_name()
-	if visible and not _profiles_tree.get_selected(): _profiles_tree.set_selected(profile_item, Columns.PROFILE)
+	if visible and not _profiles_tree.get_selected(): _profiles_tree.set_selected(profile_item, 0)
 	return profile_item
 
 func _create_group_item_for_profile(profile: Profile, parent_item: TreeItem) -> TreeItem:
@@ -72,7 +59,7 @@ func _create_group_item_for_profile(profile: Profile, parent_item: TreeItem) -> 
 
 func _change_profile(selected_item: TreeItem) -> void:
 	if _group_items.values().has(selected_item): return
-	var profile_path: String = selected_item.get_metadata(Columns.RESOURCE_PATH)
+	var profile_path: String = selected_item.get_metadata(0)
 	var profile: Profile = load(profile_path)
 	EditorInterface.get_inspector().edit(profile)
 	profile_changed.emit(profile)

@@ -3,6 +3,11 @@ extends Control
 
 signal profile_changed(new_profile: Profile)
 
+enum Columns {
+	PROFILE,
+	RESOURCE_PATH,
+}
+
 @export var title: String = name:
 	set(new_title):
 		title = new_title
@@ -17,6 +22,12 @@ var _group_items: Dictionary[StringName, TreeItem]
 var _profile_items: Dictionary[Profile, TreeItem]
 
 func _ready() -> void:
+	_profiles_tree.set_column_title(Columns.PROFILE, profile_column_title)
+	_profiles_tree.set_column_title_alignment(Columns.PROFILE, HORIZONTAL_ALIGNMENT_LEFT)
+	
+	_profiles_tree.set_column_title(Columns.RESOURCE_PATH, "Path")
+	_profiles_tree.set_column_title_alignment(Columns.RESOURCE_PATH, HORIZONTAL_ALIGNMENT_LEFT)
+	
 	_clear_profiles()
 	_create_items_for_profiles_in_directory()
 
@@ -33,21 +44,28 @@ func _create_profile_item(profile: Profile, parent_item: TreeItem) -> TreeItem:
 	if not group_item: group_item = _create_group_item_for_profile(profile, parent_item)
 	var profile_item: TreeItem = _profiles_tree.create_item(group_item)
 	group_item.set_text(0, "%s (%d)" % [profile.get_group_name(), group_item.get_child_count()])
+	
 	var icon: Texture2D = profile.portrait if profile.portrait else profile.get_default_icon()
 	if icon.get_size().aspect() != 1.0: push_warning("Using a non-square icon for %s" % profile.resource_path)
-	var shortened_path: String = profile.resource_path.trim_prefix(_data_path).trim_prefix("/")
+	var profile_text: String = profile.name
 	var variation_count: int = profile.get_variation_count()
-	var item_content: String = profile.name
-	if variation_count > 1: item_content += " [1 - %d]" % variation_count
-	item_content += "\n%s" % shortened_path
-	profile_item.set_icon(0, icon)
-	profile_item.set_icon_max_width(0, 32)
-	profile_item.set_text(0, item_content)
-	profile_item.set_metadata(0, profile.resource_path)
-	profile_item.set_custom_color(0, profile.color)
+	if variation_count > 1: profile_text += " [1- %d]" % variation_count
+	profile_item.set_icon(Columns.PROFILE, icon)
+	profile_item.set_icon_max_width(Columns.PROFILE, 32)
+	profile_item.set_text(Columns.PROFILE, profile_text)
+	var variations: PackedStringArray = profile._model_variations.map(func(model: PackedScene) -> String: return model.resource_path)
+	profile_item.set_tooltip_text(Columns.PROFILE, "\n".join(variations))
+	profile_item.set_custom_color(Columns.PROFILE, profile.color)
+	
+	var shortened_path: String = profile.resource_path.trim_prefix(_data_path).trim_prefix("/")
+	profile_item.set_text(Columns.RESOURCE_PATH, shortened_path)
+	profile_item.set_metadata(Columns.RESOURCE_PATH, profile.resource_path)
+	profile_item.set_tooltip_text(Columns.RESOURCE_PATH, profile.resource_path)
+	profile_item.set_custom_color(Columns.RESOURCE_PATH, profile.color.darkened(0.5))
+	
 	_profile_items[profile] = profile_item
 	_update_name()
-	if visible and not _profiles_tree.get_selected(): _profiles_tree.set_selected(profile_item, 0)
+	if visible and not _profiles_tree.get_selected(): _profiles_tree.set_selected(profile_item, Columns.PROFILE)
 	return profile_item
 
 func _create_group_item_for_profile(profile: Profile, parent_item: TreeItem) -> TreeItem:
@@ -59,7 +77,7 @@ func _create_group_item_for_profile(profile: Profile, parent_item: TreeItem) -> 
 
 func _change_profile(selected_item: TreeItem) -> void:
 	if _group_items.values().has(selected_item): return
-	var profile_path: String = selected_item.get_metadata(0)
+	var profile_path: String = selected_item.get_metadata(Columns.RESOURCE_PATH)
 	var profile: Profile = load(profile_path)
 	EditorInterface.get_inspector().edit(profile)
 	profile_changed.emit(profile)

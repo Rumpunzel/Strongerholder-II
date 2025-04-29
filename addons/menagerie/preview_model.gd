@@ -11,7 +11,7 @@ signal profile_changed
 	set(new_variation):
 		variation = new_variation
 		if not profile: return
-		if variation >= profile._model_variations.size(): return
+		if variation >= profile.get_variation_count(): return
 		if variation >= 0: _model = profile.create_model(variation)
 
 @export var profile: Profile:
@@ -54,7 +54,7 @@ func get_heads_up_anchor() -> Vector3:
 
 func _update_model() -> void:
 	if not is_node_ready(): await ready
-	if variation >= profile._model_variations.size(): variation = 0
+	if variation >= profile.get_variation_count(): variation = 0
 	if variation >= 0: _model = profile.create_model(variation)
 	profile.configure_collision_shape(_collision_shape)
 	profile.configure_collision_mesh(_collision_mesh)

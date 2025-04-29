@@ -2,26 +2,44 @@
 
 [ext_resource type="Script" uid="uid://brk2kywqvfl68" path="res://addons/menagerie/profiles_tab.gd" id="1_5qoco"]
 
-[node name="ProfilesTab" type="MarginContainer" node_paths=PackedStringArray("_profiles_tree")]
+[node name="ProfileTab (6)" type="MarginContainer" node_paths=PackedStringArray("_profiles_tree")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5qoco")
-_profiles_tree = NodePath("VSplitContainer/Tree")
+title = "ProfileTab"
+profile_column_title = "Profile"
+_portrait_size_max_size = null
+_profiles_tree = NodePath("VBoxContainer/VSplitContainer/Tree")
 metadata/_tab_index = 0
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Tree" type="Tree" parent="VSplitContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Tree" type="Tree" parent="VBoxContainer/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+column_titles_visible = true
 allow_reselect = true
 hide_root = true
 select_mode = 1
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RescanButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rescan files"
+
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
-[connection signal="item_activated" from="VSplitContainer/Tree" to="." method="_on_item_activated"]
-[connection signal="item_selected" from="VSplitContainer/Tree" to="." method="_on_item_selected"]
+[connection signal="item_activated" from="VBoxContainer/VSplitContainer/Tree" to="." method="_on_item_activated"]
+[connection signal="item_selected" from="VBoxContainer/VSplitContainer/Tree" to="." method="_on_item_selected"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RescanButton" to="." method="_on_rescan_button_pressed"]

@@ -11,7 +11,7 @@ extends Resource
 	set(new_value):
 		portrait = new_value
 		changed.emit()
-@export_color_no_alpha var color: Color:
+@export var color: Color = Color("#e0e0e0"):
 	set(new_value):
 		color = new_value
 		changed.emit()
@@ -54,7 +54,7 @@ extends Resource
 func create_model(variation: int) -> Model:
 	assert(not _model_variations.is_empty())
 	assert(variation >= 0)
-	assert(variation < _model_variations.size())
+	assert(variation < get_variation_count())
 	var model: PackedScene = _model_variations[variation]
 	return model.instantiate()
 
@@ -88,11 +88,27 @@ func configure_interaction_area_mesh(hit_box_mesh: MeshInstance3D) -> void:
 
 func get_random_variation() -> int:
 	assert(not _model_variations.is_empty())
-	return randi() % _model_variations.size()
+	return randi() % get_variation_count()
+
+func get_variation_count() -> int:
+	return _model_variations.size()
 
 func get_group_name() -> StringName:
 	assert(false, "Profile.get_group_name is 'virtual' and needs to be overriden!")
 	return ""
+
+func get_default_icon() -> Texture2D:
+	var global_class_list: Array[Dictionary] = ProjectSettings.get_global_class_list()
+	var own_global_class: Dictionary
+	for global_class: Dictionary in global_class_list:
+		var own_script: GDScript = get_script()
+		if global_class.class == own_script.get_global_name():
+			own_global_class = global_class
+			break
+	var own_global_class_icon_path: String = own_global_class.icon
+	assert(own_global_class_icon_path is String)
+	assert(not own_global_class_icon_path.is_empty())
+	return load(own_global_class_icon_path)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

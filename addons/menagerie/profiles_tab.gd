@@ -113,8 +113,8 @@ func _update_profiles() -> void:
 	_create_items_for_profiles_in_directory()
 
 func _on_visibility_changed() -> void:
-	if not visible: _clear_profiles()
-	if visible: _update_profiles()
+	if not is_visible_in_tree(): _clear_profiles()
+	if is_visible_in_tree(): _update_profiles()
 
 func _on_item_activated() -> void:
 	_change_profile(_profiles_tree.get_selected())

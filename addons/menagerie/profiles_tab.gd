@@ -20,20 +20,23 @@ enum Columns {
 
 var _group_items: Dictionary[StringName, TreeItem]
 var _profile_items: Dictionary[Profile, TreeItem]
+var _filter_string: String = "":
+	set(new_filter_string):
+		if new_filter_string == _filter_string: return
+		_filter_string = new_filter_string
+		_update_profiles()
 
 func _ready() -> void:
 	_profiles_tree.set_column_title(Columns.PROFILE, "%s [Variations]" % profile_column_title)
 	_profiles_tree.set_column_title_alignment(Columns.PROFILE, HORIZONTAL_ALIGNMENT_LEFT)
-	
 	_profiles_tree.set_column_title(Columns.RESOURCE_PATH, "Path")
 	_profiles_tree.set_column_title_alignment(Columns.RESOURCE_PATH, HORIZONTAL_ALIGNMENT_LEFT)
-	
-	_clear_profiles()
-	_create_items_for_profiles_in_directory()
+	_update_profiles()
 
 func _create_items_for_profiles_in_directory(directory_path: String = _data_path, parent_item: TreeItem = _profiles_tree.create_item()) -> void:
 	var profiles_in_directory: Array[Profile] = _list_profiles_in_directory(directory_path)
 	for profile: Profile in profiles_in_directory:
+		if not _profile_matches_filter_string(profile): continue
 		_create_profile_item(profile, parent_item)
 	var directory_names: PackedStringArray = DirAccess.get_directories_at(directory_path)
 	for directory_name: String in directory_names:
@@ -97,14 +100,21 @@ func _list_profiles_in_directory(directory_path: String) -> Array[Profile]:
 		if resource is Profile: profiles_in_directory.append(resource)
 	return profiles_in_directory
 
+func _profile_matches_filter_string(profile: Profile) -> bool:
+	if _filter_string.is_empty(): return true
+	if profile.name.containsn(_filter_string): return true
+	return false
+
 func _update_name() -> void:
 	name = "%s (%d)" % [title, _profile_items.size()]
 
+func _update_profiles() -> void:
+	_clear_profiles()
+	_create_items_for_profiles_in_directory()
+
 func _on_visibility_changed() -> void:
 	if not visible: _clear_profiles()
-	if visible:
-		_clear_profiles()
-		_create_items_for_profiles_in_directory()
+	if visible: _update_profiles()
 
 func _on_item_activated() -> void:
 	_change_profile(_profiles_tree.get_selected())
@@ -112,6 +122,8 @@ func _on_item_activated() -> void:
 func _on_item_selected() -> void:
 	_change_profile(_profiles_tree.get_selected())
 
+func _on_profile_filter_text_changed(new_text: String) -> void:
+	_filter_string = new_text
+
 func _on_rescan_button_pressed() -> void:
-	_clear_profiles()
-	_create_items_for_profiles_in_directory()
+	_update_profiles()

@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=4 uid="uid://xfsixac560jc"]
 
-[ext_resource type="Script" uid="uid://ciovr5f7m5so8" path="res://addons/menagerie/preview_model.gd" id="1_dsd7c"]
+[ext_resource type="Script" uid="uid://ciovr5f7m5so8" path="res://addons/menagerie/preview/preview_model.gd" id="1_dsd7c"]
 [ext_resource type="Resource" uid="uid://dy6kyxtiog1ac" path="res://data/characters/ghosts/ghost.tres" id="2_fv6ce"]
-[ext_resource type="Shader" uid="uid://cgperstehn6y3" path="res://addons/menagerie/wireframe.gdshader" id="3_ew30f"]
+[ext_resource type="Shader" uid="uid://cgperstehn6y3" path="res://addons/menagerie/preview/wireframe.gdshader" id="3_ew30f"]
 [ext_resource type="PackedScene" uid="uid://cpmcbnpcemt61" path="res://engine/objects/heads_up_anchor.tscn" id="4_e3hi2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yaxum"]

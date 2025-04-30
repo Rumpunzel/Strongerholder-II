@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://n0o3cjtujtpt" path="res://addons/menagerie/menagerie_panel.gd" id="1_4mtjh"]
 [ext_resource type="Script" uid="uid://ns4detjfiotx" path="res://addons/menagerie/profile_tabs.gd" id="2_37sv2"]
 [ext_resource type="PackedScene" uid="uid://cmahsihmepd4v" path="res://addons/menagerie/profiles_tab.tscn" id="3_vgjr1"]
-[ext_resource type="PackedScene" uid="uid://csmryju0fx0x1" path="res://addons/menagerie/model_preview.tscn" id="4_ne48i"]
+[ext_resource type="PackedScene" uid="uid://csmryju0fx0x1" path="res://addons/menagerie/preview/model_preview.tscn" id="4_ne48i"]
 
 [node name="Menagerie" type="PanelContainer"]
 anchors_preset = 15
@@ -24,15 +24,15 @@ layout_mode = 2
 
 [node name="ProfileTabs" type="TabContainer" parent="HSplitContainer/VBoxContainer" node_paths=PackedStringArray("_all_tab")]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 3
 theme_override_constants/icon_max_width = 32
+current_tab = 0
 clip_tabs = false
 deselect_enabled = true
 script = ExtResource("2_37sv2")
 _all_tab = NodePath("../MarginContainer")
 
 [node name="Characters (3)" parent="HSplitContainer/VBoxContainer/ProfileTabs" instance=ExtResource("3_vgjr1")]
-visible = false
 layout_mode = 2
 title = "Characters"
 profile_column_title = "Character"
@@ -55,6 +55,7 @@ _data_path = "res://data/things"
 metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 4

@@ -35,24 +35,24 @@ func _calculate_turn_increment() -> float:
 	var turn_modifier: float = 1.0 + fmod(abs(_target_rotation - rotation_degrees.y), 180.0)
 	return clampf(turn_modifier, _turn_increment_min, _turn_increment_max)
 
-func _on_model_preview_zoomed_in() -> void:
-	var follow_distance: float = maxf(_phantom_camera.follow_distance - _zoom_rate, _follow_distance_min)
+func _on_model_preview_zoom_changed(new_zoom: float) -> void:
+	var follow_distance: float = _follow_distance_min + new_zoom * _follow_distance_max
 	_phantom_camera.follow_distance = follow_distance
 	_phantom_camera.auto_follow_distance_min = follow_distance
-	var zoom_ratio: float = (_phantom_camera.follow_distance - _follow_distance_min) / _follow_distance_max
-	zoom_value_changed.emit(1.0 - zoom_ratio)
 
 func _on_model_preview_zoomed_out() -> void:
 	var follow_distance: float = minf(_phantom_camera.follow_distance + _zoom_rate, _follow_distance_max)
 	_phantom_camera.follow_distance = follow_distance
 	_phantom_camera.auto_follow_distance_min = follow_distance
 	var zoom_ratio: float = (_phantom_camera.follow_distance - _follow_distance_min) / _follow_distance_max
-	zoom_value_changed.emit(1.0 - zoom_ratio)
+	zoom_value_changed.emit(zoom_ratio)
 
-func _on_zoom_slider_value_changed(value: float) -> void:
-	var follow_distance: float = _follow_distance_min + (1.0 - value) * _follow_distance_max
+func _on_model_preview_zoomed_in() -> void:
+	var follow_distance: float = maxf(_phantom_camera.follow_distance - _zoom_rate, _follow_distance_min)
 	_phantom_camera.follow_distance = follow_distance
 	_phantom_camera.auto_follow_distance_min = follow_distance
+	var zoom_ratio: float = (_phantom_camera.follow_distance - _follow_distance_min) / _follow_distance_max
+	zoom_value_changed.emit(zoom_ratio)
 
 func _on_model_preview_turned_left() -> void:
 	_target_rotation += _calculate_turn_increment()

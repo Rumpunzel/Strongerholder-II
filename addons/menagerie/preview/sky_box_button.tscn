@@ -9,4 +9,4 @@ button_group = ExtResource("1_4v5tf")
 expand_icon = true
 script = ExtResource("2_4bomt")
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

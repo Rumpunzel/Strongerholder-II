@@ -1,3 +1,4 @@
+@tool
 @icon("uid://cawf6uult17mx")
 class_name Config
 extends Node

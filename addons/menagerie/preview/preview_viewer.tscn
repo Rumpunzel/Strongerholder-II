@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://drtidm4rhg3c0" path="res://addons/menagerie/preview/preview_viewer.gd" id="1_xkxy0"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ume2k"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_fc02p"]
-[ext_resource type="Material" uid="uid://b42go4ii8cm6" path="res://addons/menagerie/preview/sky_boxes/gloomy_forest.tres" id="4_ume2k"]
+[ext_resource type="Material" uid="uid://be0c78ct6bsia" path="res://addons/menagerie/preview/sky_boxes/autumn_forest.tres" id="4_iv68f"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_36yco"]
 [ext_resource type="Shader" uid="uid://5fwpxyq38r3s" path="res://addons/menagerie/preview/infinite_grid.gdshader" id="6_xkxy0"]
 [ext_resource type="Texture2D" uid="uid://dnm0ga1m5opd4" path="res://icon.svg" id="7_ume2k"]
@@ -15,7 +15,7 @@ transition = 1
 ease = 2
 
 [sub_resource type="Sky" id="Sky_fc02p"]
-sky_material = ExtResource("4_ume2k")
+sky_material = ExtResource("4_iv68f")
 
 [sub_resource type="Environment" id="Environment_bgifn"]
 background_mode = 2

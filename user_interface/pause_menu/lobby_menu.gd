@@ -24,11 +24,11 @@ func _ready() -> void:
 		create_player_info(connected_player)
 
 func open_menu() -> void:
-	if visible: return
+	if is_visible_in_tree(): return
 	show()
 
 func close_menu() -> void:
-	if not visible: return
+	if not is_visible_in_tree(): return
 	hide()
 
 func create_player_info(player: Player) -> void:

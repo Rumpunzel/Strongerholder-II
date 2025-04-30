@@ -19,6 +19,7 @@ config/icon="uid://bgjmcb04v358t"
 [autoload]
 
 Client="*res://client/client.gd"
+GameConfig="*res://client/serialization/config.gd"
 Multiplayer="*res://client/multiplayer/multiplayer.gd"
 Lobby="*res://client/lobby/lobby.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"

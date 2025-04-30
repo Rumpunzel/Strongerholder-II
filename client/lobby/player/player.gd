@@ -28,7 +28,7 @@ const GHOST_SPRITE_FRAME: StringName = "ghost_sprite_frame"
 		if Engine.is_editor_hint(): return
 		player_info_changed.emit()
 		if not is_local_player(): return
-		Client.update_value_in_config(player_name, PLAYER_SECTION, NAME)
+		GameConfig.update_value_in_config(player_name, PLAYER_SECTION, NAME)
 
 @export var ghost_sprite_frame: int = 0:
 	set(new_ghost_sprite_frame):
@@ -37,7 +37,7 @@ const GHOST_SPRITE_FRAME: StringName = "ghost_sprite_frame"
 		if Engine.is_editor_hint(): return
 		player_info_changed.emit()
 		if not is_local_player(): return
-		Client.update_value_in_config(ghost_sprite_frame, PLAYER_SECTION, GHOST_SPRITE_FRAME)
+		GameConfig.update_value_in_config(ghost_sprite_frame, PLAYER_SECTION, GHOST_SPRITE_FRAME)
 
 @export_group("Configuration")
 
@@ -50,8 +50,8 @@ static func create(new_player_id: int, new_player_name: String, new_player_ghost
 
 static func get_local_player_info() -> Dictionary[StringName, Variant]:
 	var local_player_id: int = Multiplayer.HOST_ID
-	var local_player_name: String = Client.get_value_from_config(PLAYER_SECTION, NAME, "")
-	var local_ghost_sprite_frame: int = Client.get_value_from_config(PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
+	var local_player_name: String = GameConfig.get_value_from_config(PLAYER_SECTION, NAME, "")
+	var local_ghost_sprite_frame: int = GameConfig.get_value_from_config(PLAYER_SECTION, GHOST_SPRITE_FRAME, 0)
 	var player_info: Dictionary[StringName, Variant] = {
 		ID: local_player_id,
 		NAME: local_player_name if not local_player_name.is_empty() else "Player %d" % local_player_id,

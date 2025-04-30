@@ -14,11 +14,11 @@ func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	Multiplayer.game_hosted.connect(_on_game_hosted)
 	Multiplayer.disconnected_from_multiplayer.connect(_on_disconnected_from_multiplayer)
-	Client.config_updated.connect(_on_config_updated)
+	GameConfig.config_updated.connect(_on_config_updated)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
-	var local_player_name: String = Client.get_value_from_config(Player.PLAYER_SECTION, Player.NAME, "")
+	var local_player_name: String = GameConfig.get_value_from_config(Player.PLAYER_SECTION, Player.NAME, "")
 	update_player_name(local_player_name)
 
 func reset_menu() -> void:

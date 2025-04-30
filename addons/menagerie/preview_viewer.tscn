@@ -52,12 +52,14 @@ look_at_mode = 3
 tween_resource = SubResource("Resource_vk6nf")
 follow_offset = Vector3(1, 1.5, 1)
 follow_damping = true
+follow_distance = 5.0
+spring_length = 5.0
 look_at_damping = true
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
 [node name="Camera3D" type="Camera3D" parent="."]
 physics_interpolation_mode = 1
-transform = Transform3D(0.707102, -0.246345, 0.662804, 8.94064e-08, 0.937329, 0.348391, -0.707102, -0.246345, 0.662804, 5.63963, 3.93874, 5.63963)
+transform = Transform3D(0.707102, -0.246345, 0.662804, 8.94064e-08, 0.937329, 0.348391, -0.707102, -0.246345, 0.662804, 1.6628, 1.84839, 1.6628)
 environment = SubResource("Environment_bgifn")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]

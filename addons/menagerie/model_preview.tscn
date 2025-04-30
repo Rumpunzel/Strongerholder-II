@@ -1,11 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://csmryju0fx0x1"]
+[gd_scene load_steps=19 format=3 uid="uid://csmryju0fx0x1"]
 
 [ext_resource type="Script" uid="uid://cyfpbvffseh60" path="res://addons/menagerie/model_preview.gd" id="1_ftrqn"]
 [ext_resource type="Script" uid="uid://c8w4b43q3uoq2" path="res://addons/menagerie/variation_editor.gd" id="2_t53jk"]
 [ext_resource type="PackedScene" uid="uid://bgdc0htqg6del" path="res://addons/menagerie/preview_viewer.tscn" id="3_8vjfp"]
 [ext_resource type="PackedScene" uid="uid://dy2fwiv56c7um" path="res://addons/menagerie/sky_box_button.tscn" id="3_bi8yr"]
 [ext_resource type="Script" uid="uid://d0sd3a47s5ary" path="res://addons/menagerie/preview_scene.gd" id="3_p56y7"]
-[ext_resource type="ButtonGroup" uid="uid://3rxd3w0od6f1" path="res://addons/menagerie/sky_box_button_group.tres" id="3_t53jk"]
 [ext_resource type="Material" uid="uid://be0c78ct6bsia" path="res://addons/menagerie/sky_boxes/autumn_forest.tres" id="3_uwdeg"]
 [ext_resource type="PackedScene" uid="uid://xfsixac560jc" path="res://addons/menagerie/preview_model.tscn" id="4_73bcv"]
 [ext_resource type="PackedScene" uid="uid://8yiog0h7ihc2" path="res://addons/menagerie/preview_scene.tscn" id="5_m0po0"]
@@ -78,36 +77,8 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 columns = 2
 
-[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/GridContainer"]
+[node name="Control" type="Control" parent="MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-reverse_fill = true
-
-[node name="AutumnForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
-layout_mode = 2
-button_pressed = true
-button_group = ExtResource("3_t53jk")
-text = "Autumn Forest"
-sky_box = ExtResource("3_uwdeg")
-
-[node name="FairyForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
-layout_mode = 2
-button_group = ExtResource("3_t53jk")
-text = "Fair Forest"
-sky_box = ExtResource("5_qonuu")
-
-[node name="FantasyCastle" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
-layout_mode = 2
-button_group = ExtResource("3_t53jk")
-text = "Fantasy Castle"
-sky_box = ExtResource("7_6re84")
-
-[node name="GloomyForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
-layout_mode = 2
-button_group = ExtResource("3_t53jk")
-text = "Gloomy Forest"
-sky_box = ExtResource("9_tp2le")
 
 [node name="PreviewConfiguration" type="PanelContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
@@ -137,7 +108,7 @@ text = "Show hitbox"
 [node name="ShowInteractionArea" type="CheckButton" parent="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer"]
 layout_mode = 2
 button_pressed = true
-text = "Show hitbox"
+text = "Show interaction area"
 
 [node name="VariationEditor" type="VBoxContainer" parent="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer" node_paths=PackedStringArray("_randomize_variation", "_variation_spin_box")]
 layout_mode = 2
@@ -167,8 +138,31 @@ rounded = true
 allow_greater = true
 allow_lesser = true
 
-[node name="Control" type="Control" parent="MarginContainer/GridContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+reverse_fill = true
+
+[node name="AutumnForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
+layout_mode = 2
+text = "Autumn Forest"
+sky_box = ExtResource("3_uwdeg")
+
+[node name="FairyForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
+layout_mode = 2
+text = "Fair Forest"
+sky_box = ExtResource("5_qonuu")
+
+[node name="FantasyCastle" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
+layout_mode = 2
+text = "Fantasy Castle"
+sky_box = ExtResource("7_6re84")
+
+[node name="GloomyForest" parent="MarginContainer/GridContainer/HFlowContainer" instance=ExtResource("3_bi8yr")]
+layout_mode = 2
+text = "Gloomy Forest"
+sky_box = ExtResource("9_tp2le")
 
 [node name="ZoomConfiguration" type="HBoxContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
@@ -221,12 +215,15 @@ script = ExtResource("3_p56y7")
 [connection signal="visibility_changed" from="." to="SubViewport/PreviewScene" method="_on_model_preview_visibility_changed"]
 [connection signal="zoomed_in" from="." to="SubViewport/PreviewViewer" method="_on_model_preview_zoomed_in"]
 [connection signal="zoomed_out" from="." to="SubViewport/PreviewViewer" method="_on_model_preview_zoomed_out"]
+[connection signal="toggled" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/ShowCollision" to="SubViewport/PreviewScene/PreviewModel/CollisionMesh" method="set_visible"]
+[connection signal="toggled" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/ShowHitBox" to="SubViewport/PreviewScene/PreviewModel/HitBoxMesh" method="set_visible"]
+[connection signal="toggled" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/ShowInteractionArea" to="SubViewport/PreviewScene/PreviewModel/InteractionAreaMesh" method="set_visible"]
+[connection signal="variation_changed" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor" to="SubViewport/PreviewScene/PreviewModel" method="_on_variation_changed"]
+[connection signal="value_changed" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor/HBoxContainer/VariationSpinBox" to="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor" method="_on_variation_spin_box_value_changed"]
 [connection signal="sky_box_pressed" from="MarginContainer/GridContainer/HFlowContainer/AutumnForest" to="SubViewport/PreviewViewer" method="_on_sky_box_changed"]
 [connection signal="sky_box_pressed" from="MarginContainer/GridContainer/HFlowContainer/FairyForest" to="SubViewport/PreviewViewer" method="_on_sky_box_changed"]
 [connection signal="sky_box_pressed" from="MarginContainer/GridContainer/HFlowContainer/FantasyCastle" to="SubViewport/PreviewViewer" method="_on_sky_box_changed"]
 [connection signal="sky_box_pressed" from="MarginContainer/GridContainer/HFlowContainer/GloomyForest" to="SubViewport/PreviewViewer" method="_on_sky_box_changed"]
-[connection signal="variation_changed" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor" to="SubViewport/PreviewScene/PreviewModel" method="_on_variation_changed"]
-[connection signal="value_changed" from="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor/HBoxContainer/VariationSpinBox" to="MarginContainer/GridContainer/PreviewConfiguration/MarginContainer/VBoxContainer/VariationEditor" method="_on_variation_spin_box_value_changed"]
 [connection signal="value_changed" from="MarginContainer/GridContainer/ZoomConfiguration/ZoomSlider" to="SubViewport/PreviewViewer" method="_on_zoom_slider_value_changed"]
 [connection signal="zoom_value_changed" from="SubViewport/PreviewViewer" to="MarginContainer/GridContainer/ZoomConfiguration/ZoomSlider" method="set_value_no_signal"]
 

@@ -24,15 +24,15 @@ layout_mode = 2
 
 [node name="ProfileTabs" type="TabContainer" parent="HSplitContainer/VBoxContainer" node_paths=PackedStringArray("_all_tab")]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 theme_override_constants/icon_max_width = 32
-current_tab = 0
 clip_tabs = false
 deselect_enabled = true
 script = ExtResource("2_37sv2")
 _all_tab = NodePath("../MarginContainer")
 
 [node name="Characters (3)" parent="HSplitContainer/VBoxContainer/ProfileTabs" instance=ExtResource("3_vgjr1")]
+visible = false
 layout_mode = 2
 title = "Characters"
 profile_column_title = "Character"
@@ -55,7 +55,6 @@ _data_path = "res://data/things"
 metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 4

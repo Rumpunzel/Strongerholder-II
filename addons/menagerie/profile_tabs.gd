@@ -16,6 +16,7 @@ func _ready() -> void:
 	set_tab_title(CHARACTERS, "%s" % [get_tab_control(CHARACTERS).name])
 	set_tab_icon(STRUCTURES, preload("uid://bes0anop2dh5u"))
 	set_tab_icon(THINGS, preload("uid://c4udocqr7qeyj"))
+	_on_tab_changed(current_tab)
 
 func _on_tab_changed(tab: int) -> void:
 	if tab < 0:

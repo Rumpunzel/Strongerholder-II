@@ -17,6 +17,20 @@ metadata/_tab_index = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ProfileFilter" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Filter"
+clear_button_enabled = true
+select_all_on_focus = true
+
+[node name="RescanButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Rescan files"
+
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -30,19 +44,8 @@ allow_reselect = true
 hide_root = true
 select_mode = 1
 
-[node name="ProfileFilter" type="LineEdit" parent="VBoxContainer"]
-layout_mode = 2
-placeholder_text = "Filter"
-clear_button_enabled = true
-select_all_on_focus = true
-
-[node name="RescanButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Rescan files"
-
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/ProfileFilter" to="." method="_on_profile_filter_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RescanButton" to="." method="_on_rescan_button_pressed"]
 [connection signal="item_activated" from="VBoxContainer/VSplitContainer/Tree" to="." method="_on_item_activated"]
 [connection signal="item_selected" from="VBoxContainer/VSplitContainer/Tree" to="." method="_on_item_selected"]
-[connection signal="text_changed" from="VBoxContainer/ProfileFilter" to="." method="_on_profile_filter_text_changed"]
-[connection signal="pressed" from="VBoxContainer/RescanButton" to="." method="_on_rescan_button_pressed"]

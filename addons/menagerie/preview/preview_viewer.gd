@@ -19,7 +19,9 @@ signal tilt_value_changed(tilt_value: float)
 @export var _tilt_rate: float = 0.05
 @export var _tilt_time: float = 0.1
 
-@export var _targets: Array[Node3D]
+@export var _look_at_time: float = 0.1
+
+@export var _view_target: PreviewModel
 
 @export_group("Configuration")
 @export var _camera: Camera3D
@@ -35,35 +37,24 @@ var _target_rotation: float = 0.0:
 var _target_follow_distance: float = _follow_distance_min:
 	set(new_target_follow_distance):
 		_target_follow_distance = new_target_follow_distance
-		if _follow_distance_tween: _follow_distance_tween.kill()
-		if not get_tree(): return
-		_follow_distance_tween = get_tree().create_tween()
 		var reverse_tilt: float = 1.1 - ((_target_tilt - _tilt_min) / (_tilt_max - _tilt_min))
-		var new_follow_position: Vector3 = _get_focal_point() + Vector3(reverse_tilt, _target_tilt, reverse_tilt) * _target_follow_distance
-		_follow_distance_tween.tween_property(_camera, "position", new_follow_position, _zoom_time)
+		var new_follow_position: Vector3 = _view_target.global_position + Vector3(reverse_tilt, _target_tilt, reverse_tilt) * _target_follow_distance
+		_camera.position = new_follow_position
 
 var _target_tilt: float = _tilt_min:
 	set(new_target_tilt):
 		_target_tilt = new_target_tilt
 		_target_follow_distance = _target_follow_distance
 
-var _follow_distance_tween: Tween
 var _rotation_tween: Tween
 
 func _ready() -> void:
 	_target_rotation = fmod(abs(rotation_degrees.y), 180.0)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not is_visible_in_tree(): return
-	_camera.look_at(_get_focal_point())
-
-func _get_focal_point() -> Vector3:
-	var focal_point: Vector3 = Vector3.ZERO
-	if _targets.is_empty(): return focal_point
-	for target: Node3D in _targets:
-		focal_point += target.global_position
-	focal_point /= float(_targets.size())
-	return focal_point
+	var look_at_position: Vector3 = (_view_target.global_position + _view_target.get_heads_up_anchor()) / 2.0
+	_camera.look_at(look_at_position)
 
 func _calculate_turn_increment() -> float:
 	var turn_modifier: float = 1.0 + fmod(abs(_target_rotation - rotation_degrees.y), 180.0)
@@ -102,9 +93,6 @@ func _on_model_preview_tilted_less() -> void:
 	_target_tilt = maxf(_target_tilt - _tilt_rate, _tilt_min)
 	var tilt_ratio: float = (_target_tilt - _tilt_min) / (_tilt_max - _tilt_min)
 	tilt_value_changed.emit(tilt_ratio)
-
-func _on_preview_model_profile_changed() -> void:
-	_target_follow_distance = _target_follow_distance
 
 func _on_sky_box_changed(new_sky_box: PanoramaSkyMaterial) -> void:
 	_camera.environment.sky.sky_material = new_sky_box

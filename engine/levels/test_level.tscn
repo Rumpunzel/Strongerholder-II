@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bmwhs3lwb74ue"]
+[gd_scene load_steps=17 format=3 uid="uid://bmwhs3lwb74ue"]
 
 [ext_resource type="Script" uid="uid://dktxo1t8ahw30" path="res://engine/levels/level.gd" id="1_ywn5t"]
 [ext_resource type="Script" uid="uid://dgvx552knwi7h" path="res://engine/objects/structures/structure_spawn_point.gd" id="3_8egsi"]
@@ -11,6 +11,11 @@
 [ext_resource type="Texture2D" uid="uid://de50qpfb0w0ll" path="res://protoype_assets/grids/prototype_512x512_blue2.png" id="8_s5f45"]
 [ext_resource type="Resource" uid="uid://cbl5ggrubf4we" path="res://data/things/log/log.tres" id="10_058wk"]
 [ext_resource type="Script" uid="uid://da7xwt7wct3ms" path="res://engine/objects/characters/character_spawn_point.gd" id="10_bpeee"]
+[ext_resource type="PackedScene" uid="uid://dqqbhe1nhpx6b" path="res://engine/objects/bonefire/bonefire.tscn" id="12_cr1f1"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_8egsi"]
+vertices = PackedVector3Array(-31.5, 0.5, -31.5, -31.5, 0.5, 31.5, 31.5, 0.5, 31.5, 31.5, 0.5, -31.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2lmav"]
 size = Vector3(64, 16, 64)
@@ -27,20 +32,23 @@ process_mode = 1
 script = ExtResource("1_ywn5t")
 metadata/_custom_type_script = "uid://dktxo1t8ahw30"
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.444104, 0.895975, 0, -0.895975, 0.444104, 0, 10.6623, 0)
+shadow_enabled = true
+directional_shadow_blend_splits = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_8egsi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
 shape = SubResource("BoxShape3D_2lmav")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D"]
 mesh = SubResource("PlaneMesh_bkb5w")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_5pvop")
 
 [node name="BonefireSpawnPoint" type="Marker3D" parent="."]
@@ -79,3 +87,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 4)
 script = ExtResource("7_c445m")
 thing_profile = ExtResource("10_058wk")
 metadata/_custom_type_script = "uid://fokksh7u76ju"
+
+[node name="Bonefire" parent="." instance=ExtResource("12_cr1f1")]

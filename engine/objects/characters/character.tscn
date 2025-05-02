@@ -19,13 +19,13 @@ properties/3/path = NodePath(".:visible")
 properties/3/spawn = true
 properties/3/replication_mode = 2
 
-[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape") groups=["Characters"]]
-collision_layer = 4
-collision_mask = 7
+[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("_collision_shape", "_navigation_agent") groups=["Characters"]]
+collision_layer = 2
+collision_mask = 15
 input_ray_pickable = false
-velocity = Vector3(0, -957.116, 0)
 script = ExtResource("1_f5t6j")
 _collision_shape = NodePath("CollisionShape3D")
+_navigation_agent = NodePath("NavigationAgent3D")
 metadata/_custom_type_script = "uid://cwu2dwpvcrl3s"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -40,9 +40,17 @@ script = ExtResource("3_42yey")
 _synchronizer = NodePath("..")
 metadata/_custom_type_script = "uid://047sfnl1r5sv"
 
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+simplify_path = true
+avoidance_enabled = true
+height = 1.5
+debug_enabled = true
+
 [node name="CharacterHitBox" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_5i04j")]
 character = NodePath("..")
 
 [connection signal="profile_changed" from="." to="CharacterHitBox" method="_on_character_profile_changed"]
+[connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_navigation_finished"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_velocity_computed"]
 [connection signal="haunted" from="CharacterHitBox" to="." method="_on_haunted"]
 [connection signal="unhaunted" from="CharacterHitBox" to="." method="_on_unhaunted"]

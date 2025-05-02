@@ -3,6 +3,8 @@
 class_name Character
 extends CharacterBody3D
 
+signal destination_reached
+
 signal profile_changed
 
 const VARIATION: StringName = "variation"
@@ -38,6 +40,7 @@ const SPAWN_TRANSFORM: StringName = "spawn_transform"
 
 @export_group("Configuration")
 @export var _collision_shape: CollisionShape3D
+@export var _navigation_agent: NavigationAgent3D
 
 var model: Model:
 	set(new_model):
@@ -62,6 +65,7 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
+	_handle_pathfinding()
 	move_and_slide()
 	_handle_collisions()
 	_look_forward(delta)
@@ -86,25 +90,29 @@ static func validate_character_data(character_data: Dictionary[StringName, Varia
 
 ## Used to move the [Character] without pathfinding
 @rpc("any_peer", "call_local")
-func apply_input_direction(direction_input: Vector2, delta: float) -> void:
-	var move_speed: float = profile.move_speed
-	var acceleration: float = profile.acceleration * delta
-	var deceleration: float = profile.deceleration * delta
-	if direction_input:
-		velocity.x = move_toward(velocity.x, direction_input.x * move_speed, acceleration)
-		velocity.z = move_toward(velocity.z, direction_input.y * move_speed, acceleration)
-	else:
+func move_into_direction(direction_input: Vector2, delta: float) -> void:
+	if not direction_input:
+		var deceleration: float = profile.deceleration * delta
 		velocity.x = move_toward(velocity.x, 0.0, deceleration)
 		velocity.z = move_toward(velocity.z, 0.0, deceleration)
+		return
+	var move_speed: float = profile.move_speed
+	var acceleration: float = profile.acceleration * delta
+	velocity.x = move_toward(velocity.x, direction_input.x * move_speed, acceleration)
+	velocity.z = move_toward(velocity.z, direction_input.y * move_speed, acceleration)
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
+func move_to_position(position_input: Vector3) -> void:
+	_navigation_agent.target_position = position_input
+
+@rpc("call_local", "reliable")
 func hide_character(keep_physics: bool = false) -> void:
 	assert(visible)
 	visible = false
 	if keep_physics: return
 	_disable_physics()
 
-@rpc("any_peer", "call_local")
+@rpc("call_local", "reliable")
 func unhide_character() -> void:
 	assert(not visible)
 	visible = true
@@ -138,6 +146,19 @@ func get_heads_up_anchor() -> Vector3:
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta
 
+func _handle_pathfinding() -> void:
+	# Do not query when the map has never synchronized and is empty.
+	if NavigationServer3D.map_get_iteration_id(_navigation_agent.get_navigation_map()) == 0: return
+	if _navigation_agent.is_navigation_finished():
+		velocity = Vector3.ZERO
+		return
+	var next_path_position: Vector3 = _navigation_agent.get_next_path_position()
+	var new_velocity: Vector3 = global_position.direction_to(next_path_position) * profile.move_speed
+	if _navigation_agent.avoidance_enabled:
+		_navigation_agent.set_velocity(new_velocity)
+	else:
+		_on_navigation_agent_velocity_computed(new_velocity)
+
 func _handle_collisions() -> void:
 	for collision_index: int in get_slide_collision_count():
 		var collision: KinematicCollision3D  = get_slide_collision(collision_index)
@@ -163,6 +184,14 @@ func _disable_physics() -> void:
 	set_physics_process(false)
 	set_process(false)
 
+func _on_navigation_agent_velocity_computed(safe_velocity: Vector3) -> void:
+	velocity = safe_velocity
+
+func _on_navigation_agent_navigation_finished() -> void:
+	print("FINISHED")
+	print(destination_reached.get_connections())
+	destination_reached.emit()
+
 func _on_haunted(_haunting: Character) -> void:
 	model.apply_material_overlay(profile.haunted_material)
 
@@ -172,4 +201,5 @@ func _on_unhaunted() -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if not _collision_shape: warnings.append("Missing CollisionShape3D reference.")
+	if not _navigation_agent: warnings.append("Missing NavigationAgent3D reference.")
 	return warnings

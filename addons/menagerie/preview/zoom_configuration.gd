@@ -12,7 +12,9 @@ signal zoomed_in
 @export var _config: Config
 
 func _ready() -> void:
-	_zoom_slider.value = _config.get_value_from_config("Camera", "zoom", 0.5)
+	var zoom_from_config: float = _config.get_value_from_config("Camera", "zoom", 0.5)
+	_zoom_slider.set_value_no_signal(zoom_from_config)
+	zoom_changed.emit(zoom_from_config)
 
 func _on_zoom_slider_value_changed(value: float) -> void:
 	var new_zoom: float = (_zoom_slider.max_value - value) if _inverted else value

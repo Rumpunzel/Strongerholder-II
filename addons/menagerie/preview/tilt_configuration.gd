@@ -12,7 +12,9 @@ signal tilted_less
 @export var _config: Config
 
 func _ready() -> void:
-	_tilt_slider.value = _config.get_value_from_config("Camera", "tilt", 0.25)
+	var tilt_from_config: float = _config.get_value_from_config("Camera", "tilt", 0.25)
+	_tilt_slider.set_value_no_signal(tilt_from_config)
+	tilt_changed.emit(tilt_from_config)
 
 func _on_tilt_slider_value_changed(value: float) -> void:
 	var new_tilt: float = (_tilt_slider.max_value - value) if _inverted else value

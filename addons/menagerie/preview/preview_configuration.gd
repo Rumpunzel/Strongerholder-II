@@ -16,10 +16,14 @@ signal variation_changed(new_variation: int)
 @export var _config: Config
 
 func _ready() -> void:
-	_show_collision_button.button_pressed = _config.get_value_from_config("Preview", "show_collision", true)
-	_show_hit_box_button.button_pressed = _config.get_value_from_config("Preview", "show_hit_box", true)
-	_show_interaction_area_button.button_pressed = _config.get_value_from_config("Preview", "show_interaction_area", true)
-	_randomize_variation_button.button_pressed = _config.get_value_from_config("Preview", "randomize_variation", true)
+	_show_collision_button.set_pressed_no_signal(_config.get_value_from_config("Preview", "show_collision", true))
+	show_collision_changed.emit(_show_collision_button.button_pressed)
+	_show_hit_box_button.set_pressed_no_signal(_config.get_value_from_config("Preview", "show_hit_box", true))
+	show_hit_box_changed.emit(_show_hit_box_button.button_pressed)
+	_show_interaction_area_button.set_pressed_no_signal(_config.get_value_from_config("Preview", "show_interaction_area", true))
+	show_interaction_area_changed.emit(_show_interaction_area_button.button_pressed)
+	_randomize_variation_button.set_pressed_no_signal(_config.get_value_from_config("Preview", "randomize_variation", true))
+	randomize_variation_changed.emit(_randomize_variation_button.button_pressed)
 
 func _on_show_collision_toggled(toggled_on: bool) -> void:
 	show_collision_changed.emit(toggled_on)

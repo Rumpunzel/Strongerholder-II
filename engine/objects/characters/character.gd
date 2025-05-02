@@ -149,9 +149,7 @@ func _apply_gravity(delta: float) -> void:
 func _handle_pathfinding() -> void:
 	# Do not query when the map has never synchronized and is empty.
 	if NavigationServer3D.map_get_iteration_id(_navigation_agent.get_navigation_map()) == 0: return
-	if _navigation_agent.is_navigation_finished():
-		velocity = Vector3.ZERO
-		return
+	if _navigation_agent.is_navigation_finished(): return
 	var next_path_position: Vector3 = _navigation_agent.get_next_path_position()
 	var new_velocity: Vector3 = global_position.direction_to(next_path_position) * profile.move_speed
 	if _navigation_agent.avoidance_enabled:
@@ -185,9 +183,11 @@ func _disable_physics() -> void:
 	set_process(false)
 
 func _on_navigation_agent_velocity_computed(safe_velocity: Vector3) -> void:
+	if _navigation_agent.is_navigation_finished(): return
 	velocity = safe_velocity
 
 func _on_navigation_agent_navigation_finished() -> void:
+	velocity = Vector3.ZERO
 	destination_reached.emit()
 
 func _on_haunted(_haunting: Character) -> void:

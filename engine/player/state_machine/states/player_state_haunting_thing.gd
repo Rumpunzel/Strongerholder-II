@@ -23,8 +23,8 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 	assert(haunted_thing)
 	_haunted.haunt.rpc(character.get_path())
 	var input_force: Vector3 = character.get_heads_up_anchor() - haunted_thing.position
-	var force_multiplyer: float = character.profile.push_force * haunted_thing.mass / 100.0
-	haunted_thing.apply_torque(input_force * force_multiplyer)
+	var force_multiplyer: float = character.profile.push_force * haunted_thing.mass / 10.0
+	haunted_thing.apply_torque(input_force.rotated(Vector3.LEFT, PI / 2.0) * force_multiplyer)
 	character.hide_character.rpc(true)
 	character.position = haunted_thing.position
 	get_interaction_area().add_hit_box_to_ignore(_haunted)

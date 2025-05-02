@@ -114,7 +114,7 @@ shape = SubResource("CapsuleShape3D_pj10w")
 [node name="SynchronizerSerializer" parent="Ghost/CharacterSynchronizer" index="0"]
 type = 64
 
-[node name="CharacterHitBox" parent="Ghost" index="2"]
+[node name="CharacterHitBox" parent="Ghost" index="3"]
 collision_layer = 1048576
 
 [node name="InteractionArea" parent="Ghost" node_paths=PackedStringArray("character") instance=ExtResource("9_46i1k")]

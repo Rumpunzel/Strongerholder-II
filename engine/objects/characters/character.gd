@@ -145,7 +145,7 @@ func _handle_collisions() -> void:
 		if collider is RigidBody3D:
 			var collision_position: Vector3 = collision.get_position()
 			var rigid_body: RigidBody3D = collider
-			var force_multiplyer: float = profile.push_force * rigid_body.mass / 10.0
+			var force_multiplyer: float = profile.push_force * rigid_body.mass / 1000.0
 			rigid_body.apply_impulse(-collision.get_normal() * force_multiplyer, collision_position - rigid_body.transform.origin)
 
 func _look_forward(delta: float) -> void:

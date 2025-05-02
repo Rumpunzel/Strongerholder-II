@@ -17,7 +17,12 @@ var _status: Status = Status.STOPPED
 @warning_ignore("unused_private_class_variable")
 var _serialized_state: Dictionary[StringName, Variant]:
 	get: return get_state().serialize()
-	set(new_serialized_state): set_state(State.from_serialized_state(new_serialized_state))
+	set(new_serialized_state):
+		set_state(State.from_serialized_state(new_serialized_state))
+		match _status:
+			Status.STOPPED: pass
+			Status.RUNNING: get_state().enter(self)
+			_: push_error("Status %s not implemented!" % _status)
 
 static func script_is_valid_state(script: Script) -> bool:
 	if script.get_global_name() == "State": return true

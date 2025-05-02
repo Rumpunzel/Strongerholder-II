@@ -15,7 +15,6 @@ func get_state() -> AgentState:
 func set_state(state: State) -> void:
 	assert(state is AgentState)
 	_state = state
-	print("SETTING STATE")
 	_state._state_machine = self
 
 func _get_configuration_warnings() -> PackedStringArray:

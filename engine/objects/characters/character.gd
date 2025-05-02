@@ -188,8 +188,6 @@ func _on_navigation_agent_velocity_computed(safe_velocity: Vector3) -> void:
 	velocity = safe_velocity
 
 func _on_navigation_agent_navigation_finished() -> void:
-	print("FINISHED")
-	print(destination_reached.get_connections())
 	destination_reached.emit()
 
 func _on_haunted(_haunting: Character) -> void:

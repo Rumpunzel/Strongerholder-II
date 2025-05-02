@@ -11,7 +11,6 @@ var _patrol_route: Array[Vector3] = [
 var _patrol_index: int = -1
 
 func enter(state_machine: StateMachine, previous_state: State = null) -> void:
-	print("ENTERING")
 	super.enter(state_machine, previous_state)
 	var character: Character = get_character()
 	character.destination_reached.connect(_on_character_destination_reached)
@@ -22,7 +21,6 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 		if distance_to_point < distance_to_nearest:
 			_patrol_index = patrol_index
 			distance_to_nearest = distance_to_point
-	print("_patrol_index: %d" % _patrol_index)
 	print(character.destination_reached.get_connections())
 	if _patrol_index >= 0: character.move_to_position(_patrol_route[_patrol_index])
 	get_hit_box().haunted.connect(_on_haunted)
@@ -41,7 +39,6 @@ func exit() -> void:
 	get_hit_box().haunted.disconnect(_on_haunted)
 
 func _on_character_destination_reached() -> void:
-	print("REACHED: %d" % _patrol_index)
 	if _patrol_index < 0: return
 	_patrol_index = (_patrol_index + 1) % _patrol_route.size()
 	get_character().move_to_position(_patrol_route[_patrol_index])

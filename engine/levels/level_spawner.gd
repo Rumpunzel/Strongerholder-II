@@ -46,6 +46,10 @@ func _on_child_entered_tree(node: Node) -> void:
 	if not node is Level: return
 	_level = node
 
+func _on_agent_created(agent: Agent) -> void:
+	assert(_level)
+	agent.character.entered_grid_cell.connect(_level._on_character_entered_grid_cell)
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	return warnings

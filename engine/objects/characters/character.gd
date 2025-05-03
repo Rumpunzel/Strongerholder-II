@@ -3,6 +3,8 @@
 class_name Character
 extends CharacterBody3D
 
+signal entered_grid_cell(cell: Vector3i)
+signal exited_grid_cell(cell: Vector3i)
 signal destination_reached
 
 signal profile_changed
@@ -60,9 +62,11 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
+	entered_grid_cell.emit(get_grid_cell())
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
+	var grid_cell_before: Vector3i = get_grid_cell()
 	_is_on_floor = is_on_floor()
 	if not _is_on_floor: _apply_gravity(delta)
 	_handle_pathfinding()
@@ -70,6 +74,10 @@ func _physics_process(delta: float) -> void:
 	_handle_collisions()
 	_look_forward(delta)
 	_normalized_velocity = Vector3(velocity.x / profile.move_speed, velocity.y / _gravity, velocity.z / profile.move_speed)
+	var grid_cell_after: Vector3i = get_grid_cell()
+	if grid_cell_after != grid_cell_before:
+		exited_grid_cell.emit(grid_cell_before)
+		entered_grid_cell.emit(grid_cell_after)
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -142,6 +150,9 @@ func get_portrait() -> Texture:
 
 func get_heads_up_anchor() -> Vector3:
 	return position + profile.heads_up_display_offset
+
+func get_grid_cell() -> Vector3i:
+	return Vector3i(global_position)
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y -= _gravity * delta

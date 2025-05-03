@@ -47,3 +47,4 @@ metadata/_custom_type_script = "uid://853l0h1bjf04"
 [connection signal="load_requested" from="PauseMenu" to="." method="load_game"]
 [connection signal="new_game_requested" from="PauseMenu" to="." method="start_new_game"]
 [connection signal="save_requested" from="PauseMenu" to="." method="save_game"]
+[connection signal="agent_created" from="AgentSpawner" to="LevelSpawner" method="_on_agent_created"]

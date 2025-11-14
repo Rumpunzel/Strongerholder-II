@@ -21,7 +21,6 @@ func enter(state_machine: StateMachine, previous_state: State = null) -> void:
 		if distance_to_point < distance_to_nearest:
 			_patrol_index = patrol_index
 			distance_to_nearest = distance_to_point
-	print(character.destination_reached.get_connections())
 	if _patrol_index >= 0: character.move_to_position(_patrol_route[_patrol_index])
 	get_hit_box().haunted.connect(_on_haunted)
 

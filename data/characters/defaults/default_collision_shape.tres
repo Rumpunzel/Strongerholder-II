@@ -8,7 +8,4 @@ radius = 0.25
 [resource]
 script = ExtResource("1_yaxum")
 _shape = SubResource("CapsuleShape3D_yaxum")
-_offset = Vector3(0, 0, 0)
-_rotation_degrees = Vector3(0, 0, 0)
-_automatic_ground_offset = true
 metadata/_custom_type_script = "uid://cfq64v34pot8s"

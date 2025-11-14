@@ -15,14 +15,12 @@ height = 0.5
 [sub_resource type="Resource" id="Resource_dnlk6"]
 script = ExtResource("5_u5ehe")
 _shape = SubResource("CapsuleShape3D_hpr2k")
-_offset = Vector3(0, 0, 0)
 _rotation_degrees = Vector3(90, 0, 0)
 _automatic_ground_offset = false
 metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
 [resource]
 script = ExtResource("8_l001u")
-group = 0
 mass = 0.5
 name = "Fish"
 color = Color(0.878431, 0.878431, 0.878431, 1)
@@ -30,5 +28,4 @@ _model_variations = Array[PackedScene]([ExtResource("1_hpr2k"), ExtResource("2_d
 _collision_shape = SubResource("Resource_dnlk6")
 _hit_box_shape = SubResource("Resource_dnlk6")
 heads_up_display_offset = Vector3(0, 1, 0)
-haunted_material = ExtResource("6_dvj1l")
 metadata/_custom_type_script = "uid://dkumiyoi57n5x"

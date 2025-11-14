@@ -13,7 +13,7 @@ config_version=5
 config/name="Bonefire"
 config/version="Development"
 run/main_scene="uid://bvt1s3i2xw5s6"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://bgjmcb04v358t"
 
 [autoload]

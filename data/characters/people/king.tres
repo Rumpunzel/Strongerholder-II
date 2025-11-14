@@ -14,24 +14,14 @@ size = Vector3(3, 3, 4)
 script = ExtResource("6_tyc7q")
 _shape = SubResource("BoxShape3D_d0vdr")
 _offset = Vector3(0, 0, 1)
-_rotation_degrees = Vector3(0, 0, 0)
-_automatic_ground_offset = true
 metadata/_custom_type_script = "uid://cfq64v34pot8s"
 
 [resource]
 script = ExtResource("1_hac1t")
-group = 0
 move_speed = 6.0
-acceleration = 32.0
-deceleration = 32.0
-turn_rate = 12.0
-push_force = 750.0
 name = "King"
 color = Color(0.878431, 0.878431, 0.878431, 1)
 _model_variations = Array[PackedScene]([ExtResource("3_0kn5r")])
-_collision_shape = ExtResource("3_c8byr")
-_hit_box_shape = ExtResource("4_4iqrm")
 _interaction_area_shape = SubResource("Resource_4wmkl")
 heads_up_display_offset = Vector3(0, 2.25, 0)
-haunted_material = ExtResource("5_tk10t")
 metadata/_custom_type_script = "uid://ddefcwtx6jfym"

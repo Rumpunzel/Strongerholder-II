@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://c8py7l6hoole5"]
 
-[ext_resource type="Texture2D" uid="uid://b4cu6lky6yink" path="res://protoype_assets/dont_starve_ghosts/wanda.webp" id="3_1v8vv"]
+[ext_resource type="Texture2D" uid="uid://b4cu6lky6yink" path="res://protoype_assets/dont_starve_ghosts/wanda.png" id="3_1v8vv"]
 
 [resource]
 animations = [{

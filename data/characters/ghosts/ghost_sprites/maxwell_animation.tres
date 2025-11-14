@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://6vakrvjvnc5b"]
 
-[ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.webp" id="1_xvpcj"]
+[ext_resource type="Texture2D" uid="uid://bqnysmhdxctu4" path="res://protoype_assets/dont_starve_ghosts/maxwell.png" id="1_xvpcj"]
 
 [resource]
 animations = [{

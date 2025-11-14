@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_8wxps"]
 [ext_resource type="SpriteFrames" uid="uid://bdh7cl74k7c84" path="res://data/characters/ghosts/ghost_sprites/wigried_animation.tres" id="2_8wxps"]
-[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.webp" id="2_j6ayf"]
+[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.png" id="2_j6ayf"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_q4jyo"]
 
 [sub_resource type="Animation" id="Animation_qte8h"]

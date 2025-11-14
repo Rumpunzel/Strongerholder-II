@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://i8j4ie7ccvu8"]
 
-[ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.webp" id="17_2n0k5"]
+[ext_resource type="Texture2D" uid="uid://dojlwkh537881" path="res://protoype_assets/dont_starve_ghosts/wormwood.png" id="17_2n0k5"]
 
 [resource]
 animations = [{

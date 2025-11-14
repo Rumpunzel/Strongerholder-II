@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://brvdsxwmc86p3"]
 
-[ext_resource type="Texture2D" uid="uid://ccvkhvasoi8ux" path="res://protoype_assets/dont_starve_ghosts/weremoose.webp" id="8_77wow"]
+[ext_resource type="Texture2D" uid="uid://ccvkhvasoi8ux" path="res://protoype_assets/dont_starve_ghosts/weremoose.png" id="8_77wow"]
 
 [resource]
 animations = [{

@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://bdh7cl74k7c84"]
 
-[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.webp" id="11_04c1m"]
+[ext_resource type="Texture2D" uid="uid://21bw00ci7l06" path="res://protoype_assets/dont_starve_ghosts/wigfrid.png" id="11_04c1m"]
 
 [resource]
 animations = [{

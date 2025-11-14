@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cjp5ymkl8fmqi"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_qxgwa"]
-[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.webp" id="2_8mnji"]
+[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.png" id="2_8mnji"]
 [ext_resource type="SpriteFrames" uid="uid://cd7uelipbmfv1" path="res://data/characters/ghosts/ghost_sprites/willow_animation.tres" id="2_qxgwa"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_0d8j1"]
 

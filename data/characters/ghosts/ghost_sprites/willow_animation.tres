@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://cd7uelipbmfv1"]
 
-[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.webp" id="12_nfj6q"]
+[ext_resource type="Texture2D" uid="uid://cr8hdrubv88uk" path="res://protoype_assets/dont_starve_ghosts/willow.png" id="12_nfj6q"]
 
 [resource]
 animations = [{

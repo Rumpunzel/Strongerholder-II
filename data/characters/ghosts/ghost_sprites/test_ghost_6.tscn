@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_gop1y"]
 [ext_resource type="SpriteFrames" uid="uid://bdn7qt54b45sp" path="res://data/characters/ghosts/ghost_sprites/werebeaver_animation.tres" id="2_gop1y"]
-[ext_resource type="Texture2D" uid="uid://dmvw6blvqe5op" path="res://protoype_assets/dont_starve_ghosts/werebeaver.webp" id="2_yf650"]
+[ext_resource type="Texture2D" uid="uid://dmvw6blvqe5op" path="res://protoype_assets/dont_starve_ghosts/werebeaver.png" id="2_yf650"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_0y1jc"]
 
 [sub_resource type="Animation" id="Animation_qte8h"]

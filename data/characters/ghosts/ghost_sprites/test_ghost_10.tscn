@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://oxoki5figlpx"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_pmvfl"]
-[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.webp" id="2_l2esf"]
+[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.png" id="2_l2esf"]
 [ext_resource type="SpriteFrames" uid="uid://dkacmv2ct42xb" path="res://data/characters/ghosts/ghost_sprites/wickerbottom_animation.tres" id="2_pmvfl"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_puhpl"]
 

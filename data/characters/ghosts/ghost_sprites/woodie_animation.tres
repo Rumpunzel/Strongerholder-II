@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://cevx6oxpe7dyp"]
 
-[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.webp" id="16_od1gg"]
+[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.png" id="16_od1gg"]
 
 [resource]
 animations = [{

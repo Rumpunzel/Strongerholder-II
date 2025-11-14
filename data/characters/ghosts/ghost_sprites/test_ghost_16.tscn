@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b2koom2yx6wv"]
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_ed6ym"]
-[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.webp" id="2_62nqr"]
+[ext_resource type="Texture2D" uid="uid://bwv653n0ana8c" path="res://protoype_assets/dont_starve_ghosts/woodie.png" id="2_62nqr"]
 [ext_resource type="SpriteFrames" uid="uid://cevx6oxpe7dyp" path="res://data/characters/ghosts/ghost_sprites/woodie_animation.tres" id="2_ed6ym"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_crcac"]
 

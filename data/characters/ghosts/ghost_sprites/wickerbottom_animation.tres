@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://dkacmv2ct42xb"]
 
-[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.webp" id="10_ad4md"]
+[ext_resource type="Texture2D" uid="uid://camltsyjtxkn7" path="res://protoype_assets/dont_starve_ghosts/wickerbottom.png" id="10_ad4md"]
 
 [resource]
 animations = [{

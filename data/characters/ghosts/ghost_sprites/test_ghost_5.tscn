@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://f7j5ijitqy25" path="res://engine/objects/characters/ghost_sprite.gd" id="1_rt6cc"]
 [ext_resource type="SpriteFrames" uid="uid://befccmh8x4cgf" path="res://data/characters/ghosts/ghost_sprites/wendy_animation.tres" id="2_rt6cc"]
-[ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.webp" id="2_vshgu"]
+[ext_resource type="Texture2D" uid="uid://deg5y2ms4jegb" path="res://protoype_assets/dont_starve_ghosts/wendy.png" id="2_vshgu"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://onoyjqqbwxgn" path="res://data/characters/ghosts/ghost_sprites/test_ghost_tree.tres" id="3_3ekxn"]
 
 [sub_resource type="Animation" id="Animation_qte8h"]
